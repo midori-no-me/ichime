@@ -107,9 +107,16 @@ struct ShowView: View {
                 await self.fetchShow(showId: self.showId)
             }
         }
+        .refreshable {
+            await self.fetchShow(showId: self.showId, forceRefresh: true)
+        }
     }
 
-    private func fetchShow(showId: Int) async {
+    private func fetchShow(showId: Int, forceRefresh: Bool = false) async {
+        if !forceRefresh && !isLoading {
+            return
+        }
+
         let anime365Client = Anime365Client(
             apiClient: Anime365ApiClient(
                 baseURL: "https://anime365.ru/api",
