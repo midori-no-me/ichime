@@ -7,28 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EDA629082B4576BE0093F8E5 /* libavfilter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629002B4576BE0093F8E5 /* libavfilter.xcframework */; };
-		EDA629092B4576BE0093F8E5 /* libavfilter.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629002B4576BE0093F8E5 /* libavfilter.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		EDA6290A2B4576BE0093F8E5 /* libavformat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629012B4576BE0093F8E5 /* libavformat.xcframework */; };
-		EDA6290B2B4576BE0093F8E5 /* libavformat.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629012B4576BE0093F8E5 /* libavformat.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		EDA6290C2B4576BE0093F8E5 /* libavutil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629022B4576BE0093F8E5 /* libavutil.xcframework */; };
-		EDA6290D2B4576BE0093F8E5 /* libavutil.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629022B4576BE0093F8E5 /* libavutil.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		EDA6290E2B4576BE0093F8E5 /* libswresample.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629032B4576BE0093F8E5 /* libswresample.xcframework */; };
-		EDA6290F2B4576BE0093F8E5 /* libswresample.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629032B4576BE0093F8E5 /* libswresample.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		EDA629102B4576BE0093F8E5 /* libavcodec.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629042B4576BE0093F8E5 /* libavcodec.xcframework */; };
-		EDA629112B4576BE0093F8E5 /* libavcodec.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629042B4576BE0093F8E5 /* libavcodec.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		EDA629122B4576BE0093F8E5 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629052B4576BE0093F8E5 /* libswscale.xcframework */; };
-		EDA629132B4576BE0093F8E5 /* libswscale.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629052B4576BE0093F8E5 /* libswscale.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		EDA629142B4576BE0093F8E5 /* ffmpegkit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629062B4576BE0093F8E5 /* ffmpegkit.xcframework */; };
-		EDA629152B4576BE0093F8E5 /* ffmpegkit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629062B4576BE0093F8E5 /* ffmpegkit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		EDA629162B4576BE0093F8E5 /* libavdevice.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629072B4576BE0093F8E5 /* libavdevice.xcframework */; };
-		EDA629172B4576BE0093F8E5 /* libavdevice.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629072B4576BE0093F8E5 /* libavdevice.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EDE959292B4705D40030B23D /* SubtitlesConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959282B4705D40030B23D /* SubtitlesConverter.swift */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
 		EDE959312B4762690030B23D /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959302B4762690030B23D /* OngoingsView.swift */; };
 		EDE959332B484C8A0030B23D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959322B484C8A0030B23D /* ContentView.swift */; };
 		EDE959352B484F7D0030B23D /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959342B484F7D0030B23D /* OverviewView.swift */; };
+		EDE9593E2B4965DE0030B23D /* libavformat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959362B4965DC0030B23D /* libavformat.framework */; };
+		EDE9593F2B4965DE0030B23D /* libavdevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959372B4965DC0030B23D /* libavdevice.framework */; };
+		EDE959402B4965DE0030B23D /* libavutil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959382B4965DC0030B23D /* libavutil.framework */; };
+		EDE959412B4965DE0030B23D /* libavcodec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959392B4965DE0030B23D /* libavcodec.framework */; };
+		EDE959422B4965DE0030B23D /* libavfilter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593A2B4965DE0030B23D /* libavfilter.framework */; };
+		EDE959432B4965DE0030B23D /* ffmpegkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */; };
+		EDE959442B4965DE0030B23D /* libswresample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593C2B4965DE0030B23D /* libswresample.framework */; };
+		EDE959452B4965DE0030B23D /* libswscale.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593D2B4965DE0030B23D /* libswscale.framework */; };
 		EDFF2D112B43471300F27E61 /* ani365App.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D102B43471300F27E61 /* ani365App.swift */; };
 		EDFF2D132B43471300F27E61 /* ContentViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D122B43471300F27E61 /* ContentViewOld.swift */; };
 		EDFF2D152B43471500F27E61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D142B43471500F27E61 /* Assets.xcassets */; };
@@ -47,14 +39,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				EDA629092B4576BE0093F8E5 /* libavfilter.xcframework in Embed Frameworks */,
-				EDA629112B4576BE0093F8E5 /* libavcodec.xcframework in Embed Frameworks */,
-				EDA6290D2B4576BE0093F8E5 /* libavutil.xcframework in Embed Frameworks */,
-				EDA629152B4576BE0093F8E5 /* ffmpegkit.xcframework in Embed Frameworks */,
-				EDA629172B4576BE0093F8E5 /* libavdevice.xcframework in Embed Frameworks */,
-				EDA6290F2B4576BE0093F8E5 /* libswresample.xcframework in Embed Frameworks */,
-				EDA629132B4576BE0093F8E5 /* libswscale.xcframework in Embed Frameworks */,
-				EDA6290B2B4576BE0093F8E5 /* libavformat.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,14 +47,6 @@
 
 /* Begin PBXFileReference section */
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		EDA629002B4576BE0093F8E5 /* libavfilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavfilter.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libavfilter.xcframework"; sourceTree = "<group>"; };
-		EDA629012B4576BE0093F8E5 /* libavformat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavformat.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libavformat.xcframework"; sourceTree = "<group>"; };
-		EDA629022B4576BE0093F8E5 /* libavutil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavutil.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libavutil.xcframework"; sourceTree = "<group>"; };
-		EDA629032B4576BE0093F8E5 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libswresample.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libswresample.xcframework"; sourceTree = "<group>"; };
-		EDA629042B4576BE0093F8E5 /* libavcodec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavcodec.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libavcodec.xcframework"; sourceTree = "<group>"; };
-		EDA629052B4576BE0093F8E5 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libswscale.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libswscale.xcframework"; sourceTree = "<group>"; };
-		EDA629062B4576BE0093F8E5 /* ffmpegkit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ffmpegkit.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/ffmpegkit.xcframework"; sourceTree = "<group>"; };
-		EDA629072B4576BE0093F8E5 /* libavdevice.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavdevice.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libavdevice.xcframework"; sourceTree = "<group>"; };
 		EDE959282B4705D40030B23D /* SubtitlesConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitlesConverter.swift; sourceTree = "<group>"; };
 		EDE9592B2B47167B0030B23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchShowsView.swift; sourceTree = "<group>"; };
@@ -78,6 +54,14 @@
 		EDE959302B4762690030B23D /* OngoingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingsView.swift; sourceTree = "<group>"; };
 		EDE959322B484C8A0030B23D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EDE959342B484F7D0030B23D /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
+		EDE959362B4965DC0030B23D /* libavformat.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libavformat.framework; sourceTree = "<group>"; };
+		EDE959372B4965DC0030B23D /* libavdevice.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libavdevice.framework; sourceTree = "<group>"; };
+		EDE959382B4965DC0030B23D /* libavutil.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libavutil.framework; sourceTree = "<group>"; };
+		EDE959392B4965DE0030B23D /* libavcodec.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libavcodec.framework; sourceTree = "<group>"; };
+		EDE9593A2B4965DE0030B23D /* libavfilter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libavfilter.framework; sourceTree = "<group>"; };
+		EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ffmpegkit.framework; sourceTree = "<group>"; };
+		EDE9593C2B4965DE0030B23D /* libswresample.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libswresample.framework; sourceTree = "<group>"; };
+		EDE9593D2B4965DE0030B23D /* libswscale.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libswscale.framework; sourceTree = "<group>"; };
 		EDFF2D0D2B43471300F27E61 /* ani365.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ani365.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDFF2D102B43471300F27E61 /* ani365App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ani365App.swift; sourceTree = "<group>"; };
 		EDFF2D122B43471300F27E61 /* ContentViewOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewOld.swift; sourceTree = "<group>"; };
@@ -96,14 +80,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDA629082B4576BE0093F8E5 /* libavfilter.xcframework in Frameworks */,
-				EDA629102B4576BE0093F8E5 /* libavcodec.xcframework in Frameworks */,
-				EDA6290C2B4576BE0093F8E5 /* libavutil.xcframework in Frameworks */,
-				EDA629142B4576BE0093F8E5 /* ffmpegkit.xcframework in Frameworks */,
-				EDA629162B4576BE0093F8E5 /* libavdevice.xcframework in Frameworks */,
-				EDA6290E2B4576BE0093F8E5 /* libswresample.xcframework in Frameworks */,
-				EDA629122B4576BE0093F8E5 /* libswscale.xcframework in Frameworks */,
-				EDA6290A2B4576BE0093F8E5 /* libavformat.xcframework in Frameworks */,
+				EDE959412B4965DE0030B23D /* libavcodec.framework in Frameworks */,
+				EDE959452B4965DE0030B23D /* libswscale.framework in Frameworks */,
+				EDE9593E2B4965DE0030B23D /* libavformat.framework in Frameworks */,
+				EDE959432B4965DE0030B23D /* ffmpegkit.framework in Frameworks */,
+				EDE9593F2B4965DE0030B23D /* libavdevice.framework in Frameworks */,
+				EDE959442B4965DE0030B23D /* libswresample.framework in Frameworks */,
+				EDE959402B4965DE0030B23D /* libavutil.framework in Frameworks */,
+				EDE959422B4965DE0030B23D /* libavfilter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,14 +97,6 @@
 		EDA628FF2B4576BE0093F8E5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EDA629062B4576BE0093F8E5 /* ffmpegkit.xcframework */,
-				EDA629042B4576BE0093F8E5 /* libavcodec.xcframework */,
-				EDA629072B4576BE0093F8E5 /* libavdevice.xcframework */,
-				EDA629002B4576BE0093F8E5 /* libavfilter.xcframework */,
-				EDA629012B4576BE0093F8E5 /* libavformat.xcframework */,
-				EDA629022B4576BE0093F8E5 /* libavutil.xcframework */,
-				EDA629032B4576BE0093F8E5 /* libswresample.xcframework */,
-				EDA629052B4576BE0093F8E5 /* libswscale.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -136,6 +112,14 @@
 		EDFF2D042B43471300F27E61 = {
 			isa = PBXGroup;
 			children = (
+				EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */,
+				EDE959392B4965DE0030B23D /* libavcodec.framework */,
+				EDE959372B4965DC0030B23D /* libavdevice.framework */,
+				EDE9593A2B4965DE0030B23D /* libavfilter.framework */,
+				EDE959362B4965DC0030B23D /* libavformat.framework */,
+				EDE959382B4965DC0030B23D /* libavutil.framework */,
+				EDE9593C2B4965DE0030B23D /* libswresample.framework */,
+				EDE9593D2B4965DE0030B23D /* libswscale.framework */,
 				EDA277052B457B2E003A97F0 /* README.md */,
 				EDFF2D0F2B43471300F27E61 /* ani365 */,
 				EDFF2D0E2B43471300F27E61 /* Products */,
@@ -411,6 +395,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ani365/Preview Content\"";
 				DEVELOPMENT_TEAM = SF77WTD7GX;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ani365/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -456,6 +444,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ani365/Preview Content\"";
 				DEVELOPMENT_TEAM = SF77WTD7GX;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ani365/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;

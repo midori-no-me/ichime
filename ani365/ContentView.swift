@@ -18,29 +18,21 @@ struct ContentView: View {
         if horizontalSizeClass == .regular {
             NavigationSplitView {
                 List {
-                    NavigationStack {
-                        NavigationLink(destination: searchShowsView) {
-                            Label("Поиск", systemImage: "magnifyingglass")
-                        }
+                    NavigationLink(destination: searchShowsView) {
+                        Label("Поиск", systemImage: "magnifyingglass")
                     }
 
-                    NavigationStack {
-                        NavigationLink(destination: overviewView) {
-                            Label("Обзор", systemImage: "rectangle.grid.2x2")
-                        }
+                    NavigationLink(destination: overviewView) {
+                        Label("Обзор", systemImage: "rectangle.grid.2x2")
                     }
 
-                    NavigationStack {
-                        NavigationLink(destination: ongoingsView) {
-                            Label("Онгоинги", systemImage: "film.stack")
-                        }
+                    NavigationLink(destination: ongoingsView) {
+                        Label("Онгоинги", systemImage: "film.stack")
                     }
 
                     Section(header: Text("Моя библиотека")) {
-                        NavigationStack {
-                            NavigationLink(destination: Text("My List")) {
-                                Label("Новые серии", systemImage: "play.rectangle.on.rectangle")
-                            }
+                        NavigationLink(destination: Text("My List")) {
+                            Label("Новые серии", systemImage: "play.rectangle.on.rectangle")
                         }
                     }
                 }
