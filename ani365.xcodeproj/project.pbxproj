@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED5A80672B49DEA300D59815 /* SceneLoadingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
 		EDE959312B4762690030B23D /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959302B4762690030B23D /* OngoingsView.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLoadingErrorView.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDE9592B2B47167B0030B23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchShowsView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */,
 				EDFF2D212B4371B400F27E61 /* ShowCard.swift */,
 				EDFF2D272B44763700F27E61 /* ShowCategoryRow.swift */,
+				ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */,
 				EDE9592E2B475E590030B23D /* ShowView.swift */,
 			);
 			path = ani365;
@@ -210,6 +213,7 @@
 				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
 				EDFF2D2C2B449A5500F27E61 /* Episode.swift in Sources */,
 				EDFF2D282B44763700F27E61 /* ShowCategoryRow.swift in Sources */,
+				ED5A80672B49DEA300D59815 /* SceneLoadingErrorView.swift in Sources */,
 				EDE9592F2B475E590030B23D /* ShowView.swift in Sources */,
 				EDFF2D222B4371B400F27E61 /* ShowCard.swift in Sources */,
 				EDFF2D112B43471300F27E61 /* ani365App.swift in Sources */,

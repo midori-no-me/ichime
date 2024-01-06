@@ -43,22 +43,23 @@ struct ShowView: View {
 
     @State public var show: Show? = nil
     @State private var isLoading = true
-    @State private var isErrorLoading = false
+    @State private var loadingError: Error? = nil
     @State private var userListStatus: Anime365ListTypeMenu = .notInList
 
     var body: some View {
         NavigationStack {
-            ScrollView([.vertical]) {
-                if let show = self.show {
+            if let show = self.show {
+                ScrollView([.vertical]) {
                     ShowDetails(show: show)
-                } else {
-                    if self.isErrorLoading {
-                        Text("Ошибка при загрузке")
-                    } else if self.isLoading {
-                        VStack {
-                            ProgressView()
-                        }
-                    }
+                }
+            } else {
+                if self.isLoading {
+                    ProgressView()
+                } else if self.loadingError != nil {
+                    SceneLoadingErrorView(
+                        loadingError: self.loadingError!,
+                        reload: { await self.fetchShow(showId: self.showId, forceRefresh: true) }
+                    )
                 }
             }
         }
@@ -132,7 +133,7 @@ struct ShowView: View {
             }
         } catch {
             DispatchQueue.main.async {
-                self.isErrorLoading = true
+                self.loadingError = error
             }
         }
 
