@@ -7,20 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED7136A52B496FD5007A8CDF /* ffmpegkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */; };
+		ED7136A62B496FD5007A8CDF /* ffmpegkit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED7136A72B496FD7007A8CDF /* libavcodec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959392B4965DE0030B23D /* libavcodec.framework */; };
+		ED7136A82B496FD7007A8CDF /* libavcodec.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959392B4965DE0030B23D /* libavcodec.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED7136A92B496FD8007A8CDF /* libavdevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959372B4965DC0030B23D /* libavdevice.framework */; };
+		ED7136AA2B496FD8007A8CDF /* libavdevice.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959372B4965DC0030B23D /* libavdevice.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED7136AB2B496FD9007A8CDF /* libavfilter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593A2B4965DE0030B23D /* libavfilter.framework */; };
+		ED7136AC2B496FD9007A8CDF /* libavfilter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593A2B4965DE0030B23D /* libavfilter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED7136AD2B496FDA007A8CDF /* libavformat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959362B4965DC0030B23D /* libavformat.framework */; };
+		ED7136AE2B496FDA007A8CDF /* libavformat.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959362B4965DC0030B23D /* libavformat.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED7136AF2B496FDC007A8CDF /* libavutil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959382B4965DC0030B23D /* libavutil.framework */; };
+		ED7136B02B496FDC007A8CDF /* libavutil.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959382B4965DC0030B23D /* libavutil.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED7136B12B496FDD007A8CDF /* libswresample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593C2B4965DE0030B23D /* libswresample.framework */; };
+		ED7136B22B496FDD007A8CDF /* libswresample.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593C2B4965DE0030B23D /* libswresample.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED7136B32B496FDE007A8CDF /* libswscale.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593D2B4965DE0030B23D /* libswscale.framework */; };
+		ED7136B42B496FDE007A8CDF /* libswscale.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593D2B4965DE0030B23D /* libswscale.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EDE959292B4705D40030B23D /* SubtitlesConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959282B4705D40030B23D /* SubtitlesConverter.swift */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
 		EDE959312B4762690030B23D /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959302B4762690030B23D /* OngoingsView.swift */; };
 		EDE959332B484C8A0030B23D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959322B484C8A0030B23D /* ContentView.swift */; };
 		EDE959352B484F7D0030B23D /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959342B484F7D0030B23D /* OverviewView.swift */; };
-		EDE9593E2B4965DE0030B23D /* libavformat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959362B4965DC0030B23D /* libavformat.framework */; };
-		EDE9593F2B4965DE0030B23D /* libavdevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959372B4965DC0030B23D /* libavdevice.framework */; };
-		EDE959402B4965DE0030B23D /* libavutil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959382B4965DC0030B23D /* libavutil.framework */; };
-		EDE959412B4965DE0030B23D /* libavcodec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959392B4965DE0030B23D /* libavcodec.framework */; };
-		EDE959422B4965DE0030B23D /* libavfilter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593A2B4965DE0030B23D /* libavfilter.framework */; };
-		EDE959432B4965DE0030B23D /* ffmpegkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */; };
-		EDE959442B4965DE0030B23D /* libswresample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593C2B4965DE0030B23D /* libswresample.framework */; };
-		EDE959452B4965DE0030B23D /* libswscale.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593D2B4965DE0030B23D /* libswscale.framework */; };
 		EDFF2D112B43471300F27E61 /* ani365App.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D102B43471300F27E61 /* ani365App.swift */; };
 		EDFF2D132B43471300F27E61 /* ContentViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D122B43471300F27E61 /* ContentViewOld.swift */; };
 		EDFF2D152B43471500F27E61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D142B43471500F27E61 /* Assets.xcassets */; };
@@ -39,6 +47,14 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				ED7136A82B496FD7007A8CDF /* libavcodec.framework in Embed Frameworks */,
+				ED7136B42B496FDE007A8CDF /* libswscale.framework in Embed Frameworks */,
+				ED7136AE2B496FDA007A8CDF /* libavformat.framework in Embed Frameworks */,
+				ED7136AC2B496FD9007A8CDF /* libavfilter.framework in Embed Frameworks */,
+				ED7136AA2B496FD8007A8CDF /* libavdevice.framework in Embed Frameworks */,
+				ED7136B22B496FDD007A8CDF /* libswresample.framework in Embed Frameworks */,
+				ED7136A62B496FD5007A8CDF /* ffmpegkit.framework in Embed Frameworks */,
+				ED7136B02B496FDC007A8CDF /* libavutil.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,14 +96,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDE959412B4965DE0030B23D /* libavcodec.framework in Frameworks */,
-				EDE959452B4965DE0030B23D /* libswscale.framework in Frameworks */,
-				EDE9593E2B4965DE0030B23D /* libavformat.framework in Frameworks */,
-				EDE959432B4965DE0030B23D /* ffmpegkit.framework in Frameworks */,
-				EDE9593F2B4965DE0030B23D /* libavdevice.framework in Frameworks */,
-				EDE959442B4965DE0030B23D /* libswresample.framework in Frameworks */,
-				EDE959402B4965DE0030B23D /* libavutil.framework in Frameworks */,
-				EDE959422B4965DE0030B23D /* libavfilter.framework in Frameworks */,
+				ED7136AD2B496FDA007A8CDF /* libavformat.framework in Frameworks */,
+				ED7136B32B496FDE007A8CDF /* libswscale.framework in Frameworks */,
+				ED7136A52B496FD5007A8CDF /* ffmpegkit.framework in Frameworks */,
+				ED7136AF2B496FDC007A8CDF /* libavutil.framework in Frameworks */,
+				ED7136A72B496FD7007A8CDF /* libavcodec.framework in Frameworks */,
+				ED7136B12B496FDD007A8CDF /* libswresample.framework in Frameworks */,
+				ED7136AB2B496FD9007A8CDF /* libavfilter.framework in Frameworks */,
+				ED7136A92B496FD8007A8CDF /* libavdevice.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
