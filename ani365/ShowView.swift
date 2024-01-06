@@ -162,7 +162,8 @@ struct ShowDetails: View {
                             image.resizable()
                                 .cornerRadius(4)
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: geometry.size.width, height: geometry.size.height, alignment: .topLeading)
+//                                .frame(width: geometry.size.width, height: geometry.size.height, alignment: .topLeading)
+                                .frame(width: geometry.size.width, height: geometry.size.height)
                                 .clipped()
 
                         case .failure:
@@ -179,8 +180,8 @@ struct ShowDetails: View {
             }
 
             let gridColumns = horizontalSizeClass == .compact
-                ? [GridItem(.flexible(), spacing: 18, alignment: .topTrailing)]
-                : [GridItem(.flexible(), spacing: 18, alignment: .topTrailing), GridItem(.flexible(), spacing: 18, alignment: .topTrailing)]
+                ? [GridItem(.flexible(), spacing: 18, alignment: .topLeading)]
+                : [GridItem(.flexible(), spacing: 18, alignment: .topLeading), GridItem(.flexible(), spacing: 18, alignment: .topLeading)]
 
             VStack(alignment: .trailing, spacing: 18) {
                 LazyVGrid(columns: gridColumns, spacing: 18) {
@@ -203,6 +204,13 @@ struct ShowDetails: View {
                         label: "Тип",
                         value: self.show.typeTitle
                     )
+
+                    if !self.show.genres.isEmpty {
+                        ShowProperty(
+                            label: "Жанры",
+                            value: self.show.genres.joined(separator: ", ")
+                        )
+                    }
                 }
 
                 if horizontalSizeClass == .regular {
@@ -221,19 +229,6 @@ struct ShowDetails: View {
         .padding(.leading, 18)
         .padding(.trailing, 18)
         .padding(.top, 18)
-
-        if !self.show.genres.isEmpty {
-            ScrollView([.horizontal], showsIndicators: false) {
-                HStack {
-                    ForEach(self.show.genres, id: \.self) { genre in
-                        GenreChip(title: genre)
-                    }
-                }
-                .padding(.leading, 18)
-                .padding(.trailing, 18)
-                .padding(.top, 18)
-            }
-        }
 
         if horizontalSizeClass == .compact {
             if !self.show.descriptions.isEmpty {
@@ -274,7 +269,7 @@ struct ShowProperty: View {
     let value: String
 
     var body: some View {
-        VStack(alignment: .trailing) {
+        VStack(alignment: .leading) {
             Text(label)
                 .foregroundStyle(.secondary)
                 .font(.caption)
@@ -315,22 +310,6 @@ struct ShowDescription: View {
                 self.isExpanded.toggle()
             }
         }
-    }
-}
-
-struct GenreChip: View {
-    let title: String
-
-    var body: some View {
-        Group {
-            Text(title)
-                .padding(8)
-                .font(.caption)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .background(Color.gray.opacity(0.25))
-        .cornerRadius(8)
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
