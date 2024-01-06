@@ -113,6 +113,14 @@
 		EDA628FF2B4576BE0093F8E5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */,
+				EDE959392B4965DE0030B23D /* libavcodec.framework */,
+				EDE959372B4965DC0030B23D /* libavdevice.framework */,
+				EDE9593A2B4965DE0030B23D /* libavfilter.framework */,
+				EDE959362B4965DC0030B23D /* libavformat.framework */,
+				EDE959382B4965DC0030B23D /* libavutil.framework */,
+				EDE9593C2B4965DE0030B23D /* libswresample.framework */,
+				EDE9593D2B4965DE0030B23D /* libswscale.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -128,14 +136,6 @@
 		EDFF2D042B43471300F27E61 = {
 			isa = PBXGroup;
 			children = (
-				EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */,
-				EDE959392B4965DE0030B23D /* libavcodec.framework */,
-				EDE959372B4965DC0030B23D /* libavdevice.framework */,
-				EDE9593A2B4965DE0030B23D /* libavfilter.framework */,
-				EDE959362B4965DC0030B23D /* libavformat.framework */,
-				EDE959382B4965DC0030B23D /* libavutil.framework */,
-				EDE9593C2B4965DE0030B23D /* libswresample.framework */,
-				EDE9593D2B4965DE0030B23D /* libswscale.framework */,
 				EDA277052B457B2E003A97F0 /* README.md */,
 				EDFF2D0F2B43471300F27E61 /* ani365 */,
 				EDFF2D0E2B43471300F27E61 /* Products */,
@@ -434,7 +434,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ani365.ani365;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = auto;
+				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -482,7 +482,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ani365.ani365;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = auto;
+				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
