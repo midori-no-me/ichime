@@ -283,32 +283,39 @@ struct ShowProperty: View {
 struct ShowDescription: View {
     let description: Show.Description
 
-    @State private var isExpanded = false
+    @State private var showingSheet = false
 
     var body: some View {
         GroupBox(label: Text("Описание от \(self.description.source)")) {
             VStack(alignment: .leading) {
-                if isExpanded {
-                    Text(self.description.text)
-                        .lineLimit(nil)
-                        .truncationMode(.head)
-                        .font(.caption)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .textSelection(.enabled)
-                } else {
-                    Text(self.description.text)
-                        .lineLimit(5)
-                        .truncationMode(.tail)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
+                Text(self.description.text)
+                    .lineLimit(5)
+                    .truncationMode(.tail)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .onTapGesture {
+                        showingSheet.toggle()
+                    }
+                    .sheet(isPresented: $showingSheet) {
+                        NavigationView {
+                            VStack(alignment: .leading) {
+                                Text(self.description.text)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(18)
+
+                                Spacer()
+                            }
+                            .navigationBarTitle("Описание от \(self.description.source)", displayMode: .inline)
+                            .navigationBarItems(trailing: Button(action: {
+                                showingSheet.toggle()
+                            }) {
+                                Text("Закрыть")
+                            })
+                        }
+                    }
+
             }.padding(.top, 4)
-        }
-        .onTapGesture {
-            withAnimation {
-                self.isExpanded.toggle()
-            }
         }
     }
 }
