@@ -1,0 +1,513 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EDA629082B4576BE0093F8E5 /* libavfilter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629002B4576BE0093F8E5 /* libavfilter.xcframework */; };
+		EDA629092B4576BE0093F8E5 /* libavfilter.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629002B4576BE0093F8E5 /* libavfilter.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EDA6290A2B4576BE0093F8E5 /* libavformat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629012B4576BE0093F8E5 /* libavformat.xcframework */; };
+		EDA6290B2B4576BE0093F8E5 /* libavformat.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629012B4576BE0093F8E5 /* libavformat.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EDA6290C2B4576BE0093F8E5 /* libavutil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629022B4576BE0093F8E5 /* libavutil.xcframework */; };
+		EDA6290D2B4576BE0093F8E5 /* libavutil.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629022B4576BE0093F8E5 /* libavutil.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EDA6290E2B4576BE0093F8E5 /* libswresample.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629032B4576BE0093F8E5 /* libswresample.xcframework */; };
+		EDA6290F2B4576BE0093F8E5 /* libswresample.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629032B4576BE0093F8E5 /* libswresample.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EDA629102B4576BE0093F8E5 /* libavcodec.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629042B4576BE0093F8E5 /* libavcodec.xcframework */; };
+		EDA629112B4576BE0093F8E5 /* libavcodec.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629042B4576BE0093F8E5 /* libavcodec.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EDA629122B4576BE0093F8E5 /* libswscale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629052B4576BE0093F8E5 /* libswscale.xcframework */; };
+		EDA629132B4576BE0093F8E5 /* libswscale.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629052B4576BE0093F8E5 /* libswscale.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EDA629142B4576BE0093F8E5 /* ffmpegkit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629062B4576BE0093F8E5 /* ffmpegkit.xcframework */; };
+		EDA629152B4576BE0093F8E5 /* ffmpegkit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629062B4576BE0093F8E5 /* ffmpegkit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EDA629162B4576BE0093F8E5 /* libavdevice.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629072B4576BE0093F8E5 /* libavdevice.xcframework */; };
+		EDA629172B4576BE0093F8E5 /* libavdevice.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDA629072B4576BE0093F8E5 /* libavdevice.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EDE959292B4705D40030B23D /* SubtitlesConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959282B4705D40030B23D /* SubtitlesConverter.swift */; };
+		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
+		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
+		EDE959312B4762690030B23D /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959302B4762690030B23D /* OngoingsView.swift */; };
+		EDE959332B484C8A0030B23D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959322B484C8A0030B23D /* ContentView.swift */; };
+		EDE959352B484F7D0030B23D /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959342B484F7D0030B23D /* OverviewView.swift */; };
+		EDFF2D112B43471300F27E61 /* ani365App.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D102B43471300F27E61 /* ani365App.swift */; };
+		EDFF2D132B43471300F27E61 /* ContentViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D122B43471300F27E61 /* ContentViewOld.swift */; };
+		EDFF2D152B43471500F27E61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D142B43471500F27E61 /* Assets.xcassets */; };
+		EDFF2D192B43471500F27E61 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */; };
+		EDFF2D222B4371B400F27E61 /* ShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D212B4371B400F27E61 /* ShowCard.swift */; };
+		EDFF2D242B44384500F27E61 /* Anime365ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D232B44384500F27E61 /* Anime365ApiClient.swift */; };
+		EDFF2D282B44763700F27E61 /* ShowCategoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D272B44763700F27E61 /* ShowCategoryRow.swift */; };
+		EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D292B4476D300F27E61 /* Anime365Client.swift */; };
+		EDFF2D2C2B449A5500F27E61 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D2B2B449A5500F27E61 /* Episode.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EDA629182B4576BE0093F8E5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				EDA629092B4576BE0093F8E5 /* libavfilter.xcframework in Embed Frameworks */,
+				EDA629112B4576BE0093F8E5 /* libavcodec.xcframework in Embed Frameworks */,
+				EDA6290D2B4576BE0093F8E5 /* libavutil.xcframework in Embed Frameworks */,
+				EDA629152B4576BE0093F8E5 /* ffmpegkit.xcframework in Embed Frameworks */,
+				EDA629172B4576BE0093F8E5 /* libavdevice.xcframework in Embed Frameworks */,
+				EDA6290F2B4576BE0093F8E5 /* libswresample.xcframework in Embed Frameworks */,
+				EDA629132B4576BE0093F8E5 /* libswscale.xcframework in Embed Frameworks */,
+				EDA6290B2B4576BE0093F8E5 /* libavformat.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		EDA629002B4576BE0093F8E5 /* libavfilter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavfilter.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libavfilter.xcframework"; sourceTree = "<group>"; };
+		EDA629012B4576BE0093F8E5 /* libavformat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavformat.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libavformat.xcframework"; sourceTree = "<group>"; };
+		EDA629022B4576BE0093F8E5 /* libavutil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavutil.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libavutil.xcframework"; sourceTree = "<group>"; };
+		EDA629032B4576BE0093F8E5 /* libswresample.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libswresample.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libswresample.xcframework"; sourceTree = "<group>"; };
+		EDA629042B4576BE0093F8E5 /* libavcodec.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavcodec.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libavcodec.xcframework"; sourceTree = "<group>"; };
+		EDA629052B4576BE0093F8E5 /* libswscale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libswscale.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libswscale.xcframework"; sourceTree = "<group>"; };
+		EDA629062B4576BE0093F8E5 /* ffmpegkit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ffmpegkit.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/ffmpegkit.xcframework"; sourceTree = "<group>"; };
+		EDA629072B4576BE0093F8E5 /* libavdevice.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = libavdevice.xcframework; path = "../../../Downloads/ffmpeg-kit-full-gpl-6/libavdevice.xcframework"; sourceTree = "<group>"; };
+		EDE959282B4705D40030B23D /* SubtitlesConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitlesConverter.swift; sourceTree = "<group>"; };
+		EDE9592B2B47167B0030B23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchShowsView.swift; sourceTree = "<group>"; };
+		EDE9592E2B475E590030B23D /* ShowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowView.swift; sourceTree = "<group>"; };
+		EDE959302B4762690030B23D /* OngoingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingsView.swift; sourceTree = "<group>"; };
+		EDE959322B484C8A0030B23D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EDE959342B484F7D0030B23D /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
+		EDFF2D0D2B43471300F27E61 /* ani365.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ani365.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDFF2D102B43471300F27E61 /* ani365App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ani365App.swift; sourceTree = "<group>"; };
+		EDFF2D122B43471300F27E61 /* ContentViewOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewOld.swift; sourceTree = "<group>"; };
+		EDFF2D142B43471500F27E61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EDFF2D162B43471500F27E61 /* ani365.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ani365.entitlements; sourceTree = "<group>"; };
+		EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		EDFF2D212B4371B400F27E61 /* ShowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCard.swift; sourceTree = "<group>"; };
+		EDFF2D232B44384500F27E61 /* Anime365ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365ApiClient.swift; sourceTree = "<group>"; };
+		EDFF2D272B44763700F27E61 /* ShowCategoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCategoryRow.swift; sourceTree = "<group>"; };
+		EDFF2D292B4476D300F27E61 /* Anime365Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365Client.swift; sourceTree = "<group>"; };
+		EDFF2D2B2B449A5500F27E61 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EDFF2D0A2B43471300F27E61 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDA629082B4576BE0093F8E5 /* libavfilter.xcframework in Frameworks */,
+				EDA629102B4576BE0093F8E5 /* libavcodec.xcframework in Frameworks */,
+				EDA6290C2B4576BE0093F8E5 /* libavutil.xcframework in Frameworks */,
+				EDA629142B4576BE0093F8E5 /* ffmpegkit.xcframework in Frameworks */,
+				EDA629162B4576BE0093F8E5 /* libavdevice.xcframework in Frameworks */,
+				EDA6290E2B4576BE0093F8E5 /* libswresample.xcframework in Frameworks */,
+				EDA629122B4576BE0093F8E5 /* libswscale.xcframework in Frameworks */,
+				EDA6290A2B4576BE0093F8E5 /* libavformat.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EDA628FF2B4576BE0093F8E5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EDA629062B4576BE0093F8E5 /* ffmpegkit.xcframework */,
+				EDA629042B4576BE0093F8E5 /* libavcodec.xcframework */,
+				EDA629072B4576BE0093F8E5 /* libavdevice.xcframework */,
+				EDA629002B4576BE0093F8E5 /* libavfilter.xcframework */,
+				EDA629012B4576BE0093F8E5 /* libavformat.xcframework */,
+				EDA629022B4576BE0093F8E5 /* libavutil.xcframework */,
+				EDA629032B4576BE0093F8E5 /* libswresample.xcframework */,
+				EDA629052B4576BE0093F8E5 /* libswscale.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EDE9592A2B4705F20030B23D /* VideoPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				EDE959282B4705D40030B23D /* SubtitlesConverter.swift */,
+			);
+			path = VideoPlayer;
+			sourceTree = "<group>";
+		};
+		EDFF2D042B43471300F27E61 = {
+			isa = PBXGroup;
+			children = (
+				EDA277052B457B2E003A97F0 /* README.md */,
+				EDFF2D0F2B43471300F27E61 /* ani365 */,
+				EDFF2D0E2B43471300F27E61 /* Products */,
+				EDA628FF2B4576BE0093F8E5 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		EDFF2D0E2B43471300F27E61 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EDFF2D0D2B43471300F27E61 /* ani365.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EDFF2D0F2B43471300F27E61 /* ani365 */ = {
+			isa = PBXGroup;
+			children = (
+				EDFF2D162B43471500F27E61 /* ani365.entitlements */,
+				EDFF2D102B43471300F27E61 /* ani365App.swift */,
+				EDFF2D252B443D8100F27E61 /* Anime365 */,
+				EDFF2D142B43471500F27E61 /* Assets.xcassets */,
+				EDE959322B484C8A0030B23D /* ContentView.swift */,
+				EDFF2D122B43471300F27E61 /* ContentViewOld.swift */,
+				EDFF2D2B2B449A5500F27E61 /* Episode.swift */,
+				EDE9592B2B47167B0030B23D /* Info.plist */,
+				EDE959302B4762690030B23D /* OngoingsView.swift */,
+				EDE959342B484F7D0030B23D /* OverviewView.swift */,
+				EDFF2D172B43471500F27E61 /* Preview Content */,
+				EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */,
+				EDFF2D212B4371B400F27E61 /* ShowCard.swift */,
+				EDFF2D272B44763700F27E61 /* ShowCategoryRow.swift */,
+				EDE9592E2B475E590030B23D /* ShowView.swift */,
+				EDE9592A2B4705F20030B23D /* VideoPlayer */,
+			);
+			path = ani365;
+			sourceTree = "<group>";
+		};
+		EDFF2D172B43471500F27E61 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EDFF2D252B443D8100F27E61 /* Anime365 */ = {
+			isa = PBXGroup;
+			children = (
+				EDFF2D232B44384500F27E61 /* Anime365ApiClient.swift */,
+				EDFF2D292B4476D300F27E61 /* Anime365Client.swift */,
+			);
+			path = Anime365;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EDFF2D0C2B43471300F27E61 /* ani365 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDFF2D1C2B43471500F27E61 /* Build configuration list for PBXNativeTarget "ani365" */;
+			buildPhases = (
+				EDFF2D092B43471300F27E61 /* Sources */,
+				EDFF2D0A2B43471300F27E61 /* Frameworks */,
+				EDFF2D0B2B43471300F27E61 /* Resources */,
+				EDA629182B4576BE0093F8E5 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ani365;
+			productName = ani365;
+			productReference = EDFF2D0D2B43471300F27E61 /* ani365.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EDFF2D052B43471300F27E61 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1510;
+				LastUpgradeCheck = 1510;
+				TargetAttributes = {
+					EDFF2D0C2B43471300F27E61 = {
+						CreatedOnToolsVersion = 15.1;
+						LastSwiftMigration = 1510;
+					};
+				};
+			};
+			buildConfigurationList = EDFF2D082B43471300F27E61 /* Build configuration list for PBXProject "ani365" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EDFF2D042B43471300F27E61;
+			productRefGroup = EDFF2D0E2B43471300F27E61 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EDFF2D0C2B43471300F27E61 /* ani365 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EDFF2D0B2B43471300F27E61 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDFF2D192B43471500F27E61 /* Preview Assets.xcassets in Resources */,
+				EDFF2D152B43471500F27E61 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EDFF2D092B43471300F27E61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDE959292B4705D40030B23D /* SubtitlesConverter.swift in Sources */,
+				EDFF2D132B43471300F27E61 /* ContentViewOld.swift in Sources */,
+				EDE959332B484C8A0030B23D /* ContentView.swift in Sources */,
+				EDE959312B4762690030B23D /* OngoingsView.swift in Sources */,
+				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
+				EDFF2D2C2B449A5500F27E61 /* Episode.swift in Sources */,
+				EDFF2D282B44763700F27E61 /* ShowCategoryRow.swift in Sources */,
+				EDE9592F2B475E590030B23D /* ShowView.swift in Sources */,
+				EDFF2D222B4371B400F27E61 /* ShowCard.swift in Sources */,
+				EDFF2D112B43471300F27E61 /* ani365App.swift in Sources */,
+				EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */,
+				EDFF2D242B44384500F27E61 /* Anime365ApiClient.swift in Sources */,
+				EDE959352B484F7D0030B23D /* OverviewView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		EDFF2D1A2B43471500F27E61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EDFF2D1B2B43471500F27E61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		EDFF2D1D2B43471500F27E61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ani365/ani365.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ani365/Preview Content\"";
+				DEVELOPMENT_TEAM = SF77WTD7GX;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ani365/Info.plist;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ani365.ani365;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EDFF2D1E2B43471500F27E61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ani365/ani365.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ani365/Preview Content\"";
+				DEVELOPMENT_TEAM = SF77WTD7GX;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ani365/Info.plist;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ani365.ani365;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EDFF2D082B43471300F27E61 /* Build configuration list for PBXProject "ani365" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDFF2D1A2B43471500F27E61 /* Debug */,
+				EDFF2D1B2B43471500F27E61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDFF2D1C2B43471500F27E61 /* Build configuration list for PBXNativeTarget "ani365" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDFF2D1D2B43471500F27E61 /* Debug */,
+				EDFF2D1E2B43471500F27E61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EDFF2D052B43471300F27E61 /* Project object */;
+}
