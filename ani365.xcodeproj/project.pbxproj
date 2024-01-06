@@ -7,23 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		ED7136A52B496FD5007A8CDF /* ffmpegkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */; };
-		ED7136A62B496FD5007A8CDF /* ffmpegkit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ED7136A72B496FD7007A8CDF /* libavcodec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959392B4965DE0030B23D /* libavcodec.framework */; };
-		ED7136A82B496FD7007A8CDF /* libavcodec.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959392B4965DE0030B23D /* libavcodec.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ED7136A92B496FD8007A8CDF /* libavdevice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959372B4965DC0030B23D /* libavdevice.framework */; };
-		ED7136AA2B496FD8007A8CDF /* libavdevice.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959372B4965DC0030B23D /* libavdevice.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ED7136AB2B496FD9007A8CDF /* libavfilter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593A2B4965DE0030B23D /* libavfilter.framework */; };
-		ED7136AC2B496FD9007A8CDF /* libavfilter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593A2B4965DE0030B23D /* libavfilter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ED7136AD2B496FDA007A8CDF /* libavformat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959362B4965DC0030B23D /* libavformat.framework */; };
-		ED7136AE2B496FDA007A8CDF /* libavformat.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959362B4965DC0030B23D /* libavformat.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ED7136AF2B496FDC007A8CDF /* libavutil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959382B4965DC0030B23D /* libavutil.framework */; };
-		ED7136B02B496FDC007A8CDF /* libavutil.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE959382B4965DC0030B23D /* libavutil.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ED7136B12B496FDD007A8CDF /* libswresample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593C2B4965DE0030B23D /* libswresample.framework */; };
-		ED7136B22B496FDD007A8CDF /* libswresample.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593C2B4965DE0030B23D /* libswresample.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ED7136B32B496FDE007A8CDF /* libswscale.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593D2B4965DE0030B23D /* libswscale.framework */; };
-		ED7136B42B496FDE007A8CDF /* libswscale.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE9593D2B4965DE0030B23D /* libswscale.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		EDE959292B4705D40030B23D /* SubtitlesConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959282B4705D40030B23D /* SubtitlesConverter.swift */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
 		EDE959312B4762690030B23D /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959302B4762690030B23D /* OngoingsView.swift */; };
@@ -47,14 +30,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				ED7136A82B496FD7007A8CDF /* libavcodec.framework in Embed Frameworks */,
-				ED7136B42B496FDE007A8CDF /* libswscale.framework in Embed Frameworks */,
-				ED7136AE2B496FDA007A8CDF /* libavformat.framework in Embed Frameworks */,
-				ED7136AC2B496FD9007A8CDF /* libavfilter.framework in Embed Frameworks */,
-				ED7136AA2B496FD8007A8CDF /* libavdevice.framework in Embed Frameworks */,
-				ED7136B22B496FDD007A8CDF /* libswresample.framework in Embed Frameworks */,
-				ED7136A62B496FD5007A8CDF /* ffmpegkit.framework in Embed Frameworks */,
-				ED7136B02B496FDC007A8CDF /* libavutil.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,21 +38,12 @@
 
 /* Begin PBXFileReference section */
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		EDE959282B4705D40030B23D /* SubtitlesConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitlesConverter.swift; sourceTree = "<group>"; };
 		EDE9592B2B47167B0030B23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchShowsView.swift; sourceTree = "<group>"; };
 		EDE9592E2B475E590030B23D /* ShowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowView.swift; sourceTree = "<group>"; };
 		EDE959302B4762690030B23D /* OngoingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingsView.swift; sourceTree = "<group>"; };
 		EDE959322B484C8A0030B23D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EDE959342B484F7D0030B23D /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
-		EDE959362B4965DC0030B23D /* libavformat.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libavformat.framework; sourceTree = "<group>"; };
-		EDE959372B4965DC0030B23D /* libavdevice.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libavdevice.framework; sourceTree = "<group>"; };
-		EDE959382B4965DC0030B23D /* libavutil.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libavutil.framework; sourceTree = "<group>"; };
-		EDE959392B4965DE0030B23D /* libavcodec.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libavcodec.framework; sourceTree = "<group>"; };
-		EDE9593A2B4965DE0030B23D /* libavfilter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libavfilter.framework; sourceTree = "<group>"; };
-		EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ffmpegkit.framework; sourceTree = "<group>"; };
-		EDE9593C2B4965DE0030B23D /* libswresample.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libswresample.framework; sourceTree = "<group>"; };
-		EDE9593D2B4965DE0030B23D /* libswscale.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = libswscale.framework; sourceTree = "<group>"; };
 		EDFF2D0D2B43471300F27E61 /* ani365.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ani365.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDFF2D102B43471300F27E61 /* ani365App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ani365App.swift; sourceTree = "<group>"; };
 		EDFF2D122B43471300F27E61 /* ContentViewOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewOld.swift; sourceTree = "<group>"; };
@@ -96,14 +62,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED7136AD2B496FDA007A8CDF /* libavformat.framework in Frameworks */,
-				ED7136B32B496FDE007A8CDF /* libswscale.framework in Frameworks */,
-				ED7136A52B496FD5007A8CDF /* ffmpegkit.framework in Frameworks */,
-				ED7136AF2B496FDC007A8CDF /* libavutil.framework in Frameworks */,
-				ED7136A72B496FD7007A8CDF /* libavcodec.framework in Frameworks */,
-				ED7136B12B496FDD007A8CDF /* libswresample.framework in Frameworks */,
-				ED7136AB2B496FD9007A8CDF /* libavfilter.framework in Frameworks */,
-				ED7136A92B496FD8007A8CDF /* libavdevice.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,24 +71,8 @@
 		EDA628FF2B4576BE0093F8E5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EDE9593B2B4965DE0030B23D /* ffmpegkit.framework */,
-				EDE959392B4965DE0030B23D /* libavcodec.framework */,
-				EDE959372B4965DC0030B23D /* libavdevice.framework */,
-				EDE9593A2B4965DE0030B23D /* libavfilter.framework */,
-				EDE959362B4965DC0030B23D /* libavformat.framework */,
-				EDE959382B4965DC0030B23D /* libavutil.framework */,
-				EDE9593C2B4965DE0030B23D /* libswresample.framework */,
-				EDE9593D2B4965DE0030B23D /* libswscale.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		EDE9592A2B4705F20030B23D /* VideoPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				EDE959282B4705D40030B23D /* SubtitlesConverter.swift */,
-			);
-			path = VideoPlayer;
 			sourceTree = "<group>";
 		};
 		EDFF2D042B43471300F27E61 = {
@@ -169,7 +111,6 @@
 				EDFF2D212B4371B400F27E61 /* ShowCard.swift */,
 				EDFF2D272B44763700F27E61 /* ShowCategoryRow.swift */,
 				EDE9592E2B475E590030B23D /* ShowView.swift */,
-				EDE9592A2B4705F20030B23D /* VideoPlayer */,
 			);
 			path = ani365;
 			sourceTree = "<group>";
@@ -263,7 +204,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDE959292B4705D40030B23D /* SubtitlesConverter.swift in Sources */,
 				EDFF2D132B43471300F27E61 /* ContentViewOld.swift in Sources */,
 				EDE959332B484C8A0030B23D /* ContentView.swift in Sources */,
 				EDE959312B4762690030B23D /* OngoingsView.swift in Sources */,

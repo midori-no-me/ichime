@@ -7,10 +7,22 @@
 
 import SwiftUI
 
+struct EpisodeWrapper: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> Episode {
+        return Episode()
+    }
+
+    func updateUIViewController(_ uiViewController: Episode, context: Context) {
+        // Update the view controller if needed
+    }
+}
+
 struct ContentView: View {
     let overviewView = OverviewView()
     let ongoingsView = OngoingsView()
     let searchShowsView = SearchShowsView()
+
+    @State private var isEpisodeViewPresented = false
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
@@ -52,6 +64,15 @@ struct ContentView: View {
                         Text("....")
                     }
                     .navigationTitle("...")
+
+                    Button(action: {
+                        self.isEpisodeViewPresented = true
+                    }) {
+                        Text("Show Episode")
+                    }
+                    .sheet(isPresented: $isEpisodeViewPresented) {
+                        EpisodeWrapper() // Use the wrapper to present the UIKit view controller
+                    }
                 }
             }
         } else {
