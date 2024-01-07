@@ -159,7 +159,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				EDB21EA42B4AE3BD001282FE /* PBXTargetDependency */,
 			);
 			name = ani365;
 			packageProductDependencies = (
@@ -195,7 +194,6 @@
 			);
 			mainGroup = EDFF2D042B43471300F27E61;
 			packageReferences = (
-				EDB21E9B2B4ACE81001282FE /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			productRefGroup = EDFF2D0E2B43471300F27E61 /* Products */;
 			projectDirPath = "";
@@ -241,13 +239,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		EDB21EA42B4AE3BD001282FE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = EDB21EA32B4AE3BD001282FE /* SwiftLintPlugin */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		EDFF2D1A2B43471500F27E61 /* Debug */ = {
@@ -497,26 +488,10 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		EDB21E9B2B4ACE81001282FE /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/SwiftLint";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.54.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		C65940FA2B4AF0C000413062 /* Anime365Scraper */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Anime365Scraper;
-		};
-		EDB21EA32B4AE3BD001282FE /* SwiftLintPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EDB21E9B2B4ACE81001282FE /* XCRemoteSwiftPackageReference "SwiftLint" */;
-			productName = "plugin:SwiftLintPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
