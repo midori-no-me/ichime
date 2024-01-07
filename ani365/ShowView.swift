@@ -172,7 +172,7 @@ struct ShowDetails: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: geometry.size.width, height: geometry.size.height)
                                 .clipped()
-                                .shadow(radius: 12)
+                                .shadow(radius: 8)
 
                         case .failure:
                             VStack {
