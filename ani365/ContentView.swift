@@ -18,10 +18,6 @@ struct EpisodeWrapper: UIViewControllerRepresentable {
 }
 
 struct ContentView: View {
-    let overviewView = OverviewView()
-    let ongoingsView = OngoingsView()
-    let searchShowsView = SearchShowsView()
-
     @State private var isEpisodeViewPresented = false
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -30,15 +26,15 @@ struct ContentView: View {
         if horizontalSizeClass == .regular {
             NavigationSplitView {
                 List {
-                    NavigationLink(destination: searchShowsView) {
+                    NavigationLink(destination: SearchShowsView(), label: {
                         Label("Поиск", systemImage: "magnifyingglass")
-                    }
+                    })
 
-                    NavigationLink(destination: overviewView) {
+                    NavigationLink(destination: OverviewView()) {
                         Label("Обзор", systemImage: "rectangle.grid.2x2")
                     }
 
-                    NavigationLink(destination: ongoingsView) {
+                    NavigationLink(destination: OngoingsView()) {
                         Label("Онгоинги", systemImage: "film.stack")
                     }
 
@@ -79,21 +75,30 @@ struct ContentView: View {
                 }
             }
         } else {
+//                NavigationStack {
             TabView {
-                overviewView
-                    .tabItem {
-                        Label("Обзор", systemImage: "rectangle.grid.2x2")
-                    }
-                ongoingsView
-                    .tabItem {
-                        Label("Онгоинги", systemImage: "film.stack")
-                    }
-                searchShowsView
-                    .tabItem {
-                        Label("Поиск", systemImage: "magnifyingglass")
-                    }
+                NavigationView {
+                    OverviewView()
+                }
+                .tabItem {
+                    Label("Обзор", systemImage: "rectangle.grid.2x2")
+                }
+                NavigationView {
+                    OngoingsView()
+                }
+                .tabItem {
+                    Label("Онгоинги", systemImage: "film.stack")
+                }
+                NavigationView {
+                    SearchShowsView()
+                }
+                .tabItem {
+                    Label("Поиск", systemImage: "magnifyingglass")
+                }
             }
+//                }.navigationTitle("...")
         }
+//            .navigationTitle("...")
     }
 }
 

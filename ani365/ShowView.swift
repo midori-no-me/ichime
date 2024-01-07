@@ -47,7 +47,7 @@ struct ShowView: View {
     @State private var userListStatus: Anime365ListTypeMenu = .notInList
 
     var body: some View {
-        NavigationStack {
+        Group {
             if let show = self.show {
                 ScrollView([.vertical]) {
                     ShowDetails(show: show)
@@ -63,7 +63,6 @@ struct ShowView: View {
                 }
             }
         }
-
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {

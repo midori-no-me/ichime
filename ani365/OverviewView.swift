@@ -10,8 +10,8 @@ import SwiftUI
 struct OverviewView: View {
     var body: some View {
         NavigationStack {
-            ScrollView([.vertical]) {
-                Text("overview body")
+            VStack {
+                Text("overview view")
             }
             .navigationTitle("Обзор")
         }

@@ -11,10 +11,9 @@ struct OngoingsView: View {
     @State private var shows: [Show]?
     @State private var isLoading = true
     @State private var loadingError: Error?
-    @State private var userListStatus: Anime365ListTypeMenu = .notInList
 
     var body: some View {
-        NavigationStack {
+        Group {
             if let shows = self.shows {
                 ScrollView([.vertical]) {
                     OngoingsDetails(shows: shows)
@@ -85,48 +84,50 @@ struct OngoingsDetails: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .textSelection(.enabled)
 
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100), spacing: 12, alignment: .topLeading)], spacing: 18) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 110), spacing: 12, alignment: .topLeading)], spacing: 18) {
             ForEach(self.shows, id: \.self) { show in
-                VStack(alignment: .leading) {
-                    GeometryReader { geometry in
-                        AsyncImage(
-                            url: show.posterUrl!,
-                            transaction: .init(animation: .easeInOut),
-                            content: { phase in
-                                switch phase {
-                                case .empty:
-                                    VStack {
-                                        ProgressView()
-                                    }
-                                case .success(let image):
-                                    image.resizable()
-                                        .scaledToFill()
-                                        .clipped()
-                                        .shadow(radius: 4)
+                NavigationLink(destination: ShowView(showId: show.id, show: show)) {
+                    VStack(alignment: .leading) {
+                        GeometryReader { geometry in
+                            AsyncImage(
+                                url: show.posterUrl!,
+                                transaction: .init(animation: .easeInOut),
+                                content: { phase in
+                                    switch phase {
+                                    case .empty:
+                                        VStack {
+                                            ProgressView()
+                                        }
+                                    case .success(let image):
+                                        image.resizable()
+                                            .scaledToFill()
+                                            .clipped()
+                                            .shadow(radius: 4)
 
-                                case .failure:
-                                    VStack {
-                                        Image(systemName: "wifi.slash")
+                                    case .failure:
+                                        VStack {
+                                            Image(systemName: "wifi.slash")
+                                        }
+                                    @unknown default:
+                                        EmptyView()
                                     }
-                                @unknown default:
-                                    EmptyView()
                                 }
-                            }
-                        )
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .background(Color(UIColor.secondarySystemBackground))
-                        .cornerRadius(4)
+                            )
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .background(Color(UIColor.secondarySystemBackground))
+                            .cornerRadius(4)
+                        }
+
+                        Text(show.title.translated.japaneseRomaji ?? show.title.translated.english ?? show.title.translated.russian ?? show.title.full)
+                            .font(.caption)
+                            .lineLimit(2, reservesSpace: true)
+                            .truncationMode(.tail)
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
+
+                        Spacer()
                     }
-
-                    Text(show.title.translated.japaneseRomaji ?? show.title.translated.english ?? show.title.translated.russian ?? show.title.full)
-                        .font(.caption)
-                        .lineLimit(2, reservesSpace: true)
-                        .truncationMode(.tail)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-
-                    Spacer()
-                }
-                .frame(height: 200)
+                    .frame(height: 220)
+                }.buttonStyle(PlainButtonStyle())
             }
         }
         .scenePadding(.minimum, edges: .horizontal)
