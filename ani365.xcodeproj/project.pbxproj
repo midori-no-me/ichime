@@ -148,11 +148,11 @@
 				EDFF2D0A2B43471300F27E61 /* Frameworks */,
 				EDFF2D0B2B43471300F27E61 /* Resources */,
 				EDA629182B4576BE0093F8E5 /* Embed Frameworks */,
-				EDB21E9F2B4ACF9F001282FE /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				EDB21EA42B4AE3BD001282FE /* PBXTargetDependency */,
 			);
 			name = ani365;
 			productName = ani365;
@@ -208,27 +208,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		EDB21E9F2B4ACF9F001282FE /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint lint --fix --format && swiftlint lint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		EDFF2D092B43471300F27E61 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -251,6 +230,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EDB21EA42B4AE3BD001282FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = EDB21EA32B4AE3BD001282FE /* SwiftLintPlugin */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		EDFF2D1A2B43471500F27E61 /* Debug */ = {
@@ -510,6 +496,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EDB21EA32B4AE3BD001282FE /* SwiftLintPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EDB21E9B2B4ACE81001282FE /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = "plugin:SwiftLintPlugin";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EDFF2D052B43471300F27E61 /* Project object */;
 }
