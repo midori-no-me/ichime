@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C65940FB2B4AF0C000413062 /* Anime365Scraper in Frameworks */ = {isa = PBXBuildFile; productRef = C65940FA2B4AF0C000413062 /* Anime365Scraper */; };
+		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
 		ED5A80672B49DEA300D59815 /* SceneLoadingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C6D440D12B4AEA9D00A81421 /* Anime365Scraper */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365Scraper; sourceTree = "<group>"; };
 		ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLoadingErrorView.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				EDB21EA02B4AD268001282FE /* .swiftlint.yml */,
+				C68C6E1D2B4AFDD5008D796D /* .gitignore */,
 				EDFF2D0F2B43471300F27E61 /* ani365 */,
 				EDA628FF2B4576BE0093F8E5 /* Frameworks */,
 				EDFF2D0E2B43471300F27E61 /* Products */,
@@ -209,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDFF2D192B43471500F27E61 /* Preview Assets.xcassets in Resources */,
+				C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */,
 				EDFF2D152B43471500F27E61 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
