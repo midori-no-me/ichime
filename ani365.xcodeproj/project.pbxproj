@@ -76,6 +76,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ED74304C2B4B07EB009BCE3A /* Show */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Show;
+			sourceTree = "<group>";
+		};
 		EDA628FF2B4576BE0093F8E5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +114,7 @@
 		EDFF2D0F2B43471300F27E61 /* ani365 */ = {
 			isa = PBXGroup;
 			children = (
+				ED74304C2B4B07EB009BCE3A /* Show */,
 				EDFF2D162B43471500F27E61 /* ani365.entitlements */,
 				EDFF2D252B443D8100F27E61 /* Anime365 */,
 				EDFF2D102B43471300F27E61 /* Anime365App.swift */,

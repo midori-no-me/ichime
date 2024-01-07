@@ -350,7 +350,7 @@ struct EpisodePreviewBox: View {
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .background(Color(UIColor.systemGray6))
+        .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(8)
     }
 }

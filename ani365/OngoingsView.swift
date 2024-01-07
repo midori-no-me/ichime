@@ -8,44 +8,35 @@
 import SwiftUI
 
 struct OngoingsView: View {
-    @State private var shows: [Show] = []
+    @State private var shows: [Show]?
     @State private var isLoading = true
-    @State private var isErrorLoading = false
+    @State private var loadingError: Error?
+    @State private var userListStatus: Anime365ListTypeMenu = .notInList
 
     var body: some View {
         NavigationStack {
-            ScrollView([.vertical]) {
-                VStack(alignment: .leading) {
-                    Text("Сериалы, новые серии которых продолжают выходить")
-                        .font(.subheadline)
-                        .padding(.leading, 22)
-                        .padding(.trailing, 22)
-                        .foregroundStyle(.secondary)
-
-                    if self.isLoading {
-                        VStack {
-                            ProgressView()
-                        }
-                    }
-
-                    if self.isErrorLoading {
-                        Text("Ошибка при загрузке")
-                    }
-
-                    if !self.shows.isEmpty {
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 10, alignment: .topLeading)]) {
-                            ForEach(self.shows, id: \.self) { show in
-                                NavigationLink(destination: ShowView(showId: show.id, show: show)) {
-                                    ShowCard(show: show)
-                                        .frame(width: 150)
-                                }
-                            }
-                        }.padding(22)
-                    }
+            if let shows = self.shows {
+                ScrollView([.vertical]) {
+                    OngoingsDetails(shows: shows)
+                }
+            } else {
+                if self.isLoading {
+                    ProgressView()
+                } else if self.loadingError != nil {
+                    SceneLoadingErrorView(
+                        loadingError: self.loadingError!,
+                        reload: { await self.fetchOngoings(forceRefresh: true) }
+                    )
                 }
             }
         }
+        .navigationTitle("Онгоинги")
+        .navigationBarTitleDisplayMode(.large)
         .onAppear {
+            if self.shows != nil {
+                return
+            }
+
             Task {
                 await self.fetchOngoings()
             }
@@ -53,11 +44,10 @@ struct OngoingsView: View {
         .refreshable {
             await self.fetchOngoings(forceRefresh: true)
         }
-        .navigationTitle("Онгоинги")
     }
 
     private func fetchOngoings(forceRefresh: Bool = false) async {
-        if !forceRefresh && !self.isLoading {
+        if !forceRefresh && !isLoading {
             return
         }
 
@@ -76,12 +66,71 @@ struct OngoingsView: View {
             }
         } catch {
             DispatchQueue.main.async {
-                self.shows = []
-                self.isErrorLoading = true
+                self.loadingError = error
             }
         }
 
-        self.isLoading = false
+        isLoading = false
+    }
+}
+
+struct OngoingsDetails: View {
+    let shows: [Show]
+
+    var body: some View {
+        Text("Сериалы, у которых продолжают выходить новые серии")
+            .font(.title3)
+            .scenePadding(.horizontal)
+            .foregroundColor(.secondary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .textSelection(.enabled)
+
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100), spacing: 12, alignment: .topLeading)], spacing: 18) {
+            ForEach(self.shows, id: \.self) { show in
+                VStack(alignment: .leading) {
+                    GeometryReader { geometry in
+                        AsyncImage(
+                            url: show.posterUrl!,
+                            transaction: .init(animation: .easeInOut),
+                            content: { phase in
+                                switch phase {
+                                case .empty:
+                                    VStack {
+                                        ProgressView()
+                                    }
+                                case .success(let image):
+                                    image.resizable()
+                                        .scaledToFill()
+                                        .clipped()
+                                        .shadow(radius: 4)
+
+                                case .failure:
+                                    VStack {
+                                        Image(systemName: "wifi.slash")
+                                    }
+                                @unknown default:
+                                    EmptyView()
+                                }
+                            }
+                        )
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .background(Color(UIColor.secondarySystemBackground))
+                        .cornerRadius(4)
+                    }
+
+                    Text(show.title.translated.japaneseRomaji ?? show.title.translated.english ?? show.title.translated.russian ?? show.title.full)
+                        .font(.caption)
+                        .lineLimit(2, reservesSpace: true)
+                        .truncationMode(.tail)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+
+                    Spacer()
+                }
+                .frame(height: 200)
+            }
+        }
+        .scenePadding(.minimum, edges: .horizontal)
+        .padding(.top, 18)
     }
 }
 
