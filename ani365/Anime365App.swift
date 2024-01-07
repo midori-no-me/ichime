@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct ani365App: App {
+struct Anime365App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

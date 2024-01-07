@@ -8,9 +8,9 @@
 import Foundation
 
 enum Anime365ApiClientError: Error {
+    case invalidData
     case invalidURL
     case requestFailed
-    case invalidData
 }
 
 struct Anime365ApiResponse<T: Decodable>: Decodable {

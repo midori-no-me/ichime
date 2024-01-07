@@ -13,7 +13,7 @@
 		EDE959312B4762690030B23D /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959302B4762690030B23D /* OngoingsView.swift */; };
 		EDE959332B484C8A0030B23D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959322B484C8A0030B23D /* ContentView.swift */; };
 		EDE959352B484F7D0030B23D /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959342B484F7D0030B23D /* OverviewView.swift */; };
-		EDFF2D112B43471300F27E61 /* ani365App.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D102B43471300F27E61 /* ani365App.swift */; };
+		EDFF2D112B43471300F27E61 /* Anime365App.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D102B43471300F27E61 /* Anime365App.swift */; };
 		EDFF2D132B43471300F27E61 /* ContentViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D122B43471300F27E61 /* ContentViewOld.swift */; };
 		EDFF2D152B43471500F27E61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D142B43471500F27E61 /* Assets.xcassets */; };
 		EDFF2D192B43471500F27E61 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */; };
@@ -40,6 +40,7 @@
 /* Begin PBXFileReference section */
 		ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLoadingErrorView.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		EDE9592B2B47167B0030B23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchShowsView.swift; sourceTree = "<group>"; };
 		EDE9592E2B475E590030B23D /* ShowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowView.swift; sourceTree = "<group>"; };
@@ -47,7 +48,7 @@
 		EDE959322B484C8A0030B23D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EDE959342B484F7D0030B23D /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
 		EDFF2D0D2B43471300F27E61 /* ani365.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ani365.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		EDFF2D102B43471300F27E61 /* ani365App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ani365App.swift; sourceTree = "<group>"; };
+		EDFF2D102B43471300F27E61 /* Anime365App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365App.swift; sourceTree = "<group>"; };
 		EDFF2D122B43471300F27E61 /* ContentViewOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewOld.swift; sourceTree = "<group>"; };
 		EDFF2D142B43471500F27E61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDFF2D162B43471500F27E61 /* ani365.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ani365.entitlements; sourceTree = "<group>"; };
@@ -80,10 +81,11 @@
 		EDFF2D042B43471300F27E61 = {
 			isa = PBXGroup;
 			children = (
-				EDA277052B457B2E003A97F0 /* README.md */,
+				EDB21EA02B4AD268001282FE /* .swiftlint.yml */,
 				EDFF2D0F2B43471300F27E61 /* ani365 */,
-				EDFF2D0E2B43471300F27E61 /* Products */,
 				EDA628FF2B4576BE0093F8E5 /* Frameworks */,
+				EDFF2D0E2B43471300F27E61 /* Products */,
+				EDA277052B457B2E003A97F0 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,8 +101,8 @@
 			isa = PBXGroup;
 			children = (
 				EDFF2D162B43471500F27E61 /* ani365.entitlements */,
-				EDFF2D102B43471300F27E61 /* ani365App.swift */,
 				EDFF2D252B443D8100F27E61 /* Anime365 */,
+				EDFF2D102B43471300F27E61 /* Anime365App.swift */,
 				EDFF2D142B43471500F27E61 /* Assets.xcassets */,
 				EDE959322B484C8A0030B23D /* ContentView.swift */,
 				EDFF2D122B43471300F27E61 /* ContentViewOld.swift */,
@@ -109,10 +111,10 @@
 				EDE959302B4762690030B23D /* OngoingsView.swift */,
 				EDE959342B484F7D0030B23D /* OverviewView.swift */,
 				EDFF2D172B43471500F27E61 /* Preview Content */,
+				ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */,
 				EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */,
 				EDFF2D212B4371B400F27E61 /* ShowCard.swift */,
 				EDFF2D272B44763700F27E61 /* ShowCategoryRow.swift */,
-				ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */,
 				EDE9592E2B475E590030B23D /* ShowView.swift */,
 			);
 			path = ani365;
@@ -146,6 +148,7 @@
 				EDFF2D0A2B43471300F27E61 /* Frameworks */,
 				EDFF2D0B2B43471300F27E61 /* Resources */,
 				EDA629182B4576BE0093F8E5 /* Embed Frameworks */,
+				EDB21E9F2B4ACF9F001282FE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -181,6 +184,9 @@
 				Base,
 			);
 			mainGroup = EDFF2D042B43471300F27E61;
+			packageReferences = (
+				EDB21E9B2B4ACE81001282FE /* XCRemoteSwiftPackageReference "SwiftLint" */,
+			);
 			productRefGroup = EDFF2D0E2B43471300F27E61 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -202,6 +208,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		EDB21E9F2B4ACF9F001282FE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint lint --fix --format && swiftlint lint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		EDFF2D092B43471300F27E61 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -216,7 +243,7 @@
 				ED5A80672B49DEA300D59815 /* SceneLoadingErrorView.swift in Sources */,
 				EDE9592F2B475E590030B23D /* ShowView.swift in Sources */,
 				EDFF2D222B4371B400F27E61 /* ShowCard.swift in Sources */,
-				EDFF2D112B43471300F27E61 /* ani365App.swift in Sources */,
+				EDFF2D112B43471300F27E61 /* Anime365App.swift in Sources */,
 				EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */,
 				EDFF2D242B44384500F27E61 /* Anime365ApiClient.swift in Sources */,
 				EDE959352B484F7D0030B23D /* OverviewView.swift in Sources */,
@@ -354,6 +381,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ani365/Preview Content\"";
 				DEVELOPMENT_TEAM = YBBAN7R28K;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -408,6 +436,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ani365/Preview Content\"";
 				DEVELOPMENT_TEAM = YBBAN7R28K;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -470,6 +499,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EDB21E9B2B4ACE81001282FE /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.54.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = EDFF2D052B43471300F27E61 /* Project object */;
 }

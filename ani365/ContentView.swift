@@ -65,11 +65,14 @@ struct ContentView: View {
                     }
                     .navigationTitle("...")
 
-                    Button(action: {
-                        self.isEpisodeViewPresented = true
-                    }) {
-                        Text("Show Episode")
-                    }
+                    Button(
+                        action: {
+                            self.isEpisodeViewPresented = true
+                        },
+                        label: {
+                            Text("Show Episode")
+                        }
+                    )
                     .sheet(isPresented: $isEpisodeViewPresented) {
                         EpisodeWrapper() // Use the wrapper to present the UIKit view controller
                     }

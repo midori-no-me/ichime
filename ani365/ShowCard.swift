@@ -10,26 +10,26 @@ struct ShowCard: View {
                 transaction: .init(animation: .easeInOut)
             ) { phase in
                 switch phase {
-                    case .empty:
-                        ProgressView()
-                    case .success(let image):
-                        image.resizable()
-                            .resizable()
-                            .scaledToFit() // not .scaledToFill
-                            .clipped()
-                    case .failure:
-                        VStack {
-                            Image(systemName: "wifi.slash")
-                        }.scaledToFit()
+                case .empty:
+                    ProgressView()
+                case .success(let image):
+                    image.resizable()
+                        .resizable()
+                        .scaledToFit() // not .scaledToFill
+                        .clipped()
+                case .failure:
+                    VStack {
+                        Image(systemName: "wifi.slash")
+                    }.scaledToFit()
 
-                    @unknown default:
-                        EmptyView()
+                @unknown default:
+                    EmptyView()
                 }
             }
             .shadow(color: Color.primary.opacity(0.3), radius: 1)
             .background(Color.gray.opacity(0.2))
             .cornerRadius(10)
-//            .fixedSize(horizontal: false, vertical: true)
+            //            .fixedSize(horizontal: false, vertical: true)
 
             Text(show.title.translated.japaneseRomaji ?? show.title.full)
                 .font(.body)
@@ -41,7 +41,7 @@ struct ShowCard: View {
     }
 }
 
-//#Preview {
+// #Preview {
 //    VStack {
 //        ShowCard(
 //            show: Show(
@@ -61,4 +61,4 @@ struct ShowCard: View {
 //        )
 //    }.frame(width: 400)
 //        .border(Color.red)
-//}
+// }

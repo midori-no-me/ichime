@@ -43,7 +43,7 @@ struct Show: Hashable, Identifiable {
             episodePreviews: series.episodes.map { episode in
                 Show.EpisodePreview(
                     id: episode.id,
-                    title: episode.episodeTitle == "" ? nil : episode.episodeTitle,
+                    title: episode.episodeTitle.isEmpty ? nil : episode.episodeTitle,
                     typeAndNumber: episode.episodeFull,
                     uploadDate: stringToDate(string: episode.firstUploadedDateTime)!
                 )

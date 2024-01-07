@@ -8,12 +8,12 @@
 import SwiftUI
 
 enum Anime365ListTypeMenu: String, CaseIterable {
+    case completed
+    case dropped
     case notInList
+    case onHold
     case planned
     case watching
-    case completed
-    case onHold
-    case dropped
 
     var imageInDropdown: String {
         switch self {
@@ -41,9 +41,9 @@ enum Anime365ListTypeMenu: String, CaseIterable {
 struct ShowView: View {
     let showId: Int
 
-    @State public var show: Show? = nil
+    @State public var show: Show?
     @State private var isLoading = true
-    @State private var loadingError: Error? = nil
+    @State private var loadingError: Error?
     @State private var userListStatus: Anime365ListTypeMenu = .notInList
 
     var body: some View {
@@ -71,11 +71,16 @@ struct ShowView: View {
 
                     Section("Hi") {
                         Picker(selection: self.$userListStatus, label: Text("Управление списком")) {
-                            Label("Запланировано", systemImage: Anime365ListTypeMenu.planned.imageInDropdown).tag(Anime365ListTypeMenu.planned)
-                            Label("Смотрю", systemImage: Anime365ListTypeMenu.watching.imageInDropdown).tag(Anime365ListTypeMenu.watching)
-                            Label("Просмотрено", systemImage: Anime365ListTypeMenu.completed.imageInDropdown).tag(Anime365ListTypeMenu.completed)
-                            Label("Отложено", systemImage: Anime365ListTypeMenu.onHold.imageInDropdown).tag(Anime365ListTypeMenu.onHold)
-                            Label("Брошено", systemImage: Anime365ListTypeMenu.dropped.imageInDropdown).tag(Anime365ListTypeMenu.dropped)
+                            Label("Запланировано", systemImage: Anime365ListTypeMenu.planned.imageInDropdown)
+                                .tag(Anime365ListTypeMenu.planned)
+                            Label("Смотрю", systemImage: Anime365ListTypeMenu.watching.imageInDropdown)
+                                .tag(Anime365ListTypeMenu.watching)
+                            Label("Просмотрено", systemImage: Anime365ListTypeMenu.completed.imageInDropdown)
+                                .tag(Anime365ListTypeMenu.completed)
+                            Label("Отложено", systemImage: Anime365ListTypeMenu.onHold.imageInDropdown)
+                                .tag(Anime365ListTypeMenu.onHold)
+                            Label("Брошено", systemImage: Anime365ListTypeMenu.dropped.imageInDropdown)
+                                .tag(Anime365ListTypeMenu.dropped)
                         }
                     }
 
@@ -92,11 +97,11 @@ struct ShowView: View {
                 }
             }
 
-//            ToolbarItem(placement: .navigationBarTrailing) {
-//                ShareLink(item: show?.websiteUrl) {
-//                    Label("Поделиться", systemImage: "square.and.arrow.up")
-//                }
-//            }
+            //            ToolbarItem(placement: .navigationBarTrailing) {
+            //                ShareLink(item: show?.websiteUrl) {
+            //                    Label("Поделиться", systemImage: "square.and.arrow.up")
+            //                }
+            //            }
         }
         .navigationTitle((self.show?.title.translated.japaneseRomaji ?? self.show?.title.full) ?? "")
         .navigationBarTitleDisplayMode(.large)
@@ -189,7 +194,10 @@ struct ShowDetails: View {
 
             let gridColumns = horizontalSizeClass == .compact
                 ? [GridItem(.flexible(), spacing: 18, alignment: .topLeading)]
-                : [GridItem(.flexible(), spacing: 18, alignment: .topLeading), GridItem(.flexible(), spacing: 18, alignment: .topLeading)]
+                : [
+                    GridItem(.flexible(), spacing: 18, alignment: .topLeading),
+                    GridItem(.flexible(), spacing: 18, alignment: .topLeading)
+                ]
 
             VStack(alignment: .trailing, spacing: 18) {
                 LazyVGrid(columns: gridColumns, spacing: 18) {
@@ -205,7 +213,8 @@ struct ShowDetails: View {
 
                     ShowProperty(
                         label: "Количество эпизодов",
-                        value: (show.numberOfEpisodes != nil ? String(show.numberOfEpisodes!) : "???") + (self.show.isOngoing ? " — онгоинг" : "")
+                        value: (show.numberOfEpisodes != nil ? String(show.numberOfEpisodes!) : "???")
+                            + (self.show.isOngoing ? " — онгоинг" : "")
                     )
 
                     ShowProperty(
@@ -311,11 +320,16 @@ struct ShowDescription: View {
                                 Spacer()
                             }
                             .navigationBarTitle("Описание от \(self.description.source)", displayMode: .inline)
-                            .navigationBarItems(trailing: Button(action: {
-                                showingSheet.toggle()
-                            }) {
-                                Text("Закрыть")
-                            })
+                            .navigationBarItems(
+                                trailing: Button(
+                                    action: {
+                                        showingSheet.toggle()
+                                    },
+                                    label: {
+                                        Text("Закрыть")
+                                    }
+                                )
+                            )
                         }
                     }
 

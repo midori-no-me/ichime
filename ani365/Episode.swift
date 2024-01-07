@@ -3,10 +3,8 @@ import Foundation
 import UIKit
 
 class Episode: UIViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
+    let videoUrl = "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.mp4"
+    let subtitleUrl = "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.vtt"
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -15,25 +13,46 @@ class Episode: UIViewController {
     }
 
     private func playVideo() {
-        var videoAsset = AVAsset(url: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.mp4")!)
-        let subtitleAsset = AVAsset(url: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.vtt")!) // Replace with the actual URL of your subtitles file
+        let videoAsset = AVAsset(url: URL(string: videoUrl)!)
+        let subtitleAsset = AVAsset(url: URL(string: subtitleUrl)!)
 
         let composition = AVMutableComposition()
-        let videoTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)
-        let audioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
+        let videoTrack = composition.addMutableTrack(
+            withMediaType: .video,
+            preferredTrackID: kCMPersistentTrackID_Invalid
+        )
+        let audioTrack = composition.addMutableTrack(
+            withMediaType: .audio,
+            preferredTrackID: kCMPersistentTrackID_Invalid
+        )
 
         do {
-            try videoTrack?.insertTimeRange(CMTimeRangeMake(start: .zero, duration: videoAsset.duration), of: videoAsset.tracks(withMediaType: .video)[0], at: .zero)
-            try audioTrack?.insertTimeRange(CMTimeRangeMake(start: .zero, duration: videoAsset.duration), of: videoAsset.tracks(withMediaType: .audio)[0], at: .zero)
+            try videoTrack?.insertTimeRange(
+                CMTimeRangeMake(start: .zero, duration: videoAsset.duration),
+                of: videoAsset.tracks(withMediaType: .video)[0],
+                at: .zero
+            )
+            try audioTrack?.insertTimeRange(
+                CMTimeRangeMake(start: .zero, duration: videoAsset.duration),
+                of: videoAsset.tracks(withMediaType: .audio)[0],
+                at: .zero
+            )
         } catch {
             print("Error inserting tracks: \(error)")
             return
         }
 
-        let subtitleTrack = composition.addMutableTrack(withMediaType: .text, preferredTrackID: kCMPersistentTrackID_Invalid)
+        let subtitleTrack = composition.addMutableTrack(
+            withMediaType: .text,
+            preferredTrackID: kCMPersistentTrackID_Invalid
+        )
 
         do {
-            try subtitleTrack?.insertTimeRange(CMTimeRangeMake(start: .zero, duration: subtitleAsset.duration), of: subtitleAsset.tracks(withMediaType: .text)[0], at: .zero)
+            try subtitleTrack?.insertTimeRange(
+                CMTimeRangeMake(start: .zero, duration: subtitleAsset.duration),
+                of: subtitleAsset.tracks(withMediaType: .text)[0],
+                at: .zero
+            )
         } catch {
             print("Error inserting subtitle track: \(error)")
             return
