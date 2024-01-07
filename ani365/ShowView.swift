@@ -151,8 +151,7 @@ struct ShowDetails: View {
         if let russianTitle = show.title.translated.russian {
             Text(russianTitle)
                 .font(.title3)
-                .padding(.leading, 18)
-                .padding(.trailing, 18)
+                .scenePadding(.horizontal)
                 .foregroundColor(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .textSelection(.enabled)
@@ -171,9 +170,9 @@ struct ShowDetails: View {
                             image.resizable()
                                 .cornerRadius(4)
                                 .aspectRatio(contentMode: .fit)
-//                                .frame(width: geometry.size.width, height: geometry.size.height, alignment: .topLeading)
                                 .frame(width: geometry.size.width, height: geometry.size.height)
                                 .clipped()
+                                .shadow(radius: 12)
 
                         case .failure:
                             VStack {
@@ -235,8 +234,7 @@ struct ShowDetails: View {
             }
             .frame(width: .infinity)
         }
-        .padding(.leading, 18)
-        .padding(.trailing, 18)
+        .scenePadding(.minimum, edges: .horizontal)
         .padding(.top, 18)
 
         if horizontalSizeClass == .compact {
@@ -246,8 +244,7 @@ struct ShowDetails: View {
                         ShowDescription(description: description)
                     }
                 }
-                .padding(.leading, 18)
-                .padding(.trailing, 18)
+                .scenePadding(.minimum, edges: .horizontal)
                 .padding(.top, 18)
             }
         }
@@ -255,11 +252,10 @@ struct ShowDetails: View {
         Text("Серии")
             .font(.title2)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.leading, 18)
-            .padding(.trailing, 18)
+            .scenePadding(.minimum, edges: .horizontal)
             .padding(.top, 18)
 
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 8) {
             ForEach(self.show.episodePreviews, id: \.self) { episodePreview in
                 EpisodePreviewBox(
                     title: episodePreview.title,
@@ -268,8 +264,7 @@ struct ShowDetails: View {
                 )
             }
         }
-        .padding(.leading, 18)
-        .padding(.trailing, 18)
+        .scenePadding(.minimum, edges: .horizontal)
     }
 }
 
