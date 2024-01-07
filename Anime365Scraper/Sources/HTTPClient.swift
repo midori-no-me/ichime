@@ -45,7 +45,8 @@ extension Anime365Scraper.API {
             request.allHTTPHeaderFields = headers
             request.timeoutInterval = 10
 
-            let (data, response) = try await URLSession.shared.data(from: request)
+            
+            let (data, response) = try await URLSession.shared.data(for: request)
 
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw APIError.emptyResponse
