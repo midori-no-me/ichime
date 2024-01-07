@@ -107,7 +107,7 @@ public extension Anime365Scraper.Types {
 
     enum UserListCategoryType: String {
         case watching = "Смотрю"
-        case watched = "Просмотрено"
+        case completed = "Просмотрено"
         case onHold = "Отложено"
         case dropped = "Брошено"
         case planned = "Запланировано"

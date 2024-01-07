@@ -4,7 +4,6 @@
 //
 //  Created by Nikita Nafranets on 07.01.2024.
 //
-import Alamofire
 import Foundation
 
 extension Anime365Scraper.API {
