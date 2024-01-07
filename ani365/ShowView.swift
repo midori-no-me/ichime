@@ -99,6 +99,7 @@ struct ShowView: View {
 //            }
         }
         .navigationTitle((self.show?.title.translated.japaneseRomaji ?? self.show?.title.full) ?? "")
+        .navigationBarTitleDisplayMode(.large)
         .onAppear {
             if self.show != nil {
                 return
@@ -340,7 +341,7 @@ struct EpisodePreviewBox: View {
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .background(Color.gray.opacity(0.25))
+        .background(Color(UIColor.systemGray6))
         .cornerRadius(8)
     }
 }
