@@ -76,7 +76,6 @@ struct ShowCardWithLink: View {
                 }
         }
         .contentShape(Rectangle()) // чтобы хитбокс у ссылки был такой же как и карточка, без этого он может быть больше
-        .border(Color.red)
         .buttonStyle(PlainButtonStyle())
     }
 }
