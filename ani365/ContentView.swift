@@ -75,30 +75,27 @@ struct ContentView: View {
                 }
             }
         } else {
-//                NavigationStack {
             TabView {
-                NavigationView {
+                NavigationStack {
                     OverviewView()
                 }
                 .tabItem {
                     Label("Обзор", systemImage: "rectangle.grid.2x2")
                 }
-                NavigationView {
+                NavigationStack {
                     OngoingsView()
                 }
                 .tabItem {
                     Label("Онгоинги", systemImage: "film.stack")
                 }
-                NavigationView {
+                NavigationStack {
                     SearchShowsView()
                 }
                 .tabItem {
                     Label("Поиск", systemImage: "magnifyingglass")
                 }
             }
-//                }.navigationTitle("...")
         }
-//            .navigationTitle("...")
     }
 }
 

@@ -12,11 +12,20 @@ struct OngoingsView: View {
     @State private var isLoading = true
     @State private var loadingError: Error?
 
+    /// Изменение этой переменной форсит ререндер сетки карточек.
+    @State private var uuidThatForcesCardsGridRerender: UUID = .init()
+
+    @State private var currentPage = 1
+
     var body: some View {
         Group {
             if let shows = self.shows {
                 ScrollView([.vertical]) {
-                    OngoingsDetails(shows: shows)
+                    OngoingsDetails(
+                        shows: shows,
+                        uuidThatForcesCardsGridRerender: self.uuidThatForcesCardsGridRerender,
+                        loadMore: { await self.fetchOngoings(page: self.currentPage + 1) }
+                    )
                 }
             } else {
                 if self.isLoading {
@@ -24,7 +33,7 @@ struct OngoingsView: View {
                 } else if self.loadingError != nil {
                     SceneLoadingErrorView(
                         loadingError: self.loadingError!,
-                        reload: { await self.fetchOngoings(forceRefresh: true) }
+                        reload: { await self.fetchOngoings(page: 1) }
                     )
                 }
             }
@@ -37,19 +46,17 @@ struct OngoingsView: View {
             }
 
             Task {
-                await self.fetchOngoings()
+                await self.fetchOngoings(page: 1)
             }
         }
         .refreshable {
-            await self.fetchOngoings(forceRefresh: true)
+            await self.fetchOngoings(page: 1)
         }
     }
 
-    private func fetchOngoings(forceRefresh: Bool = false) async {
-        if !forceRefresh && !isLoading {
-            return
-        }
-
+    private func fetchOngoings(
+        page: Int
+    ) async {
         let anime365Client = Anime365Client(
             apiClient: Anime365ApiClient(
                 baseURL: "https://anime365.ru/api",
@@ -58,10 +65,26 @@ struct OngoingsView: View {
         )
 
         do {
-            let shows = try await anime365Client.getOngoings()
+            let shows = try await anime365Client.getOngoings(
+                page: page,
+                limit: 20
+            )
 
             DispatchQueue.main.async {
-                self.shows = shows
+                if self.shows == nil {
+                    self.shows = []
+                }
+
+                /// Если запрашивают страницу, номер которой меньше или равен текущей странице в стейте,
+                /// то загружаем все сериалы с начала и заставляем все карточки перерендериться (через `self.uuidThatForcesCardsGridRerender`),
+                /// чтобы у них сбросился `View.onAppear()`, без которого не будет работать lazy loading.
+                if page <= self.currentPage {
+                    self.shows = []
+                    self.uuidThatForcesCardsGridRerender = UUID()
+                }
+
+                self.shows! += shows
+                self.currentPage = page
             }
         } catch {
             DispatchQueue.main.async {
@@ -69,68 +92,39 @@ struct OngoingsView: View {
             }
         }
 
-        isLoading = false
+        self.isLoading = false
     }
 }
 
 struct OngoingsDetails: View {
     let shows: [Show]
+    let uuidThatForcesCardsGridRerender: UUID
+    let loadMore: () async -> ()
 
     var body: some View {
         Text("Сериалы, у которых продолжают выходить новые серии")
             .font(.title3)
-            .scenePadding(.horizontal)
+            .padding(.horizontal)
             .foregroundColor(.secondary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .textSelection(.enabled)
 
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 110), spacing: 12, alignment: .topLeading)], spacing: 18) {
-            ForEach(self.shows, id: \.self) { show in
-                NavigationLink(destination: ShowView(showId: show.id, show: show)) {
-                    VStack(alignment: .leading) {
-                        GeometryReader { geometry in
-                            AsyncImage(
-                                url: show.posterUrl!,
-                                transaction: .init(animation: .easeInOut),
-                                content: { phase in
-                                    switch phase {
-                                    case .empty:
-                                        VStack {
-                                            ProgressView()
-                                        }
-                                    case .success(let image):
-                                        image.resizable()
-                                            .scaledToFill()
-                                            .clipped()
-                                            .shadow(radius: 4)
-
-                                    case .failure:
-                                        VStack {
-                                            Image(systemName: "wifi.slash")
-                                        }
-                                    @unknown default:
-                                        EmptyView()
-                                    }
-                                }
-                            )
-                            .frame(width: geometry.size.width, height: geometry.size.height)
-                            .background(Color(UIColor.secondarySystemBackground))
-                            .cornerRadius(4)
-                        }
-
-                        Text(show.title.translated.japaneseRomaji ?? show.title.translated.english ?? show.title.translated.russian ?? show.title.full)
-                            .font(.caption)
-                            .lineLimit(2, reservesSpace: true)
-                            .truncationMode(.tail)
-                            .frame(maxWidth: .infinity, alignment: .topLeading)
-
-                        Spacer()
-                    }
+            ForEach(self.shows) { show in
+                ShowCard(show: show)
                     .frame(height: 220)
-                }.buttonStyle(PlainButtonStyle())
+                    .onAppear {
+                        print(self.uuidThatForcesCardsGridRerender)
+                        Task {
+                            if show == self.shows.last {
+                                await self.loadMore()
+                            }
+                        }
+                    }
             }
         }
-        .scenePadding(.minimum, edges: .horizontal)
+        .id(self.uuidThatForcesCardsGridRerender)
+        .padding(.horizontal)
         .padding(.top, 18)
     }
 }

@@ -138,8 +138,15 @@ class Anime365Client {
         return Show.createFromApiSeries(series: apiResponse.data)
     }
 
-    public func getOngoings() async throws -> [Show] {
+    public func getOngoings(
+        page: Int,
+        limit: Int
+    ) async throws -> [Show] {
+        let offset = (page - 1) * limit
+
         let apiResponse = try await apiClient.listSeries(
+            limit: limit,
+            offset: offset,
             chips: [
                 "isAiring": "1",
                 "yearseason": "winter_2023-winter_2024"

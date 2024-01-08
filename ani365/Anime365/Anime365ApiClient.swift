@@ -81,14 +81,33 @@ final class Anime365ApiClient {
     }
 
     public func listSeries(
-        chips: [String: String]?
+        limit: Int? = nil,
+        offset: Int? = nil,
+        chips: [String: String]? = nil
     ) async throws -> Anime365ApiResponse<[Anime365ApiSeries]> {
         var queryItems: [URLQueryItem] = []
+
+        if let limit {
+            queryItems.append(URLQueryItem(
+                name: "limit",
+                value: String(limit)
+            ))
+        }
+
+        if let offset {
+            queryItems.append(URLQueryItem(
+                name: "offset",
+                value: String(offset)
+            ))
+        }
 
         if let chips {
             queryItems.append(URLQueryItem(
                 name: "chips",
-                value: chips.map { "\($0.key)=\($0.value)" }.joined(separator: ";")
+                value: chips
+                    .sorted { $0.key < $1.key }
+                    .map { "\($0.key)=\($0.value)" }
+                    .joined(separator: ";")
             ))
         }
 
