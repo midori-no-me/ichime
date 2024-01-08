@@ -16,35 +16,58 @@ public extension Anime365Scraper {
             self.httpClient = httpClient
         }
 
-        public func nextToWatch() async throws -> [Anime365Scraper.Types.WatchShow] {
+        public func nextToWatch() async throws -> [Types.WatchShow] {
             try await nextToWatch(nil)
         }
 
-        public func nextToWatch(_ page: Int?) async throws -> [Anime365Scraper.Types.WatchShow] {
+        public func nextToWatch(_ page: Int?) async throws -> [Types.WatchShow] {
             let parameters: [String: Any] = [
                 "ajax": "m-index-personal-episodes" as Any,
                 "pageP": page as Any,
             ].compactMapValues { $0 }
             let result = try await httpClient.requestHTML(url: httpClient.appendURL("/"), parameters: parameters)
             let doc: Document = try SwiftSoup.parse(result, httpClient.baseURL)
-            guard let watchSection = try doc.body()?.getElementById("m-index-personal-episodes") else { return [] }
+            guard let watchSection = try doc.getElementById("m-index-personal-episodes") else { return [] }
             let elements = try watchSection.select("div.m-new-episode")
 
-            var watchShows: [Anime365Scraper.Types.WatchShow] = []
-            for element: Element in elements.array() {
-                if let watchShow = Anime365Scraper.Types.WatchShow(from: element) {
-                    watchShows.append(watchShow)
-                }
+            return elements.array().compactMap { Types.WatchShow(from: $0) }
+        }
+
+        public func watchList() async throws -> [Types.UserListCategory] {
+            try await watchList(nil)
+        }
+
+        public func watchList(_ type: Types.UserListCategoryType?) async throws -> [Types.UserListCategory] {
+            var url: String = httpClient.appendURL("/users/\(httpClient.userID.value)/list")
+
+            switch type {
+            case .completed:
+                url = url + "/completed"
+            case .dropped:
+                url = url + "/dropped"
+            case .onHold:
+                url = url + "/onhold"
+            case .watching:
+                url = url + "/watching"
+            case .planned:
+                url = url + "/planned"
+            case .none:
+                break
             }
-            return watchShows
-        }
+            
+            let parameters: [String: Any] = [
+                "dynpage": 1 as Any
+            ]
+            
+            let result = try await httpClient.requestHTML(url: url, parameters: parameters);
+            let doc = try SwiftSoup.parseBodyFragment(result, httpClient.baseURL)
 
-        public func watchList() async throws -> [Anime365Scraper.Types.UserListCategory] {
-            try await watchList(type: nil)
-        }
-
-        public func watchList(type _: Anime365Scraper.Types.UserListCategoryType?) async throws -> [Anime365Scraper.Types.UserListCategory] {
-            []
+            let sections = try doc.select(".m-animelist-card")
+            
+            if let type, sections.size() == 1 {
+                return sections.array().compactMap { Types.UserListCategory(from: $0, type: type) }
+            }
+            return sections.array().compactMap { Types.UserListCategory(from: $0) }
         }
     }
 }
@@ -265,5 +288,57 @@ extension Anime365Scraper.Types.Update {
         dateFormatter.dateFormat = "yy.MM.dd"
 
         return dateFormatter.date(from: dateString)
+    }
+}
+
+extension Anime365Scraper.Types.UserListCategory {
+    init?(from section: Element) {
+        do {
+            let title = try section.select(".card-title").text(trimAndNormaliseWhitespace: true)
+            
+            guard let type = Anime365Scraper.Types.UserListCategoryType(rawValue: title) else { return nil }
+            
+            self.init(from: section, type: type)
+        } catch {
+            return nil
+        }
+    }
+    
+    init?(from section: Element, type: Anime365Scraper.Types.UserListCategoryType) {
+        do {
+            let titles = try section.select(".m-animelist-item")
+            let shows: [Anime365Scraper.Types.Show] = titles.array().compactMap { Anime365Scraper.Types.Show(from: $0) }
+            self.init(type: type, shows: shows)
+        } catch {
+            return nil
+        }
+    }
+}
+
+extension Anime365Scraper.Types.Show {
+    init?(from item: Element) {
+        do {
+            let id = Int(try item.attr("data-id")) ?? 0
+            
+            let fullTitle = try item.select("a").text().components(separatedBy: "/").map { $0.trimmingCharacters(in: .whitespaces) }
+            
+            let name = Anime365Scraper.Types.Name(ru: fullTitle.item(at: 0) ?? "", en: fullTitle.item(at: 1) ?? "");
+            
+            let episodes = try item.select("[data-name=episodes]").text().components(separatedBy: "/").map { $0.trimmingCharacters(in: .whitespaces) }
+            let episodesWatched = Int(episodes.item(at: 0) ?? "") ?? 0
+            let totalEpisodes = Int(episodes.item(at: 1) ?? "") ?? Int.max
+            
+            let score = Int(try item.select("[data-name=score]").text())
+            self.init(id: id, name: name, episodes: (episodesWatched, totalEpisodes), score: score)
+        } catch {
+            return nil
+        }
+    }
+}
+
+
+extension Array {
+    func item(at index: Int) -> Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }
