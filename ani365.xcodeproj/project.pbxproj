@@ -10,6 +10,7 @@
 		C65940FB2B4AF0C000413062 /* Anime365Scraper in Frameworks */ = {isa = PBXBuildFile; productRef = C65940FA2B4AF0C000413062 /* Anime365Scraper */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
 		ED5A80672B49DEA300D59815 /* SceneLoadingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */; };
+		ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = ED8A40802B4C57410055DAB6 /* CachedAsyncImage */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
 		EDE959312B4762690030B23D /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959302B4762690030B23D /* OngoingsView.swift */; };
@@ -68,6 +69,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C65940FB2B4AF0C000413062 /* Anime365Scraper in Frameworks */,
+				ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,8 +80,18 @@
 			isa = PBXGroup;
 			children = (
 				EDF7104C2B4B3438001C2008 /* Component */,
+				ED8A40822B4C5D150055DAB6 /* View */,
 			);
 			path = Show;
+			sourceTree = "<group>";
+		};
+		ED8A40822B4C5D150055DAB6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EDE959302B4762690030B23D /* OngoingsView.swift */,
+				EDE9592E2B475E590030B23D /* ShowView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		EDA628FF2B4576BE0093F8E5 /* Frameworks */ = {
@@ -129,13 +141,11 @@
 				EDE959322B484C8A0030B23D /* ContentView.swift */,
 				EDFF2D2B2B449A5500F27E61 /* Episode.swift */,
 				EDE9592B2B47167B0030B23D /* Info.plist */,
-				EDE959302B4762690030B23D /* OngoingsView.swift */,
 				EDE959342B484F7D0030B23D /* OverviewView.swift */,
 				EDFF2D172B43471500F27E61 /* Preview Content */,
 				ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */,
 				EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */,
 				ED74304C2B4B07EB009BCE3A /* Show */,
-				EDE9592E2B475E590030B23D /* ShowView.swift */,
 			);
 			path = ani365;
 			sourceTree = "<group>";
@@ -176,6 +186,7 @@
 			name = ani365;
 			packageProductDependencies = (
 				C65940FA2B4AF0C000413062 /* Anime365Scraper */,
+				ED8A40802B4C57410055DAB6 /* CachedAsyncImage */,
 			);
 			productName = ani365;
 			productReference = EDFF2D0D2B43471300F27E61 /* ani365.app */;
@@ -207,6 +218,7 @@
 			);
 			mainGroup = EDFF2D042B43471300F27E61;
 			packageReferences = (
+				ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 			);
 			productRefGroup = EDFF2D0E2B43471300F27E61 /* Products */;
 			projectDirPath = "";
@@ -502,10 +514,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		C65940FA2B4AF0C000413062 /* Anime365Scraper */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Anime365Scraper;
+		};
+		ED8A40802B4C57410055DAB6 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

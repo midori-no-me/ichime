@@ -96,7 +96,7 @@ struct OngoingsView: View {
     }
 }
 
-struct OngoingsDetails: View {
+private struct OngoingsDetails: View {
     let shows: [Show]
     let uuidThatForcesCardsGridRerender: UUID
     let loadMore: () async -> ()
@@ -109,10 +109,10 @@ struct OngoingsDetails: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .textSelection(.enabled)
 
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 110), spacing: 12, alignment: .topLeading)], spacing: 18) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 12, alignment: .topLeading)], spacing: 18) {
             ForEach(self.shows) { show in
-                ShowCard(show: show)
-                    .frame(height: 220)
+                ShowCardWithLink(show: show)
+                    .frame(height: 300)
                     .onAppear {
                         print(self.uuidThatForcesCardsGridRerender)
                         Task {

@@ -5,9 +5,10 @@
 //  Created by p.flaks on 05.01.2024.
 //
 
+import CachedAsyncImage
 import SwiftUI
 
-enum Anime365ListTypeMenu: String, CaseIterable {
+private enum Anime365ListTypeMenu: String, CaseIterable {
     case completed
     case dropped
     case notInList
@@ -146,7 +147,7 @@ struct ShowView: View {
     }
 }
 
-struct ShowDetails: View {
+private struct ShowDetails: View {
     let show: Show
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -163,7 +164,7 @@ struct ShowDetails: View {
 
         HStack(alignment: .top, spacing: 18) {
             GeometryReader { geometry in
-                AsyncImage(
+                CachedAsyncImage(
                     url: self.show.posterUrl!,
                     transaction: .init(animation: .easeInOut),
                     content: { phase in
@@ -172,7 +173,7 @@ struct ShowDetails: View {
                             ProgressView()
                         case .success(let image):
                             image.resizable()
-                                .cornerRadius(4)
+                                .cornerRadius(10)
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: geometry.size.width, height: geometry.size.height)
                                 .clipped()
@@ -276,7 +277,7 @@ struct ShowDetails: View {
     }
 }
 
-struct ShowProperty: View {
+private struct ShowProperty: View {
     let label: String
     let value: String
 
@@ -292,7 +293,7 @@ struct ShowProperty: View {
     }
 }
 
-struct ShowDescription: View {
+private struct ShowDescription: View {
     let description: Show.Description
 
     @State private var showingSheet = false
@@ -337,7 +338,7 @@ struct ShowDescription: View {
     }
 }
 
-struct EpisodePreviewBox: View {
+private struct EpisodePreviewBox: View {
     let title: String?
     let releaseDate: Date
     let typeAndNumber: String

@@ -81,7 +81,7 @@ struct OverviewView: View {
     }
 }
 
-struct OverviewDetails: View {
+private struct OverviewDetails: View {
     let ongoingsShows: [Show]
 
     var body: some View {

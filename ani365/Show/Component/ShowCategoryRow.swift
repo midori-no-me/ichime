@@ -39,8 +39,8 @@ struct ShowCategoryRow<Content>: View where Content: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 18) {
                     ForEach(shows, id: \.self) { show in
-                        ShowCard(show: show)
-                            .frame(width: 110, height: 220)
+                        ShowCardWithLink(show: show)
+                            .frame(width: 150, height: 300)
                     }
                 }
                 .padding(.horizontal)
