@@ -111,7 +111,7 @@ private struct OngoingsDetails: View {
 
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 12, alignment: .topLeading)], spacing: 18) {
             ForEach(self.shows) { show in
-                ShowCardWithLink(show: show)
+                ShowCard(show: show)
                     .frame(height: 300)
                     .onAppear {
                         print(self.uuidThatForcesCardsGridRerender)

@@ -39,7 +39,7 @@ struct ShowCategoryRow<Content>: View where Content: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 18) {
                     ForEach(shows, id: \.self) { show in
-                        ShowCardWithLink(show: show)
+                        ShowCard(show: show)
                             .frame(width: 150, height: 300)
                     }
                 }
