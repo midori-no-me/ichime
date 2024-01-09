@@ -15,6 +15,14 @@ let result = try await api.userList.nextToWatch()
 ```
 
 
+## Получение куки авторизации
+
+```swift
+                    Anime365ScraperAuth(url: URL(string: "https://anime365.ru/users/login")!) {
+                        print("get cookie \(Anime365Scraper.AuthManager.getCookie()!)")
+                    }
+```
+
 ## Типы
 
 `Anime365Scraper.Types.*`

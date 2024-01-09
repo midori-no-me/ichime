@@ -5,7 +5,6 @@
 //  Created by p.flaks on 05.01.2024.
 //
 
-import Anime365Scraper
 import SwiftUI
 
 struct EpisodeWrapper: UIViewControllerRepresentable {
