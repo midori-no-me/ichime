@@ -20,13 +20,21 @@ struct OngoingsView: View {
     var body: some View {
         Group {
             if let shows = self.shows {
-                ScrollView([.vertical]) {
-                    OngoingsDetails(
-                        shows: shows,
-                        uuidThatForcesCardsGridRerender: self.uuidThatForcesCardsGridRerender,
-                        loadMore: { await self.fetchOngoings(page: self.currentPage + 1) }
-                    )
-                    .scenePadding(.bottom)
+                if shows.isEmpty {
+                    ContentUnavailableView {
+                        Label("Ничего не нашлось", systemImage: "rectangle.grid.3x2.fill")
+                    } description: {
+                        Text("Кажется, где-то закрался баг 😭")
+                    }
+                } else {
+                    ScrollView([.vertical]) {
+                        OngoingsDetails(
+                            shows: shows,
+                            uuidThatForcesCardsGridRerender: self.uuidThatForcesCardsGridRerender,
+                            loadMore: { await self.fetchOngoings(page: self.currentPage + 1) }
+                        )
+                        .scenePadding(.bottom)
+                    }
                 }
             } else {
                 if self.isLoading {

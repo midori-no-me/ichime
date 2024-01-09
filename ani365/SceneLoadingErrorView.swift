@@ -12,27 +12,20 @@ struct SceneLoadingErrorView: View {
     let reload: () async -> Void
 
     var body: some View {
-        VStack(alignment: .center, spacing: 18) {
-            Image(systemName: "exclamationmark.triangle")
-                .font(.title)
-
-            VStack {
-                Text("Ошибка при загрузке:")
-                    .foregroundStyle(Color.secondary)
-
-                Text(self.loadingError.localizedDescription)
-                    .foregroundStyle(Color.secondary)
-                    .font(.caption)
-            }.textSelection(.enabled)
-
-            Button {
-                Task {
-                    await self.reload()
-                }
-            } label: {
-                Text("Попробовать ещё раз")
-            }
-            .padding(.top, 22)
+        ContentUnavailableView {
+            Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+        } description: {
+            Text(self.loadingError.localizedDescription)
         }
+        .textSelection(.enabled)
+
+        Button {
+            Task {
+                await self.reload()
+            }
+        } label: {
+            Text("Попробовать ещё раз")
+        }
+        .padding(.top, 22)
     }
 }
