@@ -7,6 +7,9 @@
 import Foundation
 
 public extension Anime365Scraper.API {
+    /**
+     HTTP Клиент для запросо на сайт anime365.ru, специализируется в том, чтоб делать запросы html страницы
+     */
     class HTTPClient {
         private enum APIError: Error {
             case emptyResponse
@@ -105,4 +108,19 @@ struct PHPUserID {
 
         return 0
     }
+}
+
+func extractIDs(from url: String) -> (showID: Int, episodeID: Int, translationID: Int?)? {
+    let pattern = #/\/catalog\/(?:.*?)-(?<showID>\d+)\/(?:.*?)-(?<episodeID>\d+)(?:\/(?:.*?)-(?<translationID>\d+))?/#
+
+    if let match = url.firstMatch(of: pattern) {
+        if let showID = Int(match.output.showID), let episodeID = Int(match.output.episodeID) {
+            if let translationIDString = match.output.translationID {
+                return (showID, episodeID, Int(translationIDString))
+            }
+            return (showID, episodeID, nil)
+        }
+    }
+
+    return nil
 }
