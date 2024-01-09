@@ -52,6 +52,7 @@ struct ShowView: View {
             if let show = self.show {
                 ScrollView([.vertical]) {
                     ShowDetails(show: show)
+                        .scenePadding(.bottom)
                 }
             } else {
                 if self.isLoading {
@@ -243,7 +244,7 @@ private struct ShowDetails: View {
             }
             .frame(width: .infinity)
         }
-        .scenePadding(.minimum, edges: .horizontal)
+        .scenePadding(.horizontal)
         .padding(.top, 18)
 
         if horizontalSizeClass == .compact {
@@ -261,7 +262,7 @@ private struct ShowDetails: View {
         Text("Серии")
             .font(.title2)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .scenePadding(.minimum, edges: .horizontal)
+            .scenePadding(.horizontal)
             .padding(.top, 18)
 
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 8) {
@@ -273,7 +274,7 @@ private struct ShowDetails: View {
                 )
             }
         }
-        .scenePadding(.minimum, edges: .horizontal)
+        .scenePadding(.horizontal)
     }
 }
 
@@ -315,7 +316,7 @@ private struct ShowDescription: View {
                             VStack(alignment: .leading) {
                                 Text(self.description.text)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding()
+                                    .scenePadding()
 
                                 Spacer()
                             }

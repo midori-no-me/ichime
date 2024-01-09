@@ -19,6 +19,7 @@ struct OverviewView: View {
                     OverviewDetails(
                         ongoingsShows: shows
                     )
+                    .scenePadding(.bottom)
                 }
 
             } else {

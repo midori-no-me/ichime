@@ -26,6 +26,7 @@ struct OngoingsView: View {
                         uuidThatForcesCardsGridRerender: self.uuidThatForcesCardsGridRerender,
                         loadMore: { await self.fetchOngoings(page: self.currentPage + 1) }
                     )
+                    .scenePadding(.bottom)
                 }
             } else {
                 if self.isLoading {
@@ -104,7 +105,7 @@ private struct OngoingsDetails: View {
     var body: some View {
         Text("Сериалы, у которых продолжают выходить новые серии")
             .font(.title3)
-            .padding(.horizontal)
+            .scenePadding(.horizontal)
             .foregroundColor(.secondary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .textSelection(.enabled)
@@ -124,7 +125,7 @@ private struct OngoingsDetails: View {
             }
         }
         .id(self.uuidThatForcesCardsGridRerender)
-        .padding(.horizontal)
+        .scenePadding(.horizontal)
         .padding(.top, 18)
     }
 }

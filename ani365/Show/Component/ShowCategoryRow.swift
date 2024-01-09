@@ -27,7 +27,7 @@ struct ShowCategoryRow<Content>: View where Content: View {
                         .fontWeight(.semibold)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
+                .scenePadding(.horizontal)
             }
             .buttonStyle(PlainButtonStyle())
 
@@ -43,7 +43,7 @@ struct ShowCategoryRow<Content>: View where Content: View {
                             .frame(width: 150, height: 300)
                     }
                 }
-                .padding(.horizontal)
+                .scenePadding(.horizontal)
             }
             .padding(.top, 18)
         }
