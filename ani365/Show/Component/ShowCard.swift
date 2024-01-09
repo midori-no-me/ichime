@@ -135,8 +135,8 @@ private struct ShowCardContextMenuPreview: View {
         }
 
         return parts.isEmpty
-        ? nil
-        : parts.joined(separator: ", ")
+            ? nil
+            : parts.formatted(.list(type: .and, width: .narrow))
     }
 }
 

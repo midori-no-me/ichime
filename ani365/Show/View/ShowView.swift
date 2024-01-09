@@ -203,7 +203,7 @@ private struct ShowDetails: View {
                 LazyVGrid(columns: gridColumns, spacing: 18) {
                     ShowProperty(
                         label: "Рейтинг",
-                        value: self.show.score != nil ? String(self.show.score!) : "???"
+                        value: self.show.score != nil ? self.show.score!.formatted() : "???"
                     )
 
                     ShowProperty(
@@ -213,7 +213,7 @@ private struct ShowDetails: View {
 
                     ShowProperty(
                         label: "Количество эпизодов",
-                        value: (show.numberOfEpisodes != nil ? String(show.numberOfEpisodes!) : "???")
+                        value: (show.numberOfEpisodes != nil ? show.numberOfEpisodes!.formatted() : "???")
                             + (self.show.isOngoing ? " — онгоинг" : "")
                     )
 
@@ -225,7 +225,7 @@ private struct ShowDetails: View {
                     if !self.show.genres.isEmpty {
                         ShowProperty(
                             label: "Жанры",
-                            value: self.show.genres.joined(separator: ", ")
+                            value: self.show.genres.formatted(.list(type: .and, width: .narrow))
                         )
                     }
                 }
@@ -311,29 +311,32 @@ private struct ShowDescription: View {
                         showingSheet.toggle()
                     }
                     .sheet(isPresented: $showingSheet) {
-                        NavigationView {
+                        NavigationStack {
                             VStack(alignment: .leading) {
                                 Text(self.description.text)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(18)
+                                    .padding()
 
                                 Spacer()
                             }
-                            .navigationBarTitle("Описание от \(self.description.source)", displayMode: .inline)
-                            .navigationBarItems(
-                                trailing: Button(
-                                    action: {
-                                        showingSheet.toggle()
-                                    },
-                                    label: {
-                                        Text("Закрыть")
-                                    }
-                                )
-                            )
+                            .navigationTitle("Описание от \(self.description.source)")
+                            .navigationBarTitleDisplayMode(.inline)
+                            .toolbar {
+                                ToolbarItem(placement: .cancellationAction) {
+                                    Button(
+                                        action: {
+                                            showingSheet.toggle()
+                                        },
+                                        label: {
+                                            Text("Закрыть")
+                                        }
+                                    )
+                                }
+                            }
                         }
                     }
-
-            }.padding(.top, 4)
+            }
+            .padding(.top, 4)
         }
     }
 }
@@ -357,6 +360,6 @@ private struct EpisodePreviewBox: View {
 
 #Preview {
     NavigationStack {
-        ShowView(showId: 28240)
+        ShowView(showId: 8762)
     }
 }
