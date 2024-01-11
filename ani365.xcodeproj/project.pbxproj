@@ -89,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				EDE959302B4762690030B23D /* OngoingsView.swift */,
+				EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */,
 				EDE9592E2B475E590030B23D /* ShowView.swift */,
 			);
 			path = View;
@@ -144,7 +145,6 @@
 				EDE959342B484F7D0030B23D /* OverviewView.swift */,
 				EDFF2D172B43471500F27E61 /* Preview Content */,
 				ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */,
-				EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */,
 				ED74304C2B4B07EB009BCE3A /* Show */,
 			);
 			path = ani365;

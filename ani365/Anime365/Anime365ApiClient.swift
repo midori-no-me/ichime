@@ -33,7 +33,7 @@ struct Anime365ApiSeries: Decodable {
     let titles: Anime365ApiSeriesTitles
     let genres: [Anime365ApiSeriesGenre]?
     let descriptions: [Anime365ApiSeriesDescription]?
-    let episodes: [Anime365ApiEpisodePreview]
+    let episodes: [Anime365ApiEpisodePreview]?
 
     struct Anime365ApiSeriesTitles: Decodable {
         let ru: String?
@@ -81,6 +81,7 @@ final class Anime365ApiClient {
     }
 
     public func listSeries(
+        query: String? = nil,
         limit: Int? = nil,
         offset: Int? = nil,
         chips: [String: String]? = nil
@@ -108,6 +109,13 @@ final class Anime365ApiClient {
                     .sorted { $0.key < $1.key }
                     .map { "\($0.key)=\($0.value)" }
                     .joined(separator: ";")
+            ))
+        }
+
+        if let query {
+            queryItems.append(URLQueryItem(
+                name: "query",
+                value: query
             ))
         }
 
@@ -155,6 +163,8 @@ final class Anime365ApiClient {
             let decoder = JSONDecoder()
             return try decoder.decode(T.self, from: data)
         } catch {
+            print("[Anime365ApiClient] Decoding JSON error: \(error.localizedDescription)")
+
             throw Anime365ApiClientError.invalidData
         }
     }

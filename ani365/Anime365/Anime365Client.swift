@@ -40,7 +40,7 @@ struct Show: Hashable, Identifiable {
                 genre.title
             },
             isOngoing: series.isAiring == 1,
-            episodePreviews: series.episodes.map { episode in
+            episodePreviews: (series.episodes ?? []).map { episode in
                 Show.EpisodePreview(
                     id: episode.id,
                     title: episode.episodeTitle.isEmpty ? nil : episode.episodeTitle,
@@ -139,11 +139,9 @@ class Anime365Client {
     }
 
     public func getOngoings(
-        page: Int,
+        offset: Int,
         limit: Int
     ) async throws -> [Show] {
-        let offset = (page - 1) * limit
-
         let apiResponse = try await apiClient.listSeries(
             limit: limit,
             offset: offset,
@@ -151,6 +149,22 @@ class Anime365Client {
                 "isAiring": "1",
                 "yearseason": "winter_2023-winter_2024"
             ]
+        )
+
+        return apiResponse.data.map { series in
+            Show.createFromApiSeries(series: series)
+        }
+    }
+
+    public func searchShows(
+        searchQuery: String,
+        offset: Int,
+        limit: Int
+    ) async throws -> [Show] {
+        let apiResponse = try await apiClient.listSeries(
+            query: searchQuery,
+            limit: limit,
+            offset: offset
         )
 
         return apiResponse.data.map { series in

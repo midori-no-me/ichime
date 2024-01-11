@@ -28,7 +28,7 @@ struct OverviewView: View {
                 } else if self.ongoingsLoadingError != nil {
                     SceneLoadingErrorView(
                         loadingError: self.ongoingsLoadingError!,
-                        reload: { await self.fetchOngoings(page: 1) }
+                        reload: { await self.fetchOngoings(offset: 0) }
                     )
                 }
             }
@@ -41,16 +41,16 @@ struct OverviewView: View {
             }
 
             Task {
-                await self.fetchOngoings(page: 1)
+                await self.fetchOngoings(offset: 0)
             }
         }
         .refreshable {
-            await self.fetchOngoings(page: 1)
+            await self.fetchOngoings(offset: 0)
         }
     }
 
     private func fetchOngoings(
-        page: Int
+        offset: Int
     ) async {
         let anime365Client = Anime365Client(
             apiClient: Anime365ApiClient(
@@ -61,7 +61,7 @@ struct OverviewView: View {
 
         do {
             let shows = try await anime365Client.getOngoings(
-                page: page,
+                offset: offset,
                 limit: 20
             )
 
@@ -91,7 +91,7 @@ private struct OverviewDetails: View {
             description: "Сериалы, у которых продолжают выходить новые серии",
             shows: self.ongoingsShows
         ) {
-            OngoingsView()
+            OngoingsView(shows: self.ongoingsShows)
         }
     }
 }

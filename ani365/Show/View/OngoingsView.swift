@@ -8,42 +8,69 @@
 import SwiftUI
 
 struct OngoingsView: View {
-    @State private var shows: [Show]?
+    @State public var shows: [Show]?
+    @State private var currentOffset = 0
     @State private var isLoading = true
     @State private var loadingError: Error?
 
     /// Изменение этой переменной форсит ререндер сетки карточек.
     @State private var uuidThatForcesCardsGridRerender: UUID = .init()
 
-    @State private var currentPage = 1
+    private let SHOWS_PER_PAGE = 20
 
     var body: some View {
         Group {
             if let shows = self.shows {
                 if shows.isEmpty {
-                    ContentUnavailableView {
-                        Label("Ничего не нашлось", systemImage: "rectangle.grid.3x2.fill")
-                    } description: {
-                        Text("Кажется, где-то закрался баг 😭")
+                    OngoingsViewWrapper {
+                        Spacer()
+
+                        ContentUnavailableView {
+                            Label("Ничего не нашлось", systemImage: "rectangle.grid.3x2.fill")
+                        } description: {
+                            Text("Кажется, где-то закрался баг 😭")
+                        }
+
+                        Spacer()
                     }
+
                 } else {
                     ScrollView([.vertical]) {
-                        OngoingsDetails(
-                            shows: shows,
-                            uuidThatForcesCardsGridRerender: self.uuidThatForcesCardsGridRerender,
-                            loadMore: { await self.fetchOngoings(page: self.currentPage + 1) }
-                        )
-                        .scenePadding(.bottom)
+                        OngoingsViewWrapper {
+                            OngoingsGrid(
+                                shows: shows,
+                                loadMore: { await self.fetchOngoings(offset: self.currentOffset + self.SHOWS_PER_PAGE) }
+                            )
+                            .id(self.uuidThatForcesCardsGridRerender)
+                            .padding(.top, 18)
+                            .scenePadding(.horizontal)
+                            .scenePadding(.bottom)
+                        }
                     }
                 }
             } else {
                 if self.isLoading {
-                    ProgressView()
-                } else if self.loadingError != nil {
-                    SceneLoadingErrorView(
-                        loadingError: self.loadingError!,
-                        reload: { await self.fetchOngoings(page: 1) }
-                    )
+                    OngoingsViewWrapper {
+                        Spacer()
+
+                        ProgressView()
+
+                        Spacer()
+                    }
+
+                } else if let loadingError = self.loadingError {
+                    OngoingsViewWrapper {
+                        Spacer()
+
+                        ContentUnavailableView {
+                            Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+                        } description: {
+                            Text(loadingError.localizedDescription)
+                        }
+                        .textSelection(.enabled)
+
+                        Spacer()
+                    }
                 }
             }
         }
@@ -55,16 +82,16 @@ struct OngoingsView: View {
             }
 
             Task {
-                await self.fetchOngoings(page: 1)
+                await self.fetchOngoings(offset: 0)
             }
         }
         .refreshable {
-            await self.fetchOngoings(page: 1)
+            await self.fetchOngoings(offset: 0)
         }
     }
 
     private func fetchOngoings(
-        page: Int
+        offset: Int
     ) async {
         let anime365Client = Anime365Client(
             apiClient: Anime365ApiClient(
@@ -75,8 +102,8 @@ struct OngoingsView: View {
 
         do {
             let shows = try await anime365Client.getOngoings(
-                page: page,
-                limit: 20
+                offset: offset,
+                limit: self.SHOWS_PER_PAGE
             )
 
             DispatchQueue.main.async {
@@ -87,13 +114,13 @@ struct OngoingsView: View {
                 /// Если запрашивают страницу, номер которой меньше или равен текущей странице в стейте,
                 /// то загружаем все сериалы с начала и заставляем все карточки перерендериться (через `self.uuidThatForcesCardsGridRerender`),
                 /// чтобы у них сбросился `View.onAppear()`, без которого не будет работать lazy loading.
-                if page <= self.currentPage {
+                if offset <= self.currentOffset {
                     self.shows = []
                     self.uuidThatForcesCardsGridRerender = UUID()
                 }
 
                 self.shows! += shows
-                self.currentPage = page
+                self.currentOffset = offset
             }
         } catch {
             DispatchQueue.main.async {
@@ -105,10 +132,8 @@ struct OngoingsView: View {
     }
 }
 
-private struct OngoingsDetails: View {
-    let shows: [Show]
-    let uuidThatForcesCardsGridRerender: UUID
-    let loadMore: () async -> ()
+private struct OngoingsViewWrapper<Content>: View where Content: View {
+    @ViewBuilder let content: Content
 
     var body: some View {
         Text("Сериалы, у которых продолжают выходить новые серии")
@@ -118,12 +143,20 @@ private struct OngoingsDetails: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .textSelection(.enabled)
 
+        self.content
+    }
+}
+
+private struct OngoingsGrid: View {
+    let shows: [Show]
+    let loadMore: () async -> ()
+
+    var body: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 12, alignment: .topLeading)], spacing: 18) {
             ForEach(self.shows) { show in
                 ShowCard(show: show)
                     .frame(height: 300)
                     .onAppear {
-                        print(self.uuidThatForcesCardsGridRerender)
                         Task {
                             if show == self.shows.last {
                                 await self.loadMore()
@@ -132,9 +165,6 @@ private struct OngoingsDetails: View {
                     }
             }
         }
-        .id(self.uuidThatForcesCardsGridRerender)
-        .scenePadding(.horizontal)
-        .padding(.top, 18)
     }
 }
 
