@@ -12,6 +12,7 @@ struct OngoingsView: View {
     @State private var currentOffset = 0
     @State private var isLoading = true
     @State private var loadingError: Error?
+    @State private var stopLazyLoading = false
 
     /// Изменение этой переменной форсит ререндер сетки карточек.
     @State private var uuidThatForcesCardsGridRerender: UUID = .init()
@@ -77,7 +78,7 @@ struct OngoingsView: View {
         .navigationTitle("Онгоинги")
         .navigationBarTitleDisplayMode(.large)
         .onAppear {
-            if self.shows != nil {
+            if self.shows != nil || self.stopLazyLoading {
                 return
             }
 
@@ -86,6 +87,7 @@ struct OngoingsView: View {
             }
         }
         .refreshable {
+            self.stopLazyLoading = false
             await self.fetchOngoings(offset: 0)
         }
     }
@@ -93,6 +95,10 @@ struct OngoingsView: View {
     private func fetchOngoings(
         offset: Int
     ) async {
+        if self.stopLazyLoading {
+            return
+        }
+
         let anime365Client = Anime365Client(
             apiClient: Anime365ApiClient(
                 baseURL: "https://anime365.ru/api",
@@ -106,26 +112,29 @@ struct OngoingsView: View {
                 limit: self.SHOWS_PER_PAGE
             )
 
-            DispatchQueue.main.async {
-                if self.shows == nil {
-                    self.shows = []
-                }
-
-                /// Если запрашивают страницу, номер которой меньше или равен текущей странице в стейте,
-                /// то загружаем все сериалы с начала и заставляем все карточки перерендериться (через `self.uuidThatForcesCardsGridRerender`),
-                /// чтобы у них сбросился `View.onAppear()`, без которого не будет работать lazy loading.
-                if offset <= self.currentOffset {
-                    self.shows = []
-                    self.uuidThatForcesCardsGridRerender = UUID()
-                }
-
-                self.shows! += shows
-                self.currentOffset = offset
+            if shows.count < self.SHOWS_PER_PAGE {
+                self.stopLazyLoading = true
             }
+
+            var newShowsState = self.shows ?? []
+
+            if self.shows == nil {
+                newShowsState = []
+            }
+
+            /// Если запрашивают страницу, номер которой меньше или равен текущей странице в стейте,
+            /// то загружаем все сериалы с начала и заставляем все карточки перерендериться (через `self.uuidThatForcesCardsGridRerender`),
+            /// чтобы у них сбросился `View.onAppear()`, без которого не будет работать lazy loading.
+            if offset <= self.currentOffset {
+                newShowsState = []
+                self.uuidThatForcesCardsGridRerender = UUID()
+            }
+
+            self.shows = newShowsState + shows
+            self.currentOffset = offset
+
         } catch {
-            DispatchQueue.main.async {
-                self.loadingError = error
-            }
+            self.loadingError = error
         }
 
         self.isLoading = false

@@ -15,7 +15,7 @@ enum SearchScope: String, CaseIterable {
 
 // Holds one token that we want the user to filter by. This *must* conform to Identifiable.
 struct Token: Identifiable {
-    var id: String { name }
+    var id: String { self.name }
     var name: String
 }
 
@@ -23,14 +23,21 @@ struct SearchShowsView: View {
     @State private var shows: [Show] = []
     @State private var currentOffset = 0
     @State private var searchQuery = ""
+    @State private var isLoading = false
     @State private var loadingError: Error?
+    @State private var stopLazyLoading = false
     @State private var isSearchPresented = false
+
+    @State private var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
 
     private let SHOWS_PER_PAGE = 20
 
     var body: some View {
         Group {
-            if let loadingError = self.loadingError {
+            if self.isLoading {
+                ProgressView()
+
+            } else if let loadingError = self.loadingError {
                 ContentUnavailableView {
                     Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
                 } description: {
@@ -38,19 +45,40 @@ struct SearchShowsView: View {
                 }
                 .textSelection(.enabled)
 
-            } else if isSearchPresented && shows.isEmpty {
-                Text("Введите название сериала")
-                    .foregroundStyle(.secondary)
+            } else if self.searchQuery.isEmpty || (self.shows.isEmpty && self.isSearchPresented) {
+                if self.recentSearches.isEmpty {
+                    ContentUnavailableView {
+                        Label("Тут пока ничего нет", systemImage: "magnifyingglass")
+                    } description: {
+                        Text("Предыдущие запросы поиска будут сохраняться на этом экране")
+                    }
 
-            } else if searchQuery.isEmpty {
-                ContentUnavailableView {
-                    Label("Тут пока ничего нет", systemImage: "magnifyingglass")
-                } description: {
-                    Text("Предыдущие запросы поиска будут сохраняться на этом экране")
+                } else {
+                    List {
+                        Section(header: Text("Ранее вы искали")) {
+                            ForEach(self.recentSearches, id: \.self) { searchQuery in
+                                Button(action: {
+                                    Task {
+                                        self.shows = []
+                                        self.searchQuery = searchQuery
+                                        self.isLoading = true
+                                        self.loadingError = nil
+                                        self.stopLazyLoading = false
+                                        self.isSearchPresented = true
+
+                                        await self.fetchShows(searchText: searchQuery, offset: 0)
+                                    }
+                                }) {
+                                    Text(searchQuery)
+                                }
+                                .buttonStyle(.borderless)
+                            }
+                        }
+                    }
+                    .listStyle(.plain)
                 }
-                .textSelection(.enabled)
 
-            } else if shows.isEmpty {
+            } else if self.shows.isEmpty {
                 ContentUnavailableView {
                     Label("Ничего не нашлось", systemImage: "rectangle.grid.3x2.fill")
                 } description: {
@@ -60,7 +88,7 @@ struct SearchShowsView: View {
             } else {
                 ScrollView([.vertical]) {
                     ShowsGrid(
-                        shows: shows,
+                        shows: self.shows,
                         loadMore: {
                             await self.fetchShows(
                                 searchText: self.searchQuery,
@@ -78,13 +106,24 @@ struct SearchShowsView: View {
         .navigationBarTitleDisplayMode(.large)
         .searchable(
             text: self.$searchQuery,
-            isPresented: $isSearchPresented,
+            isPresented: self.$isSearchPresented,
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: "Название тайтла"
         )
         .onSubmit(of: .search) {
+            if self.searchQuery.isEmpty {
+                return
+            }
+
             Task {
-                await fetchShows(searchText: searchQuery, offset: 0)
+                self.shows = []
+                self.isLoading = true
+                self.loadingError = nil
+                self.stopLazyLoading = false
+                self.recentSearches.insert(self.searchQuery, at: 0)
+                UserDefaults.standard.set(self.recentSearches, forKey: "recentSearches")
+
+                await self.fetchShows(searchText: self.searchQuery, offset: 0)
             }
         }
     }
@@ -93,9 +132,7 @@ struct SearchShowsView: View {
         searchText: String,
         offset: Int
     ) async {
-        if searchText.isEmpty {
-            shows = []
-
+        if searchText.isEmpty || self.stopLazyLoading {
             return
         }
 
@@ -110,17 +147,20 @@ struct SearchShowsView: View {
             let shows = try await anime365Client.searchShows(
                 searchQuery: searchText,
                 offset: offset,
-                limit: SHOWS_PER_PAGE
+                limit: self.SHOWS_PER_PAGE
             )
 
-            DispatchQueue.main.async {
-                self.shows = shows
+            self.shows += shows
+            self.currentOffset = offset
+
+            if shows.count < self.SHOWS_PER_PAGE {
+                self.stopLazyLoading = true
             }
         } catch {
-            DispatchQueue.main.async {
-                self.loadingError = error
-            }
+            self.loadingError = error
         }
+
+        self.isLoading = false
     }
 }
 

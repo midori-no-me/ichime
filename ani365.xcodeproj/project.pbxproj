@@ -10,6 +10,7 @@
 		C65940FB2B4AF0C000413062 /* Anime365Scraper in Frameworks */ = {isa = PBXBuildFile; productRef = C65940FA2B4AF0C000413062 /* Anime365Scraper */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
 		ED5A80672B49DEA300D59815 /* SceneLoadingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */; };
+		ED8815E52B51DADF00EDBA9C /* RecentSearches.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8815E42B51DADF00EDBA9C /* RecentSearches.swift */; };
 		ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = ED8A40802B4C57410055DAB6 /* CachedAsyncImage */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
@@ -43,6 +44,7 @@
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C6D440D12B4AEA9D00A81421 /* Anime365Scraper */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365Scraper; sourceTree = "<group>"; };
 		ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLoadingErrorView.swift; sourceTree = "<group>"; };
+		ED8815E42B51DADF00EDBA9C /* RecentSearches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearches.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		EDE9592B2B47167B0030B23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -80,9 +82,18 @@
 			isa = PBXGroup;
 			children = (
 				EDF7104C2B4B3438001C2008 /* Component */,
+				ED8815E32B51DAA100EDBA9C /* Model */,
 				ED8A40822B4C5D150055DAB6 /* View */,
 			);
 			path = Show;
+			sourceTree = "<group>";
+		};
+		ED8815E32B51DAA100EDBA9C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				ED8815E42B51DADF00EDBA9C /* RecentSearches.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		ED8A40822B4C5D150055DAB6 /* View */ = {
@@ -250,6 +261,7 @@
 				EDE959332B484C8A0030B23D /* ContentView.swift in Sources */,
 				EDE959312B4762690030B23D /* OngoingsView.swift in Sources */,
 				EDF7104E2B4B344F001C2008 /* ShowCard.swift in Sources */,
+				ED8815E52B51DADF00EDBA9C /* RecentSearches.swift in Sources */,
 				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
 				EDFF2D2C2B449A5500F27E61 /* Episode.swift in Sources */,
 				EDFF2D282B44763700F27E61 /* ShowCategoryRow.swift in Sources */,
