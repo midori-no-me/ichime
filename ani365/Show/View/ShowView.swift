@@ -254,26 +254,54 @@ private struct ShowDetails: View {
                         ShowDescription(description: description)
                     }
                 }
-                .scenePadding(.minimum, edges: .horizontal)
+                .scenePadding(.horizontal)
                 .padding(.top, 18)
             }
         }
 
-        Text("Серии")
-            .font(.title2)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .scenePadding(.horizontal)
-            .padding(.top, 18)
+        VStack(alignment: .leading, spacing: 12) {
+            if show.isOngoing {
+                HStack {
+                    Text("Последние серии")
+                        .font(.title2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 8) {
-            ForEach(self.show.episodePreviews, id: \.self) { episodePreview in
-                EpisodePreviewBox(
-                    title: episodePreview.title,
-                    releaseDate: episodePreview.uploadDate,
-                    typeAndNumber: episodePreview.typeAndNumber
-                )
+                    NavigationLink(destination: EpisodeListView(episodePreviews: self.show.episodePreviews)) {
+                        Text("Все серии")
+                            .font(.callout)
+                    }
+                    .buttonStyle(.borderless)
+                    .frame(alignment: .trailing)
+                }
+
+                ForEach(self.show.episodePreviews.reversed().prefix(5), id: \.self) { episodePreview in
+                    EpisodePreviewRow(data: episodePreview)
+
+                    Divider()
+                }
+
+            } else {
+                HStack {
+                    Text("Серии")
+                        .font(.title2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    NavigationLink(destination: EpisodeListView(episodePreviews: self.show.episodePreviews)) {
+                        Text("Все серии")
+                            .font(.callout)
+                    }
+                    .buttonStyle(.borderless)
+                    .frame(alignment: .trailing)
+                }
+
+                ForEach(self.show.episodePreviews.prefix(5), id: \.self) { episodePreview in
+                    EpisodePreviewRow(data: episodePreview)
+
+                    Divider()
+                }
             }
         }
+        .padding(.top, 18)
         .scenePadding(.horizontal)
     }
 }

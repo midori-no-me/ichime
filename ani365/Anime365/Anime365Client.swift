@@ -41,7 +41,7 @@ struct Show: Hashable, Identifiable {
             },
             isOngoing: series.isAiring == 1,
             episodePreviews: (series.episodes ?? []).map { episode in
-                Show.EpisodePreview(
+                EpisodePreview(
                     id: episode.id,
                     title: episode.episodeTitle.isEmpty ? nil : episode.episodeTitle,
                     typeAndNumber: episode.episodeFull,
@@ -96,24 +96,58 @@ struct Show: Hashable, Identifiable {
         let text: String
         let source: String
     }
+}
 
-    struct EpisodePreview: Hashable, Identifiable {
-        static func == (lhs: EpisodePreview, rhs: EpisodePreview) -> Bool {
-            return lhs.id == rhs.id
+struct Translation: Hashable, Identifiable {
+    static func == (lhs: Translation, rhs: Translation) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    let id: Int
+    let series: SeriesPreview
+    let translationTeam: String
+    let websiteUrl: URL
+    let translatedToLanguage: TranslatedToLanguage
+    let translationMethod: TranslationMethod
+
+    struct SeriesPreview {
+        let title: Title
+        let websiteUrl: URL
+        let posterUrl: URL?
+
+        struct Title {
+            let full: String
+            let translated: TranslatedTitles
+
+            struct TranslatedTitles {
+                let russian: String?
+                let english: String?
+                let japanese: String?
+                let japaneseRomaji: String?
+            }
         }
+    }
 
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
+    enum TranslatedToLanguage {
+        case russian
+        case english
+        case japanese
+        case other
+    }
 
-        let id: Int
-        let title: String?
-        let typeAndNumber: String
-        let uploadDate: Date
+    enum TranslationMethod {
+        case voiceover
+        case subtitles
+        case raw
+        case other
     }
 }
 
-func stringToDate(string: String, withFormat format: String = "yyyy-MM-dd HH:mm:ss") -> Date? {
+private func stringToDate(string: String, withFormat format: String = "yyyy-MM-dd HH:mm:ss") -> Date? {
     let dateFormatter = DateFormatter()
 
     dateFormatter.dateFormat = format
