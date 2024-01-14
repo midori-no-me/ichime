@@ -7,107 +7,104 @@
 
 import SwiftUI
 
-struct EpisodeWrapper: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> Episode {
-        return Episode()
-    }
-
-    func updateUIViewController(_ uiViewController: Episode, context: Context) {
-        // Update the view controller if needed
+struct ContentView: View {
+    var body: some View {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            ContentViewWithTabBar()
+        } else {
+            ContentViewWithSideBar()
+        }
     }
 }
 
-struct ContentView: View {
+struct ContentViewWithSideBar: View {
     @State private var isEpisodeViewPresented = false
+    @State private var navigationActiveTab: SideBarLinks? = .overview
 
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @EnvironmentObject var scraperManager: Anime365ScraperManager
+    enum SideBarLinks {
+        case overview
+        case searchShows
+        case ongoings
+        case newEpisodes
+    }
 
     var body: some View {
-        if horizontalSizeClass == .regular {
-            NavigationSplitView {
-                List {
-                    NavigationLink(destination: SearchShowsView(), label: {
-                        Label("Поиск", systemImage: "magnifyingglass")
-                    })
+        NavigationSplitView {
+            List(selection: $navigationActiveTab) {
+                Label("Поиск", systemImage: "magnifyingglass")
+                    .tag(SideBarLinks.searchShows)
 
-                    NavigationLink(destination: OverviewView()) {
-                        Label("Обзор", systemImage: "rectangle.grid.2x2")
-                    }
+                Label("Обзор", systemImage: "rectangle.grid.2x2")
+                    .tag(SideBarLinks.overview)
 
-                    NavigationLink(destination: OngoingsView()) {
-                        Label("Онгоинги", systemImage: "film.stack")
-                    }
+                Label("Онгоинги", systemImage: "film.stack")
+                    .tag(SideBarLinks.ongoings)
 
-                    Section(header: Text("Моя библиотека")) {
-                        NavigationLink(destination: Text("My List")) {
-                            Label("Новые серии", systemImage: "play.rectangle.on.rectangle")
-                        }
-                    }
+                Section(header: Text("Моя библиотека")) {
+                    Label("Новые серии", systemImage: "play.rectangle.on.rectangle")
+                        .tag(SideBarLinks.newEpisodes)
                 }
-                .navigationTitle("Anime 365")
-                .listStyle(SidebarListStyle())
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {} label: {
-                            Label("Уведомления", systemImage: "bell")
-                        }
-                    }
-                }
-
-            } detail: {
-                NavigationStack {
-                    ScrollView([.vertical]) {
-                        Text("....")
-                    }
-                    .navigationTitle("...")
-
-                    Button(
-                        action: {
-                            self.isEpisodeViewPresented = true
-                        },
-                        label: {
-                            Text("Show Episode")
-                        }
-                    )
-                    .sheet(isPresented: $isEpisodeViewPresented) {
-                        EpisodeWrapper() // Use the wrapper to present the UIKit view controller
+            }
+            .navigationTitle("Anime 365")
+            .listStyle(SidebarListStyle())
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {} label: {
+                        Label("Уведомления", systemImage: "bell")
                     }
                 }
             }
-        } else {
-            TabView {
+
+        } detail: {
+            switch navigationActiveTab {
+            case .overview:
                 NavigationStack {
                     OverviewView()
-                    Button(scraperManager.user != nil ? "ReAuth" : "Auth") {
-                        Task {
-                            do {
-                                let user = try await scraperManager.startAuth()
-                                print(user)
-                            } catch {
-                                print("some error", error.localizedDescription)
-                            }
-                        }
-                    }
                 }
-                .onAppear {
-                    print(scraperManager.user)
-                }
-                .tabItem {
-                    Label("Обзор", systemImage: "rectangle.grid.2x2")
-                }
-                NavigationStack {
-                    OngoingsView()
-                }
-                .tabItem {
-                    Label("Онгоинги", systemImage: "film.stack")
-                }
+
+            case .searchShows:
                 NavigationStack {
                     SearchShowsView()
                 }
-                .tabItem {
-                    Label("Поиск", systemImage: "magnifyingglass")
+
+            case .ongoings:
+                NavigationStack {
+                    OngoingsView()
                 }
+
+            default:
+                ContentUnavailableView {
+                    Label("Тут ничего нет", systemImage: "sidebar.leading")
+                } description: {
+                    Text("Выберите любую вкладку в левом меню")
+                }
+            }
+        }
+    }
+}
+
+struct ContentViewWithTabBar: View {
+    var body: some View {
+        TabView {
+            NavigationStack {
+                OverviewView()
+            }
+            .tabItem {
+                Label("Обзор", systemImage: "rectangle.grid.2x2")
+            }
+
+            NavigationStack {
+                OngoingsView()
+            }
+            .tabItem {
+                Label("Онгоинги", systemImage: "film.stack")
+            }
+
+            NavigationStack {
+                SearchShowsView()
+            }
+            .tabItem {
+                Label("Поиск", systemImage: "magnifyingglass")
             }
         }
     }
