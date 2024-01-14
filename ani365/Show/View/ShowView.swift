@@ -98,11 +98,13 @@ struct ShowView: View {
                 }
             }
 
-            //            ToolbarItem(placement: .navigationBarTrailing) {
-            //                ShareLink(item: show?.websiteUrl) {
-            //                    Label("Поделиться", systemImage: "square.and.arrow.up")
-            //                }
-            //            }
+            if let show = show {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    ShareLink(item: show.websiteUrl) {
+                        Label("Поделиться", systemImage: "square.and.arrow.up")
+                    }
+                }
+            }
         }
         .navigationTitle((self.show?.title.translated.japaneseRomaji ?? self.show?.title.full) ?? "")
         .navigationBarTitleDisplayMode(.large)
@@ -338,7 +340,6 @@ private struct EpisodePreviewList: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-
             HStack {
                 Text("Серии")
                     .font(.title2)
