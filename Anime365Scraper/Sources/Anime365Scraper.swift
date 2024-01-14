@@ -13,14 +13,18 @@ public enum Anime365Scraper {
          Структура для запросов к разделу уведомлений
          */
         public let notificationList: NotificationList
-
-        public init(userList: UserList, notificationList: NotificationList) {
+        /**
+         Структура для запросов к профилю
+         */
+        public let profile: Profile
+        public init(userList: UserList, notificationList: NotificationList, profile: Profile) {
             self.userList = userList
             self.notificationList = notificationList
+            self.profile = profile
         }
 
         public static func create(httpClient: HTTPClient) -> API {
-            .init(userList: UserList(httpClient: httpClient), notificationList: NotificationList(httpClient: httpClient))
+            .init(userList: UserList(httpClient: httpClient), notificationList: NotificationList(httpClient: httpClient), profile: Profile(httpClient: httpClient))
         }
     }
 

@@ -122,5 +122,7 @@ struct ContentViewWithTabBar: View {
 }
 
 #Preview {
-    ContentView()
+    AppPreview {
+        ContentView()
+    }
 }
