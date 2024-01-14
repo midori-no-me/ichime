@@ -26,6 +26,7 @@ struct ContentViewWithSideBar: View {
         case searchShows
         case ongoings
         case newEpisodes
+        case onboarding
     }
 
     var body: some View {
@@ -43,6 +44,9 @@ struct ContentViewWithSideBar: View {
                 Section(header: Text("Моя библиотека")) {
                     Label("Новые серии", systemImage: "play.rectangle.on.rectangle")
                         .tag(SideBarLinks.newEpisodes)
+
+                    Label("Онбординг", systemImage: "person.circle")
+                        .tag(SideBarLinks.onboarding)
                 }
             }
             .navigationTitle("Anime 365")
@@ -105,6 +109,13 @@ struct ContentViewWithTabBar: View {
             }
             .tabItem {
                 Label("Поиск", systemImage: "magnifyingglass")
+            }
+
+            NavigationStack {
+                OnboardingView()
+            }
+            .tabItem {
+                Label("Онбординг", systemImage: "person.circle")
             }
         }
     }
