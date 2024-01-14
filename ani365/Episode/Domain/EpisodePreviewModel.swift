@@ -90,6 +90,14 @@ func guessEpisodeReleaseWeekdayAndTime(in episodePreviews: [EpisodePreview]) -> 
 enum EpisodePreviewSampleData {
     static let data = [
         EpisodePreview(
+            id: 291394,
+            title: "Трейлер",
+            typeAndNumber: "1 серия",
+            uploadDate: Date(),
+            type: .trailer,
+            episodeNumber: 1
+        ),
+        EpisodePreview(
             id: 291395,
             title: "The Journey`s End",
             typeAndNumber: "1 серия",
@@ -103,7 +111,7 @@ enum EpisodePreviewSampleData {
             typeAndNumber: "2 серия",
             uploadDate: Date(),
             type: .tv,
-            episodeNumber: 1
+            episodeNumber: 2
         ),
         EpisodePreview(
             id: 312553,
@@ -111,7 +119,7 @@ enum EpisodePreviewSampleData {
             typeAndNumber: "3 серия",
             uploadDate: Calendar.current.date(byAdding: .second, value: -5, to: Date())!,
             type: .tv,
-            episodeNumber: 1
+            episodeNumber: 3
         ),
         EpisodePreview(
             id: 312554,
@@ -119,7 +127,7 @@ enum EpisodePreviewSampleData {
             typeAndNumber: "4 серия",
             uploadDate: Calendar.current.date(byAdding: .minute, value: -5, to: Date())!,
             type: .tv,
-            episodeNumber: 1
+            episodeNumber: 4
         ),
         EpisodePreview(
             id: 312555,
@@ -127,7 +135,7 @@ enum EpisodePreviewSampleData {
             typeAndNumber: "5 серия",
             uploadDate: Calendar.current.date(byAdding: .hour, value: -5, to: Date())!,
             type: .tv,
-            episodeNumber: 1
+            episodeNumber: 5
         ),
         EpisodePreview(
             id: 313150,
@@ -135,23 +143,23 @@ enum EpisodePreviewSampleData {
             typeAndNumber: "6 серия",
             uploadDate: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
             type: .tv,
-            episodeNumber: 1
+            episodeNumber: 6
         ),
         EpisodePreview(
             id: 313628,
             title: nil,
-            typeAndNumber: "7 серия",
+            typeAndNumber: "7.5 серия",
             uploadDate: Calendar.current.date(byAdding: .day, value: -7, to: Date())!,
             type: .tv,
-            episodeNumber: 1
+            episodeNumber: 7.5
         ),
         EpisodePreview(
             id: 314104,
             title: nil,
-            typeAndNumber: "8 серия",
+            typeAndNumber: "1100 серия",
             uploadDate: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,
             type: .tv,
-            episodeNumber: 1
+            episodeNumber: 1100
         ),
     ]
 }

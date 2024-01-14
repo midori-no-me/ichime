@@ -24,7 +24,7 @@ struct EpisodeListView: View {
 
             TableColumn("Номер серии") { episodePreview in
                 if episodePreview.type != .trailer, let episodeNumber = episodePreview.episodeNumber {
-                    Text(String(format: "%.0f", episodeNumber))
+                    Text(episodeNumber.formatted())
                 }
             }
             .alignment(.trailing)
