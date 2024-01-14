@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C65940FB2B4AF0C000413062 /* Anime365Scraper in Frameworks */ = {isa = PBXBuildFile; productRef = C65940FA2B4AF0C000413062 /* Anime365Scraper */; };
+		C65ACDE82B54466400C27FB3 /* Anime365ScraperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
 		ED36C6202B52D2AA000D0A80 /* EpisodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C61F2B52D2AA000D0A80 /* EpisodeView.swift */; };
 		ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6212B52E945000D0A80 /* EpisodeListView.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365ScraperManager.swift; sourceTree = "<group>"; };
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C6D440D12B4AEA9D00A81421 /* Anime365Scraper */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365Scraper; sourceTree = "<group>"; };
 		ED36C61F2B52D2AA000D0A80 /* EpisodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeView.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				EDFF2D172B43471500F27E61 /* Preview Content */,
 				ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */,
 				ED74304C2B4B07EB009BCE3A /* Show */,
+				C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */,
 			);
 			path = ani365;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				EDFF2D2C2B449A5500F27E61 /* Episode.swift in Sources */,
 				EDFF2D282B44763700F27E61 /* ShowCategoryRow.swift in Sources */,
 				ED5A80672B49DEA300D59815 /* SceneLoadingErrorView.swift in Sources */,
+				C65ACDE82B54466400C27FB3 /* Anime365ScraperManager.swift in Sources */,
 				EDE9592F2B475E590030B23D /* ShowView.swift in Sources */,
 				ED36C6252B52ECFB000D0A80 /* EpisodePreviewRow.swift in Sources */,
 				EDFF2D112B43471300F27E61 /* Anime365App.swift in Sources */,

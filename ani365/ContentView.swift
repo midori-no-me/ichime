@@ -21,6 +21,7 @@ struct ContentView: View {
     @State private var isEpisodeViewPresented = false
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @EnvironmentObject var scraperManager: Anime365ScraperManager
 
     var body: some View {
         if horizontalSizeClass == .regular {
@@ -78,6 +79,19 @@ struct ContentView: View {
             TabView {
                 NavigationStack {
                     OverviewView()
+                    Button(scraperManager.user != nil ? "ReAuth" : "Auth") {
+                        Task {
+                            do {
+                                let user = try await scraperManager.startAuth()
+                                print(user)
+                            } catch {
+                                print("some error", error.localizedDescription)
+                            }
+                        }
+                    }
+                }
+                .onAppear {
+                    print(scraperManager.user)
                 }
                 .tabItem {
                     Label("Обзор", systemImage: "rectangle.grid.2x2")
