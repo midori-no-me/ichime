@@ -57,10 +57,17 @@ func guessEpisodeReleaseWeekdayAndTime(in episodePreviews: [EpisodePreview]) -> 
     // Find the weekday with the maximum count
     if let mostOccurringWeekday = weekdayCount.max(by: { $0.value < $1.value })?.key {
         // Convert the weekday to a string representation
-        let dateFormatter = DateFormatter()
-        let weekdaySymbols = dateFormatter.weekdaySymbols
+        let weekdaySymbols = [
+            0: "воскресеньям",
+            1: "понедельникам",
+            2: "вторникам",
+            3: "средам",
+            4: "четвергам",
+            5: "пятницам",
+            6: "субботам",
+        ]
 
-        guard let weekdayString = weekdaySymbols?[mostOccurringWeekday - 1] else {
+        guard let weekdayString = weekdaySymbols[mostOccurringWeekday - 1] else {
             return nil
         }
 
@@ -136,6 +143,6 @@ enum EpisodePreviewSampleData {
             typeAndNumber: "8 серия",
             uploadDate: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,
             type: .tv
-        )
+        ),
     ]
 }

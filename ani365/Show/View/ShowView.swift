@@ -353,7 +353,7 @@ private struct EpisodePreviewList: View {
             }
 
             if isOgnoing, let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: episodePreviews) {
-                Text("Это онгоинг. Обычно новые серии выходят в \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1).")
+                Text("Это онгоинг. Обычно новые серии выходят по \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1).")
                     .font(.subheadline)
             }
 
