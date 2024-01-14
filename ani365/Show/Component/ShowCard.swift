@@ -51,7 +51,7 @@ struct ShowCard: View {
                     .frame(maxWidth: .infinity, alignment: .topLeading)
             }
             .contextMenu {
-                Button {} label: {
+                ShareLink(item: show.websiteUrl) {
                     Label("Поделиться", systemImage: "square.and.arrow.up")
                 }
             } preview: {
