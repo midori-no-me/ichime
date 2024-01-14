@@ -12,7 +12,8 @@
 		ED36C6202B52D2AA000D0A80 /* EpisodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C61F2B52D2AA000D0A80 /* EpisodeView.swift */; };
 		ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6212B52E945000D0A80 /* EpisodeListView.swift */; };
 		ED36C6252B52ECFB000D0A80 /* EpisodePreviewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6242B52ECFB000D0A80 /* EpisodePreviewRow.swift */; };
-		ED36C6282B530535000D0A80 /* EpisodePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6272B530535000D0A80 /* EpisodePreview.swift */; };
+		ED36C6282B530535000D0A80 /* EpisodePreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6272B530535000D0A80 /* EpisodePreviewModel.swift */; };
+		ED36C62A2B53FB81000D0A80 /* EpisodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6292B53FB81000D0A80 /* EpisodeModel.swift */; };
 		ED5A80672B49DEA300D59815 /* SceneLoadingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */; };
 		ED8815E52B51DADF00EDBA9C /* RecentSearches.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8815E42B51DADF00EDBA9C /* RecentSearches.swift */; };
 		ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = ED8A40802B4C57410055DAB6 /* CachedAsyncImage */; };
@@ -50,7 +51,8 @@
 		ED36C61F2B52D2AA000D0A80 /* EpisodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeView.swift; sourceTree = "<group>"; };
 		ED36C6212B52E945000D0A80 /* EpisodeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeListView.swift; sourceTree = "<group>"; };
 		ED36C6242B52ECFB000D0A80 /* EpisodePreviewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePreviewRow.swift; sourceTree = "<group>"; };
-		ED36C6272B530535000D0A80 /* EpisodePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePreview.swift; sourceTree = "<group>"; };
+		ED36C6272B530535000D0A80 /* EpisodePreviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePreviewModel.swift; sourceTree = "<group>"; };
+		ED36C6292B53FB81000D0A80 /* EpisodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeModel.swift; sourceTree = "<group>"; };
 		ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLoadingErrorView.swift; sourceTree = "<group>"; };
 		ED8815E42B51DADF00EDBA9C /* RecentSearches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearches.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -116,7 +118,8 @@
 		ED36C6262B530524000D0A80 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				ED36C6272B530535000D0A80 /* EpisodePreview.swift */,
+				ED36C6292B53FB81000D0A80 /* EpisodeModel.swift */,
+				ED36C6272B530535000D0A80 /* EpisodePreviewModel.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -306,10 +309,11 @@
 				EDE959332B484C8A0030B23D /* ContentView.swift in Sources */,
 				EDE959312B4762690030B23D /* OngoingsView.swift in Sources */,
 				ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */,
-				ED36C6282B530535000D0A80 /* EpisodePreview.swift in Sources */,
+				ED36C6282B530535000D0A80 /* EpisodePreviewModel.swift in Sources */,
 				EDF7104E2B4B344F001C2008 /* ShowCard.swift in Sources */,
 				ED8815E52B51DADF00EDBA9C /* RecentSearches.swift in Sources */,
 				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
+				ED36C62A2B53FB81000D0A80 /* EpisodeModel.swift in Sources */,
 				EDFF2D2C2B449A5500F27E61 /* Episode.swift in Sources */,
 				EDFF2D282B44763700F27E61 /* ShowCategoryRow.swift in Sources */,
 				ED5A80672B49DEA300D59815 /* SceneLoadingErrorView.swift in Sources */,

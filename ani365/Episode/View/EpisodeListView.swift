@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EpisodeListView: View {
-    public let episodePreviews: [EpisodePreview];
+    public let episodePreviews: [EpisodePreview]
 
     var body: some View {
         List {
@@ -17,9 +17,9 @@ struct EpisodeListView: View {
             }
         }
         .navigationTitle("Список серий")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
-
 
 #Preview {
     NavigationStack {

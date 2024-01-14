@@ -45,7 +45,8 @@ struct Show: Hashable, Identifiable {
                     id: episode.id,
                     title: episode.episodeTitle.isEmpty ? nil : episode.episodeTitle,
                     typeAndNumber: episode.episodeFull,
-                    uploadDate: stringToDate(string: episode.firstUploadedDateTime)!
+                    uploadDate: stringToDate(string: episode.firstUploadedDateTime)!,
+                    type: EpisodeType.createFromApiType(apiType: episode.episodeType)
                 )
             }
         )

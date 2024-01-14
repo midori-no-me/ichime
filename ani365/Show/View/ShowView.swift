@@ -259,50 +259,12 @@ private struct ShowDetails: View {
             }
         }
 
-        VStack(alignment: .leading, spacing: 12) {
-            if show.isOngoing {
-                HStack {
-                    Text("Последние серии")
-                        .font(.title2)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
-                    NavigationLink(destination: EpisodeListView(episodePreviews: self.show.episodePreviews)) {
-                        Text("Все серии")
-                            .font(.callout)
-                    }
-                    .buttonStyle(.borderless)
-                    .frame(alignment: .trailing)
-                }
-
-                ForEach(self.show.episodePreviews.reversed().prefix(5), id: \.self) { episodePreview in
-                    EpisodePreviewRow(data: episodePreview)
-
-                    Divider()
-                }
-
-            } else {
-                HStack {
-                    Text("Серии")
-                        .font(.title2)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
-                    NavigationLink(destination: EpisodeListView(episodePreviews: self.show.episodePreviews)) {
-                        Text("Все серии")
-                            .font(.callout)
-                    }
-                    .buttonStyle(.borderless)
-                    .frame(alignment: .trailing)
-                }
-
-                ForEach(self.show.episodePreviews.prefix(5), id: \.self) { episodePreview in
-                    EpisodePreviewRow(data: episodePreview)
-
-                    Divider()
-                }
-            }
+        if !self.show.episodePreviews.isEmpty {
+            EpisodePreviewList(
+                isOgnoing: self.show.isOngoing,
+                episodePreviews: self.show.episodePreviews
+            )
         }
-        .padding(.top, 18)
-        .scenePadding(.horizontal)
     }
 }
 
@@ -367,6 +329,42 @@ private struct ShowDescription: View {
             }
             .padding(.top, 4)
         }
+    }
+}
+
+private struct EpisodePreviewList: View {
+    let isOgnoing: Bool
+    let episodePreviews: [EpisodePreview]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+
+            HStack {
+                Text("Серии")
+                    .font(.title2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                NavigationLink(destination: EpisodeListView(episodePreviews: episodePreviews)) {
+                    Text("Все серии")
+                        .font(.callout)
+                }
+                .buttonStyle(.borderless)
+                .frame(alignment: .trailing)
+            }
+
+            if isOgnoing, let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: episodePreviews) {
+                Text("Это онгоинг. Обычно новые серии выходят в \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1).")
+                    .font(.subheadline)
+            }
+
+            ForEach(episodePreviews.prefix(5), id: \.self) { episodePreview in
+                EpisodePreviewRow(data: episodePreview)
+
+                Divider()
+            }
+        }
+        .padding(.top, 18)
+        .scenePadding(.horizontal)
     }
 }
 
