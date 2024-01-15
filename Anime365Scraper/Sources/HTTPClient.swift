@@ -18,38 +18,23 @@ public extension Anime365Scraper.API {
             case serverError
         }
 
-        private let headers: [String: String]
+        let user: Anime365Scraper.AuthManager.Types.UserAuth
+        let session: Anime365Scraper.AuthManager.Types.Session
 
-        let baseURL: String
-        let userID: PHPUserID
-
-        public init(accessCookie: String, baseURL: String = "https://anime365.ru") {
-            headers = [
-                "User-Agent": "Anime365 IOS root@dimensi.dev",
-                "Cookie": accessCookie,
-            ]
-
-            userID = .init(phpToken: accessCookie)
-            self.baseURL = baseURL
+        public init(userAuth: Anime365Scraper.AuthManager.Types.UserAuth) {
+            user = userAuth
+            session = .init(cookieStorage: HTTPCookieStorage.shared, domain: Anime365Scraper.domain)
         }
 
-        func appendURL(_ path: String) -> String {
-            baseURL + path
-        }
+        func requestHTML(method: Methods, parameters: [String: String] = [String: String]()) async throws -> String {
+            let url = getUrl(method: method, params: parameters)
 
-        func requestHTML(url: String, parameters: [String: Any]?) async throws -> String {
-            let fullURL = URL(string: url)!
-
-            // Подготовка параметров запроса
-            var urlComponents = URLComponents(url: fullURL, resolvingAgainstBaseURL: true)
-            urlComponents?.queryItems = parameters?.map { URLQueryItem(name: $0.key, value: String(describing: $0.value)) }
-
-            guard let preparedURL = urlComponents?.url else {
+            guard let url, let preparedURL = URL(string: url) else {
                 throw APIError.invalidResponse
             }
 
             var request = URLRequest(url: preparedURL)
-            request.allHTTPHeaderFields = headers
+            request.setValue(Anime365Scraper.userAgent, forHTTPHeaderField: "User-Agent")
             request.timeoutInterval = 10
 
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -72,41 +57,42 @@ public extension Anime365Scraper.API {
                 throw APIError.requestFailed
             }
         }
-    }
-}
 
-struct PHPUserID {
-    // UserID пользователя достанный из куки
-    public let value: Int
+        func postForm(method: Methods, payload: [String: String]) async throws -> String {
+            let url = getUrl(method: method)
 
-    init(phpToken: String) {
-        if let decodedString = phpToken.removingPercentEncoding {
-            value = Self.getValue(phpToken: decodedString)
-        } else {
-            value = 0
-        }
-    }
+            guard let url, let preparedURL = URL(string: url) else {
+                throw APIError.invalidResponse
+            }
 
-    // Размер токена авторизации в строке авторизации
-    private static let tokenSize = 40
-    private static let pattern = "i:0;i:(\\d+)"
-    private static func getValue(phpToken: String) -> Int {
-        let cookieValue = phpToken.components(separatedBy: "=").last
-        guard let cookieValue else { return 0 }
-        let onlyUserDataString = String(cookieValue.dropFirst(tokenSize))
+            var request = URLRequest(url: preparedURL)
+            request.httpMethod = "POST"
+            request.setValue(Anime365Scraper.userAgent, forHTTPHeaderField: "User-Agent")
+            request.timeoutInterval = 10
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 
-        if let range = onlyUserDataString.range(of: pattern, options: .regularExpression) {
-            let match = onlyUserDataString[range]
-            let components = match.components(separatedBy: ";")
-            if let idPart = components.last {
-                let parts = idPart.components(separatedBy: ":")
-                if let id = parts.last, let number = Int(id) {
-                    return number
+            // Собираем данные для запроса из словаря
+            let postData = payload.map { key, value in
+                "\(key)=\(value)"
+            }.joined(separator: "&")
+
+            request.httpBody = postData.data(using: .utf8)
+
+            do {
+                // Выполняем асинхронный запрос
+                let (data, response) = try await URLSession.shared.data(for: request)
+                if let response = response as? HTTPURLResponse, (200 ..< 300).contains(response.statusCode),
+                   let responseString = String(data: data, encoding: .utf8)
+                {
+                    return responseString
+                } else {
+                    print(response, data)
+                    throw APIError.invalidResponse
                 }
+            } catch {
+                throw error
             }
         }
-
-        return 0
     }
 }
 

@@ -24,8 +24,8 @@ public extension Anime365Scraper {
          */
         public func notificationCount() async -> Int? {
             do {
-                let result = try await httpClient.requestHTML(url: httpClient.appendURL("/"), parameters: nil)
-                let doc: Document = try SwiftSoup.parse(result, httpClient.baseURL)
+                let result = try await httpClient.requestHTML(method: .main)
+                let doc: Document = try SwiftSoup.parse(result)
                 guard let counterElement = try doc.select("[href=/notifications/index]").first(),
                       let match = try counterElement.text().firstMatch(of: #/(?<count>\d+)/#),
                       let counter = Int(match.output.count)
@@ -44,13 +44,12 @@ public extension Anime365Scraper {
          */
         public func notifications(page: Int = 1) async -> [Types.Notification] {
             do {
-                let parameters: [String: Any] = [
-                    "Notifications_page": page as Any,
-                    "ajax": "yw0" as Any
+                let parameters: [String: String] = [
+                    "Notifications_page": String(page),
+                    "ajax": "yw0"
                 ]
-                let url = httpClient.appendURL("/notifications/index")
-                let result = try await httpClient.requestHTML(url: url, parameters: parameters)
-                let doc: Document = try SwiftSoup.parse(result, httpClient.baseURL)
+                let result = try await httpClient.requestHTML(method: .notifications, parameters: parameters)
+                let doc: Document = try SwiftSoup.parse(result)
                 let notificationsElements = try doc.select("#yw0 .notifications-item")
 
                 return notificationsElements.array().compactMap { Types.Notification(from: $0) }

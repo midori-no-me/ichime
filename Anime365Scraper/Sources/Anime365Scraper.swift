@@ -1,4 +1,7 @@
 public enum Anime365Scraper {
+    public static let domain = "anime365.ru"
+    public static let userAgent = "ani365-ios"
+
     /**
      Корневой класс пакета, хранит в себе весь апи для работы с сайтом anime365.ru
      */

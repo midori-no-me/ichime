@@ -12,41 +12,19 @@ import Foundation
 @MainActor
 class Anime365ScraperManager: ObservableObject {
     @Published var user: Anime365Scraper.AuthManager.Types.UserAuth?
-    
-    private let authViewManager: Anime365ScraperAuthViewManager
-    private var cancellable: AnyCancellable?
-    init(authViewManager: Anime365ScraperAuthViewManager) {
-        self.authViewManager = authViewManager
+
+    init() {
         user = Anime365Scraper.AuthManager.shared.getUser()
     }
-    
-    enum AuthError: Error {
-        case invalidCredentials
-        case networkError
-    }
-    
-    func startAuth() async throws -> Anime365Scraper.AuthManager.Types.UserAuth {
-        authViewManager.isNeedAuth = true
-        
-        let user = try await withCheckedThrowingContinuation { continuation in
-            self.cancellable = authViewManager.$isNeedAuth
-                .dropFirst()
-                .sink { isNeedAuth in
-                    if !isNeedAuth {
-                        let user = Anime365Scraper.AuthManager.shared.getUser()
-                        continuation.resume(returning: user)
-                    }
-                }
-        }
-        
-        guard let user else {
-            throw AuthError.invalidCredentials
-        }
-        cancellable?.cancel()
+
+    func startAuth(username: String, password: String) async throws -> Anime365Scraper.AuthManager.Types.UserAuth {
+        let user = try await Anime365Scraper.AuthManager.shared.login(username: username, password: password)
+        self.user = user
         return user
     }
-}
 
-class Anime365ScraperAuthViewManager: ObservableObject {
-    @Published var isNeedAuth = false
+    func dropAuth() {
+        Anime365Scraper.AuthManager.shared.logout()
+        user = nil
+    }
 }

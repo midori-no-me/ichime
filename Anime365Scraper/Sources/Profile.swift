@@ -20,11 +20,11 @@ public extension Anime365Scraper {
 
         public func me() async -> Types.UserProfile? {
             do {
-                let parameters: [String: Any] = [
-                    "dynpage": 1 as Any,
+                let parameters = [
+                    "dynpage": "1",
                 ]
-                let result = try await httpClient.requestHTML(url: httpClient.appendURL("/users/profile"), parameters: parameters)
-                let doc = try SwiftSoup.parseBodyFragment(result, httpClient.baseURL)
+                let result = try await httpClient.requestHTML(method: .profile, parameters: parameters)
+                let doc = try SwiftSoup.parseBodyFragment(result)
                 guard let avatarElement = try doc.select(".card-image img").first(),
                       let userAuth = AuthManager.shared.getUser()
                 else {
@@ -32,7 +32,7 @@ public extension Anime365Scraper {
                 }
 
                 let src = try avatarElement.attr("src")
-                guard let avatarSrc = URL(string: src) else { return nil }
+                guard let avatarSrc = URL(string: getUrl(method: .main) ?? "" + src) else { return nil }
 
                 return .init(id: userAuth.id, username: userAuth.username, avatarSrc: avatarSrc)
             } catch {

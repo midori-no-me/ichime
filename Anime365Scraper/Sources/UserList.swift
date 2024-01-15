@@ -21,12 +21,15 @@ public extension Anime365Scraper {
          Запрос списка "Серии к просмотру"
          */
         public func nextToWatch(page: Int? = nil) async throws -> [Types.WatchShow] {
-            let parameters: [String: Any] = [
-                "ajax": "m-index-personal-episodes" as Any,
-                "pageP": page as Any,
-            ].compactMapValues { $0 }
-            let result = try await httpClient.requestHTML(url: httpClient.appendURL("/"), parameters: parameters)
-            let doc: Document = try SwiftSoup.parse(result, httpClient.baseURL)
+            var parameters: [String: String] = [
+                "ajax": "m-index-personal-episodes",
+            ]
+            if let page {
+                parameters["pageP"] = String(page)
+            }
+            
+            let result = try await httpClient.requestHTML(method: .main, parameters: parameters)
+            let doc: Document = try SwiftSoup.parse(result)
             guard let watchSection = try doc.getElementById("m-index-personal-episodes") else { return [] }
             let elements = try watchSection.select("div.m-new-episode")
 
@@ -37,29 +40,12 @@ public extension Anime365Scraper {
          Запрос пользовательского списка сохраненных аниме
          */
         public func watchList(_ type: Types.UserListCategoryType? = nil) async throws -> [Types.UserListCategory] {
-            var url: String = httpClient.appendURL("/users/\(httpClient.userID.value)/list")
-
-            switch type {
-            case .completed:
-                url = url + "/completed"
-            case .dropped:
-                url = url + "/dropped"
-            case .onHold:
-                url = url + "/onhold"
-            case .watching:
-                url = url + "/watching"
-            case .planned:
-                url = url + "/planned"
-            case .none:
-                break
-            }
-
-            let parameters: [String: Any] = [
-                "dynpage": 1 as Any,
+            let parameters = [
+                "dynpage": "1",
             ]
 
-            let result = try await httpClient.requestHTML(url: url, parameters: parameters)
-            let doc = try SwiftSoup.parseBodyFragment(result, httpClient.baseURL)
+            let result = try await httpClient.requestHTML(method: .userList(userId: httpClient.user.id, type: type), parameters: parameters)
+            let doc = try SwiftSoup.parseBodyFragment(result)
 
             let sections = try doc.select(".m-animelist-card")
 
@@ -68,6 +54,53 @@ public extension Anime365Scraper {
             }
 
             return sections.array().compactMap { Types.UserListCategory(from: $0) }
+        }
+
+        public struct UserRate {
+            public let score: Int
+            public let currentEpisode: Int
+            public let status: UserRateStatus
+            public let comment: String
+
+            init() {
+                self.init(score: 0, currentEpisode: 0, status: .planned, comment: "")
+            }
+
+            public init(score: Int, currentEpisode: Int, status: UserRateStatus, comment: String) {
+                self.score = score
+                self.currentEpisode = currentEpisode
+                self.status = status
+                self.comment = comment
+            }
+        }
+
+        public enum UserRateStatus: Int {
+            case planned
+            case watching
+            case completed
+            case onHold
+            case dropped
+            case deleted = 99
+        }
+
+        /**
+         Обновить аниме в списке просмотренного
+         */
+        public func updateWatchList(showId: Int, params: UserRate) async throws -> UserRate {
+            guard let csrfToken = httpClient.session.get(name: .csrf) else {
+                throw NSError(domain: "Cannot get value from http", code: 1)
+            }
+            
+            let postDataDictionary: [String: String] = [
+                "csrf": csrfToken.value,
+                "UsersRates[score]": String(params.score),
+                "UsersRates[episodes]": String(params.currentEpisode),
+                "UsersRates[status]": String(params.status.rawValue),
+                "UsersRates[comment]": String(params.comment),
+            ]
+            let response = try await httpClient.postForm(method: .getAnimeStatus(id: String(showId)), payload: postDataDictionary)
+            print(response)
+            return .init()
         }
     }
 }
