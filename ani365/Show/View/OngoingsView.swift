@@ -1,114 +1,70 @@
-//
-//  ContentView.swift
-//  ani365
-//
-//  Created by p.flaks on 01.01.2024.
-//
-
 import SwiftUI
 
-struct OngoingsView: View {
-    @State public var shows: [Show]?
-    @State private var currentOffset = 0
-    @State private var isLoading = true
-    @State private var loadingError: Error?
-    @State private var stopLazyLoading = false
+class OngoingsViewModel: ObservableObject {
+    enum State {
+        case idle
+        case loading
+        case loadingFailed(Error)
+        case loadedButEmpty
+        case loaded([Show])
+    }
 
-    /// Изменение этой переменной форсит ререндер сетки карточек.
-    @State private var uuidThatForcesCardsGridRerender: UUID = .init()
+    @Published private(set) var state = State.idle
+
+    private let client: Anime365Client
+
+    private var currentOffset: Int = 0
+    private var shows: [Show] = []
+    private var stopLazyLoading: Bool = false
 
     private let SHOWS_PER_PAGE = 20
 
-    var body: some View {
-        Group {
-            if let shows = self.shows {
-                if shows.isEmpty {
-                    OngoingsViewWrapper {
-                        Spacer()
-
-                        ContentUnavailableView {
-                            Label("Ничего не нашлось", systemImage: "rectangle.grid.3x2.fill")
-                        } description: {
-                            Text("Кажется, где-то закрался баг 😭")
-                        }
-
-                        Spacer()
-                    }
-
-                } else {
-                    ScrollView([.vertical]) {
-                        OngoingsViewWrapper {
-                            OngoingsGrid(
-                                shows: shows,
-                                loadMore: { await self.fetchOngoings(offset: self.currentOffset + self.SHOWS_PER_PAGE) }
-                            )
-                            .id(self.uuidThatForcesCardsGridRerender)
-                            .padding(.top, 18)
-                            .scenePadding(.horizontal)
-                            .scenePadding(.bottom)
-                        }
-                    }
-                }
-            } else {
-                if self.isLoading {
-                    OngoingsViewWrapper {
-                        Spacer()
-
-                        ProgressView()
-
-                        Spacer()
-                    }
-
-                } else if let loadingError = self.loadingError {
-                    OngoingsViewWrapper {
-                        Spacer()
-
-                        ContentUnavailableView {
-                            Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-                        } description: {
-                            Text(loadingError.localizedDescription)
-                        }
-                        .textSelection(.enabled)
-
-                        Spacer()
-                    }
-                }
-            }
-        }
-        .navigationTitle("Онгоинги")
-        .navigationBarTitleDisplayMode(.large)
-        .onAppear {
-            if self.shows != nil || self.stopLazyLoading {
-                return
-            }
-
-            Task {
-                await self.fetchOngoings(offset: 0)
-            }
-        }
-        .refreshable {
-            self.stopLazyLoading = false
-            await self.fetchOngoings(offset: 0)
-        }
-    }
-
-    private func fetchOngoings(
-        offset: Int
-    ) async {
-        if self.stopLazyLoading {
-            return
+    init(
+        preloadedShows: [Show]? = nil
+    ) {
+        if let preloadedShows = preloadedShows, !preloadedShows.isEmpty {
+            self.currentOffset = preloadedShows.count
+            self.shows = preloadedShows
+            self.state = .loaded(self.shows)
         }
 
-        let anime365Client = Anime365Client(
+        self.client = Anime365Client(
             apiClient: Anime365ApiClient(
                 baseURL: "https://anime365.ru/api",
                 userAgent: "ani365"
             )
         )
+    }
+
+    func performInitialLoad() async {
+        self.state = .loading
 
         do {
-            let shows = try await anime365Client.getOngoings(
-                offset: offset,
+            let shows = try await client.getOngoings(
+                offset: self.currentOffset,
+                limit: self.SHOWS_PER_PAGE
+            )
+
+            if shows.isEmpty {
+                self.state = .loadedButEmpty
+            } else {
+                self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
+                self.shows = shows
+                self.state = .loaded(self.shows)
+            }
+        } catch {
+            self.state = .loadingFailed(error)
+        }
+    }
+
+    func performLazyLoading() async {
+        if self.stopLazyLoading {
+            return
+        }
+
+        do {
+            let shows = try await client.getOngoings(
+                offset: self.currentOffset,
                 limit: self.SHOWS_PER_PAGE
             )
 
@@ -116,28 +72,94 @@ struct OngoingsView: View {
                 self.stopLazyLoading = true
             }
 
-            var newShowsState = self.shows ?? []
-
-            if self.shows == nil {
-                newShowsState = []
-            }
-
-            /// Если запрашивают страницу, номер которой меньше или равен текущей странице в стейте,
-            /// то загружаем все сериалы с начала и заставляем все карточки перерендериться (через `self.uuidThatForcesCardsGridRerender`),
-            /// чтобы у них сбросился `View.onAppear()`, без которого не будет работать lazy loading.
-            if offset <= self.currentOffset {
-                newShowsState = []
-                self.uuidThatForcesCardsGridRerender = UUID()
-            }
-
-            self.shows = newShowsState + shows
-            self.currentOffset = offset
-
+            self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
+            self.shows += shows
+            self.state = .loaded(self.shows)
         } catch {
-            self.loadingError = error
+            self.stopLazyLoading = true
+        }
+    }
+
+    func performPullToRefresh() async {
+        do {
+            let shows = try await client.getOngoings(
+                offset: 0,
+                limit: self.SHOWS_PER_PAGE
+            )
+
+            if shows.isEmpty {
+                self.state = .loadedButEmpty
+            } else {
+                self.currentOffset = self.SHOWS_PER_PAGE
+                self.shows = shows
+                self.state = .loaded(self.shows)
+            }
+        } catch {
+            self.state = .loadingFailed(error)
         }
 
-        self.isLoading = false
+        self.stopLazyLoading = false
+    }
+}
+
+struct OngoingsView: View {
+    @ObservedObject var viewModel: OngoingsViewModel
+
+    var body: some View {
+        Group {
+            switch self.viewModel.state {
+            case .idle:
+                OngoingsViewWrapper {
+                    Color.clear.onAppear {
+                        Task {
+                            await self.viewModel.performInitialLoad()
+                        }
+                    }
+                }
+
+            case .loading:
+                OngoingsViewWrapper {
+                    ProgressView()
+                }
+
+            case .loadingFailed(let error):
+                OngoingsViewWrapper {
+                    ContentUnavailableView {
+                        Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+                    } description: {
+                        Text(error.localizedDescription)
+                    }
+                    .textSelection(.enabled)
+                }
+
+            case .loadedButEmpty:
+                OngoingsViewWrapper {
+                    ContentUnavailableView {
+                        Label("Ничего не нашлось", systemImage: "list.bullet")
+                    } description: {
+                        Text("Возможно, это баг")
+                    }
+                }
+
+            case .loaded(let shows):
+                ScrollView([.vertical]) {
+                    OngoingsViewWrapper {
+                        OngoingsGrid(
+                            shows: shows,
+                            loadMore: { await self.viewModel.performLazyLoading() }
+                        )
+                        .padding(.top, 18)
+                        .scenePadding(.horizontal)
+                        .scenePadding(.bottom)
+                    }
+                }
+            }
+        }
+        .navigationTitle("Онгоинги")
+        .navigationBarTitleDisplayMode(.large)
+        .refreshable {
+            await self.viewModel.performPullToRefresh()
+        }
     }
 }
 
@@ -152,7 +174,11 @@ private struct OngoingsViewWrapper<Content>: View where Content: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .textSelection(.enabled)
 
+        Spacer()
+
         self.content
+
+        Spacer()
     }
 }
 
@@ -165,11 +191,9 @@ private struct OngoingsGrid: View {
             ForEach(self.shows) { show in
                 ShowCard(show: show)
                     .frame(height: 300)
-                    .onAppear {
-                        Task {
-                            if show == self.shows.last {
-                                await self.loadMore()
-                            }
+                    .task {
+                        if show == self.shows.last {
+                            await self.loadMore()
                         }
                     }
             }
@@ -179,6 +203,6 @@ private struct OngoingsGrid: View {
 
 #Preview {
     NavigationStack {
-        OngoingsView()
+        OngoingsView(viewModel: .init())
     }
 }

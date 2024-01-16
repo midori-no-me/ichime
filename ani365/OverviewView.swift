@@ -91,7 +91,9 @@ private struct OverviewDetails: View {
             description: "Сериалы, у которых продолжают выходить новые серии",
             shows: self.ongoingsShows
         ) {
-            OngoingsView(shows: self.ongoingsShows)
+            OngoingsView(viewModel: .init(
+                preloadedShows: self.ongoingsShows
+            ))
         }
     }
 }

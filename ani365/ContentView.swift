@@ -73,7 +73,7 @@ struct ContentViewWithSideBar: View {
 
             case .ongoings:
                 NavigationStack {
-                    OngoingsView()
+                    OngoingsView(viewModel: .init())
                 }
 
             default:
@@ -100,7 +100,7 @@ struct ContentViewWithTabBar: View {
             }
 
             NavigationStack {
-                OngoingsView()
+                OngoingsView(viewModel: .init())
             }
             .tabItem {
                 Label("Онгоинги", systemImage: "film.stack")
