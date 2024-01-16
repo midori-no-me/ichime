@@ -18,7 +18,6 @@
 		ED3A674B2B56FBBA00FB3975 /* ShowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3A674A2B56FBBA00FB3975 /* ShowModel.swift */; };
 		ED5A80672B49DEA300D59815 /* SceneLoadingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */; };
 		ED659DCA2B546B200030DB9F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED659DC92B546B200030DB9F /* OnboardingView.swift */; };
-		ED8815E52B51DADF00EDBA9C /* RecentSearches.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8815E42B51DADF00EDBA9C /* RecentSearches.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
 		ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = ED8A40802B4C57410055DAB6 /* CachedAsyncImage */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
@@ -61,7 +60,6 @@
 		ED3A674A2B56FBBA00FB3975 /* ShowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowModel.swift; sourceTree = "<group>"; };
 		ED5A80662B49DEA300D59815 /* SceneLoadingErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLoadingErrorView.swift; sourceTree = "<group>"; };
 		ED659DC92B546B200030DB9F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		ED8815E42B51DADF00EDBA9C /* RecentSearches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearches.swift; sourceTree = "<group>"; };
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -146,7 +144,6 @@
 		ED8815E32B51DAA100EDBA9C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				ED8815E42B51DADF00EDBA9C /* RecentSearches.swift */,
 				ED3A674A2B56FBBA00FB3975 /* ShowModel.swift */,
 			);
 			path = Model;
@@ -325,7 +322,6 @@
 				EDF7104E2B4B344F001C2008 /* ShowCard.swift in Sources */,
 				ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */,
 				ED3A674B2B56FBBA00FB3975 /* ShowModel.swift in Sources */,
-				ED8815E52B51DADF00EDBA9C /* RecentSearches.swift in Sources */,
 				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
 				ED36C62A2B53FB81000D0A80 /* EpisodeModel.swift in Sources */,
 				EDFF2D2C2B449A5500F27E61 /* Episode.swift in Sources */,

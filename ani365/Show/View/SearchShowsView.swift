@@ -1,72 +1,153 @@
-//
-//  SearchShowsView.swift
-//  ani365
-//
-//  Created by p.flaks on 05.01.2024.
-//
-
 import SwiftUI
 
-// https://www.hackingwithswift.com/quick-start/swiftui/how-to-add-a-search-bar-to-filter-your-data
+class SearchShowsViewModel: ObservableObject {
+    enum State {
+        case idle([String])
+        case loading
+        case loadingFailed(Error)
+        case loadedButEmpty
+        case loaded([Show])
+    }
 
-enum SearchScope: String, CaseIterable {
-    case ongoing
-}
+    @Published private(set) var state: State
+    @Published var currentlyTypedSearchQuery = ""
+    @Published var isSearchPresented: Bool = false
 
-// Holds one token that we want the user to filter by. This *must* conform to Identifiable.
-struct Token: Identifiable {
-    var id: String { self.name }
-    var name: String
-}
+    private let client: Anime365Client
 
-struct SearchShowsView: View {
-    @State private var shows: [Show] = []
-    @State private var currentOffset = 0
-    @State private var searchQuery = ""
-    @State private var isLoading = false
-    @State private var loadingError: Error?
-    @State private var stopLazyLoading = false
-    @State private var isSearchPresented = false
-
-    @State private var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
+    private var lastPerformedSearchQuery = ""
+    private var currentOffset: Int = 0
+    private var shows: [Show] = []
+    private var stopLazyLoading: Bool = false
+    private var recentSearches = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
 
     private let SHOWS_PER_PAGE = 20
 
+    init() {
+        self.state = .idle(self.recentSearches)
+        self.client = Anime365Client(
+            apiClient: Anime365ApiClient(
+                baseURL: "https://anime365.ru/api",
+                userAgent: "ani365"
+            )
+        )
+    }
+
+    func performInitialSearch() async {
+        if self.currentlyTypedSearchQuery.isEmpty {
+            return
+        }
+
+        self.state = .loading
+        self.lastPerformedSearchQuery = self.currentlyTypedSearchQuery
+
+        self.addRecentSearch(searchQuery: self.currentlyTypedSearchQuery)
+
+        do {
+            let shows = try await client.searchShows(
+                searchQuery: self.lastPerformedSearchQuery,
+                offset: self.currentOffset,
+                limit: self.SHOWS_PER_PAGE
+            )
+
+            if shows.isEmpty {
+                self.state = .loadedButEmpty
+            } else {
+                self.stopLazyLoading = false
+                self.currentOffset = self.SHOWS_PER_PAGE
+                self.shows = shows
+                self.state = .loaded(self.shows)
+            }
+        } catch {
+            self.state = .loadingFailed(error)
+        }
+    }
+
+    func performInitialSearchFromRecentSearch(
+        searchQuery: String
+    ) async {
+        self.currentlyTypedSearchQuery = searchQuery
+        self.isSearchPresented = true
+
+        await self.performInitialSearch()
+    }
+
+    func performLazyLoading() async {
+        if self.stopLazyLoading {
+            return
+        }
+
+        do {
+            let shows = try await client.searchShows(
+                searchQuery: self.lastPerformedSearchQuery,
+                offset: self.currentOffset,
+                limit: self.SHOWS_PER_PAGE
+            )
+
+            if shows.count < self.SHOWS_PER_PAGE {
+                self.stopLazyLoading = true
+            }
+
+            self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
+            self.shows += shows
+            self.state = .loaded(self.shows)
+        } catch {
+            self.stopLazyLoading = true
+        }
+    }
+
+    func currentlyTypedSearchQueryChanged() {
+        if !self.currentlyTypedSearchQuery.isEmpty {
+            return
+        }
+
+        self.state = .idle(self.recentSearches)
+        self.stopLazyLoading = false
+        self.currentOffset = 0
+        self.shows = []
+    }
+
+    private func addRecentSearch(searchQuery: String) {
+        var uniqueRecentSearches: [String] = []
+
+        for query in [searchQuery] + self.recentSearches {
+            if uniqueRecentSearches.contains(query) {
+                continue
+            }
+
+            uniqueRecentSearches.append(query)
+        }
+
+        uniqueRecentSearches = Array(uniqueRecentSearches.prefix(20))
+
+        self.recentSearches = uniqueRecentSearches
+
+        UserDefaults.standard.set(uniqueRecentSearches, forKey: "recentSearches")
+    }
+}
+
+struct SearchShowsView: View {
+    @ObservedObject var viewModel: SearchShowsViewModel
+
     var body: some View {
         Group {
-            if self.isLoading {
-                ProgressView()
-
-            } else if let loadingError = self.loadingError {
-                ContentUnavailableView {
-                    Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-                } description: {
-                    Text(loadingError.localizedDescription)
-                }
-                .textSelection(.enabled)
-
-            } else if self.searchQuery.isEmpty || (self.shows.isEmpty && self.isSearchPresented) {
-                if self.recentSearches.isEmpty {
+            switch self.viewModel.state {
+            case .idle(let recentSearches):
+                if recentSearches.isEmpty {
                     ContentUnavailableView {
                         Label("Тут пока ничего нет", systemImage: "magnifyingglass")
                     } description: {
                         Text("Предыдущие запросы поиска будут сохраняться на этом экране")
                     }
-
                 } else {
                     List {
                         Section(header: Text("Ранее вы искали")) {
-                            ForEach(self.recentSearches, id: \.self) { searchQuery in
+                            ForEach(recentSearches, id: \.self) { searchQuery in
                                 Button(action: {
                                     Task {
-                                        self.shows = []
-                                        self.searchQuery = searchQuery
-                                        self.isLoading = true
-                                        self.loadingError = nil
-                                        self.stopLazyLoading = false
-                                        self.isSearchPresented = true
-
-                                        await self.fetchShows(searchText: searchQuery, offset: 0)
+                                        await self.viewModel.performInitialSearchFromRecentSearch(
+                                            searchQuery: searchQuery
+                                        )
                                     }
                                 }) {
                                     Text(searchQuery)
@@ -78,23 +159,29 @@ struct SearchShowsView: View {
                     .listStyle(.plain)
                 }
 
-            } else if self.shows.isEmpty {
+            case .loading:
+                ProgressView()
+
+            case .loadingFailed(let error):
+                ContentUnavailableView {
+                    Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+                } description: {
+                    Text(error.localizedDescription)
+                }
+                .textSelection(.enabled)
+
+            case .loadedButEmpty:
                 ContentUnavailableView {
                     Label("Ничего не нашлось", systemImage: "rectangle.grid.3x2.fill")
                 } description: {
-                    Text("Кажется, где-то закрался баг 😭")
+                    Text("Попробуйте переформулировать текст запроса")
                 }
 
-            } else {
+            case .loaded(let shows):
                 ScrollView([.vertical]) {
                     ShowsGrid(
-                        shows: self.shows,
-                        loadMore: {
-                            await self.fetchShows(
-                                searchText: self.searchQuery,
-                                offset: self.currentOffset + self.SHOWS_PER_PAGE
-                            )
-                        }
+                        shows: shows,
+                        loadMore: { await self.viewModel.performLazyLoading() }
                     )
                     .padding(.top, 18)
                     .scenePadding(.horizontal)
@@ -105,62 +192,19 @@ struct SearchShowsView: View {
         .navigationTitle("Поиск")
         .navigationBarTitleDisplayMode(.large)
         .searchable(
-            text: self.$searchQuery,
-            isPresented: self.$isSearchPresented,
+            text: self.$viewModel.currentlyTypedSearchQuery,
+            isPresented: self.$viewModel.isSearchPresented,
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: "Название тайтла"
         )
+        .onChange(of: self.viewModel.currentlyTypedSearchQuery) {
+            self.viewModel.currentlyTypedSearchQueryChanged()
+        }
         .onSubmit(of: .search) {
-            if self.searchQuery.isEmpty {
-                return
-            }
-
             Task {
-                self.shows = []
-                self.isLoading = true
-                self.loadingError = nil
-                self.stopLazyLoading = false
-                self.recentSearches.insert(self.searchQuery, at: 0)
-                UserDefaults.standard.set(self.recentSearches, forKey: "recentSearches")
-
-                await self.fetchShows(searchText: self.searchQuery, offset: 0)
+                await self.viewModel.performInitialSearch()
             }
         }
-    }
-
-    private func fetchShows(
-        searchText: String,
-        offset: Int
-    ) async {
-        if searchText.isEmpty || self.stopLazyLoading {
-            return
-        }
-
-        let anime365Client = Anime365Client(
-            apiClient: Anime365ApiClient(
-                baseURL: "https://anime365.ru/api",
-                userAgent: "ani365"
-            )
-        )
-
-        do {
-            let shows = try await anime365Client.searchShows(
-                searchQuery: searchText,
-                offset: offset,
-                limit: self.SHOWS_PER_PAGE
-            )
-
-            self.shows += shows
-            self.currentOffset = offset
-
-            if shows.count < self.SHOWS_PER_PAGE {
-                self.stopLazyLoading = true
-            }
-        } catch {
-            self.loadingError = error
-        }
-
-        self.isLoading = false
     }
 }
 
@@ -173,11 +217,9 @@ private struct ShowsGrid: View {
             ForEach(self.shows) { show in
                 ShowCard(show: show)
                     .frame(height: 300)
-                    .onAppear {
-                        Task {
-                            if show == self.shows.last {
-                                await self.loadMore()
-                            }
+                    .task {
+                        if show == self.shows.last {
+                            await self.loadMore()
                         }
                     }
             }
@@ -187,6 +229,6 @@ private struct ShowsGrid: View {
 
 #Preview {
     NavigationStack {
-        SearchShowsView()
+        SearchShowsView(viewModel: .init())
     }
 }

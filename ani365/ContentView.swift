@@ -68,7 +68,7 @@ struct ContentViewWithSideBar: View {
 
             case .searchShows:
                 NavigationStack {
-                    SearchShowsView()
+                    SearchShowsView(viewModel: .init())
                 }
 
             case .ongoings:
@@ -107,7 +107,7 @@ struct ContentViewWithTabBar: View {
             }
 
             NavigationStack {
-                SearchShowsView()
+                SearchShowsView(viewModel: .init())
             }
             .tabItem {
                 Label("Поиск", systemImage: "magnifyingglass")

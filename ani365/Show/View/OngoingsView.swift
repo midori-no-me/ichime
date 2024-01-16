@@ -48,7 +48,7 @@ class OngoingsViewModel: ObservableObject {
             if shows.isEmpty {
                 self.state = .loadedButEmpty
             } else {
-                self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
+                self.currentOffset = self.SHOWS_PER_PAGE
                 self.shows = shows
                 self.state = .loaded(self.shows)
             }
