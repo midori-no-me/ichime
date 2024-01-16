@@ -41,7 +41,7 @@ class EpisodeViewModel: ObservableObject {
             if episodeTranslations.isEmpty {
                 self.state = .loadedButEmpty
             } else {
-                self.state = .loaded(getGroupedTranslations(episodeTranslations: episodeTranslations))
+                self.state = .loaded(self.getGroupedTranslations(episodeTranslations: episodeTranslations))
             }
         } catch {
             self.state = .loadingFailed(error)
@@ -113,7 +113,7 @@ struct EpisodeView: View {
                 }
             }
         }
-        .navigationTitle(viewModel.episodeTitle)
+        .navigationTitle(self.viewModel.episodeTitle)
         .navigationBarTitleDisplayMode(.large)
     }
 }
@@ -136,45 +136,9 @@ private struct TranslationRow: View {
             }
         }
         .sheet(isPresented: self.$showingSheet) {
-            NavigationStack {
-                List {
-                    Section {
-                        Button(action: {
-                            print("asd")
-                        }) {
-                            Text("720p")
-                        }
-
-                        Button(action: {
-                            print("asd")
-                        }) {
-                            Text("1080p")
-                        }
-                    } footer: {
-                        Text("AirPlay не доступен для серий с софтсабом.")
-                    }
-                }
-                .navigationTitle(self.episodeTranslation.translationTeam ?? "???")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button(
-                            action: {
-                                self.showingSheet.toggle()
-                            },
-                            label: {
-                                Text("Закрыть")
-                            }
-                        )
-                    }
-
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        ShareLink(item: self.episodeTranslation.websiteUrl) {
-                            Label("Поделиться", systemImage: "square.and.arrow.up")
-                        }
-                    }
-                }
-            }
+            EpisodeTranslationQualityView(
+                translationTeam: self.episodeTranslation.translationTeam ?? "???"
+            )
             .presentationDetents([.medium])
         }
     }

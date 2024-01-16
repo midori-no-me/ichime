@@ -304,32 +304,42 @@ private struct ShowDescription: View {
                         showingSheet.toggle()
                     }
                     .sheet(isPresented: $showingSheet) {
-                        NavigationStack {
-                            VStack(alignment: .leading) {
-                                Text(self.description.text)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .scenePadding()
-
-                                Spacer()
-                            }
-                            .navigationTitle("Описание от \(self.description.source)")
-                            .navigationBarTitleDisplayMode(.inline)
-                            .toolbar {
-                                ToolbarItem(placement: .cancellationAction) {
-                                    Button(
-                                        action: {
-                                            showingSheet.toggle()
-                                        },
-                                        label: {
-                                            Text("Закрыть")
-                                        }
-                                    )
-                                }
-                            }
-                        }
+                        ShowDescriptionSheetView(
+                            description: description
+                        )
                     }
             }
             .padding(.top, 4)
+        }
+    }
+}
+
+private struct ShowDescriptionSheetView: View {
+    let description: Show.Description
+
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView([.vertical]) {
+                VStack(alignment: .leading) {
+                    Text(self.description.text)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .scenePadding()
+                        .textSelection(.enabled)
+
+                    Spacer()
+                }
+            }
+            .navigationTitle("Описание от \(self.description.source)")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Закрыть") {
+                        dismiss()
+                    }
+                }
+            }
         }
     }
 }

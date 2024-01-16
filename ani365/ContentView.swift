@@ -18,7 +18,6 @@ struct ContentView: View {
 }
 
 struct ContentViewWithSideBar: View {
-    @State private var isEpisodeViewPresented = false
     @State private var navigationActiveTab: SideBarLinks? = .overview
 
     enum SideBarLinks {

@@ -171,11 +171,7 @@ struct SearchShowsView: View {
                 .textSelection(.enabled)
 
             case .loadedButEmpty:
-                ContentUnavailableView {
-                    Label("Ничего не нашлось", systemImage: "rectangle.grid.3x2.fill")
-                } description: {
-                    Text("Попробуйте переформулировать текст запроса")
-                }
+                ContentUnavailableView.search
 
             case .loaded(let shows):
                 ScrollView([.vertical]) {
