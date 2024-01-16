@@ -67,65 +67,20 @@ struct Anime365ApiSeries: Decodable {
 
 struct Anime365ApiTranslation: Decodable {
     let id: Int
-    let addedDateTime: String
     let activeDateTime: String
     let authorsList: [String]
-    let fansubsTranslationID: Int
     let isActive: Int
     let priority: Int
     let qualityType: String
-    let type: String
     let typeKind: String
     let typeLang: String
     let updatedDateTime: String
     let title: String
-    let seriesID: Int
-    let episodeID: Int
     let url: String
     let authorsSummary: String
-    let episode: EpisodePreview
-    let series: SeriesPreview
     let duration: String
     let width: Int
     let height: Int
-
-    struct EpisodePreview: Decodable {
-        let id: Int
-        let episodeFull: String
-        let episodeInt: String
-        let episodeTitle: String
-        let episodeType: String
-        let firstUploadedDateTime: String
-        let isActive: Int
-        let isFirstUploaded: Int
-        let seriesID: Int
-    }
-
-    struct SeriesPreview: Decodable {
-        let id: Int
-        let isActive: Int
-        let isAiring: Int
-        let isHentai: Int
-        let myAnimeListID: Int
-        let myAnimeListScore: String
-        let numberOfEpisodes: Int
-        let season: String
-        let year: Int
-        let type: String
-        let typeTitle: String
-        let titles: SeriesTitles
-        let posterURL: String
-        let posterURLSmall: String
-        let title: String
-        let url: String
-
-        struct SeriesTitles: Decodable {
-            let ru: String?
-            let romaji: String?
-            let ja: String?
-            let en: String?
-        }
-    }
 }
 
 final class Anime365ApiClient {
