@@ -323,25 +323,27 @@ private struct ShowDescription: View {
     @State private var showingSheet = false
 
     var body: some View {
-        GroupBox(label: Text("Описание от \(self.description.source)")) {
-            VStack(alignment: .leading) {
-                Text(self.description.text)
-                    .lineLimit(5)
-                    .truncationMode(.tail)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .onTapGesture {
-                        self.showingSheet.toggle()
-                    }
-                    .sheet(isPresented: self.$showingSheet) {
-                        ShowDescriptionSheetView(
-                            description: self.description
-                        )
-                    }
+        Button {
+            self.showingSheet.toggle()
+        } label: {
+            GroupBox(label: Text("Описание от \(self.description.source)")) {
+                VStack(alignment: .leading) {
+                    Text(self.description.text)
+                        .lineLimit(5)
+                        .truncationMode(.tail)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding(.top, 4)
             }
-            .padding(.top, 4)
         }
+        .sheet(isPresented: self.$showingSheet) {
+            ShowDescriptionSheetView(
+                description: self.description
+            )
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -400,30 +402,29 @@ private struct EpisodePreviewList: View {
             }
 
             ForEach(self.episodePreviews.prefix(5), id: \.self) { episodePreview in
-                EpisodePreviewRow(data: episodePreview)
+                NavigationLink(destination: EpisodeTranslationsView(viewModel: .init(
+                    episodeId: episodePreview.id,
+                    episodeTitle: episodePreview.title ?? episodePreview.typeAndNumber
+                ))) {
+                    HStack {
+                        EpisodePreviewRow(data: episodePreview)
+
+                        Spacer()
+
+                        Image(systemName: "chevron.forward")
+                            .foregroundColor(Color(UIColor.systemGray3))
+                            .fontWeight(.bold)
+                            .font(.footnote)
+                    }
+                    .contentShape(Rectangle()) // по какой-то причине без этого не будет работать NavigationLink если нажимать на Spacer
+                }
+                .buttonStyle(.plain)
 
                 Divider()
             }
         }
-        .padding(.top, 18)
+        .padding(.top, 22)
         .scenePadding(.horizontal)
-    }
-}
-
-private struct EpisodePreviewBox: View {
-    let title: String?
-    let releaseDate: Date
-    let typeAndNumber: String
-
-    var body: some View {
-        VStack {
-            Text(self.typeAndNumber)
-                .padding(8)
-                .font(.caption)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .background(Color(UIColor.secondarySystemBackground))
-        .cornerRadius(8)
     }
 }
 
