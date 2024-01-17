@@ -151,6 +151,7 @@ struct SearchShowsView: View {
                                     }
                                 }) {
                                     Text(searchQuery)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
                                 }
                                 .buttonStyle(.borderless)
                             }

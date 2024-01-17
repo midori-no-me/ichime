@@ -63,8 +63,8 @@ struct ShowCard: View {
                 )
             }
         }
-        .contentShape(Rectangle()) // чтобы хитбокс у ссылки был такой же как и карточка, без этого он может быть больше
-        .buttonStyle(PlainButtonStyle())
+        .contentShape(.rect) // чтобы хитбокс у ссылки был такой же как и карточка, без этого он может быть больше
+        .buttonStyle(.plain)
     }
 }
 
