@@ -67,7 +67,6 @@ class SearchShowsViewModel: ObservableObject {
         searchQuery: String
     ) async {
         self.currentlyTypedSearchQuery = searchQuery
-        self.isSearchPresented = true
 
         await self.performInitialSearch()
     }
