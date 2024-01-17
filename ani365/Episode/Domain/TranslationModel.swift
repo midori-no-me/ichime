@@ -50,7 +50,7 @@ struct Translation: Hashable, Identifiable {
 
         return Translation(
             id: translation.id,
-            translationTeam: translation.authorsSummary == "" ? nil : translation.authorsSummary.trimmingCharacters(in: .whitespacesAndNewlines),
+            translationTeam: translation.authorsSummary == "" ? "???" : translation.authorsSummary.trimmingCharacters(in: .whitespacesAndNewlines),
             websiteUrl: URL(string: translation.url)!,
             translatedToLanguage: translatedToLanguage,
             translationMethod: translationMethod,
@@ -68,7 +68,7 @@ struct Translation: Hashable, Identifiable {
     }
 
     let id: Int
-    let translationTeam: String?
+    let translationTeam: String
     let websiteUrl: URL
     let translatedToLanguage: TranslatedToLanguage
     let translationMethod: TranslationMethod

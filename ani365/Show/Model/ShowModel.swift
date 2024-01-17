@@ -92,3 +92,9 @@ struct Show: Hashable, Identifiable {
         let source: String
     }
 }
+
+func getWebsiteUrlByShowId(showId: Int) -> URL {
+    let urlString = String(format: "https://anime365.ru/catalog/%d", showId)
+
+    return URL(string: urlString)!
+}

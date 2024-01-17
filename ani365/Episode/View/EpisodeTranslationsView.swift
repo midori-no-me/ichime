@@ -59,16 +59,16 @@ class EpisodeViewModel: ObservableObject {
         }
 
         for (sectionType, translations) in translationsGroupedByLocalizedSection {
-            translationsGroupedByLocalizedSection[sectionType] = translations.sorted(by: { ($0.translationTeam ?? "_") < ($1.translationTeam ?? "_")
-
-            })
+            translationsGroupedByLocalizedSection[sectionType] = translations.sorted(
+                by: { $0.translationTeam < $1.translationTeam }
+            )
         }
 
         return translationsGroupedByLocalizedSection.sorted(by: { $0.0 < $1.0 })
     }
 }
 
-struct EpisodeView: View {
+struct EpisodeTranslationsView: View {
     @ObservedObject var viewModel: EpisodeViewModel
 
     var body: some View {
@@ -132,12 +132,12 @@ private struct TranslationRow: View {
                     .font(.caption)
                     .foregroundStyle(Color.secondary)
 
-                Text(self.episodeTranslation.translationTeam ?? "???")
+                Text(self.episodeTranslation.translationTeam)
             }
         }
         .sheet(isPresented: self.$showingSheet) {
             EpisodeTranslationQualityView(
-                translationTeam: self.episodeTranslation.translationTeam ?? "???"
+                translationTeam: self.episodeTranslation.translationTeam
             )
             .presentationDetents([.medium])
         }
@@ -146,7 +146,7 @@ private struct TranslationRow: View {
 
 #Preview {
     NavigationStack {
-        EpisodeView(viewModel: .init(
+        EpisodeTranslationsView(viewModel: .init(
             episodeId: 291395,
             episodeTitle: "69 серия"
         ))

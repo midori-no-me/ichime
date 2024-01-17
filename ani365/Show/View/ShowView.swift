@@ -19,7 +19,7 @@ private enum Anime365ListTypeMenu: String, CaseIterable {
     var imageInDropdown: String {
         switch self {
         case .notInList: return ""
-        case .planned: return "clock"
+        case .planned: return "hourglass"
         case .watching: return "eye.fill"
         case .completed: return "checkmark"
         case .onHold: return "pause.fill"
@@ -30,7 +30,7 @@ private enum Anime365ListTypeMenu: String, CaseIterable {
     var imageInToolbar: String {
         switch self {
         case .notInList: return "plus.circle"
-        case .planned: return "clock.circle.fill"
+        case .planned: return "hourglass.circle.fill"
         case .watching: return "eye.circle.fill"
         case .completed: return "checkmark.circle.fill"
         case .onHold: return "pause.circle.fill"
@@ -39,30 +39,100 @@ private enum Anime365ListTypeMenu: String, CaseIterable {
     }
 }
 
-struct ShowView: View {
-    let showId: Int
+class ShowViewModel: ObservableObject {
+    enum State {
+        case idle
+        case loading
+        case loadingFailed(Error)
+        case loaded(Show)
+    }
 
-    @State public var show: Show?
-    @State private var isLoading = true
-    @State private var loadingError: Error?
+    @Published private(set) var state = State.idle
+    @Published private(set) var shareUrl: URL
+
+    private let client: Anime365Client
+    private let showId: Int
+
+    init(
+        showId: Int,
+        preloadedShow: Show? = nil
+    ) {
+        self.showId = showId
+        self.shareUrl = getWebsiteUrlByShowId(showId: showId)
+
+        if let preloadedShow = preloadedShow {
+            self.state = .loaded(preloadedShow)
+        }
+
+        self.client = Anime365Client(
+            apiClient: Anime365ApiClient(
+                baseURL: "https://anime365.ru/api",
+                userAgent: "ani365"
+            )
+        )
+    }
+
+    func performInitialLoad() async {
+        self.state = .loading
+
+        do {
+            let show = try await client.getShow(
+                seriesId: self.showId
+            )
+
+            self.state = .loaded(show)
+            self.shareUrl = show.websiteUrl
+        } catch {
+            self.state = .loadingFailed(error)
+        }
+    }
+
+    func performPullToRefresh() async {
+        do {
+            let show = try await client.getShow(
+                seriesId: self.showId
+            )
+
+            self.state = .loaded(show)
+            self.shareUrl = show.websiteUrl
+        } catch {
+            self.state = .loadingFailed(error)
+        }
+    }
+}
+
+struct ShowView: View {
+    @ObservedObject var viewModel: ShowViewModel
+
     @State private var userListStatus: Anime365ListTypeMenu = .notInList
 
     var body: some View {
         Group {
-            if let show = self.show {
+            switch self.viewModel.state {
+            case .idle:
+                Color.clear.onAppear {
+                    Task {
+                        await self.viewModel.performInitialLoad()
+                    }
+                }
+
+            case .loading:
+                ProgressView()
+
+            case .loadingFailed(let error):
+                ContentUnavailableView {
+                    Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+                } description: {
+                    Text(error.localizedDescription)
+                }
+                .textSelection(.enabled)
+
+            case .loaded(let show):
                 ScrollView([.vertical]) {
                     ShowDetails(show: show)
                         .scenePadding(.bottom)
                 }
-            } else {
-                if self.isLoading {
-                    ProgressView()
-                } else if self.loadingError != nil {
-                    SceneLoadingErrorView(
-                        loadingError: self.loadingError!,
-                        reload: { await self.fetchShow(showId: self.showId, forceRefresh: true) }
-                    )
-                }
+                .navigationTitle(show.title.translated.japaneseRomaji ?? show.title.full)
             }
         }
         .toolbar {
@@ -98,55 +168,16 @@ struct ShowView: View {
                 }
             }
 
-            if let show = show {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    ShareLink(item: show.websiteUrl) {
-                        Label("Поделиться", systemImage: "square.and.arrow.up")
-                    }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                ShareLink(item: self.viewModel.shareUrl) {
+                    Label("Поделиться", systemImage: "square.and.arrow.up")
                 }
             }
         }
-        .navigationTitle((self.show?.title.translated.japaneseRomaji ?? self.show?.title.full) ?? "")
         .navigationBarTitleDisplayMode(.large)
-        .onAppear {
-            if self.show != nil {
-                return
-            }
-
-            Task {
-                await self.fetchShow(showId: self.showId)
-            }
-        }
         .refreshable {
-            await self.fetchShow(showId: self.showId, forceRefresh: true)
+            await self.viewModel.performPullToRefresh()
         }
-    }
-
-    private func fetchShow(showId: Int, forceRefresh: Bool = false) async {
-        if !forceRefresh && !isLoading {
-            return
-        }
-
-        let anime365Client = Anime365Client(
-            apiClient: Anime365ApiClient(
-                baseURL: "https://anime365.ru/api",
-                userAgent: "ani365"
-            )
-        )
-
-        do {
-            let show = try await anime365Client.getShow(seriesId: showId)
-
-            DispatchQueue.main.async {
-                self.show = show
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.loadingError = error
-            }
-        }
-
-        isLoading = false
     }
 }
 
@@ -195,7 +226,7 @@ private struct ShowDetails: View {
                 .frame(width: geometry.size.width, height: geometry.size.height)
             }
 
-            let gridColumns = horizontalSizeClass == .compact
+            let gridColumns = self.horizontalSizeClass == .compact
                 ? [GridItem(.flexible(), spacing: 18, alignment: .topLeading)]
                 : [
                     GridItem(.flexible(), spacing: 18, alignment: .topLeading),
@@ -216,7 +247,7 @@ private struct ShowDetails: View {
 
                     ShowProperty(
                         label: "Количество эпизодов",
-                        value: (show.numberOfEpisodes != nil ? show.numberOfEpisodes!.formatted() : "???")
+                        value: (self.show.numberOfEpisodes != nil ? self.show.numberOfEpisodes!.formatted() : "???")
                             + (self.show.isOngoing ? " — онгоинг" : "")
                     )
 
@@ -233,7 +264,7 @@ private struct ShowDetails: View {
                     }
                 }
 
-                if horizontalSizeClass == .regular {
+                if self.horizontalSizeClass == .regular {
                     if !self.show.descriptions.isEmpty {
                         VStack {
                             ForEach(self.show.descriptions, id: \.self) { description in
@@ -249,7 +280,7 @@ private struct ShowDetails: View {
         .scenePadding(.horizontal)
         .padding(.top, 18)
 
-        if horizontalSizeClass == .compact {
+        if self.horizontalSizeClass == .compact {
             if !self.show.descriptions.isEmpty {
                 VStack {
                     ForEach(self.show.descriptions, id: \.self) { description in
@@ -276,11 +307,11 @@ private struct ShowProperty: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text(label)
+            Text(self.label)
                 .foregroundStyle(.secondary)
                 .font(.caption)
 
-            Text(value)
+            Text(self.value)
                 .font(.caption)
         }
     }
@@ -301,11 +332,11 @@ private struct ShowDescription: View {
                     .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .onTapGesture {
-                        showingSheet.toggle()
+                        self.showingSheet.toggle()
                     }
-                    .sheet(isPresented: $showingSheet) {
+                    .sheet(isPresented: self.$showingSheet) {
                         ShowDescriptionSheetView(
-                            description: description
+                            description: self.description
                         )
                     }
             }
@@ -336,7 +367,7 @@ private struct ShowDescriptionSheetView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Закрыть") {
-                        dismiss()
+                        self.dismiss()
                     }
                 }
             }
@@ -355,7 +386,7 @@ private struct EpisodePreviewList: View {
                     .font(.title2)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                NavigationLink(destination: EpisodeListView(episodePreviews: episodePreviews)) {
+                NavigationLink(destination: EpisodeListView(episodePreviews: self.episodePreviews)) {
                     Text("Все серии")
                         .font(.callout)
                 }
@@ -363,12 +394,12 @@ private struct EpisodePreviewList: View {
                 .frame(alignment: .trailing)
             }
 
-            if isOgnoing, let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: episodePreviews) {
+            if self.isOgnoing, let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: episodePreviews) {
                 Text("Это онгоинг. Обычно новые серии выходят по \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1).")
                     .font(.subheadline)
             }
 
-            ForEach(episodePreviews.prefix(5), id: \.self) { episodePreview in
+            ForEach(self.episodePreviews.prefix(5), id: \.self) { episodePreview in
                 EpisodePreviewRow(data: episodePreview)
 
                 Divider()
@@ -386,7 +417,7 @@ private struct EpisodePreviewBox: View {
 
     var body: some View {
         VStack {
-            Text(typeAndNumber)
+            Text(self.typeAndNumber)
                 .padding(8)
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -398,6 +429,6 @@ private struct EpisodePreviewBox: View {
 
 #Preview {
     NavigationStack {
-        ShowView(showId: 8762)
+        ShowView(viewModel: .init(showId: 8762))
     }
 }

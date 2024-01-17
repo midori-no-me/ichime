@@ -6,7 +6,7 @@ struct EpisodeListView: View {
     var body: some View {
         List {
             ForEach(self.episodePreviews, id: \.self) { episodePreview in
-                NavigationLink(destination: EpisodeView(
+                NavigationLink(destination: EpisodeTranslationsView(
                     viewModel: .init(
                         episodeId: episodePreview.id,
                         episodeTitle: episodePreview.title ?? episodePreview.typeAndNumber

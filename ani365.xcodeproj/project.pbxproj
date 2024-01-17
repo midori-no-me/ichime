@@ -10,7 +10,7 @@
 		C65940FB2B4AF0C000413062 /* Anime365Scraper in Frameworks */ = {isa = PBXBuildFile; productRef = C65940FA2B4AF0C000413062 /* Anime365Scraper */; };
 		C65ACDE82B54466400C27FB3 /* Anime365ScraperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
-		ED36C6202B52D2AA000D0A80 /* EpisodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C61F2B52D2AA000D0A80 /* EpisodeView.swift */; };
+		ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C61F2B52D2AA000D0A80 /* EpisodeTranslationsView.swift */; };
 		ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6212B52E945000D0A80 /* EpisodeListView.swift */; };
 		ED36C6252B52ECFB000D0A80 /* EpisodePreviewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6242B52ECFB000D0A80 /* EpisodePreviewRow.swift */; };
 		ED36C6282B530535000D0A80 /* EpisodePreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6272B530535000D0A80 /* EpisodePreviewModel.swift */; };
@@ -53,7 +53,7 @@
 		C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365ScraperManager.swift; sourceTree = "<group>"; };
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C6D440D12B4AEA9D00A81421 /* Anime365Scraper */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365Scraper; sourceTree = "<group>"; };
-		ED36C61F2B52D2AA000D0A80 /* EpisodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeView.swift; sourceTree = "<group>"; };
+		ED36C61F2B52D2AA000D0A80 /* EpisodeTranslationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeTranslationsView.swift; sourceTree = "<group>"; };
 		ED36C6212B52E945000D0A80 /* EpisodeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeListView.swift; sourceTree = "<group>"; };
 		ED36C6242B52ECFB000D0A80 /* EpisodePreviewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePreviewRow.swift; sourceTree = "<group>"; };
 		ED36C6272B530535000D0A80 /* EpisodePreviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePreviewModel.swift; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				ED36C6212B52E945000D0A80 /* EpisodeListView.swift */,
-				ED36C61F2B52D2AA000D0A80 /* EpisodeView.swift */,
+				ED36C61F2B52D2AA000D0A80 /* EpisodeTranslationsView.swift */,
 				ED3A674C2B5739B600FB3975 /* EpisodeTranslationQualityView.swift */,
 			);
 			path = View;
@@ -338,7 +338,7 @@
 				EDFF2D112B43471300F27E61 /* Anime365App.swift in Sources */,
 				EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */,
 				EDFF2D242B44384500F27E61 /* Anime365ApiClient.swift in Sources */,
-				ED36C6202B52D2AA000D0A80 /* EpisodeView.swift in Sources */,
+				ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */,
 				EDE959352B484F7D0030B23D /* OverviewView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
