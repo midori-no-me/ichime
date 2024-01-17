@@ -75,6 +75,11 @@ struct ContentViewWithSideBar: View {
                     OngoingsView(viewModel: .init())
                 }
 
+            case .onboarding:
+                NavigationStack {
+                    OnboardingView()
+                }
+
             default:
                 ContentUnavailableView {
                     Label("Тут ничего нет", systemImage: "sidebar.leading")
