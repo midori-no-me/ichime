@@ -54,7 +54,7 @@ struct Translation: Hashable, Identifiable {
             websiteUrl: URL(string: translation.url)!,
             translatedToLanguage: translatedToLanguage,
             translationMethod: translationMethod,
-            width: translation.width,
+            height: translation.height,
             sourceVideoQuality: sourceVideoQuality
         )
     }
@@ -72,7 +72,7 @@ struct Translation: Hashable, Identifiable {
     let websiteUrl: URL
     let translatedToLanguage: TranslatedToLanguage
     let translationMethod: TranslationMethod
-    let width: Int
+    let height: Int
     let sourceVideoQuality: SourceVideoQuality
 
     enum SourceVideoQuality {

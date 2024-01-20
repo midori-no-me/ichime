@@ -83,6 +83,24 @@ struct Anime365ApiTranslation: Decodable {
     let height: Int
 }
 
+struct Anime365Embed: Decodable {
+    let embedUrl: String
+    let download: [Download]
+    let stream: [Stream]
+    let subtitlesUrl: String?
+    let subtitlesVttUrl: String?
+
+    struct Download: Decodable {
+        let height: Int
+        let url: String
+    }
+
+    struct Stream: Decodable {
+        let height: Int
+        let urls: [String]
+    }
+}
+
 final class Anime365ApiClient {
     private let baseURL: String
     private let userAgent: String
@@ -196,6 +214,15 @@ final class Anime365ApiClient {
         )
     }
 
+    public func getEmbed(
+        translationId: Int
+    ) async throws -> Anime365ApiResponse<Anime365Embed> {
+        return try await performRequest(
+            endpoint: "/translations/embed/\(translationId)",
+            responseType: Anime365ApiResponse<Anime365Embed>.self
+        )
+    }
+
     private func performRequest<T: Decodable>(
         endpoint: String,
         queryItems: [URLQueryItem] = [],
@@ -207,17 +234,17 @@ final class Anime365ApiClient {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue(userAgent, forHTTPHeaderField: "User-Agent")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
 
         if let accessToken = accessToken {
-            request.addValue("aaaa8ed0da05b797653c4bd51877d861=\(accessToken)", forHTTPHeaderField: "Cookie")
+            request.setValue("aaaa8ed0da05b797653c4bd51877d861=\(accessToken)", forHTTPHeaderField: "Cookie")
         }
 
-        let (data, _) = try await URLSession.shared.data(from: url)
+        let (data, httpResponse) = try await URLSession.shared.data(for: request)
 
-        if let requestUrl = request.url?.absoluteString {
-            print("[Anime365ApiClient] API request: GET \(requestUrl)")
+        if let requestUrl = request.url?.absoluteString, let httpResponse = httpResponse as? HTTPURLResponse {
+            print("[Anime365ApiClient] API request: GET \(requestUrl) [\(httpResponse.statusCode)]")
         }
 
         do {
@@ -225,6 +252,15 @@ final class Anime365ApiClient {
             return try decoder.decode(T.self, from: data)
         } catch {
             print("[Anime365ApiClient] Decoding JSON error: \(error.localizedDescription)")
+            print("[Anime365ApiClient] JSON Decoder detailed error:")
+            print(error)
+            print("[Anime365ApiClient] API response:")
+
+            if let responseBodyString = String(data: data, encoding: .utf8) {
+                print(responseBodyString)
+            } else {
+                print("[Anime365ApiClient] Unable to convert response body to string")
+            }
 
             throw Anime365ApiClientError.invalidData
         }
@@ -232,7 +268,11 @@ final class Anime365ApiClient {
 
     private func buildURL(endpoint: String, queryItems: [URLQueryItem]) -> URL? {
         var components = URLComponents(string: baseURL + endpoint)
-        components?.queryItems = queryItems
+
+        if !queryItems.isEmpty {
+            components?.queryItems = queryItems
+        }
+
         return components?.url
     }
 }

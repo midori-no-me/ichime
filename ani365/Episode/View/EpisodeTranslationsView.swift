@@ -128,7 +128,7 @@ private struct TranslationRow: View {
             self.showingSheet.toggle()
         }) {
             VStack(alignment: .leading) {
-                Text([self.episodeTranslation.sourceVideoQuality.getLocalizaedTranslation(), String(self.episodeTranslation.width) + "p"].formatted(.list(type: .and, width: .narrow)))
+                Text([self.episodeTranslation.sourceVideoQuality.getLocalizaedTranslation(), String(self.episodeTranslation.height) + "p"].formatted(.list(type: .and, width: .narrow)))
                     .font(.caption)
                     .foregroundStyle(Color.secondary)
 
@@ -136,9 +136,14 @@ private struct TranslationRow: View {
             }
         }
         .sheet(isPresented: self.$showingSheet) {
-            EpisodeTranslationQualityView(
-                translationTeam: self.episodeTranslation.translationTeam
-            )
+            NavigationStack {
+                EpisodeTranslationQualitySelectorView(
+                    viewModel: .init(
+                        translationId: episodeTranslation.id,
+                        translationTeam: episodeTranslation.translationTeam
+                    )
+                )
+            }
             .presentationDetents([.medium])
         }
     }

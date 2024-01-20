@@ -79,4 +79,14 @@ class Anime365Client {
             Show.createFromApiSeries(series: series)
         }
     }
+
+    public func getEpisodeStreamingInfo(
+        translationId: Int
+    ) async throws -> EpisodeStreamingInfo {
+        let apiResponse = try await apiClient.getEmbed(
+            translationId: translationId
+        )
+
+        return EpisodeStreamingInfo(apiResponse: apiResponse.data)
+    }
 }
