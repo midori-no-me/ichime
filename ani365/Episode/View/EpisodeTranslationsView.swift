@@ -96,7 +96,7 @@ struct EpisodeTranslationsView: View {
                 ContentUnavailableView {
                     Label("Ничего не нашлось", systemImage: "list.bullet")
                 } description: {
-                    Text("Скорее всего, у этой серии ещё нет переводов")
+                    Text("Скорее всего, у этой серии ещё нет переводов, либо они находятся в обработке")
                 }
 
             case .loaded(let groupedTranslations):

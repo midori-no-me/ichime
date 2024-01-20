@@ -294,7 +294,7 @@ private struct ShowDetails: View {
 
         if !self.show.episodePreviews.isEmpty {
             EpisodePreviewList(
-                isOgnoing: self.show.isOngoing,
+                isOngoing: self.show.isOngoing,
                 episodePreviews: self.show.episodePreviews
             )
         }
@@ -378,7 +378,7 @@ private struct ShowDescriptionSheetView: View {
 }
 
 private struct EpisodePreviewList: View {
-    let isOgnoing: Bool
+    let isOngoing: Bool
     let episodePreviews: [EpisodePreview]
 
     var body: some View {
@@ -396,7 +396,7 @@ private struct EpisodePreviewList: View {
                 .frame(alignment: .trailing)
             }
 
-            if self.isOgnoing, let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: episodePreviews) {
+            if self.isOngoing, let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: episodePreviews) {
                 Text("Это онгоинг. Обычно новые серии выходят по \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1).")
                     .font(.subheadline)
             }

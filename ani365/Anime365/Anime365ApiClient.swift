@@ -62,6 +62,7 @@ struct Anime365ApiSeries: Decodable {
         let episodeType: String
         let firstUploadedDateTime: String
         let isActive: Int
+        let isFirstUploaded: Int
     }
 }
 

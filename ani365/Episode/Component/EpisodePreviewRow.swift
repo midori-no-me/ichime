@@ -15,12 +15,14 @@ struct EpisodePreviewRow: View {
             EpisodePreviewRowWithTitle(
                 title: title,
                 typeAndNumber: data.typeAndNumber,
-                uploadDate: data.uploadDate
+                uploadDate: data.uploadDate,
+                isUnderProcessing: data.isUnderProcessing
             )
         } else {
             EpisodePreviewRowWithoutTitle(
                 typeAndNumber: data.typeAndNumber,
-                uploadDate: data.uploadDate
+                uploadDate: data.uploadDate,
+                isUnderProcessing: data.isUnderProcessing
             )
         }
     }
@@ -29,7 +31,8 @@ struct EpisodePreviewRow: View {
 struct EpisodePreviewRowWithTitle: View {
     let title: String
     let typeAndNumber: String
-    let uploadDate: Date
+    let uploadDate: Date?
+    let isUnderProcessing: Bool
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -44,7 +47,8 @@ struct EpisodePreviewRowWithTitle: View {
 
 struct EpisodePreviewRowWithoutTitle: View {
     let typeAndNumber: String
-    let uploadDate: Date
+    let uploadDate: Date?
+    let isUnderProcessing: Bool
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -57,7 +61,11 @@ struct EpisodePreviewRowWithoutTitle: View {
     }
 }
 
-func formatMovieReleaseDate(_ releaseDate: Date) -> String {
+func formatMovieReleaseDate(_ releaseDate: Date?) -> String {
+    guard let releaseDate = releaseDate else {
+        return "???"
+    }
+
     let now = Date()
     let calendar = Calendar.current
 

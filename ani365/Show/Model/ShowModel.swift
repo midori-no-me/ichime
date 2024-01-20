@@ -38,9 +38,10 @@ struct Show: Hashable, Identifiable {
                     id: episode.id,
                     title: episode.episodeTitle.isEmpty ? nil : episode.episodeTitle,
                     typeAndNumber: episode.episodeFull,
-                    uploadDate: convertApiDateStringToDate(string: episode.firstUploadedDateTime)!,
+                    uploadDate: episode.firstUploadedDateTime == "2000-01-01 00:00:00" ? nil : convertApiDateStringToDate(string: episode.firstUploadedDateTime)!,
                     type: EpisodeType.createFromApiType(apiType: episode.episodeType),
-                    episodeNumber: Float(episode.episodeInt)
+                    episodeNumber: Float(episode.episodeInt),
+                    isUnderProcessing: episode.isFirstUploaded == 0
                 )
             }
         )
