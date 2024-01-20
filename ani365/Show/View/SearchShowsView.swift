@@ -193,6 +193,11 @@ struct SearchShowsView: View {
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: "Название тайтла"
         )
+        .toolbar {
+            NavigationLink(destination: OnboardingView()) {
+                Image(systemName: "person.circle")
+            }
+        }
         .onChange(of: self.viewModel.currentlyTypedSearchQuery) {
             self.viewModel.currentlyTypedSearchQueryChanged()
         }

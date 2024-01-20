@@ -156,6 +156,11 @@ struct OngoingsView: View {
             }
         }
         .navigationTitle("Онгоинги")
+        .toolbar {
+            NavigationLink(destination: OnboardingView()) {
+                Image(systemName: "person.circle")
+            }
+        }
         .navigationBarTitleDisplayMode(.large)
         .refreshable {
             await self.viewModel.performPullToRefresh()
@@ -167,18 +172,20 @@ private struct OngoingsViewWrapper<Content>: View where Content: View {
     @ViewBuilder let content: Content
 
     var body: some View {
-        Text("Сериалы, у которых продолжают выходить новые серии")
-            .font(.title3)
-            .scenePadding(.horizontal)
-            .foregroundColor(.secondary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .textSelection(.enabled)
+        VStack {
+            Text("Сериалы, у которых продолжают выходить новые серии")
+                .font(.title3)
+                .scenePadding(.horizontal)
+                .foregroundColor(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .textSelection(.enabled)
 
-        Spacer()
+            Spacer()
 
-        self.content
+            self.content
 
-        Spacer()
+            Spacer()
+        }
     }
 }
 

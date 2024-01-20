@@ -18,14 +18,14 @@ struct ContentView: View {
 }
 
 struct ContentViewWithSideBar: View {
-    @State private var navigationActiveTab: SideBarLinks? = .overview
+    @State private var navigationActiveTab: SideBarLinks? = .ongoings
 
     enum SideBarLinks {
-        case overview
         case searchShows
         case ongoings
-        case newEpisodes
-        case onboarding
+        case currentlyWatching
+        case myLists
+        case notifications
     }
 
     var body: some View {
@@ -34,37 +34,25 @@ struct ContentViewWithSideBar: View {
                 Label("Поиск", systemImage: "magnifyingglass")
                     .tag(SideBarLinks.searchShows)
 
-                Label("Обзор", systemImage: "rectangle.grid.2x2")
-                    .tag(SideBarLinks.overview)
-
-                Label("Онгоинги", systemImage: "film.stack")
+                Label("Онгоинги", systemImage: "rectangle.grid.3x2.fill")
                     .tag(SideBarLinks.ongoings)
 
                 Section(header: Text("Моя библиотека")) {
-                    Label("Новые серии", systemImage: "play.rectangle.on.rectangle")
-                        .tag(SideBarLinks.newEpisodes)
+                    Label("Я смотрю", systemImage: "film.stack")
+                        .tag(SideBarLinks.currentlyWatching)
 
-                    Label("Онбординг", systemImage: "person.circle")
-                        .tag(SideBarLinks.onboarding)
+                    Label("Мой список", systemImage: "list.and.film")
+                        .tag(SideBarLinks.myLists)
+
+                    Label("Уведомления", systemImage: "bell")
+                        .badge(5)
+                        .tag(SideBarLinks.notifications)
                 }
             }
             .navigationTitle("Anime 365")
-            .listStyle(SidebarListStyle())
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {} label: {
-                        Label("Уведомления", systemImage: "bell")
-                    }
-                }
-            }
 
         } detail: {
             switch navigationActiveTab {
-            case .overview:
-                NavigationStack {
-                    OverviewView()
-                }
-
             case .searchShows:
                 NavigationStack {
                     SearchShowsView(viewModel: .init())
@@ -75,9 +63,19 @@ struct ContentViewWithSideBar: View {
                     OngoingsView(viewModel: .init())
                 }
 
-            case .onboarding:
+            case .currentlyWatching:
                 NavigationStack {
-                    OnboardingView()
+                    CurrentlyWatchingView()
+                }
+
+            case .myLists:
+                NavigationStack {
+                    MyListsView()
+                }
+
+            case .notifications:
+                NavigationStack {
+                    NotificationCenterView()
                 }
 
             default:
@@ -97,17 +95,25 @@ struct ContentViewWithTabBar: View {
     var body: some View {
         TabView {
             NavigationStack {
-                OverviewView()
-            }
-            .tabItem {
-                Label("Обзор", systemImage: "rectangle.grid.2x2")
-            }
-
-            NavigationStack {
                 OngoingsView(viewModel: .init())
             }
             .tabItem {
-                Label("Онгоинги", systemImage: "film.stack")
+                Label("Онгоинги", systemImage: "rectangle.grid.3x2.fill")
+            }
+
+            NavigationStack {
+                CurrentlyWatchingView()
+            }
+            .tabItem {
+                Label("Я смотрю", systemImage: "film.stack")
+            }
+            .badge(5)
+
+            NavigationStack {
+                MyListsView()
+            }
+            .tabItem {
+                Label("Мой список", systemImage: "list.and.film")
             }
 
             NavigationStack {
@@ -115,13 +121,6 @@ struct ContentViewWithTabBar: View {
             }
             .tabItem {
                 Label("Поиск", systemImage: "magnifyingglass")
-            }
-
-            NavigationStack {
-                OnboardingView()
-            }
-            .tabItem {
-                Label("Онбординг", systemImage: "person.circle")
             }
         }
     }
