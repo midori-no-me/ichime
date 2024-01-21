@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */; };
 		C65940FB2B4AF0C000413062 /* Anime365Scraper in Frameworks */ = {isa = PBXBuildFile; productRef = C65940FA2B4AF0C000413062 /* Anime365Scraper */; };
 		C65ACDE82B54466400C27FB3 /* Anime365ScraperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
@@ -50,6 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365ScraperManager.swift; sourceTree = "<group>"; };
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C6D440D12B4AEA9D00A81421 /* Anime365Scraper */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365Scraper; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 		ED36C6232B52ECED000D0A80 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */,
 				ED36C6242B52ECFB000D0A80 /* EpisodePreviewRow.swift */,
 			);
 			path = Component;
@@ -374,6 +377,7 @@
 				EDF7104E2B4B344F001C2008 /* ShowCard.swift in Sources */,
 				ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */,
 				ED3A674B2B56FBBA00FB3975 /* ShowModel.swift in Sources */,
+				C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */,
 				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
 				ED36C62A2B53FB81000D0A80 /* EpisodeModel.swift in Sources */,
 				ED3A674D2B5739B600FB3975 /* EpisodeTranslationQualitySelectorView.swift in Sources */,

@@ -65,6 +65,7 @@ struct EpisodeTranslationQualitySelectorView: View {
     @Environment(\.dismiss) private var dismiss
 
     @ObservedObject var viewModel: EpisodeTranslationQualitySelectorViewModel
+    @ObservedObject var videoPlayerController: VideoPlayerController
 
     var body: some View {
         Group {
@@ -100,7 +101,16 @@ struct EpisodeTranslationQualitySelectorView: View {
                         ForEach(episodeStreamingInfo.streamQualityOptions) { streamQualityOption in
                             ForEach(streamQualityOption.urls, id: \.self) { url in
                                 Button(action: {
-                                    print(url)
+                                    Task {
+                                        dismiss()
+                                        await self.videoPlayerController.play(video:
+                                            .init(
+                                                videoURL: url,
+                                                subtitleURL: episodeStreamingInfo.subtitles?.vtt,
+                                                title: nil,
+                                                episodeTitle: nil
+                                            ))
+                                    }
                                 }) {
                                     Text("\(String(streamQualityOption.height))p")
                                 }
@@ -133,6 +143,6 @@ struct EpisodeTranslationQualitySelectorView: View {
         EpisodeTranslationQualitySelectorView(viewModel: .init(
             translationId: 3061769,
             translationTeam: "Crunchyroll"
-        ))
+        ), videoPlayerController: .init())
     }
 }

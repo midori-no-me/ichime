@@ -127,6 +127,7 @@ private struct TranslationRow: View {
     let episodeTranslation: Translation
 
     @State private var showingSheet = false
+    @StateObject var videoPlayerController: VideoPlayerController = .init()
 
     var body: some View {
         Button(action: {
@@ -146,7 +147,8 @@ private struct TranslationRow: View {
                     viewModel: .init(
                         translationId: episodeTranslation.id,
                         translationTeam: episodeTranslation.translationTeam
-                    )
+                    ),
+                    videoPlayerController: videoPlayerController
                 )
             }
             .presentationDetents([.medium])
