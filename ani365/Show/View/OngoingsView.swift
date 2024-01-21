@@ -36,8 +36,13 @@ class OngoingsViewModel: ObservableObject {
         )
     }
 
+    @MainActor
+    func updateState(_ newState: State) {
+        self.state = newState
+    }
+
     func performInitialLoad() async {
-        self.state = .loading
+        await self.updateState(.loading)
 
         do {
             let shows = try await client.getOngoings(
@@ -46,14 +51,14 @@ class OngoingsViewModel: ObservableObject {
             )
 
             if shows.isEmpty {
-                self.state = .loadedButEmpty
+                await self.updateState(.loadedButEmpty)
             } else {
                 self.currentOffset = self.SHOWS_PER_PAGE
                 self.shows = shows
-                self.state = .loaded(self.shows)
+                await self.updateState(.loaded(self.shows))
             }
         } catch {
-            self.state = .loadingFailed(error)
+            await self.updateState(.loadingFailed(error))
         }
     }
 
@@ -74,7 +79,7 @@ class OngoingsViewModel: ObservableObject {
 
             self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
             self.shows += shows
-            self.state = .loaded(self.shows)
+            await self.updateState(.loaded(self.shows))
         } catch {
             self.stopLazyLoading = true
         }
@@ -88,14 +93,14 @@ class OngoingsViewModel: ObservableObject {
             )
 
             if shows.isEmpty {
-                self.state = .loadedButEmpty
+                await self.updateState(.loadedButEmpty)
             } else {
                 self.currentOffset = self.SHOWS_PER_PAGE
                 self.shows = shows
-                self.state = .loaded(self.shows)
+                await self.updateState(.loaded(self.shows))
             }
         } catch {
-            self.state = .loadingFailed(error)
+            await self.updateState(.loadingFailed(error))
         }
 
         self.stopLazyLoading = false

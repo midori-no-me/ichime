@@ -37,28 +37,33 @@ class EpisodeTranslationQualitySelectorViewModel: ObservableObject {
         )
     }
 
+    @MainActor
+    func updateState(_ newState: State) {
+        state = newState
+    }
+
     func performInitialLoad() async {
-        self.state = .loading
+        await updateState(.loading)
 
         do {
             let episodeStreamingInfo = try await client.getEpisodeStreamingInfo(
-                translationId: self.translationId
+                translationId: translationId
             )
 
             if episodeStreamingInfo.streamQualityOptions.isEmpty {
-                self.state = .loadedButEmpty
+                await updateState(.loadedButEmpty)
             } else {
-                self.state = .loaded(episodeStreamingInfo)
+                await updateState(.loaded(episodeStreamingInfo))
             }
         } catch {
-            self.state = .loadingFailed(error)
+            await updateState(.loadingFailed(error))
         }
     }
 }
 
 struct EpisodeTranslationQualitySelectorView: View {
     @Environment(\.dismiss) private var dismiss
-    
+
     @ObservedObject var viewModel: EpisodeTranslationQualitySelectorViewModel
 
     var body: some View {

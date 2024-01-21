@@ -30,21 +30,26 @@ class EpisodeViewModel: ObservableObject {
         )
     }
 
+    @MainActor
+    func updateState(_ newState: State) {
+        state = newState
+    }
+
     func performInitialLoad() async {
-        self.state = .loading
+        await updateState(.loading)
 
         do {
             let episodeTranslations = try await client.getEpisodeTranslations(
-                episodeId: self.episodeId
+                episodeId: episodeId
             )
 
             if episodeTranslations.isEmpty {
-                self.state = .loadedButEmpty
+                await updateState(.loadedButEmpty)
             } else {
-                self.state = .loaded(self.getGroupedTranslations(episodeTranslations: episodeTranslations))
+                await updateState(.loaded(getGroupedTranslations(episodeTranslations: episodeTranslations)))
             }
         } catch {
-            self.state = .loadingFailed(error)
+            await updateState(.loadingFailed(error))
         }
     }
 
