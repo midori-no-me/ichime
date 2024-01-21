@@ -16,10 +16,14 @@ struct PlayerView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> AVPlayerViewController {
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
-        playerViewController.showsPlaybackControls = true
+        playerViewController.delegate = context.coordinator
         chooseScreenType(playerViewController)
 
         return playerViewController
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
     }
 
     func updateUIViewController(_ controller: AVPlayerViewController, context content: Context) {
@@ -33,8 +37,30 @@ struct PlayerView: UIViewControllerRepresentable {
             controller.exitFullScreen(animated: true)
         }
     }
-}
 
+    class Coordinator: NSObject, AVPlayerViewControllerDelegate {
+        var control: PlayerView
+
+        init(_ control: PlayerView) {
+            self.control = control
+        }
+
+        func playerViewController(
+            _ playerViewController: AVPlayerViewController,
+            willBeginFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator
+        ) {
+            // Called when the player enters fullscreen mode
+        }
+
+        func playerViewController(
+            _ playerViewController: AVPlayerViewController,
+            willEndFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator
+        ) {
+            // Called when the player exits fullscreen mode
+            print("exit fullscreen")
+        }
+    }
+}
 
 extension AVPlayerViewController {
     func enterFullScreen(animated: Bool) {
@@ -79,17 +105,56 @@ class VideoPlayerController: NSObject, ObservableObject {
     @Published var isPlay = false
     @Published var loading = false
 
+    var coordinator: Coordinator?
+
     func play() {
         print("play")
-        isPlay = true
-        player?.play()
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        coordinator = Coordinator(self)
+        playerViewController.delegate = coordinator
+
+        // Get the key window scene
+        if let keyWindowScene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first(where: { $0.activationState == .foregroundActive })
+        {
+            // Present the AVPlayerViewController modally
+            keyWindowScene.windows.first?.rootViewController?.present(playerViewController, animated: true) {
+                playerViewController.player?.play()
+                self.changeOrientation(to: .landscape)
+            }
+        }
+    }
+
+    class Coordinator: NSObject, AVPlayerViewControllerDelegate {
+        var control: VideoPlayerController
+
+        init(_ control: VideoPlayerController) {
+            self.control = control
+        }
+
+        func playerViewController(
+            _ playerViewController: AVPlayerViewController,
+            willBeginFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator
+        ) {
+            // Called when the player enters fullscreen mode
+        }
+
+        func playerViewController(
+            _ playerViewController: AVPlayerViewController,
+            willEndFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator
+        ) {
+            // Called when the player exits fullscreen mode
+            control.stop()
+        }
     }
 
     func stop() {
         print("stop")
         player?.pause()
         player = nil
-        isPlay = false
+        changeOrientation(to: .portrait)
     }
 
     private func downloadSubtitles(from url: URL) async throws -> URL {
@@ -121,44 +186,38 @@ class VideoPlayerController: NSObject, ObservableObject {
         let videoAsset = AVAsset(url: videoURL)
 
         let composition = AVMutableComposition()
-        let videoTrack = composition.addMutableTrack(
-            withMediaType: .video,
-            preferredTrackID: kCMPersistentTrackID_Invalid
-        )
-        let audioTrack = composition.addMutableTrack(
-            withMediaType: .audio,
-            preferredTrackID: kCMPersistentTrackID_Invalid
-        )
 
         do {
-            try videoTrack?.insertTimeRange(
-                CMTimeRangeMake(start: .zero, duration: videoAsset.duration),
-                of: videoAsset.tracks(withMediaType: .video)[0],
-                at: .zero
-            )
-            try audioTrack?.insertTimeRange(
-                CMTimeRangeMake(start: .zero, duration: videoAsset.duration),
-                of: videoAsset.tracks(withMediaType: .audio)[0],
-                at: .zero
-            )
+            let videoTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid)!
+            let videoAssetTrack = try await videoAsset.loadTracks(withMediaType: .video).first!
+            let videoTimeRange = try await videoAssetTrack.load(.timeRange)
+            try videoTrack.insertTimeRange(CMTimeRangeMake(start: .zero, duration: videoTimeRange.duration), of: videoAssetTrack, at: .zero)
+
+        } catch {
+            print("Error inserting tracks: \(error)")
+            return
+        }
+
+        do {
+            let audioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)!
+            let audioAssetTrack = try await videoAsset.loadTracks(withMediaType: .audio).first!
+            let audioTimeRange = try await audioAssetTrack.load(.timeRange)
+            try audioTrack.insertTimeRange(CMTimeRangeMake(start: .zero, duration: audioTimeRange.duration), of: audioAssetTrack, at: .zero)
         } catch {
             print("Error inserting tracks: \(error)")
             return
         }
 
         if let subtitleURL, let subtitleFile = try? await downloadSubtitles(from: subtitleURL) {
-            let subtitleAsset = AVAsset(url: subtitleFile)
-            let subtitleTrack = composition.addMutableTrack(
-                withMediaType: .text,
-                preferredTrackID: kCMPersistentTrackID_Invalid
-            )
-
             do {
-                try subtitleTrack?.insertTimeRange(
-                    CMTimeRangeMake(start: .zero, duration: subtitleAsset.duration),
-                    of: subtitleAsset.tracks(withMediaType: .text)[0],
-                    at: .zero
-                )
+                // Create a mutable composition and subtitle track
+                let subtitleTrack = composition.addMutableTrack(withMediaType: .text, preferredTrackID: kCMPersistentTrackID_Invalid)!
+
+                let subtitleAsset = AVAsset(url: subtitleFile)
+                let subtitleAssetTrack = try await subtitleAsset.loadTracks(withMediaType: .text).first!
+                let subtitleTimeRange = try await subtitleAssetTrack.load(.timeRange)
+                // Insert the subtitle asset into the composition
+                try subtitleTrack.insertTimeRange(CMTimeRangeMake(start: .zero, duration: subtitleTimeRange.duration), of: subtitleAssetTrack, at: .zero)
             } catch {
                 print("Error inserting subtitle track: \(error)")
                 return
@@ -185,7 +244,6 @@ class VideoPlayerController: NSObject, ObservableObject {
         player.usesExternalPlaybackWhileExternalScreenIsActive = true
 
         await MainActor.run {
-            player.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
             self.player = player
             self.loading = false
         }
@@ -194,14 +252,12 @@ class VideoPlayerController: NSObject, ObservableObject {
         }
     }
 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        if object as AnyObject? === player {
-            if keyPath == "timeControlStatus", player?.timeControlStatus == .paused {
-                player?.pause()
-                isPlay = false
-                player?.removeObserver(self, forKeyPath: "timeControlStatus")
-            }
-        }
+    func changeOrientation(to orientation: UIInterfaceOrientationMask) {
+        // tell the app to change the orientation
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        else { return }
+        windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientation))
+        print("Changing to", orientation == .portrait ? "portrait" : "landscape")
     }
 }
 

@@ -8,12 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var manager: VideoPlayerController = .init()
+
     var body: some View {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            ContentViewWithTabBar()
-        } else {
-            ContentViewWithSideBar()
+        ZStack {
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                ContentViewWithTabBar()
+            } else {
+                ContentViewWithSideBar()
+            }
         }
+        .environmentObject(self.manager)
     }
 }
 

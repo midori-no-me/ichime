@@ -36,7 +36,6 @@
 		EDFF2D192B43471500F27E61 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */; };
 		EDFF2D242B44384500F27E61 /* Anime365ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D232B44384500F27E61 /* Anime365ApiClient.swift */; };
 		EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D292B4476D300F27E61 /* Anime365Client.swift */; };
-		EDFF2D2C2B449A5500F27E61 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D2B2B449A5500F27E61 /* Episode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -87,7 +86,6 @@
 		EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EDFF2D232B44384500F27E61 /* Anime365ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365ApiClient.swift; sourceTree = "<group>"; };
 		EDFF2D292B4476D300F27E61 /* Anime365Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365Client.swift; sourceTree = "<group>"; };
-		EDFF2D2B2B449A5500F27E61 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -267,7 +265,6 @@
 				EDE959322B484C8A0030B23D /* ContentView.swift */,
 				ED3D83FE2B5C404A0025BB5D /* CurrentlyWatching */,
 				ED36C61D2B52D280000D0A80 /* Episode */,
-				EDFF2D2B2B449A5500F27E61 /* Episode.swift */,
 				EDE9592B2B47167B0030B23D /* Info.plist */,
 				ED3D83FA2B5C3E540025BB5D /* MyLists */,
 				ED3D84022B5C42670025BB5D /* NotificationCenter */,
@@ -387,7 +384,6 @@
 				ED3A674B2B56FBBA00FB3975 /* ShowModel.swift in Sources */,
 				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
 				ED36C62A2B53FB81000D0A80 /* EpisodeModel.swift in Sources */,
-				EDFF2D2C2B449A5500F27E61 /* Episode.swift in Sources */,
 				ED3A674D2B5739B600FB3975 /* EpisodeTranslationQualitySelectorView.swift in Sources */,
 				ED3D83F92B5BFA890025BB5D /* EpisodeStreamingInfo.swift in Sources */,
 				ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */,

@@ -75,9 +75,10 @@ class EpisodeViewModel: ObservableObject {
 
 struct EpisodeTranslationsView: View {
     @ObservedObject var viewModel: EpisodeViewModel
+    @EnvironmentObject var manager: VideoPlayerController
 
     var body: some View {
-        Group {
+        ZStack {
             switch self.viewModel.state {
             case .idle:
                 Color.clear.onAppear {
@@ -116,6 +117,9 @@ struct EpisodeTranslationsView: View {
                         }
                     }
                 }
+            }
+            if self.manager.loading {
+                ProgressView("Загружаем...")
             }
         }
         .navigationTitle(self.viewModel.episodeTitle)
