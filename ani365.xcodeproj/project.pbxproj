@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C64856902B5C98A700F2027F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = C648568F2B5C98A700F2027F /* Player.swift */; };
 		C65940FB2B4AF0C000413062 /* Anime365Scraper in Frameworks */ = {isa = PBXBuildFile; productRef = C65940FA2B4AF0C000413062 /* Anime365Scraper */; };
 		C65ACDE82B54466400C27FB3 /* Anime365ScraperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
@@ -52,6 +53,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C648568E2B5C914B00F2027F /* Scraper */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Scraper; sourceTree = "<group>"; };
+		C648568F2B5C98A700F2027F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365ScraperManager.swift; sourceTree = "<group>"; };
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C6D440D12B4AEA9D00A81421 /* Anime365Scraper */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365Scraper; sourceTree = "<group>"; };
@@ -106,6 +109,7 @@
 				ED36C6232B52ECED000D0A80 /* Component */,
 				ED36C6262B530524000D0A80 /* Domain */,
 				ED36C61E2B52D294000D0A80 /* View */,
+				C648568F2B5C98A700F2027F /* Player.swift */,
 			);
 			path = Episode;
 			sourceTree = "<group>";
@@ -218,6 +222,7 @@
 		EDA628FF2B4576BE0093F8E5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C648568E2B5C914B00F2027F /* Scraper */,
 				C6D440D12B4AEA9D00A81421 /* Anime365Scraper */,
 			);
 			name = Frameworks;
@@ -390,6 +395,7 @@
 				C65ACDE82B54466400C27FB3 /* Anime365ScraperManager.swift in Sources */,
 				EDE9592F2B475E590030B23D /* ShowView.swift in Sources */,
 				ED659DCA2B546B200030DB9F /* OnboardingView.swift in Sources */,
+				C64856902B5C98A700F2027F /* Player.swift in Sources */,
 				ED36C6252B52ECFB000D0A80 /* EpisodePreviewRow.swift in Sources */,
 				EDFF2D112B43471300F27E61 /* Anime365App.swift in Sources */,
 				EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */,
