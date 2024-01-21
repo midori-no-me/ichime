@@ -28,6 +28,7 @@ public extension Anime365Scraper {
         }
 
         public func login(username: String, password: String) async throws -> Types.UserAuth {
+            session.dropAll()
             let csrf = UUID().uuidString
             session.set(name: .csrf, value: csrf)
 
@@ -79,8 +80,11 @@ public extension Anime365Scraper {
         }
 
         public func logout() {
+            print(session.cookieAsString())
+            print("after \n")
             session.dropAll()
             UserManager.dropUserAuth()
+            print(session.cookieAsString())
             user = nil
         }
 
@@ -196,6 +200,8 @@ public extension Anime365Scraper.AuthManager {
                 case csrf
                 case phpsessid = "PHPSESSID"
                 case token = "aaaa8ed0da05b797653c4bd51877d861"
+                case guestId
+                case fv
             }
 
             func set(name: Cookie, value: String) {

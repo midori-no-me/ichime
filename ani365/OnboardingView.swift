@@ -9,8 +9,8 @@ import Anime365Scraper
 import SwiftUI
 
 struct OnboardingView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
+    @State private var email: String = "eddimensi@gmail.com"
+    @State private var password: String = "gD7sZyNnrF"
     @State private var isEmailValid: Bool = true
     @State private var isPasswordValid: Bool = true
     
