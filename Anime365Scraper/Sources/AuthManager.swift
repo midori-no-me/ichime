@@ -32,7 +32,10 @@ public extension Anime365Scraper {
             let csrf = UUID().uuidString
             session.set(name: .csrf, value: csrf)
 
-            guard let urlString = getUrl(method: .login), let url = URL(string: urlString) else { throw APIError.invalidURL }
+            guard let urlString = getUrl(method: .login), let url = URL(string: urlString) else {
+                print("Invalid URL")
+                throw APIError.invalidURL
+            }
 
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
@@ -40,7 +43,7 @@ public extension Anime365Scraper {
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             request.timeoutInterval = 10
 
-            // Собираем данные для запроса из словаря
+            // Constructing the request data from the dictionary
             let formData = [
                 "csrf": csrf,
                 "LoginForm[username]": username,
@@ -51,30 +54,36 @@ public extension Anime365Scraper {
                 "\(key)=\(value)"
             }.joined(separator: "&")
 
+            print("construct formData", formData)
             request.httpBody = formData.data(using: .utf8)
 
             do {
-                // Выполняем асинхронный запрос
+                // Performing the asynchronous request
                 let (data, response) = try await URLSession.shared.data(for: request)
                 guard let response = response as? HTTPURLResponse, (200 ..< 300).contains(response.statusCode),
                       let responseHTML = String(data: data, encoding: .utf8)
                 else {
+                    print("Invalid response", response)
                     throw APIError.invalidResponse
                 }
+                print("Response", response)
 
                 guard let document = try? SwiftSoup.parseBodyFragment(responseHTML), let content = try? document.select("content").first() else {
+                    print("Parse error")
                     throw APIError.parseError
                 }
 
                 guard let user = createUser(from: content) else {
+                    print("User parse error")
                     throw APIError.parseUserError
                 }
 
-                print(user)
+                print("User: \(user)")
                 setUser(user)
 
                 return user
             } catch {
+                print("Error: \(error)")
                 throw error
             }
         }
