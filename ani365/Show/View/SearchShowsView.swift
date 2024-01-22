@@ -25,12 +25,7 @@ class SearchShowsViewModel: ObservableObject {
 
     init() {
         self.state = .idle(self.recentSearches)
-        self.client = Anime365Client(
-            apiClient: Anime365ApiClient(
-                baseURL: "https://anime365.ru/api",
-                userAgent: "ani365"
-            )
-        )
+        self.client = ServiceLocator.getAnime365Client()
     }
 
     func performInitialSearch() async {

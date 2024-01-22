@@ -28,13 +28,7 @@ class EpisodeTranslationQualitySelectorViewModel: ObservableObject {
     ) {
         self.translationId = translationId
         self.translationTeam = translationTeam
-        self.client = Anime365Client(
-            apiClient: Anime365ApiClient(
-                baseURL: "https://smotret-anime.com/api",
-                userAgent: "ani365",
-                accessToken: "daa123fe790458825c467e999a8bf447e8f18b48a%3A4%3A%7Bi%3A0%3Bi%3A171909%3Bi%3A1%3Bs%3A9%3A%22Pupa+Lupa%22%3Bi%3A2%3Bi%3A2592000%3Bi%3A3%3Ba%3A1%3A%7Bs%3A23%3A%22passwordChangedDateTime%22%3Bs%3A19%3A%222020-02-01+00%3A48%3A52%22%3B%7D%7D"
-            )
-        )
+        self.client = ServiceLocator.getAnime365Client()
     }
 
     @MainActor
