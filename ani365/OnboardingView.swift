@@ -10,9 +10,10 @@ import SwiftUI
 
 struct OnboardingView: View {
     @State private var email: String = "eddimensi@gmail.com"
-    @State private var password: String = "gD7sZyNnrF"
+    @State private var password: String = "dwadaw"
     @State private var isEmailValid: Bool = true
     @State private var isPasswordValid: Bool = true
+    @State private var invalidPassword = false
     
     @EnvironmentObject var scraperManager: Anime365ScraperManager
 
@@ -33,6 +34,7 @@ struct OnboardingView: View {
                         .disableAutocorrection(true)
                         .onChange(of: email) {
                             isEmailValid = isValidEmail(email)
+                            invalidPassword = false
                         }
                     
                     SecureField("Пароль", text: $password)
@@ -40,8 +42,15 @@ struct OnboardingView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .onChange(of: password) {
                             isPasswordValid = isValidPassword(password)
+                            invalidPassword = false
                         }
-                    
+                   
+                    if invalidPassword {
+                        Text("Неверный пароль или логин")
+                            .font(.callout)
+                            .fontWeight(.medium)
+                            .foregroundColor(Color.red)
+                    }
                     Button(action: {
                         // Ваш код для обработки авторизации
                         if isEmailValid, isPasswordValid {
@@ -50,12 +59,13 @@ struct OnboardingView: View {
                                     let user = try await scraperManager.startAuth(username: email, password: password)
                                     print(user)
                                     
-                                } catch {
+                                } catch Anime365Scraper.AuthManager.APIError.invalidCredentials {
+                                    invalidPassword.toggle()
+                                }
+                                catch {
                                     print("some error", error.localizedDescription)
                                 }
                             }
-                            // Добавьте код для сохранения данных в Keychain
-                            saveToKeychain(service: Anime365Scraper.domain, email: email, password: password)
                         }
                     }) {
                         Text("Войти")
@@ -68,15 +78,6 @@ struct OnboardingView: View {
                     .disabled(!isEmailValid || !isPasswordValid || email.isEmpty || password.isEmpty)
                 }
                 .padding()
-                .onAppear {
-                    // Автозаполнение из Keychain
-                    if let savedEmail = readFromKeychain(service: Anime365Scraper.domain, account: "email"),
-                       let savedPassword = readFromKeychain(service: Anime365Scraper.domain, account: "password")
-                    {
-                        email = savedEmail
-                        password = savedPassword
-                    }
-                }
             }
         }
     }
@@ -89,50 +90,7 @@ struct OnboardingView: View {
     
     private func isValidPassword(_ password: String) -> Bool {
         // Простая валидация пароля
-        return password.count >= 6
-    }
-    
-    private func saveToKeychain(service: String, email: String, password: String) {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: "anime365.ru",
-            kSecAttrAccount as String: "email",
-            kSecValueData as String: email.data(using: .utf8)!
-        ]
-        let _ = SecItemDelete(query as CFDictionary)
-        SecItemAdd(query as CFDictionary, nil)
-        
-        let passwordQuery: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: "anime365.ru",
-            kSecAttrAccount as String: "password",
-            kSecValueData as String: password.data(using: .utf8)!
-        ]
-        let _ = SecItemDelete(passwordQuery as CFDictionary)
-        SecItemAdd(passwordQuery as CFDictionary, nil)
-    }
-    
-    private func readFromKeychain(service: String, account: String) -> String? {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
-            kSecReturnData as String: kCFBooleanTrue!,
-            kSecMatchLimit as String: kSecMatchLimitOne
-        ]
-        
-        var result: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &result)
-        
-        if status == errSecSuccess {
-            if let data = result as? Data,
-               let password = String(data: data, encoding: .utf8)
-            {
-                return password
-            }
-        }
-        
-        return nil
+        return password.count >= 4
     }
 }
 

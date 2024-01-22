@@ -17,7 +17,7 @@ public extension Anime365Scraper {
             self.user = UserManager.loadUserAuth()
         }
 
-        private enum APIError: Error {
+        public enum APIError: Error {
             case emptyResponse
             case invalidResponse
             case invalidURL
@@ -25,6 +25,7 @@ public extension Anime365Scraper {
             case serverError
             case parseError
             case parseUserError
+            case invalidCredentials
         }
 
         public func login(username: String, password: String) async throws -> Types.UserAuth {
@@ -66,7 +67,10 @@ public extension Anime365Scraper {
                     print("Invalid response", response)
                     throw APIError.invalidResponse
                 }
-                print("Response", response)
+
+                if responseHTML.contains(#/Неверный E-mail или пароль/#) {
+                    throw APIError.invalidCredentials
+                }
 
                 guard let document = try? SwiftSoup.parseBodyFragment(responseHTML), let content = try? document.select("content").first() else {
                     print("Parse error")
