@@ -5,10 +5,11 @@
 //  Created by p.flaks on 20.01.2024.
 //
 
+import Anime365ApiClient
 import Foundation
 
 struct EpisodeStreamingInfo: Hashable, Identifiable {
-    init(apiResponse: Anime365Embed) {
+    init(apiResponse: Anime365TranslationEmbed) {
         var subtitles: EpisodeStreamingInfo.SubtitlesUrls? = nil
 
         if let vttUrlString = apiResponse.subtitlesVttUrl, let vttUrl = URL(string: vttUrlString) {

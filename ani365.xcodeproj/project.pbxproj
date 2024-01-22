@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,6 +22,7 @@
 		ED3D83FD2B5C3E710025BB5D /* MyListsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D83FC2B5C3E710025BB5D /* MyListsView.swift */; };
 		ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */; };
 		ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */; };
+		ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */; };
 		ED659DCA2B546B200030DB9F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED659DC92B546B200030DB9F /* OnboardingView.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
 		ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = ED8A40802B4C57410055DAB6 /* CachedAsyncImage */; };
@@ -34,7 +35,6 @@
 		EDFF2D112B43471300F27E61 /* Anime365App.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D102B43471300F27E61 /* Anime365App.swift */; };
 		EDFF2D152B43471500F27E61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D142B43471500F27E61 /* Assets.xcassets */; };
 		EDFF2D192B43471500F27E61 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */; };
-		EDFF2D242B44384500F27E61 /* Anime365ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D232B44384500F27E61 /* Anime365ApiClient.swift */; };
 		EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D292B4476D300F27E61 /* Anime365Client.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +67,7 @@
 		ED3D83FC2B5C3E710025BB5D /* MyListsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListsView.swift; sourceTree = "<group>"; };
 		ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyWatchingView.swift; sourceTree = "<group>"; };
 		ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterView.swift; sourceTree = "<group>"; };
+		ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365ApiClient; sourceTree = "<group>"; };
 		ED659DC92B546B200030DB9F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -83,7 +84,6 @@
 		EDFF2D142B43471500F27E61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDFF2D162B43471500F27E61 /* ani365.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ani365.entitlements; sourceTree = "<group>"; };
 		EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		EDFF2D232B44384500F27E61 /* Anime365ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365ApiClient.swift; sourceTree = "<group>"; };
 		EDFF2D292B4476D300F27E61 /* Anime365Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365Client.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,6 +93,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C65940FB2B4AF0C000413062 /* Anime365Scraper in Frameworks */,
+				ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */,
 				ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -219,6 +220,7 @@
 		EDA628FF2B4576BE0093F8E5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */,
 				C6D440D12B4AEA9D00A81421 /* Anime365Scraper */,
 			);
 			name = Frameworks;
@@ -293,7 +295,6 @@
 		EDFF2D252B443D8100F27E61 /* Anime365 */ = {
 			isa = PBXGroup;
 			children = (
-				EDFF2D232B44384500F27E61 /* Anime365ApiClient.swift */,
 				EDFF2D292B4476D300F27E61 /* Anime365Client.swift */,
 			);
 			path = Anime365;
@@ -319,6 +320,7 @@
 			packageProductDependencies = (
 				C65940FA2B4AF0C000413062 /* Anime365Scraper */,
 				ED8A40802B4C57410055DAB6 /* CachedAsyncImage */,
+				ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */,
 			);
 			productName = ani365;
 			productReference = EDFF2D0D2B43471300F27E61 /* ani365.app */;
@@ -352,6 +354,7 @@
 			mainGroup = EDFF2D042B43471300F27E61;
 			packageReferences = (
 				ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
+				ED49A9AE2B5ED48C0016920B /* XCLocalSwiftPackageReference "Anime365ApiClient" */,
 			);
 			productRefGroup = EDFF2D0E2B43471300F27E61 /* Products */;
 			projectDirPath = "";
@@ -402,7 +405,6 @@
 				EDFF2D112B43471300F27E61 /* Anime365App.swift in Sources */,
 				EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */,
 				ED3D83FD2B5C3E710025BB5D /* MyListsView.swift in Sources */,
-				EDFF2D242B44384500F27E61 /* Anime365ApiClient.swift in Sources */,
 				ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -661,6 +663,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		ED49A9AE2B5ED48C0016920B /* XCLocalSwiftPackageReference "Anime365ApiClient" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Anime365ApiClient;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -676,6 +685,10 @@
 		C65940FA2B4AF0C000413062 /* Anime365Scraper */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Anime365Scraper;
+		};
+		ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Anime365ApiClient;
 		};
 		ED8A40802B4C57410055DAB6 /* CachedAsyncImage */ = {
 			isa = XCSwiftPackageProductDependency;

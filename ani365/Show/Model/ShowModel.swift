@@ -1,3 +1,4 @@
+import Anime365ApiClient
 import Foundation
 
 struct Show: Hashable, Identifiable {
