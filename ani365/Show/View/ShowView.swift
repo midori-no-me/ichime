@@ -64,12 +64,7 @@ class ShowViewModel: ObservableObject {
             self.state = .loaded(preloadedShow)
         }
 
-        self.client = Anime365Client(
-            apiClient: Anime365ApiClient(
-                baseURL: "https://anime365.ru/api",
-                userAgent: "ani365"
-            )
-        )
+        self.client = ServiceLocator.getAnime365Client()
     }
 
     func performInitialLoad() async {

@@ -22,12 +22,7 @@ class EpisodeViewModel: ObservableObject {
     ) {
         self.episodeId = episodeId
         self.episodeTitle = episodeTitle
-        self.client = Anime365Client(
-            apiClient: Anime365ApiClient(
-                baseURL: "https://anime365.ru/api",
-                userAgent: "ani365"
-            )
-        )
+        self.client = ServiceLocator.getAnime365Client()
     }
 
     @MainActor

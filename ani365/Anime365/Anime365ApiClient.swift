@@ -105,16 +105,13 @@ struct Anime365Embed: Decodable {
 final class Anime365ApiClient {
     private let baseURL: String
     private let userAgent: String
-    private let accessToken: String?
 
     init(
         baseURL: String,
-        userAgent: String,
-        accessToken: String? = nil // TODO: make mandatory
+        userAgent: String
     ) {
         self.baseURL = baseURL
         self.userAgent = userAgent
-        self.accessToken = accessToken
     }
 
     public func listSeries(
@@ -238,10 +235,6 @@ final class Anime365ApiClient {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
 
-        if let accessToken = accessToken {
-            request.setValue("aaaa8ed0da05b797653c4bd51877d861=\(accessToken)", forHTTPHeaderField: "Cookie")
-        }
-
         let (data, httpResponse) = try await URLSession.shared.data(for: request)
 
         if let requestUrl = request.url?.absoluteString, let httpResponse = httpResponse as? HTTPURLResponse {
@@ -268,7 +261,7 @@ final class Anime365ApiClient {
     }
 
     private func buildURL(endpoint: String, queryItems: [URLQueryItem]) -> URL? {
-        var components = URLComponents(string: baseURL + endpoint)
+        var components = URLComponents(string: baseURL + "/api" + endpoint)
 
         if !queryItems.isEmpty {
             components?.queryItems = queryItems
