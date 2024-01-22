@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Anime365ApiClient
 
 struct Translation: Hashable, Identifiable {
     static func createFromApiSeries(

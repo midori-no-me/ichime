@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Anime365ApiClient
 
 enum ServiceLocator {
-    static func getWebsiteBaseUrl() -> String {
-        return "https://anime365.ru"
+    static func getWebsiteBaseUrl() -> URL {
+        return URL(string: "https://anime365.ru")!
     }
 
     static func getApplicationName() -> String {
