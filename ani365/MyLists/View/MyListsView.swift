@@ -247,7 +247,7 @@ struct ToolbarWrapper<Content: View>: View {
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink(destination: OnboardingView()) {
+                    NavigationLink(destination: ProfileView()) {
                         Image(systemName: "person.circle")
                     }
                 }
@@ -256,7 +256,7 @@ struct ToolbarWrapper<Content: View>: View {
 }
 
 #Preview {
-    AppPreview {
+    AppPreview { _ in
         NavigationStack {
             MyListsView(viewModel: .init(apiClient: ScraperClient(scraperClient: ServiceLocator.getScraperAPIClient())))
         }

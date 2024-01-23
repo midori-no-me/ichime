@@ -8,13 +8,13 @@
 import ScraperAPI
 import SwiftUI
 
-struct OnboardingView: View {
+struct OnboardingViewOld: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isEmailValid: Bool = true
     @State private var isPasswordValid: Bool = true
     @State private var invalidPassword = false
-    
+
     @EnvironmentObject var scraperManager: ScraperClient
 
     var body: some View {
@@ -26,7 +26,7 @@ struct OnboardingView: View {
                     Text("Вход")
                         .font(.largeTitle)
                         .padding()
-                    
+
                     TextField("Email", text: $email)
                         .padding()
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -36,7 +36,7 @@ struct OnboardingView: View {
                             isEmailValid = isValidEmail(email)
                             invalidPassword = false
                         }
-                    
+
                     SecureField("Пароль", text: $password)
                         .padding()
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -44,7 +44,7 @@ struct OnboardingView: View {
                             isPasswordValid = isValidPassword(password)
                             invalidPassword = false
                         }
-                   
+
                     if invalidPassword {
                         Text("Неверный пароль или логин")
                             .font(.callout)
@@ -79,13 +79,13 @@ struct OnboardingView: View {
             }
         }
     }
-    
+
     private func isValidEmail(_ email: String) -> Bool {
         // Простая валидация email
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         return NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: email)
     }
-    
+
     private func isValidPassword(_ password: String) -> Bool {
         // Простая валидация пароля
         return password.count >= 4
@@ -94,15 +94,15 @@ struct OnboardingView: View {
 
 struct UserAuthView: View {
     @EnvironmentObject var scraperManager: ScraperClient
-    
+
     var userAuth: ScraperAPI.Types.User
-    
+
     var body: some View {
         VStack {
             Text("Добро пожаловать, \(userAuth.username)!")
                 .font(.title)
                 .padding()
-            
+
             AsyncImage(url: userAuth.avatarURL) { phase in
                 switch phase {
                 case .success(let image):
@@ -125,7 +125,7 @@ struct UserAuthView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 100, height: 100)
                         .clipShape(Circle())
-                    
+
                 @unknown default:
                     // Placeholder image or loading indicator
                     Image(systemName: "person.circle.fill")
@@ -135,10 +135,10 @@ struct UserAuthView: View {
                         .clipShape(Circle())
                 }
             }
-            
+
             Text("ID: \(String(userAuth.id))")
                 .padding()
-            
+
             Button(action: {
                 // Ваш код для обработки авторизации
                 scraperManager.dropAuth()
@@ -155,17 +155,17 @@ struct UserAuthView: View {
     }
 }
 
-#Preview {
-    AppPreview {
-        OnboardingView()
-    }
-}
-
-struct AppPreview<Content: View>: View {
-    @StateObject var scraperManager: ScraperClient = .init(scraperClient: ServiceLocator.getScraperAPIClient())
-    @ViewBuilder var content: () -> Content
-
-    var body: some View {
-        content().environmentObject(scraperManager)
-    }
-}
+//#Preview {
+//    AppPreview {
+//        OnboardingViewOld()
+//    }
+//}
+//
+//struct AppPreview<Content: View>: View {
+//    @StateObject var scraperManager: ScraperClient = .init(scraperClient: ServiceLocator.getScraperAPIClient())
+//    @ViewBuilder var content: () -> Content
+//
+//    var body: some View {
+//        content().environmentObject(scraperManager)
+//    }
+//}

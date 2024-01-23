@@ -124,7 +124,7 @@ struct NotificationCenterView: View {
             }
         }
         .toolbar {
-            NavigationLink(destination: OnboardingView()) {
+            NavigationLink(destination: ProfileView()) {
                 Image(systemName: "person.circle")
             }
         }

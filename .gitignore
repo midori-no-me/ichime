@@ -99,6 +99,11 @@ iOSInjectionProject/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
+xcuserdata/
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,xcode
 ani365.xcodeproj/project.xcworkspace/xcuserdata/*/UserInterfaceState.xcuserstate
+
+### JetBrains IDEs ###
+
+.idea/
