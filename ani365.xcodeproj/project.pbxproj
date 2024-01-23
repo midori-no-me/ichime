@@ -53,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
+		C651FD072B608A7600E68341 /* ScraperAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ScraperAPI; sourceTree = "<group>"; };
 		C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365ScraperManager.swift; sourceTree = "<group>"; };
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C6D440D12B4AEA9D00A81421 /* Anime365Scraper */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365Scraper; sourceTree = "<group>"; };
@@ -101,6 +102,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		634B93C7370E20A1AB3ADF31 /* Type */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Type;
+			path = ScaperAPI/Sources/ScaperAPI/Type;
+			sourceTree = "<group>";
+		};
+		634B94230685A8668B253FED /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Notification;
+			path = ScaperAPI/Sources/ScaperAPI/Request/Notification;
+			sourceTree = "<group>";
+		};
+		634B9C9236A8A5719181805E /* List */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = List;
+			path = ScaperAPI/Sources/ScaperAPI/Request/List;
+			sourceTree = "<group>";
+		};
 		ED36C61D2B52D280000D0A80 /* Episode */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,6 +245,7 @@
 		EDA628FF2B4576BE0093F8E5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C651FD072B608A7600E68341 /* ScraperAPI */,
 				ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */,
 				C6D440D12B4AEA9D00A81421 /* Anime365Scraper */,
 			);
@@ -251,6 +277,9 @@
 				EDFF2D0F2B43471300F27E61 /* ani365 */,
 				EDA628FF2B4576BE0093F8E5 /* Frameworks */,
 				EDFF2D0E2B43471300F27E61 /* Products */,
+				634B9C9236A8A5719181805E /* List */,
+				634B94230685A8668B253FED /* Notification */,
+				634B93C7370E20A1AB3ADF31 /* Type */,
 			);
 			sourceTree = "<group>";
 		};
