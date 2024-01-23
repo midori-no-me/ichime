@@ -189,7 +189,7 @@ struct SearchShowsView: View {
             prompt: "Название тайтла"
         )
         .toolbar {
-            NavigationLink(destination: OnboardingView()) {
+            NavigationLink(destination: ProfileView()) {
                 Image(systemName: "person.circle")
             }
         }

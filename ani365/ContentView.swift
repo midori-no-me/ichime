@@ -5,14 +5,23 @@
 //  Created by p.flaks on 05.01.2024.
 //
 
+import ScraperAPI
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var scraperManager: ScraperClient
+
     var body: some View {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            ContentViewWithTabBar()
+        if scraperManager.user == nil {
+            NavigationStack {
+                OnboardingView()
+            }
         } else {
-            ContentViewWithSideBar()
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                ContentViewWithTabBar()
+            } else {
+                ContentViewWithSideBar()
+            }
         }
     }
 }
@@ -128,7 +137,7 @@ struct ContentViewWithTabBar: View {
 }
 
 #Preview {
-    AppPreview {
+    AppPreview { _ in
         ContentView()
     }
 }

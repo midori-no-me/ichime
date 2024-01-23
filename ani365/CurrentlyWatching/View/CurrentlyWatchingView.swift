@@ -126,7 +126,7 @@ struct CurrentlyWatchingView: View {
             }
         }
         .toolbar {
-            NavigationLink(destination: OnboardingView()) {
+            NavigationLink(destination: ProfileView()) {
                 Image(systemName: "person.circle")
             }
         }
@@ -167,17 +167,17 @@ struct LoadedCurrentlyWatching: View {
     }
 }
 
-#Preview {
-    AppPreview {
-        NavigationStack {
-            CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator
-                    .getScraperAPIClient())))
-        }
-    }
-}
-
-#Preview("No navigation") {
-    AppPreview {
-        CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())))
-    }
-}
+//#Preview {
+//    AppPreview {
+//        NavigationStack {
+//            CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator
+//                    .getScraperAPIClient())))
+//        }
+//    }
+//}
+//
+//#Preview("No navigation") {
+//    AppPreview {
+//        CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())))
+//    }
+//}

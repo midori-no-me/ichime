@@ -17,6 +17,10 @@
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
 		C6B8331D2B66951700D4A1AC /* WatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331C2B66951700D4A1AC /* WatchCard.swift */; };
 		C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */; };
+		ED0D29952B66C84600C5AC9E /* BaseUrlPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0D29942B66C84600C5AC9E /* BaseUrlPreference.swift */; };
+		ED1919772B5F00AD008C6C99 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1919762B5F00AD008C6C99 /* OnboardingView.swift */; };
+		ED269F622B6034810083A62F /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED269F612B6034810083A62F /* AuthenticationView.swift */; };
+		ED2D3E732B68342800F1EC40 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2D3E722B68342800F1EC40 /* ProfileView.swift */; };
 		ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C61F2B52D2AA000D0A80 /* EpisodeTranslationsView.swift */; };
 		ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6212B52E945000D0A80 /* EpisodeListView.swift */; };
 		ED36C6252B52ECFB000D0A80 /* EpisodePreviewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6242B52ECFB000D0A80 /* EpisodePreviewRow.swift */; };
@@ -29,7 +33,7 @@
 		ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */; };
 		ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */; };
 		ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */; };
-		ED659DCA2B546B200030DB9F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED659DC92B546B200030DB9F /* OnboardingView.swift */; };
+		ED659DCA2B546B200030DB9F /* AuthenticationViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED659DC92B546B200030DB9F /* AuthenticationViewOld.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
 		ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = ED8A40802B4C57410055DAB6 /* CachedAsyncImage */; };
 		EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD353B32B5E82AF00313489 /* ServiceLocator.swift */; };
@@ -68,6 +72,10 @@
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C6B8331C2B66951700D4A1AC /* WatchCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCard.swift; sourceTree = "<group>"; };
 		C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCardModel.swift; sourceTree = "<group>"; };
+		ED0D29942B66C84600C5AC9E /* BaseUrlPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUrlPreference.swift; sourceTree = "<group>"; };
+		ED1919762B5F00AD008C6C99 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		ED269F612B6034810083A62F /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
+		ED2D3E722B68342800F1EC40 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		ED36C61F2B52D2AA000D0A80 /* EpisodeTranslationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeTranslationsView.swift; sourceTree = "<group>"; };
 		ED36C6212B52E945000D0A80 /* EpisodeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeListView.swift; sourceTree = "<group>"; };
 		ED36C6242B52ECFB000D0A80 /* EpisodePreviewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePreviewRow.swift; sourceTree = "<group>"; };
@@ -80,7 +88,7 @@
 		ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyWatchingView.swift; sourceTree = "<group>"; };
 		ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterView.swift; sourceTree = "<group>"; };
 		ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365ApiClient; sourceTree = "<group>"; };
-		ED659DC92B546B200030DB9F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		ED659DC92B546B200030DB9F /* AuthenticationViewOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewOld.swift; sourceTree = "<group>"; };
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -136,6 +144,33 @@
 				C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		ED0D29932B66C82D00C5AC9E /* AppPreferences */ = {
+			isa = PBXGroup;
+			children = (
+				ED0D29942B66C84600C5AC9E /* BaseUrlPreference.swift */,
+			);
+			path = AppPreferences;
+			sourceTree = "<group>";
+		};
+		ED1919742B5F0089008C6C99 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				ED1919752B5F0099008C6C99 /* View */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		ED1919752B5F0099008C6C99 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				ED269F612B6034810083A62F /* AuthenticationView.swift */,
+				ED659DC92B546B200030DB9F /* AuthenticationViewOld.swift */,
+				ED1919762B5F00AD008C6C99 /* OnboardingView.swift */,
+				ED2D3E722B68342800F1EC40 /* ProfileView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		ED36C61D2B52D280000D0A80 /* Episode */ = {
@@ -307,6 +342,7 @@
 		EDFF2D0F2B43471300F27E61 /* ani365 */ = {
 			isa = PBXGroup;
 			children = (
+				ED0D29932B66C82D00C5AC9E /* AppPreferences */,
 				EDFF2D162B43471500F27E61 /* ani365.entitlements */,
 				EDFF2D252B443D8100F27E61 /* Anime365 */,
 				EDFF2D102B43471300F27E61 /* Anime365App.swift */,
@@ -319,8 +355,8 @@
 				EDE9592B2B47167B0030B23D /* Info.plist */,
 				ED3D83FA2B5C3E540025BB5D /* MyLists */,
 				ED3D84022B5C42670025BB5D /* NotificationCenter */,
-				ED659DC92B546B200030DB9F /* OnboardingView.swift */,
 				EDFF2D172B43471500F27E61 /* Preview Content */,
+				ED1919742B5F0089008C6C99 /* Profile */,
 				ED74304C2B4B07EB009BCE3A /* Show */,
 			);
 			path = ani365;
@@ -430,6 +466,7 @@
 				C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */,
 				EDE959312B4762690030B23D /* OngoingsView.swift in Sources */,
 				C6656A692B62E30500BF7412 /* MyListEditView.swift in Sources */,
+				ED0D29952B66C84600C5AC9E /* BaseUrlPreference.swift in Sources */,
 				ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */,
 				ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */,
 				ED36C6282B530535000D0A80 /* EpisodePreviewModel.swift in Sources */,
@@ -447,13 +484,16 @@
 				C65ACDE82B54466400C27FB3 /* ScraperClient.swift in Sources */,
 				C6656A6E2B631EBE00BF7412 /* AnimeList.swift in Sources */,
 				EDE9592F2B475E590030B23D /* ShowView.swift in Sources */,
-				ED659DCA2B546B200030DB9F /* OnboardingView.swift in Sources */,
+				ED659DCA2B546B200030DB9F /* AuthenticationViewOld.swift in Sources */,
+				ED2D3E732B68342800F1EC40 /* ProfileView.swift in Sources */,
 				ED36C6252B52ECFB000D0A80 /* EpisodePreviewRow.swift in Sources */,
 				EDFF2D112B43471300F27E61 /* Anime365App.swift in Sources */,
 				EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */,
 				C6B8331D2B66951700D4A1AC /* WatchCard.swift in Sources */,
+				ED1919772B5F00AD008C6C99 /* OnboardingView.swift in Sources */,
 				ED3D83FD2B5C3E710025BB5D /* MyListsView.swift in Sources */,
 				ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */,
+				ED269F622B6034810083A62F /* AuthenticationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -157,7 +157,7 @@ struct OngoingsView: View {
         }
         .navigationTitle("Онгоинги")
         .toolbar {
-            NavigationLink(destination: OnboardingView()) {
+            NavigationLink(destination: ProfileView()) {
                 Image(systemName: "person.circle")
             }
         }
