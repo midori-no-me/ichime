@@ -1,5 +1,5 @@
 //
-//  GetMeRequest.swift
+//  LoginRequest.swift
 //
 //
 //  Created by Nikita Nafranets on 24.01.2024.
@@ -9,29 +9,41 @@ import Foundation
 import SwiftSoup
 
 public extension ScraperAPI.Request {
-    struct GetMeRequest: ScraperHTMLRequest {
+    struct Login: ScraperHTMLRequest {
         public typealias ResponseType = ScraperAPI.Types.User
         
+        private let username: String
+        private let password: String
+        
         public func getEndpoint() -> String {
-            "users/profile"
+            "users/login"
         }
         
         public func getQueryItems() -> [URLQueryItem] {
-            [URLQueryItem(name: "dynpage", value: "1")]
+            []
         }
         
         public func getFormData() -> [String: String]? {
-            nil
+            [
+                "LoginForm[username]": username,
+                "LoginForm[password]": password,
+                "dynpage": "1",
+                "yt0": "",
+            ]
         }
         
         public func parseResponse(html: String, baseURL: URL) throws -> ScraperAPI.Types.User {
+            if html.contains(#/Неверный E-mail или пароль/#) {
+                throw ScraperAPI.APIClientError.invalidCredentials
+            }
+            
             guard let document = try? SwiftSoup.parseBodyFragment(html), let content = try? document.select("content").first() else {
-                logger.error("\(String(describing: GetMeRequest.self)): cannot parse document")
+                logger.error("\(String(describing: Login.self)): cannot parse document")
                 throw ScraperAPI.APIClientError.parseError
             }
             
             guard let user = try? ScraperAPI.Types.User(from: content, baseURL: baseURL) else {
-                logger.error("\(String(describing: GetMeRequest.self)): cannot parse user")
+                logger.error("\(String(describing: Login.self)): cannot parse user")
                 throw ScraperAPI.APIClientError.parseError
             }
             

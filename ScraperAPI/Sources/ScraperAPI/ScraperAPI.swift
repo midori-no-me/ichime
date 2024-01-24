@@ -1,9 +1,6 @@
 // The Swift Programming Language
 // https://docs.swift.org/swift-book
 import Foundation
-import OSLog
-
-let logger = Logger(subsystem: Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "dev.ani365", category: "ScaperAPI")
 
 public enum ScraperAPI {}
 
@@ -102,13 +99,5 @@ public extension ScraperAPI {
                 }
             }
         }
-    }
-}
-
-extension Dictionary where Key == String, Value == String {
-    func queryString() -> String {
-        return map { key, value in
-            "\(key)=\(value)"
-        }.joined(separator: "&")
     }
 }
