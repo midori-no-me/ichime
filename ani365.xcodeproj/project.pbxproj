@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */; };
-		C65940FB2B4AF0C000413062 /* Anime365Scraper in Frameworks */ = {isa = PBXBuildFile; productRef = C65940FA2B4AF0C000413062 /* Anime365Scraper */; };
-		C65ACDE82B54466400C27FB3 /* Anime365ScraperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */; };
+		C651FD092B61745700E68341 /* ScraperAPI in Frameworks */ = {isa = PBXBuildFile; productRef = C651FD082B61745700E68341 /* ScraperAPI */; };
+		C65ACDE82B54466400C27FB3 /* ScrapperClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65ACDE72B54466300C27FB3 /* ScrapperClient.swift */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
 		ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C61F2B52D2AA000D0A80 /* EpisodeTranslationsView.swift */; };
 		ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6212B52E945000D0A80 /* EpisodeListView.swift */; };
@@ -54,9 +54,8 @@
 /* Begin PBXFileReference section */
 		C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		C651FD072B608A7600E68341 /* ScraperAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ScraperAPI; sourceTree = "<group>"; };
-		C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365ScraperManager.swift; sourceTree = "<group>"; };
+		C65ACDE72B54466300C27FB3 /* ScrapperClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrapperClient.swift; sourceTree = "<group>"; };
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		C6D440D12B4AEA9D00A81421 /* Anime365Scraper */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365Scraper; sourceTree = "<group>"; };
 		ED36C61F2B52D2AA000D0A80 /* EpisodeTranslationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeTranslationsView.swift; sourceTree = "<group>"; };
 		ED36C6212B52E945000D0A80 /* EpisodeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeListView.swift; sourceTree = "<group>"; };
 		ED36C6242B52ECFB000D0A80 /* EpisodePreviewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePreviewRow.swift; sourceTree = "<group>"; };
@@ -93,7 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C65940FB2B4AF0C000413062 /* Anime365Scraper in Frameworks */,
+				C651FD092B61745700E68341 /* ScraperAPI in Frameworks */,
 				ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */,
 				ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */,
 			);
@@ -247,7 +246,6 @@
 			children = (
 				C651FD072B608A7600E68341 /* ScraperAPI */,
 				ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */,
-				C6D440D12B4AEA9D00A81421 /* Anime365Scraper */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -297,7 +295,7 @@
 				EDFF2D162B43471500F27E61 /* ani365.entitlements */,
 				EDFF2D252B443D8100F27E61 /* Anime365 */,
 				EDFF2D102B43471300F27E61 /* Anime365App.swift */,
-				C65ACDE72B54466300C27FB3 /* Anime365ScraperManager.swift */,
+				C65ACDE72B54466300C27FB3 /* ScrapperClient.swift */,
 				EDFF2D142B43471500F27E61 /* Assets.xcassets */,
 				EDE959322B484C8A0030B23D /* ContentView.swift */,
 				ED3D83FE2B5C404A0025BB5D /* CurrentlyWatching */,
@@ -347,9 +345,9 @@
 			);
 			name = ani365;
 			packageProductDependencies = (
-				C65940FA2B4AF0C000413062 /* Anime365Scraper */,
 				ED8A40802B4C57410055DAB6 /* CachedAsyncImage */,
 				ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */,
+				C651FD082B61745700E68341 /* ScraperAPI */,
 			);
 			productName = ani365;
 			productReference = EDFF2D0D2B43471300F27E61 /* ani365.app */;
@@ -427,7 +425,7 @@
 				EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */,
 				ED3D83F92B5BFA890025BB5D /* EpisodeStreamingInfo.swift in Sources */,
 				ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */,
-				C65ACDE82B54466400C27FB3 /* Anime365ScraperManager.swift in Sources */,
+				C65ACDE82B54466400C27FB3 /* ScrapperClient.swift in Sources */,
 				EDE9592F2B475E590030B23D /* ShowView.swift in Sources */,
 				ED659DCA2B546B200030DB9F /* OnboardingView.swift in Sources */,
 				ED36C6252B52ECFB000D0A80 /* EpisodePreviewRow.swift in Sources */,
@@ -711,9 +709,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C65940FA2B4AF0C000413062 /* Anime365Scraper */ = {
+		C651FD082B61745700E68341 /* ScraperAPI */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Anime365Scraper;
+			productName = ScraperAPI;
 		};
 		ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */ = {
 			isa = XCSwiftPackageProductDependency;

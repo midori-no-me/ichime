@@ -5,8 +5,9 @@
 //  Created by p.flaks on 21.01.2024.
 //
 
-import Foundation
 import Anime365ApiClient
+import Foundation
+import ScraperAPI
 
 enum ServiceLocator {
     static func getWebsiteBaseUrl() -> URL {
@@ -44,5 +45,9 @@ enum ServiceLocator {
             baseURL: self.getWebsiteBaseUrl(),
             userAgent: self.getUserAgent()
         )
+    }
+
+    static func getScraperAPIClient() -> ScraperAPI.APIClient {
+        return .init(baseURL: self.getWebsiteBaseUrl(), userAgent: self.getUserAgent(), session: .init(cookieStorage: HTTPCookieStorage.shared, baseURL: self.getWebsiteBaseUrl()))
     }
 }

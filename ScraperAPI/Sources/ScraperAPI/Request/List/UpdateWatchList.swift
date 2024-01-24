@@ -14,7 +14,7 @@ public extension ScraperAPI.Request {
         private let showId: Int
         private let params: UserRate
 
-        init(showId: Int, userRate params: UserRate) {
+        public init(showId: Int, userRate params: UserRate) {
             self.showId = showId
             self.params = params
         }
@@ -27,11 +27,11 @@ public extension ScraperAPI.Request {
             []
         }
 
-        public func getFormData() -> [String: String]? {
-            ["UsersRates[score]": String(params.score),
-             "UsersRates[episodes]": String(params.currentEpisode),
-             "UsersRates[status]": String(params.status.rawValue),
-             "UsersRates[comment]": String(params.comment)]
+        public func getFormData() -> [URLQueryItem] {
+            [.init(name: "UsersRates[score]", value: String(params.score)),
+             .init(name: "UsersRates[episodes]", value: String(params.currentEpisode)),
+             .init(name: "UsersRates[status]", value: String(params.status.rawValue)),
+             .init(name: "UsersRates[comment]", value: String(params.comment))]
         }
 
         public func parseResponse(html: String, baseURL: URL) throws -> ScraperAPI.Request.UserRate {

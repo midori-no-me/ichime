@@ -90,7 +90,7 @@ struct ContentViewWithSideBar: View {
 }
 
 struct ContentViewWithTabBar: View {
-    @EnvironmentObject var scraperManager: Anime365ScraperManager
+    @EnvironmentObject var scraperManager: ScrapperClient
 
     var body: some View {
         TabView {

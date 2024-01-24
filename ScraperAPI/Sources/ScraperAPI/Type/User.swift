@@ -9,7 +9,7 @@ import Foundation
 import SwiftSoup
 
 public extension ScraperAPI.Types {
-    struct User {
+    struct User: Codable {
         public let id: Int
         public let username: String
         public let avatarURL: URL

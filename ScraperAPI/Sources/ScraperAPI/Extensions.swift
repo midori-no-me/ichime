@@ -10,14 +10,6 @@ import OSLog
 
 let logger = Logger(subsystem: Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "dev.ani365", category: "ScaperAPI")
 
-extension Dictionary where Key == String, Value == String {
-    func queryString() -> String {
-        return map { key, value in
-            "\(key)=\(value)"
-        }.joined(separator: "&")
-    }
-}
-
 extension Array {
     func item(at index: Int) -> Element? {
         return indices.contains(index) ? self[index] : nil

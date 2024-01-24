@@ -20,8 +20,8 @@ public extension ScraperAPI.Request {
             []
         }
 
-        public func getFormData() -> [String: String]? {
-            nil
+        public func getFormData() -> [URLQueryItem] {
+            []
         }
 
         public func parseResponse(html: String, baseURL: URL) throws -> Int {

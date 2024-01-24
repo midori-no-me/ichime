@@ -13,7 +13,8 @@ public extension ScraperAPI.Request {
         public typealias ResponseType = [ScraperAPI.Types.WatchShow]
         
         private let page: Int
-        init(page: Int) {
+        
+        public init(page: Int) {
             self.page = page
         }
         
@@ -31,8 +32,8 @@ public extension ScraperAPI.Request {
             return query
         }
         
-        public func getFormData() -> [String: String]? {
-            nil
+        public func getFormData() -> [URLQueryItem] {
+            []
         }
         
         public func parseResponse(html: String, baseURL: URL) throws -> [ScraperAPI.Types.WatchShow] {

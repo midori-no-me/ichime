@@ -15,6 +15,11 @@ public extension ScraperAPI.Request {
         private let username: String
         private let password: String
         
+        public init(username: String, password: String) {
+            self.username = username
+            self.password = password
+        }
+        
         public func getEndpoint() -> String {
             "users/login"
         }
@@ -23,17 +28,18 @@ public extension ScraperAPI.Request {
             []
         }
         
-        public func getFormData() -> [String: String]? {
+        public func getFormData() -> [URLQueryItem] {
             [
-                "LoginForm[username]": username,
-                "LoginForm[password]": password,
-                "dynpage": "1",
-                "yt0": "",
+                .init(name: "LoginForm[username]", value: username),
+                .init(name: "LoginForm[password]", value: password),
+                .init(name: "dynpage", value: "1"),
+                .init(name: "yt0", value: ""),
             ]
         }
         
         public func parseResponse(html: String, baseURL: URL) throws -> ScraperAPI.Types.User {
             if html.contains(#/Неверный E-mail или пароль/#) {
+                logger.error("\(html)")
                 throw ScraperAPI.APIClientError.invalidCredentials
             }
             

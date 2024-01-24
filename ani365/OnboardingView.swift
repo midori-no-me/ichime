@@ -5,17 +5,17 @@
 //  Created by p.flaks on 14.01.2024.
 //
 
-import Anime365Scraper
+import ScraperAPI
 import SwiftUI
 
 struct OnboardingView: View {
-    @State private var email: String = "eddimensi@gmail.com"
-    @State private var password: String = "dwadaw"
+    @State private var email: String = ""
+    @State private var password: String = ""
     @State private var isEmailValid: Bool = true
     @State private var isPasswordValid: Bool = true
     @State private var invalidPassword = false
     
-    @EnvironmentObject var scraperManager: Anime365ScraperManager
+    @EnvironmentObject var scraperManager: ScrapperClient
 
     var body: some View {
         Group {
@@ -58,11 +58,9 @@ struct OnboardingView: View {
                                 do {
                                     let user = try await scraperManager.startAuth(username: email, password: password)
                                     print(user)
-                                    
-                                } catch Anime365Scraper.AuthManager.APIError.invalidCredentials {
+                                } catch ScraperAPI.APIClientError.invalidCredentials {
                                     invalidPassword.toggle()
-                                }
-                                catch {
+                                } catch {
                                     print("some error", error.localizedDescription)
                                 }
                             }
@@ -95,9 +93,9 @@ struct OnboardingView: View {
 }
 
 struct UserAuthView: View {
-    @EnvironmentObject var scraperManager: Anime365ScraperManager
+    @EnvironmentObject var scraperManager: ScrapperClient
     
-    var userAuth: Anime365Scraper.AuthManager.Types.UserAuth
+    var userAuth: ScraperAPI.Types.User
     
     var body: some View {
         VStack {
@@ -164,7 +162,7 @@ struct UserAuthView: View {
 }
 
 struct AppPreview<Content: View>: View {
-    @StateObject var scraperManager: Anime365ScraperManager = .init()
+    @StateObject var scraperManager: ScrapperClient = .init(scraperClient: ServiceLocator.getScraperAPIClient())
     var content: () -> Content
 
     init(@ViewBuilder content: @escaping () -> Content) {

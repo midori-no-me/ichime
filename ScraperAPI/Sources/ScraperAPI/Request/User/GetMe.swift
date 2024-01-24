@@ -20,8 +20,8 @@ public extension ScraperAPI.Request {
             [.init(name: "dynpage", value: "1")]
         }
         
-        public func getFormData() -> [String: String]? {
-            nil
+        public func getFormData() -> [URLQueryItem] {
+            []
         }
         
         public func parseResponse(html: String, baseURL: URL) throws -> ScraperAPI.Types.User {

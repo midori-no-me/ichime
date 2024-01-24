@@ -9,7 +9,7 @@ public protocol ScraperHTMLRequest {
 
     func getEndpoint() -> String
     func getQueryItems() -> [URLQueryItem]
-    func getFormData() -> [String: String]?
+    func getFormData() -> [URLQueryItem]
     
     func parseResponse(html: String, baseURL: URL) throws -> ResponseType
 }
@@ -33,7 +33,7 @@ public extension ScraperAPI {
     final class APIClient {
         private let baseURL: URL
         private let userAgent: String
-        private let session: ScraperAPI.Session
+        public let session: ScraperAPI.Session
         
         public init(baseURL: URL, userAgent: String, session: ScraperAPI.Session) {
             self.baseURL = baseURL
@@ -63,14 +63,21 @@ public extension ScraperAPI {
             httpRequest.timeoutInterval = 10
             httpRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
             
-            if var formData = request.getFormData() {
-                formData[Session.Cookie.csrf.rawValue] = csrf
-                
+            var formData = request.getFormData()
+            if !formData.isEmpty {
+                formData.append(.init(name: Session.Cookie.csrf.rawValue, value: csrf))
+                var data = URLComponents()
+                data.queryItems = formData
+                guard let queryString = data.query else {
+                    logger.error("HTML request: cannot create queryString")
+                    throw APIClientError.invalidResponse
+                }
                 httpRequest.httpMethod = "POST"
                 httpRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-                httpRequest.httpBody = formData.queryString().data(using: .utf8)
                 
-                logger.debug("HTML request: Append form data to request, change type request to post \(formData.queryString())")
+                httpRequest.httpBody = queryString.data(using: .utf8)
+                
+                logger.debug("HTML request: Append form data to request, change type request to post \(queryString, privacy: .sensitive)")
             }
             
             do {

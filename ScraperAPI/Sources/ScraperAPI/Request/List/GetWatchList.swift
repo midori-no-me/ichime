@@ -15,7 +15,7 @@ public extension ScraperAPI.Request {
         private let userId: Int
         private let type: ScraperAPI.Types.ListCategoryType?
 
-        init(userId: Int, type: ScraperAPI.Types.ListCategoryType? = nil) {
+        public init(userId: Int, type: ScraperAPI.Types.ListCategoryType? = nil) {
             self.userId = userId
             self.type = type
         }
@@ -43,8 +43,8 @@ public extension ScraperAPI.Request {
             [.init(name: "dynpage", value: "1")]
         }
 
-        public func getFormData() -> [String: String]? {
-            nil
+        public func getFormData() -> [URLQueryItem] {
+            []
         }
 
         public func parseResponse(html: String, baseURL: URL) throws -> [ScraperAPI.Types.ListByCategory] {
