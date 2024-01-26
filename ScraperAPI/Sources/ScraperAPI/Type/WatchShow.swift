@@ -49,7 +49,7 @@ public extension ScraperAPI.Types {
 
             let ruName = try htmlElement.select("h5.line-1 a").first()?.text() ?? ""
             let enName = try htmlElement.select("h6.line-2 a").first()?.text() ?? ""
-            let name = Name(ru: ruName, en: enName)
+            let name = Name(ru: ruName, romaji: enName)
 
             let updateInfo = try Update(from: htmlElement.select("span.title").first()?.text() ?? "")
 

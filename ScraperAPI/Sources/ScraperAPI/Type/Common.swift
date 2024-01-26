@@ -61,6 +61,6 @@ public extension ScraperAPI.Types {
     }
 
     struct Name {
-        public let ru, en: String
+        public let ru, romaji: String
     }
 }

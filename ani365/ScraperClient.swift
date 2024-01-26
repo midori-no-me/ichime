@@ -9,25 +9,29 @@ import Combine
 import Foundation
 import ScraperAPI
 
-@MainActor
-class ScrapperClient: ObservableObject {
+class ScraperClient: ObservableObject {
     @Published var user: ScraperAPI.Types.User?
-    private let scraperClient: ScraperAPI.APIClient
+    @Published var api: ScraperAPI.APIClient
 
     init(scraperClient: ScraperAPI.APIClient) {
-        self.scraperClient = scraperClient
+        self.api = scraperClient
         self.user = UserManager.loadUserAuth()
     }
 
+    @MainActor
+    func updateUser(_ newUser: ScraperAPI.Types.User) {
+        self.user = newUser
+        UserManager.saveUserAuth(newUser)
+    }
+    
     func startAuth(username: String, password: String) async throws -> ScraperAPI.Types.User {
-        let user = try await scraperClient.sendAPIRequest(ScraperAPI.Request.Login(username: username, password: password))
-        self.user = user
-        UserManager.saveUserAuth(user)
+        let user = try await api.sendAPIRequest(ScraperAPI.Request.Login(username: username, password: password))
+        await updateUser(user)
         return user
     }
 
     func dropAuth() {
-        scraperClient.session.logout()
+        api.session.logout()
         UserManager.dropUserAuth()
         user = nil
     }
@@ -39,19 +43,19 @@ enum UserManager {
         do {
             let encoder = JSONEncoder()
             let data = try encoder.encode(userAuth)
-            UserDefaults.standard.set(data, forKey: "userAuth")
+            UserDefaults.standard.set(data, forKey: "savedUser")
         } catch {
             print("Failed to save UserAuth: \(error)")
         }
     }
 
     static func dropUserAuth() {
-        UserDefaults.standard.removeObject(forKey: "userAuth")
+        UserDefaults.standard.removeObject(forKey: "savedUser")
     }
 
     // Загрузка UserAuth из UserDefaults
     static func loadUserAuth() -> ScraperAPI.Types.User? {
-        guard let data = UserDefaults.standard.data(forKey: "userAuth") else { return nil }
+        guard let data = UserDefaults.standard.data(forKey: "savedUser") else { return nil }
 
         do {
             let decoder = JSONDecoder()
