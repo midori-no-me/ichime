@@ -69,9 +69,9 @@ extension ScraperAPI.Types.Notification {
     private static func parseName(message: String) -> ScraperAPI.Types.Name {
         if let match = message.firstMatch(of: #/^(?:Фильм|.*серия\s)(?<title>.+)/#) {
             let titles = match.output.title.components(separatedBy: "/").map { $0.trimmingCharacters(in: .whitespaces) }
-            return ScraperAPI.Types.Name(ru: titles.item(at: 0) ?? "", en: titles.item(at: 1) ?? "")
+            return ScraperAPI.Types.Name(ru: titles.item(at: 0) ?? "", romaji: titles.item(at: 1) ?? "")
         }
 
-        return ScraperAPI.Types.Name(ru: "", en: "")
+        return ScraperAPI.Types.Name(ru: "", romaji: "")
     }
 }

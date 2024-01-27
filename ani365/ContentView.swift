@@ -19,6 +19,7 @@ struct ContentView: View {
 
 struct ContentViewWithSideBar: View {
     @State private var navigationActiveTab: SideBarLinks? = .ongoings
+    @EnvironmentObject private var scraperClient: ScraperClient
 
     enum SideBarLinks {
         case searchShows
@@ -70,7 +71,7 @@ struct ContentViewWithSideBar: View {
 
             case .myLists:
                 NavigationStack {
-                    MyListsView()
+                    MyListsView(viewModel: .init(apiClient: scraperClient))
                 }
 
             case .notifications:
@@ -90,7 +91,7 @@ struct ContentViewWithSideBar: View {
 }
 
 struct ContentViewWithTabBar: View {
-    @EnvironmentObject var scraperManager: ScrapperClient
+    @EnvironmentObject var scraperClient: ScraperClient
 
     var body: some View {
         TabView {
@@ -110,7 +111,7 @@ struct ContentViewWithTabBar: View {
             .badge(5)
 
             NavigationStack {
-                MyListsView()
+                MyListsView(viewModel: .init(apiClient: scraperClient))
             }
             .tabItem {
                 Label("Мой список", systemImage: "list.and.film")

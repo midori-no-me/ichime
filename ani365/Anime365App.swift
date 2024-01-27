@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct Anime365App: App {
-    @StateObject var scraperManager: ScrapperClient = .init(scraperClient: ServiceLocator.getScraperAPIClient())
+    @StateObject var scraperManager: ScraperClient = .init(scraperClient: ServiceLocator.getScraperAPIClient())
 
     var body: some Scene {
         WindowGroup {

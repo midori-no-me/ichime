@@ -15,7 +15,7 @@ struct OnboardingView: View {
     @State private var isPasswordValid: Bool = true
     @State private var invalidPassword = false
     
-    @EnvironmentObject var scraperManager: ScrapperClient
+    @EnvironmentObject var scraperManager: ScraperClient
 
     var body: some View {
         Group {
@@ -93,7 +93,7 @@ struct OnboardingView: View {
 }
 
 struct UserAuthView: View {
-    @EnvironmentObject var scraperManager: ScrapperClient
+    @EnvironmentObject var scraperManager: ScraperClient
     
     var userAuth: ScraperAPI.Types.User
     
@@ -162,12 +162,8 @@ struct UserAuthView: View {
 }
 
 struct AppPreview<Content: View>: View {
-    @StateObject var scraperManager: ScrapperClient = .init(scraperClient: ServiceLocator.getScraperAPIClient())
-    var content: () -> Content
-
-    init(@ViewBuilder content: @escaping () -> Content) {
-        self.content = content
-    }
+    @StateObject var scraperManager: ScraperClient = .init(scraperClient: ServiceLocator.getScraperAPIClient())
+    @ViewBuilder var content: () -> Content
 
     var body: some View {
         content().environmentObject(scraperManager)
