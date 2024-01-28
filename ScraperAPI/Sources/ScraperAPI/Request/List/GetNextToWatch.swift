@@ -14,7 +14,7 @@ public extension ScraperAPI.Request {
 
         private let page: Int
 
-        public init(page: Int) {
+        public init(page: Int = 1) {
             self.page = page
         }
 

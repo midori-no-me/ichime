@@ -5,6 +5,7 @@
 //  Created by Nikita Nafranets on 28.01.2024.
 //
 
+import CachedAsyncImage
 import SwiftUI
 
 struct WatchCard: View {
@@ -12,14 +13,29 @@ struct WatchCard: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 10.0) {
-            AsyncImage(
-                url: data.image
-            ) {
-                $0.image?.resizable()
+            CachedAsyncImage(
+                url: data.image,
+                transaction: .init(animation: .easeInOut)
+            ) { phase in
+                switch phase {
+                case .empty:
+                    VStack {
+                        ProgressView()
+                    }
+                case let .success(image):
+                    image.resizable()
+                        .scaledToFill()
+                        .clipped()
+
+                case .failure:
+                    VStack {
+                        Image(systemName: "wifi.slash")
+                    }
+                @unknown default:
+                    EmptyView()
+                }
             }
-            .scaledToFit()
             .padding(0)
-            .clipped()
             .frame(width: 71, height: 100, alignment: .center)
             .clipShape(RoundedRectangle(cornerRadius: 5))
 

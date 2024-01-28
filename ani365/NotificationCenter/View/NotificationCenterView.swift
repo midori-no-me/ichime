@@ -34,10 +34,6 @@ class NotificationCenterViewModel: ObservableObject {
     }
 
     func performInitialLoading() async {
-        guard let _ = client.user else {
-            return await updateState(.needAuth)
-        }
-
         await updateState(.loading)
         await performRefresh()
     }
@@ -48,7 +44,7 @@ class NotificationCenterViewModel: ObservableObject {
         stopLazyLoading = false
 
         do {
-            let shows = try await client.api.sendAPIRequest(ScraperAPI.Request.GetNotifications(page: 0))
+            let shows = try await client.api.sendAPIRequest(ScraperAPI.Request.GetNotifications(page: page))
                 .map { WatchCardModel(from: $0) }
 
             if shows.isEmpty {
@@ -71,6 +67,7 @@ class NotificationCenterViewModel: ObservableObject {
             page += 1
             let newShows = try await client.api.sendAPIRequest(ScraperAPI.Request.GetNotifications(page: page))
 
+            
             let newWatchCards = newShows.map { WatchCardModel(from: $0) }
 
             if newWatchCards.last == shows.last {
@@ -158,3 +155,6 @@ struct LoadedNotificationCenter: View {
         NotificationCenterView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())))
     }
 }
+
+
+

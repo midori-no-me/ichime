@@ -108,7 +108,7 @@ struct ContentViewWithTabBar: View {
             .tabItem {
                 Label("Я смотрю", systemImage: "film.stack")
             }
-            .badge(5)
+            .badge(scraperClient.counter)
 
             NavigationStack {
                 MyListsView(viewModel: .init(apiClient: scraperClient))
