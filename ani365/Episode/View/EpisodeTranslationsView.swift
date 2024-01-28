@@ -134,15 +134,12 @@ private struct TranslationRow: View {
         Button(action: {
             self.showingSheet.toggle()
         }) {
-            VStack(alignment: .leading) {
-                Text([self.episodeTranslation.sourceVideoQuality.getLocalizaedTranslation(),
-                      String(self.episodeTranslation.height) + "p"].formatted(.list(type: .and, width: .narrow)))
-                    .font(.caption)
-                    .foregroundStyle(Color.secondary)
-
-                Text(self.episodeTranslation.translationTeam)
-            }
+            Text(self.episodeTranslation.translationTeam)
         }
+        .badge([
+            String(self.episodeTranslation.height) + "p",
+            self.episodeTranslation.sourceVideoQuality.getLocalizaedTranslation()
+        ].formatted(.list(type: .and, width: .narrow)))
         .sheet(isPresented: self.$showingSheet) {
             NavigationStack {
                 EpisodeTranslationQualitySelectorView(
