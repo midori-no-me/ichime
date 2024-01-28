@@ -11,7 +11,7 @@ struct WatchCard: View {
     let data: WatchCardModel
 
     var body: some View {
-        HStack(spacing: 10.0) {
+        HStack(alignment: .top, spacing: 10.0) {
             AsyncImage(
                 url: data.image
             ) {
@@ -34,10 +34,12 @@ struct WatchCard: View {
                         .font(.caption)
                         .foregroundColor(Color.gray)
                 }
+                Spacer()
                 Text(data.sideText)
                     .font(.footnote)
                     .foregroundColor(Color.gray)
             }
+            .padding(.bottom)
         }
     }
 }

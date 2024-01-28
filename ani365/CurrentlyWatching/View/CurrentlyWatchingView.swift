@@ -151,11 +151,12 @@ struct LoadedCurrentlyWatching: View {
     let counter: Int
     let loadMore: () async -> Void
 
+    @EnvironmentObject var client: ScraperClient
     var body: some View {
         List {
             if UIDevice.current.userInterfaceIdiom == .phone {
                 Section {
-                    NavigationLink(destination: NotificationCenterView()) {
+                    NavigationLink(destination: NotificationCenterView(viewModel: .init(apiClient: client))) {
                         Label("Уведомления", systemImage: "bell")
                             .badge(counter)
                     }
@@ -179,11 +180,15 @@ struct LoadedCurrentlyWatching: View {
 }
 
 #Preview {
-    NavigationStack {
-        CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())))
+    AppPreview {
+        NavigationStack {
+            CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())))
+        }
     }
 }
 
 #Preview("No navigation") {
-    CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())))
+    AppPreview {
+        CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())))
+    }
 }

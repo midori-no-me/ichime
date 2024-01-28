@@ -76,7 +76,7 @@ struct ContentViewWithSideBar: View {
 
             case .notifications:
                 NavigationStack {
-                    NotificationCenterView()
+                    NotificationCenterView(viewModel: .init(apiClient: scraperClient))
                 }
 
             default:

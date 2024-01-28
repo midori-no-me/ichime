@@ -39,7 +39,7 @@ struct WatchCardModel: Equatable, Identifiable {
 
     init(from notification: ScraperAPI.Types.Notification) {
         self.init(
-            id: notification.showID,
+            id: notification.translation.id,
             image: notification.imageURL,
             name: notification.name,
             title: notification.episode.displayName,
