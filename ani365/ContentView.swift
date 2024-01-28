@@ -66,7 +66,7 @@ struct ContentViewWithSideBar: View {
 
             case .currentlyWatching:
                 NavigationStack {
-                    CurrentlyWatchingView()
+                    CurrentlyWatchingView(viewModel: .init(apiClient: scraperClient))
                 }
 
             case .myLists:
@@ -103,7 +103,7 @@ struct ContentViewWithTabBar: View {
             }
 
             NavigationStack {
-                CurrentlyWatchingView()
+                CurrentlyWatchingView(viewModel: .init(apiClient: scraperClient))
             }
             .tabItem {
                 Label("Я смотрю", systemImage: "film.stack")

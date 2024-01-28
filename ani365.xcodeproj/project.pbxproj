@@ -15,6 +15,8 @@
 		C6656A6E2B631EBE00BF7412 /* AnimeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6656A6D2B631EBE00BF7412 /* AnimeList.swift */; };
 		C6656A722B6325D400BF7412 /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = C6656A712B6325D400BF7412 /* .swiftformat */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
+		C6B8331D2B66951700D4A1AC /* WatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331C2B66951700D4A1AC /* WatchCard.swift */; };
+		C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */; };
 		ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C61F2B52D2AA000D0A80 /* EpisodeTranslationsView.swift */; };
 		ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6212B52E945000D0A80 /* EpisodeListView.swift */; };
 		ED36C6252B52ECFB000D0A80 /* EpisodePreviewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6242B52ECFB000D0A80 /* EpisodePreviewRow.swift */; };
@@ -64,6 +66,8 @@
 		C6656A6D2B631EBE00BF7412 /* AnimeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeList.swift; sourceTree = "<group>"; };
 		C6656A712B6325D400BF7412 /* .swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		C6B8331C2B66951700D4A1AC /* WatchCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCard.swift; sourceTree = "<group>"; };
+		C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCardModel.swift; sourceTree = "<group>"; };
 		ED36C61F2B52D2AA000D0A80 /* EpisodeTranslationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeTranslationsView.swift; sourceTree = "<group>"; };
 		ED36C6212B52E945000D0A80 /* EpisodeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeListView.swift; sourceTree = "<group>"; };
 		ED36C6242B52ECFB000D0A80 /* EpisodePreviewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePreviewRow.swift; sourceTree = "<group>"; };
@@ -116,6 +120,22 @@
 				C6656A6D2B631EBE00BF7412 /* AnimeList.swift */,
 			);
 			path = Component;
+			sourceTree = "<group>";
+		};
+		C6B8331B2B6694EC00D4A1AC /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				C6B8331C2B66951700D4A1AC /* WatchCard.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		C6B8331E2B669E1F00D4A1AC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		ED36C61D2B52D280000D0A80 /* Episode */ = {
@@ -179,6 +199,8 @@
 		ED3D83FE2B5C404A0025BB5D /* CurrentlyWatching */ = {
 			isa = PBXGroup;
 			children = (
+				C6B8331E2B669E1F00D4A1AC /* Model */,
+				C6B8331B2B6694EC00D4A1AC /* Component */,
 				ED3D83FF2B5C405C0025BB5D /* View */,
 			);
 			path = CurrentlyWatching;
@@ -405,6 +427,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDE959332B484C8A0030B23D /* ContentView.swift in Sources */,
+				C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */,
 				EDE959312B4762690030B23D /* OngoingsView.swift in Sources */,
 				C6656A692B62E30500BF7412 /* MyListEditView.swift in Sources */,
 				ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */,
@@ -428,6 +451,7 @@
 				ED36C6252B52ECFB000D0A80 /* EpisodePreviewRow.swift in Sources */,
 				EDFF2D112B43471300F27E61 /* Anime365App.swift in Sources */,
 				EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */,
+				C6B8331D2B66951700D4A1AC /* WatchCard.swift in Sources */,
 				ED3D83FD2B5C3E710025BB5D /* MyListsView.swift in Sources */,
 				ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */,
 			);

@@ -12,6 +12,8 @@ public extension ScraperAPI.Request {
     struct GetNotificationCount: ScraperHTMLRequest {
         public typealias ResponseType = Int
 
+        public init() {}
+
         public func getEndpoint() -> String {
             ""
         }
@@ -24,7 +26,7 @@ public extension ScraperAPI.Request {
             []
         }
 
-        public func parseResponse(html: String, baseURL: URL) throws -> Int {
+        public func parseResponse(html: String, baseURL _: URL) throws -> Int {
             do {
                 let doc: Document = try SwiftSoup.parse(html)
                 guard let counterElement = try doc.select("[href=/notifications/index]").first(),
@@ -36,7 +38,10 @@ public extension ScraperAPI.Request {
 
                 return counter
             } catch {
-                logger.error("\(String(describing: GetNotificationCount.self)): cannot parse or get counter, \(error.localizedDescription, privacy: .public)")
+                logger
+                    .error(
+                        "\(String(describing: GetNotificationCount.self)): cannot parse or get counter, \(error.localizedDescription, privacy: .public)"
+                    )
                 return 0
             }
         }
