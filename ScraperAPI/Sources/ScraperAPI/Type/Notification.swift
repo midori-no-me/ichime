@@ -12,7 +12,7 @@ public extension ScraperAPI.Types {
     struct Notification {
         public let showID: Int
         public let name: ScraperAPI.Types.Name
-        public let imageSrc: String
+        public let imageURL: URL
         public let episode: ScraperAPI.Types.Episode
         public let translation: Translation
     }
@@ -34,17 +34,11 @@ public extension ScraperAPI.Types {
 }
 
 extension ScraperAPI.Types.Notification {
-    init?(from html: Element) {
+    init?(from html: Element, baseURL: URL) {
         do {
-            let img = try html.select(".notifications-item__image a")
-            let styleAttr = try img.attr("style")
-            let imgSrc: String
-            if let match = styleAttr.firstMatch(of: #/url\('(.*)'\);/#) {
-                imgSrc = String(match.output.1)
-            } else {
-                imgSrc = ""
-            }
-
+            // background-image: url('/posters/26142.5187294764.140x140.1.jpg'); -> posters/26142.5187294764.140x140.1.jpg
+            let img = try html.select(".notifications-item__image a").imageBackground().dropFirst()
+            let imgURL = baseURL.appending(path: img)
             let notificationAnchor = try html.select(".notifications-item__title a")
             let href = try notificationAnchor.attr("href")
 
@@ -60,7 +54,7 @@ extension ScraperAPI.Types.Notification {
             let episode = ScraperAPI.Types.Episode(id: episodeID, episodeText: message)
             let name = Self.parseName(message: message)
 
-            self.init(showID: showID, name: name, imageSrc: imgSrc, episode: episode, translation: translation)
+            self.init(showID: showID, name: name, imageURL: imgURL, episode: episode, translation: translation)
         } catch {
             return nil
         }
@@ -73,5 +67,17 @@ extension ScraperAPI.Types.Notification {
         }
 
         return ScraperAPI.Types.Name(ru: "", romaji: "")
+    }
+}
+
+extension Elements {
+    // background-image: url('/posters/26142.5187294764.140x140.1.jpg'); -> /posters/26142.5187294764.140x140.1.jpg
+    func imageBackground() throws -> String {
+        let styleAttr = try attr("style")
+        guard let matchedText = styleAttr.firstMatch(of: #/url\('(.*)'\);/#)?.output.1 else {
+            return ""
+        }
+
+        return String(matchedText)
     }
 }

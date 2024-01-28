@@ -11,56 +11,69 @@ public extension ScraperAPI.Types {
     struct Episode {
         public let id: Int
         public let type: EpisodeType
-        public let episodeNumber: Double
 
-        public enum EpisodeType: String {
-            case TV
-            case Movie
-            case OVA
-            case ONA
-        }
-
-        init(id: Int, type: EpisodeType, episodeNumber: Double) {
+        init(id: Int, type: EpisodeType) {
             self.id = id
             self.type = type
-            self.episodeNumber = episodeNumber
         }
 
         init(id: Int, episodeText: String) {
-            let episodeMeta = Self.extractEpisodeInfo(from: episodeText)
-            self.init(id: id, type: episodeMeta.type, episodeNumber: episodeMeta.number)
+            self.init(id: id, type: EpisodeType(from: episodeText))
         }
 
-        private static func extractEpisodeInfo(from input: String) -> (type: EpisodeType, number: Double) {
-            // Паттерн для поиска типа эпизода и номера
-            let pattern = #/^(OVA|Фильм|ONA)?\s?(\d+\.?\d?)?(?:\sсерия)?/#
+        public enum EpisodeType {
+            case TV(episode: Double)
+            case Movie
+            case OVA(episode: Double)
+            case ONA(episode: Double)
 
-            if let match = input.firstMatch(of: pattern) {
-                let typeString = match.output.1 ?? ""
-                let type: EpisodeType
-                switch typeString.lowercased() {
-                case "ova":
-                    type = .OVA
-                case "фильм":
-                    type = .Movie
-                case "ona":
-                    type = .ONA
-                case "tv":
-                    fallthrough
-                default:
-                    type = .TV
+            init(from input: String) {
+                // Паттерн для поиска типа эпизода и номера
+                let pattern = #/^(OVA|Фильм|ONA)?\s?(\d+\.?\d?)?(?:\sсерия)?/#
+
+                guard let match = input.firstMatch(of: pattern) else {
+                    self = .TV(episode: 0)
+                    return
                 }
 
                 let episodeNumber = Double(match.output.2 ?? "") ?? 0
-                return (type, episodeNumber)
+                let typeString = match.output.1 ?? ""
+                switch typeString.lowercased() {
+                case "ova":
+                    self = .OVA(episode: episodeNumber)
+                case "фильм":
+                    self = .Movie
+                case "ona":
+                    self = .ONA(episode: episodeNumber)
+                case "tv":
+                    fallthrough
+                default:
+                    // По умолчанию, если не удалось извлечь значения, возвращаем TV и 0
+                    self = .TV(episode: episodeNumber)
+                }
             }
+        }
 
-            // По умолчанию, если не удалось извлечь значения, возвращаем TV и 0
-            return (.TV, 0)
+        public var displayName: String {
+            switch type {
+            case .Movie:
+                return "Фильм"
+            case let .TV(episode):
+                return "\(String(format: "%.0f", episode)) серия"
+            case let .ONA(episode):
+                return "ONA \(String(format: "%.0f", episode)) серия"
+            case let .OVA(episode):
+                return "OVA \(String(format: "%.0f", episode)) серия"
+            }
         }
     }
 
     struct Name {
         public let ru, romaji: String
+        
+        public init(ru: String, romaji: String) {
+            self.ru = ru
+            self.romaji = romaji
+        }
     }
 }

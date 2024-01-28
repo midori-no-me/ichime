@@ -66,7 +66,7 @@ struct ContentViewWithSideBar: View {
 
             case .currentlyWatching:
                 NavigationStack {
-                    CurrentlyWatchingView()
+                    CurrentlyWatchingView(viewModel: .init(apiClient: scraperClient))
                 }
 
             case .myLists:
@@ -76,7 +76,7 @@ struct ContentViewWithSideBar: View {
 
             case .notifications:
                 NavigationStack {
-                    NotificationCenterView()
+                    NotificationCenterView(viewModel: .init(apiClient: scraperClient))
                 }
 
             default:
@@ -103,12 +103,12 @@ struct ContentViewWithTabBar: View {
             }
 
             NavigationStack {
-                CurrentlyWatchingView()
+                CurrentlyWatchingView(viewModel: .init(apiClient: scraperClient))
             }
             .tabItem {
                 Label("Я смотрю", systemImage: "film.stack")
             }
-            .badge(5)
+            .badge(scraperClient.counter)
 
             NavigationStack {
                 MyListsView(viewModel: .init(apiClient: scraperClient))

@@ -5,6 +5,7 @@
 //  Created by p.flaks on 20.01.2024.
 //
 
+import Combine
 import ScraperAPI
 import SwiftUI
 
@@ -56,17 +57,30 @@ class MyListViewModel: ObservableObject {
     }
 
     func performInitialLoad() async {
-        if apiClient.user == nil {
-            return await updateState(.needAuth)
-        }
-
         await updateState(.loading)
         await performUpdateState()
     }
 
+    var cancel: Cancellable?
+
     func performUpdateState() async {
+        if apiClient.user == nil {
+            await withCheckedContinuation { resolve in
+                self.cancel = apiClient.$user.sink { user in
+                    if user != nil {
+                        resolve.resume()
+                    }
+                }
+            }
+        }
+
         guard let user = apiClient.user else {
             return await updateState(.needAuth)
+        }
+
+        if let cancel {
+            cancel.cancel()
+            self.cancel = nil
         }
 
         do {

@@ -31,23 +31,27 @@ enum ServiceLocator {
     }
 
     static func getUserAgent() -> String {
-        return "\(self.getApplicationName()) (\(self.getApplicationVersion())) / Contact: petr@flaks.xyz"
+        return "\(getApplicationName()) (\(getApplicationVersion())) / Contact: petr@flaks.xyz"
     }
 
     static func getAnime365Client() -> Anime365Client {
         return Anime365Client(
-            apiClient: self.getAnime365ApiClient()
+            apiClient: getAnime365ApiClient()
         )
     }
 
     static func getAnime365ApiClient() -> Anime365ApiClient {
         return Anime365ApiClient(
-            baseURL: self.getWebsiteBaseUrl(),
-            userAgent: self.getUserAgent()
+            baseURL: getWebsiteBaseUrl(),
+            userAgent: getUserAgent()
         )
     }
 
     static func getScraperAPIClient() -> ScraperAPI.APIClient {
-        return .init(baseURL: self.getWebsiteBaseUrl(), userAgent: self.getUserAgent(), session: .init(cookieStorage: HTTPCookieStorage.shared, baseURL: self.getWebsiteBaseUrl()))
+        return .init(
+            baseURL: getWebsiteBaseUrl(),
+            userAgent: getUserAgent(),
+            session: .init(cookieStorage: HTTPCookieStorage.shared, baseURL: getWebsiteBaseUrl())
+        )
     }
 }
