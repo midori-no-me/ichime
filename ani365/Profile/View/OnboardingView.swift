@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct OnboardingView: View {
+    @EnvironmentObject private var client: ScraperClient
+
     var body: some View {
         ScrollView([.vertical]) {
             AuthenticationTextParagraph(text: "Привет!")
@@ -88,7 +90,7 @@ struct OnboardingView: View {
                 description: "После просмотра серии уведомим сайт о том, что вы её посмотрели"
             )
 
-            NavigationLink(destination: AuthenticationView()) {
+            NavigationLink(destination: AuthenticationView(viewModel: .init(scraperClient: client))) {
                 Text("Войти в аккаунт")
             }
             .buttonStyle(.borderedProminent)
@@ -97,7 +99,7 @@ struct OnboardingView: View {
         }
         .navigationTitle("Anime 365")
         .toolbar {
-            NavigationLink(destination: AuthenticationView()) {
+            NavigationLink(destination: AuthenticationView(viewModel: .init(scraperClient: client))) {
                 Text("Вход")
             }
         }

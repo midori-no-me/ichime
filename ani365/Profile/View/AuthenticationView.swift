@@ -16,10 +16,11 @@ class AuthenticationViewModel: ObservableObject {
     @Published var showInvalidCredentialsAlert: Bool = false
     @Published var showUnknownErrorAlert: Bool = false
     @Published var isLoadingAuthentication: Bool = false
+    @Published var isSuccess = false
     @Published var baseUrlPreference: BaseUrlPreference = .init()
 
-    init() {
-        self.scraperClient = ScraperClient(scraperClient: ServiceLocator.getScraperAPIClient())
+    init(scraperClient: ScraperClient) {
+        self.scraperClient = scraperClient
     }
 
     public func getProfileSettingsUrl() -> URL {
@@ -42,7 +43,7 @@ class AuthenticationViewModel: ObservableObject {
             )
 
             print(user)
-
+            isSuccess = true
         } catch ScraperAPI.APIClientError.invalidCredentials {
             print("invalidCredentials")
 
@@ -60,10 +61,7 @@ class AuthenticationViewModel: ObservableObject {
 
 struct AuthenticationView: View {
     @ObservedObject var viewModel: AuthenticationViewModel
-
-    init() {
-        viewModel = AuthenticationViewModel()
-    }
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         Form {
@@ -124,6 +122,11 @@ struct AuthenticationView: View {
                 }
             }
         }
+        .onChange(of: viewModel.isSuccess) {
+            if viewModel.isSuccess {
+                dismiss()
+            }
+        }
         .navigationTitle("Авторизация")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -141,7 +144,7 @@ struct AppPreview<Content: View>: View {
 #Preview {
     AppPreview { client in
         NavigationStack {
-            AuthenticationView()
+            AuthenticationView(viewModel: .init(scraperClient: client))
         }
     }
 }

@@ -9,13 +9,16 @@ import ScraperAPI
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var scraperManager: ScraperClient
+    @EnvironmentObject private var client: ScraperClient
 
     @State private var user: ScraperAPI.Types.User?
+    @State private var initialLoad = true
 
     var body: some View {
         Group {
-            if user == nil {
+            if initialLoad {
+                ProgressView()
+            } else if user == nil {
                 NavigationStack {
                     OnboardingView()
                 }
@@ -26,7 +29,16 @@ struct ContentView: View {
                     ContentViewWithSideBar()
                 }
             }
-        }.onReceive(scraperManager.user) { user = $0 }
+        }
+        .onReceive(client.inited.dropFirst()) { _ in initialLoad = false }
+        .onReceive(client.user) {
+            user = $0
+        }.onAppear {
+//            if let user = client.user.value {
+//                self.user = user
+//                self.initialLoad = false
+//            }
+        }
     }
 }
 

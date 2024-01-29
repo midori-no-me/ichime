@@ -11,6 +11,7 @@ import ScraperAPI
 
 class ScraperClient: ObservableObject {
     var user: CurrentValueSubject<ScraperAPI.Types.User?, Never> = .init(nil)
+    var inited: CurrentValueSubject<Bool, Never> = .init(false)
     var counter: CurrentValueSubject<Int, Never> = .init(0)
     var api: ScraperAPI.APIClient
 
@@ -19,6 +20,9 @@ class ScraperClient: ObservableObject {
         Task {
             await checkUser()
             await checkCounter()
+            await MainActor.run {
+                self.inited.send(true)
+            }
         }
     }
 
