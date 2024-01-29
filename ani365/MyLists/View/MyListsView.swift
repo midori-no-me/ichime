@@ -64,9 +64,9 @@ class MyListViewModel: ObservableObject {
     var cancel: Cancellable?
 
     func performUpdateState() async {
-        if apiClient.user == nil {
+        if apiClient.user.value == nil {
             await withCheckedContinuation { resolve in
-                self.cancel = apiClient.$user.sink { user in
+                cancel = apiClient.user.sink { user in
                     if user != nil {
                         resolve.resume()
                     }
@@ -74,7 +74,7 @@ class MyListViewModel: ObservableObject {
             }
         }
 
-        guard let user = apiClient.user else {
+        guard let user = apiClient.user.value else {
             return await updateState(.needAuth)
         }
 

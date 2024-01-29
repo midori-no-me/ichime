@@ -10,9 +10,9 @@ import Foundation
 import ScraperAPI
 
 class ScraperClient: ObservableObject {
-    @Published var user: ScraperAPI.Types.User?
-    @Published var counter = 0
-    @Published var api: ScraperAPI.APIClient
+    var user: CurrentValueSubject<ScraperAPI.Types.User?, Never> = .init(nil)
+    var counter: CurrentValueSubject<Int, Never> = .init(0)
+    var api: ScraperAPI.APIClient
 
     init(scraperClient: ScraperAPI.APIClient) {
         api = scraperClient
@@ -22,16 +22,11 @@ class ScraperClient: ObservableObject {
         }
     }
 
-    @MainActor
-    func updateUser(_ newUser: ScraperAPI.Types.User) {
-        user = newUser
-    }
-
     func checkUser() async {
         do {
             let user = try await api.sendAPIRequest(ScraperAPI.Request.GetMe())
             await MainActor.run {
-                self.user = user
+                self.user.send(user)
             }
         } catch {}
     }
@@ -40,7 +35,7 @@ class ScraperClient: ObservableObject {
         do {
             let counter = try await api.sendAPIRequest(ScraperAPI.Request.GetNotificationCount())
             await MainActor.run {
-                self.counter = counter
+                self.counter.send(counter)
             }
         } catch {}
     }
@@ -48,13 +43,13 @@ class ScraperClient: ObservableObject {
     func startAuth(username: String, password: String) async throws -> ScraperAPI.Types.User {
         let user = try await api.sendAPIRequest(ScraperAPI.Request.Login(username: username, password: password))
         await MainActor.run {
-            self.user = user
+            self.user.send(user)
         }
         return user
     }
 
     func dropAuth() {
         api.session.logout()
-        user = nil
+        user.send(nil)
     }
 }

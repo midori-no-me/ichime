@@ -101,6 +101,7 @@ struct ContentViewWithSideBar: View {
 
 struct ContentViewWithTabBar: View {
     @EnvironmentObject var scraperClient: ScraperClient
+    @State private var counter = 0
 
     var body: some View {
         TabView {
@@ -117,7 +118,8 @@ struct ContentViewWithTabBar: View {
             .tabItem {
                 Label("Я смотрю", systemImage: "film.stack")
             }
-            .badge(scraperClient.counter)
+            .badge(counter)
+            .onReceive(scraperClient.counter) { counter = $0 }
 
             NavigationStack {
                 MyListsView(viewModel: .init(apiClient: scraperClient))
