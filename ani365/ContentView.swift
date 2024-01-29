@@ -11,18 +11,22 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var scraperManager: ScraperClient
 
+    @State private var user: ScraperAPI.Types.User?
+
     var body: some View {
-        if scraperManager.user == nil {
-            NavigationStack {
-                OnboardingView()
-            }
-        } else {
-            if UIDevice.current.userInterfaceIdiom == .phone {
-                ContentViewWithTabBar()
+        Group {
+            if user == nil {
+                NavigationStack {
+                    OnboardingView()
+                }
             } else {
-                ContentViewWithSideBar()
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    ContentViewWithTabBar()
+                } else {
+                    ContentViewWithSideBar()
+                }
             }
-        }
+        }.onReceive(scraperManager.user) { user = $0 }
     }
 }
 
