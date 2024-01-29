@@ -17,9 +17,10 @@ struct OnboardingViewOld: View {
 
     @EnvironmentObject var scraperManager: ScraperClient
 
+    @State private var user: ScraperAPI.Types.User?
     var body: some View {
         Group {
-            if let user = scraperManager.user {
+            if let user {
                 UserAuthView(userAuth: user)
             } else {
                 VStack {
@@ -77,7 +78,7 @@ struct OnboardingViewOld: View {
                 }
                 .padding()
             }
-        }
+        }.onReceive(scraperManager.user) { user = $0 }
     }
 
     private func isValidEmail(_ email: String) -> Bool {

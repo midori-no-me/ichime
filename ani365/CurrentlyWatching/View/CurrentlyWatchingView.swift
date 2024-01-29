@@ -11,7 +11,6 @@ import SwiftUI
 class CurrentlyWatchingViewModel: ObservableObject {
     private let client: ScraperClient
     init(apiClient: ScraperClient) {
-        print("create")
         client = apiClient
     }
 
@@ -87,6 +86,8 @@ struct CurrentlyWatchingView: View {
     @ObservedObject var viewModel: CurrentlyWatchingViewModel
     @EnvironmentObject var client: ScraperClient
 
+    @State private var counter = 0
+
     var body: some View {
         Group {
             switch viewModel.state {
@@ -117,7 +118,7 @@ struct CurrentlyWatchingView: View {
                     Text("Вы еще ничего не добавили в свой список")
                 }
             case let .loaded(shows):
-                LoadedCurrentlyWatching(shows: shows, counter: client.counter) {
+                LoadedCurrentlyWatching(shows: shows, counter: counter) {
                     await viewModel.performLazyLoad()
                 }.refreshable {
                     await viewModel.performRefresh()
@@ -125,6 +126,7 @@ struct CurrentlyWatchingView: View {
                 }
             }
         }
+        .onReceive(client.counter) { counter = $0 }
         .toolbar {
             NavigationLink(destination: ProfileView()) {
                 Image(systemName: "person.circle")

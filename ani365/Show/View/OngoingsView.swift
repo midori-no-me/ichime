@@ -29,6 +29,7 @@ class OngoingsViewModel: ObservableObject {
         }
 
         self.client = ServiceLocator.getAnime365Client()
+        print("recreated")
     }
 
     @MainActor
@@ -37,6 +38,7 @@ class OngoingsViewModel: ObservableObject {
     }
 
     func performInitialLoad() async {
+        print("initial load")
         await self.updateState(.loading)
 
         do {
