@@ -126,8 +126,25 @@ struct MyListsView: View {
     @State private var selectedShowId: Int?
     @EnvironmentObject private var scraperClient: ScraperClient
 
+    var shareText: String {
+        var categories = viewModel.categories
+        if categoryType != nil {
+            categories = viewModel.categories.filter { $0.type == categoryType }
+        }
+
+        return categories.map { category in
+            let textShows = category.shows
+                .map {
+                    "— \($0.name.ru): \($0.episodes.watched) из \($0.episodes.total == Int.max ? "??" : String($0.episodes.total))"
+                }
+                .joined(separator: "\n")
+
+            return "\(category.type.rawValue):\n\(textShows)"
+        }.joined(separator: "\n\n")
+    }
+
     var body: some View {
-        ToolbarWrapper(categoryType: $categoryType) {
+        ToolbarWrapper(categoryType: $categoryType, shareText: shareText) {
             switch viewModel.state {
             case .idle:
                 Color.clear.onAppear {
@@ -192,11 +209,17 @@ struct MyListsView: View {
 
 struct ToolbarWrapper<Content: View>: View {
     @Binding var categoryType: ScraperAPI.Types.ListCategoryType?
+    let shareText: String
     @ViewBuilder var content: () -> Content
 
     var body: some View {
         content()
             .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    ShareLink(item: shareText) {
+                        Label("Поделиться", systemImage: "square.and.arrow.up")
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Section {
