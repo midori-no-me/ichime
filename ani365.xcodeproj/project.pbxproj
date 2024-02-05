@@ -36,6 +36,8 @@
 		ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */; };
 		ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */; };
 		ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */; };
+		ED62D3222B716F2E00714745 /* ProfileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED62D3212B716F2E00714745 /* ProfileButton.swift */; };
+		ED62D3252B7173FA00714745 /* ProfileSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED62D3242B7173FA00714745 /* ProfileSheet.swift */; };
 		ED659DCA2B546B200030DB9F /* AuthenticationViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED659DC92B546B200030DB9F /* AuthenticationViewOld.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
 		ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = ED8A40802B4C57410055DAB6 /* CachedAsyncImage */; };
@@ -93,6 +95,8 @@
 		ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyWatchingView.swift; sourceTree = "<group>"; };
 		ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterView.swift; sourceTree = "<group>"; };
 		ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365ApiClient; sourceTree = "<group>"; };
+		ED62D3212B716F2E00714745 /* ProfileButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileButton.swift; sourceTree = "<group>"; };
+		ED62D3242B7173FA00714745 /* ProfileSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSheet.swift; sourceTree = "<group>"; };
 		ED659DC92B546B200030DB9F /* AuthenticationViewOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewOld.swift; sourceTree = "<group>"; };
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -163,6 +167,8 @@
 		ED1919742B5F0089008C6C99 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				ED62D3202B716F1C00714745 /* Component */,
+				ED62D3232B7173E300714745 /* Sheet */,
 				ED1919752B5F0099008C6C99 /* View */,
 			);
 			path = Profile;
@@ -269,6 +275,22 @@
 				ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		ED62D3202B716F1C00714745 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				ED62D3212B716F2E00714745 /* ProfileButton.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		ED62D3232B7173E300714745 /* Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				ED62D3242B7173FA00714745 /* ProfileSheet.swift */,
+			);
+			path = Sheet;
 			sourceTree = "<group>";
 		};
 		ED74304C2B4B07EB009BCE3A /* Show */ = {
@@ -475,6 +497,7 @@
 				EDE959332B484C8A0030B23D /* ContentView.swift in Sources */,
 				C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */,
 				EDE959312B4762690030B23D /* OngoingsView.swift in Sources */,
+				ED62D3222B716F2E00714745 /* ProfileButton.swift in Sources */,
 				C6656A692B62E30500BF7412 /* MyListEditView.swift in Sources */,
 				ED0D29952B66C84600C5AC9E /* BaseUrlPreference.swift in Sources */,
 				ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */,
@@ -490,6 +513,7 @@
 				ED3A674D2B5739B600FB3975 /* EpisodeTranslationQualitySelectorView.swift in Sources */,
 				EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */,
 				ED3D83F92B5BFA890025BB5D /* EpisodeStreamingInfo.swift in Sources */,
+				ED62D3252B7173FA00714745 /* ProfileSheet.swift in Sources */,
 				ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */,
 				C65ACDE82B54466400C27FB3 /* ScraperClient.swift in Sources */,
 				C6656A6E2B631EBE00BF7412 /* AnimeList.swift in Sources */,

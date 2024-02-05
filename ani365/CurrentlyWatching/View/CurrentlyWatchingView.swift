@@ -126,9 +126,7 @@ struct CurrentlyWatchingView: View {
             }
         }
         .toolbar {
-            NavigationLink(destination: ProfileView()) {
-                Image(systemName: "person.circle")
-            }
+            ProfileButton()
         }
         .navigationTitle("Я смотрю")
     }
