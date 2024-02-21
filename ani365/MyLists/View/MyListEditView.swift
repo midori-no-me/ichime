@@ -10,7 +10,8 @@ import SwiftUI
 
 class MyListEditViewModel: ObservableObject {
     private let client: ScraperClient
-    init(apiClient: ScraperClient) {
+    init(apiClient: ScraperClient = ApplicationDependency.container.resolve()) {
+        print(apiClient)
         client = apiClient
     }
 
@@ -84,7 +85,9 @@ struct MyListEditView: View {
             case .idle:
                 Color.clear.onAppear {
                     Task {
+                        print("loading")
                         await viewModel.performInitialLoad(show.id)
+                        print("success")
                     }
                 }
             case .loading:
@@ -113,6 +116,9 @@ struct MyListEditView: View {
                     onUpdate()
                 }
             }
+        }
+        .onReceive(viewModel.$state) { value in
+            print(value)
         }
         .navigationTitle(show.name.ru)
         .navigationBarTitleDisplayMode(.inline)

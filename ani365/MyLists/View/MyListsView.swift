@@ -33,7 +33,7 @@ extension ScraperAPI.Types.ListCategoryType {
 
 class MyListViewModel: ObservableObject {
     private let apiClient: ScraperClient
-    init(apiClient: ScraperClient) {
+    init(apiClient: ScraperClient = ApplicationDependency.container.resolve()) {
         self.apiClient = apiClient
     }
 
@@ -121,7 +121,7 @@ class MyListViewModel: ObservableObject {
 }
 
 struct MyListsView: View {
-    @ObservedObject var viewModel: MyListViewModel
+    @ObservedObject var viewModel: MyListViewModel = .init(apiClient: ApplicationDependency.container.resolve())
     @State private var categoryType: ScraperAPI.Types.ListCategoryType?
     @State private var selectedShowId: Int?
     @EnvironmentObject private var scraperClient: ScraperClient
@@ -190,7 +190,7 @@ struct MyListsView: View {
             NavigationStack {
                 MyListEditView(
                     show: show,
-                    viewModel: .init(apiClient: scraperClient)
+                    viewModel: .init()
                 ) {
                     Task {
                         await viewModel.performUpdateState()
@@ -258,7 +258,7 @@ struct ToolbarWrapper<Content: View>: View {
 #Preview {
     AppPreview { _ in
         NavigationStack {
-            MyListsView(viewModel: .init(apiClient: ScraperClient(scraperClient: ServiceLocator.getScraperAPIClient())))
+            MyListsView(viewModel: .init())
         }
     }
 }
