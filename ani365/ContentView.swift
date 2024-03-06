@@ -45,6 +45,7 @@ struct ContentView: View {
 struct ContentViewWithSideBar: View {
     @State private var navigationActiveTab: SideBarLinks? = .ongoings
     @EnvironmentObject private var scraperClient: ScraperClient
+    @State private var counter = 0
 
     enum SideBarLinks {
         case searchShows
@@ -71,7 +72,8 @@ struct ContentViewWithSideBar: View {
                         .tag(SideBarLinks.myLists)
 
                     Label("Уведомления", systemImage: "bell")
-                        .badge(5)
+                        .badge(counter)
+                        .onReceive(scraperClient.counter) { counter = $0 }
                         .tag(SideBarLinks.notifications)
                 }
             }
@@ -92,6 +94,10 @@ struct ContentViewWithSideBar: View {
             case .currentlyWatching:
                 NavigationStack {
                     CurrentlyWatchingView(viewModel: .init(apiClient: scraperClient))
+                        .navigationDestination(
+                            for: WatchCardModel.self,
+                            destination: { viewShow(show: $0) }
+                        )
                 }
 
             case .myLists:
@@ -102,6 +108,10 @@ struct ContentViewWithSideBar: View {
             case .notifications:
                 NavigationStack {
                     NotificationCenterView(viewModel: .init(apiClient: scraperClient))
+                        .navigationDestination(
+                            for: WatchCardModel.self,
+                            destination: { viewShow(show: $0) }
+                        )
                 }
 
             default:
@@ -135,20 +145,8 @@ struct ContentViewWithTabBar: View {
                             NotificationCenterView(viewModel: .init(apiClient: scraperClient))
                         }
                     }
-                    .navigationDestination(for: WatchCardModel.self) { show in
-                        if show.type == .notication {
-                            EpisodeTranslationQualitySelectorView(viewModel: .init(
-                                translationId: show.id,
-                                translationTeam: show.title
-                            ), videoPlayerController: .init())
-                        }
-                        if show.type == .show {
-                            EpisodeTranslationsView(viewModel: .init(
-                                episodeId: show.id,
-                                episodeTitle: show.title
-                            ))
-                        }
-                    }
+                    .navigationDestination(for: WatchCardModel.self, destination: { viewShow(show: $0)
+                    })
             }
             .tabItem {
                 Label("Я смотрю", systemImage: "film.stack")
@@ -170,6 +168,22 @@ struct ContentViewWithTabBar: View {
                 Label("Поиск", systemImage: "magnifyingglass")
             }
         }
+    }
+}
+
+@ViewBuilder
+func viewShow(show: WatchCardModel) -> some View {
+    if show.type == .notication {
+        EpisodeTranslationQualitySelectorView(viewModel: .init(
+            translationId: show.id,
+            translationTeam: show.title
+        ), videoPlayerController: .init())
+    }
+    if show.type == .show {
+        EpisodeTranslationsView(viewModel: .init(
+            episodeId: show.id,
+            episodeTitle: show.title
+        ))
     }
 }
 
