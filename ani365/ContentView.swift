@@ -130,6 +130,25 @@ struct ContentViewWithTabBar: View {
 
             NavigationStack {
                 CurrentlyWatchingView(viewModel: .init(apiClient: scraperClient))
+                    .navigationDestination(for: String.self) { route in
+                        if route == "Notification" {
+                            NotificationCenterView(viewModel: .init(apiClient: scraperClient))
+                        }
+                    }
+                    .navigationDestination(for: WatchCardModel.self) { show in
+                        if show.type == .notication {
+                            EpisodeTranslationQualitySelectorView(viewModel: .init(
+                                translationId: show.id,
+                                translationTeam: show.title
+                            ), videoPlayerController: .init())
+                        }
+                        if show.type == .show {
+                            EpisodeTranslationsView(viewModel: .init(
+                                episodeId: show.id,
+                                episodeTitle: show.title
+                            ))
+                        }
+                    }
             }
             .tabItem {
                 Label("Я смотрю", systemImage: "film.stack")

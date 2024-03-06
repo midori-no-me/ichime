@@ -68,7 +68,7 @@ public extension ScraperAPI.Types {
         }
     }
 
-    struct Name {
+    struct Name: Hashable {
         public let ru, romaji: String
         
         public init(ru: String, romaji: String) {

@@ -8,7 +8,7 @@
 import Foundation
 import ScraperAPI
 
-struct WatchCardModel: Equatable, Identifiable {
+struct WatchCardModel: Equatable, Identifiable, Hashable {
     static func == (lhs: WatchCardModel, rhs: WatchCardModel) -> Bool {
         lhs.id == rhs.id
     }
@@ -18,22 +18,30 @@ struct WatchCardModel: Equatable, Identifiable {
     let image: URL
     let title: String
     let sideText: String
+    let type: WatchType
 
-    init(id: Int, image: URL, name: ScraperAPI.Types.Name, title: String, sideText: String) {
+    enum WatchType {
+        case show
+        case notication
+    }
+
+    init(id: Int, image: URL, name: ScraperAPI.Types.Name, title: String, sideText: String, type: WatchType) {
         self.id = id
         self.name = name
         self.image = image
         self.title = title
         self.sideText = sideText
+        self.type = type
     }
 
     init(from show: ScraperAPI.Types.WatchShow) {
         self.init(
-            id: show.id,
+            id: show.episode.id,
             image: show.imageURL,
             name: show.name,
             title: show.episode.displayName,
-            sideText: show.update.displayName
+            sideText: show.update.displayName,
+            type: .show
         )
     }
 
@@ -43,7 +51,8 @@ struct WatchCardModel: Equatable, Identifiable {
             image: notification.imageURL,
             name: notification.name,
             title: notification.episode.displayName,
-            sideText: notification.translation.type
+            sideText: notification.translation.type,
+            type: .notication
         )
     }
 }
