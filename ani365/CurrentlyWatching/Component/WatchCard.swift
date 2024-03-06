@@ -61,74 +61,87 @@ struct WatchCard: View {
 }
 
 #Preview("Notification") {
-    List {
-        WatchCard(data: .init(
-            id: 1,
-            image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
-            name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
-            title: "2 серия",
-            sideText: "Русские субтитры"
-        ))
-        WatchCard(data: .init(
-            id: 1,
-            image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
-            name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
-            title: "OVA 2 серия",
-            sideText: "Русская озвучка"
-        ))
-        WatchCard(data: .init(
-            id: 1,
-            image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
-            name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
-            title: "Фильм",
-            sideText: "RAW"
-        ))
+    NavigationStack {
+        List {
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
+                name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
+                title: "2 серия",
+                sideText: "Русские субтитры",
+                type: .notication
+            ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
+                name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
+                title: "OVA 2 серия",
+                sideText: "Русская озвучка",
+                type: .notication
+            ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
+                name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
+                title: "Фильм",
+                sideText: "RAW",
+                type: .notication
+            ))
+        }
     }
 }
 
 #Preview("Watch") {
-    List {
-        WatchCard(data: .init(
-            id: 1,
-            image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
-            name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
-            title: "2 серия",
-            sideText: "Вышло сегодня"
-        ))
-        WatchCard(data: .init(
-            id: 1,
-            image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
-            name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
-            title: "2 серия",
-            sideText: "Вышло 18.01.24"
-        ))
-        WatchCard(data: .init(
-            id: 1,
-            image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
-            name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
-            title: "OVA 2 серия",
-            sideText: "Смотрели вчера"
-        ))
-        WatchCard(data: .init(
-            id: 1,
-            image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
-            name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
-            title: "Фильм",
-            sideText: "В плане с 18.01.24"
-        ))
-        WatchCard(data: .init(
-            id: 1,
-            image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
-            name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
-            title: "4000 серия",
-            sideText: "В плане сегодня"
-        ))
-        WatchCard(data: .init(
-            id: 1,
-            image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
-            name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
-            title: "4000 серия",
-            sideText: "Запланировали 18.01.24"
-        ))
+    NavigationStack {
+        List {
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
+                name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
+                title: "2 серия",
+                sideText: "Вышло сегодня",
+                type: .show
+            ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
+                name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
+                title: "2 серия",
+                sideText: "Вышло 18.01.24",
+                type: .show
+            ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
+                name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
+                title: "OVA 2 серия",
+                sideText: "Смотрели вчера",
+                type: .show
+            ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
+                name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
+                title: "Фильм",
+                sideText: "В плане с 18.01.24",
+                type: .show
+            ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
+                name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
+                title: "4000 серия",
+                sideText: "В плане сегодня",
+                type: .show
+            ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/33660.19485418034.400x400.0.jpg")!,
+                name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
+                title: "4000 серия",
+                sideText: "Запланировали 18.01.24",
+                type: .show
+            ))
+        }
     }
 }

@@ -146,7 +146,7 @@ struct LoadedCurrentlyWatching: View {
         List {
             if UIDevice.current.userInterfaceIdiom == .phone {
                 Section {
-                    NavigationLink(destination: NotificationCenterView(viewModel: .init(apiClient: client))) {
+                    NavigationLink(value: "Notification") {
                         Label("Уведомления", systemImage: "bell")
                             .badge(counter)
                     }
@@ -155,12 +155,14 @@ struct LoadedCurrentlyWatching: View {
 
             Section {
                 ForEach(shows) { show in
-                    WatchCard(data: show)
-                        .task {
-                            if show == self.shows.last {
-                                await self.loadMore()
-                            }
+                    NavigationLink(value: show) {
+                        WatchCard(data: show)
+                    }
+                    .task {
+                        if show == self.shows.last {
+                            await self.loadMore()
                         }
+                    }
                 }
             } header: {
                 Text("Серии к просмотру")
@@ -169,17 +171,17 @@ struct LoadedCurrentlyWatching: View {
     }
 }
 
-//#Preview {
+// #Preview {
 //    AppPreview {
 //        NavigationStack {
 //            CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator
 //                    .getScraperAPIClient())))
 //        }
 //    }
-//}
+// }
 //
-//#Preview("No navigation") {
+// #Preview("No navigation") {
 //    AppPreview {
 //        CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())))
 //    }
-//}
+// }

@@ -67,7 +67,6 @@ class NotificationCenterViewModel: ObservableObject {
             page += 1
             let newShows = try await client.api.sendAPIRequest(ScraperAPI.Request.GetNotifications(page: page))
 
-            
             let newWatchCards = newShows.map { WatchCardModel(from: $0) }
 
             if newWatchCards.last == shows.last {
@@ -139,12 +138,14 @@ struct LoadedNotificationCenter: View {
     var body: some View {
         List {
             ForEach(shows) { show in
-                WatchCard(data: show)
-                    .task {
-                        if show == self.shows.last {
-                            await self.loadMore()
-                        }
+                NavigationLink(value: show) {
+                    WatchCard(data: show)
+                }
+                .task {
+                    if show == self.shows.last {
+                        await self.loadMore()
                     }
+                }
             }
         }
     }
@@ -155,6 +156,3 @@ struct LoadedNotificationCenter: View {
         NotificationCenterView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())))
     }
 }
-
-
-
