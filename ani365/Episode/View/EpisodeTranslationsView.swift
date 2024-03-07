@@ -1,6 +1,7 @@
 import SwiftUI
 
-class EpisodeViewModel: ObservableObject {
+@Observable
+class EpisodeViewModel {
     enum State {
         case idle
         case loading
@@ -9,20 +10,14 @@ class EpisodeViewModel: ObservableObject {
         case loaded([(key: Translation.CompositeType, value: [Translation])])
     }
 
-    @Published private(set) var state = State.idle
+    private(set) var state = State.idle
 
-    public let episodeTitle: String
-
-    private let episodeId: Int
     private let client: Anime365Client
 
     init(
-        episodeId: Int,
-        episodeTitle: String
+        client: Anime365Client = ApplicationDependency.container.resolve()
     ) {
-        self.episodeId = episodeId
-        self.episodeTitle = episodeTitle
-        self.client = ServiceLocator.getAnime365Client()
+        self.client = client
     }
 
     @MainActor
@@ -30,7 +25,7 @@ class EpisodeViewModel: ObservableObject {
         state = newState
     }
 
-    func performInitialLoad() async {
+    func performInitialLoad(episodeId: Int) async {
         await updateState(.loading)
 
         do {
@@ -69,22 +64,26 @@ class EpisodeViewModel: ObservableObject {
 }
 
 struct EpisodeTranslationsView: View {
-    @ObservedObject var viewModel: EpisodeViewModel
+    let episodeId: Int
+    let episodeTitle: String
+
+    @State private var viewModel: EpisodeViewModel = .init()
+    @StateObject private var videoPlayerController: VideoPlayerController = .init()
 
     var body: some View {
-        Group {
+        ZStack {
             switch self.viewModel.state {
             case .idle:
                 Color.clear.onAppear {
                     Task {
-                        await self.viewModel.performInitialLoad()
+                        await self.viewModel.performInitialLoad(episodeId: episodeId)
                     }
                 }
 
             case .loading:
                 ProgressView()
 
-            case .loadingFailed(let error):
+            case let .loadingFailed(error):
                 ContentUnavailableView {
                     Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
                 } description: {
@@ -99,12 +98,15 @@ struct EpisodeTranslationsView: View {
                     Text("Скорее всего, у этой серии ещё нет переводов, либо они находятся в обработке")
                 }
 
-            case .loaded(let groupedTranslations):
+            case let .loaded(groupedTranslations):
                 List {
                     ForEach(groupedTranslations, id: \.key) { translationGroup in
                         Section {
                             ForEach(translationGroup.value, id: \.id) { episodeTranslation in
-                                TranslationRow(episodeTranslation: episodeTranslation)
+                                TranslationRow(
+                                    episodeTranslation: episodeTranslation,
+                                    videoPlayerController: videoPlayerController
+                                )
                             }
                         } header: {
                             Text(translationGroup.key.getLocalizaedTranslation())
@@ -112,24 +114,29 @@ struct EpisodeTranslationsView: View {
                     }
                 }
             }
+
+            if videoPlayerController.loading {
+                VideoPlayerLoader()
+            }
         }
-        .navigationTitle(self.viewModel.episodeTitle)
+        .navigationTitle(episodeTitle)
         .navigationBarTitleDisplayMode(.large)
     }
 }
 
 private struct TranslationRow: View {
     let episodeTranslation: Translation
+    @ObservedObject var videoPlayerController: VideoPlayerController
 
     @State private var showingSheet = false
-    @StateObject var videoPlayerController: VideoPlayerController = .init()
 
     var body: some View {
         Button(action: {
             self.showingSheet.toggle()
         }) {
             VStack(alignment: .leading) {
-                Text([self.episodeTranslation.sourceVideoQuality.getLocalizaedTranslation(), String(self.episodeTranslation.height) + "p"].formatted(.list(type: .and, width: .narrow)))
+                Text([self.episodeTranslation.sourceVideoQuality.getLocalizaedTranslation(),
+                      String(self.episodeTranslation.height) + "p"].formatted(.list(type: .and, width: .narrow)))
                     .font(.caption)
                     .foregroundStyle(Color.secondary)
 
@@ -139,10 +146,8 @@ private struct TranslationRow: View {
         .sheet(isPresented: self.$showingSheet) {
             NavigationStack {
                 EpisodeTranslationQualitySelectorView(
-                    viewModel: .init(
-                        translationId: episodeTranslation.id,
-                        translationTeam: episodeTranslation.translationTeam
-                    ),
+                    translationId: episodeTranslation.id,
+                    translationTeam: episodeTranslation.translationTeam,
                     videoPlayerController: videoPlayerController
                 )
             }
@@ -153,9 +158,9 @@ private struct TranslationRow: View {
 
 #Preview {
     NavigationStack {
-        EpisodeTranslationsView(viewModel: .init(
-            episodeId: 291395,
+        EpisodeTranslationsView(
+            episodeId: 291_395,
             episodeTitle: "69 серия"
-        ))
+        )
     }
 }

@@ -7,10 +7,8 @@ struct EpisodeListView: View {
         List {
             ForEach(self.episodePreviews, id: \.self) { episodePreview in
                 NavigationLink(destination: EpisodeTranslationsView(
-                    viewModel: .init(
-                        episodeId: episodePreview.id,
-                        episodeTitle: episodePreview.title ?? episodePreview.typeAndNumber
-                    )
+                    episodeId: episodePreview.id,
+                    episodeTitle: episodePreview.title ?? episodePreview.typeAndNumber
                 )) {
                     EpisodePreviewRow(data: episodePreview)
                 }

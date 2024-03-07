@@ -8,18 +8,17 @@
 import Combine
 import Foundation
 import ScraperAPI
+import SwiftUI
 
 class ScraperClient: ObservableObject {
     var user: CurrentValueSubject<ScraperAPI.Types.User?, Never> = .init(nil)
     var inited: CurrentValueSubject<Bool, Never> = .init(false)
-    var counter: CurrentValueSubject<Int, Never> = .init(0)
     var api: ScraperAPI.APIClient
 
     init(scraperClient: ScraperAPI.APIClient) {
         api = scraperClient
         Task {
             await checkUser()
-            await checkCounter()
             await MainActor.run {
                 self.inited.send(true)
             }
@@ -31,15 +30,6 @@ class ScraperClient: ObservableObject {
             let user = try await api.sendAPIRequest(ScraperAPI.Request.GetMe())
             await MainActor.run {
                 self.user.send(user)
-            }
-        } catch {}
-    }
-
-    func checkCounter() async {
-        do {
-            let counter = try await api.sendAPIRequest(ScraperAPI.Request.GetNotificationCount())
-            await MainActor.run {
-                self.counter.send(counter)
             }
         } catch {}
     }

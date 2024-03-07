@@ -8,9 +8,10 @@
 import ScraperAPI
 import SwiftUI
 
-class NotificationCenterViewModel: ObservableObject {
+@Observable
+class NotificationCenterViewModel {
     private let client: ScraperClient
-    init(apiClient: ScraperClient) {
+    init(apiClient: ScraperClient = ApplicationDependency.container.resolve()) {
         client = apiClient
     }
 
@@ -23,7 +24,7 @@ class NotificationCenterViewModel: ObservableObject {
         case needAuth
     }
 
-    @Published private(set) var state = State.idle
+    private(set) var state = State.idle
     private var page = 1
     private var shows: [WatchCardModel] = []
     private var stopLazyLoading = false
@@ -83,7 +84,8 @@ class NotificationCenterViewModel: ObservableObject {
 }
 
 struct NotificationCenterView: View {
-    @ObservedObject var viewModel: NotificationCenterViewModel
+    @State private var viewModel: NotificationCenterViewModel = .init()
+    @StateObject private var notificationCounter: NotificationCounterWatcher = .init()
 
     var body: some View {
         Group {
@@ -92,6 +94,7 @@ struct NotificationCenterView: View {
                 Color.clear.onAppear {
                     Task {
                         await viewModel.performInitialLoading()
+                        await notificationCounter.checkCounter()
                     }
                 }
             case .loading:
@@ -153,6 +156,6 @@ struct LoadedNotificationCenter: View {
 
 #Preview {
     NavigationStack {
-        NotificationCenterView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())))
+        NotificationCenterView()
     }
 }

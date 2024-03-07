@@ -58,40 +58,40 @@ class ShowViewModel: ObservableObject {
         preloadedShow: Show? = nil
     ) {
         self.showId = showId
-        self.shareUrl = getWebsiteUrlByShowId(showId: showId)
+        shareUrl = getWebsiteUrlByShowId(showId: showId)
 
         if let preloadedShow = preloadedShow {
-            self.state = .loaded(preloadedShow)
+            state = .loaded(preloadedShow)
         }
 
-        self.client = ServiceLocator.getAnime365Client()
+        client = ServiceLocator.getAnime365Client()
     }
 
     func performInitialLoad() async {
-        self.state = .loading
+        state = .loading
 
         do {
             let show = try await client.getShow(
-                seriesId: self.showId
+                seriesId: showId
             )
 
-            self.state = .loaded(show)
-            self.shareUrl = show.websiteUrl
+            state = .loaded(show)
+            shareUrl = show.websiteUrl
         } catch {
-            self.state = .loadingFailed(error)
+            state = .loadingFailed(error)
         }
     }
 
     func performPullToRefresh() async {
         do {
             let show = try await client.getShow(
-                seriesId: self.showId
+                seriesId: showId
             )
 
-            self.state = .loaded(show)
-            self.shareUrl = show.websiteUrl
+            state = .loaded(show)
+            shareUrl = show.websiteUrl
         } catch {
-            self.state = .loadingFailed(error)
+            state = .loadingFailed(error)
         }
     }
 }
@@ -114,7 +114,7 @@ struct ShowView: View {
             case .loading:
                 ProgressView()
 
-            case .loadingFailed(let error):
+            case let .loadingFailed(error):
                 ContentUnavailableView {
                     Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
                 } description: {
@@ -122,7 +122,7 @@ struct ShowView: View {
                 }
                 .textSelection(.enabled)
 
-            case .loaded(let show):
+            case let .loaded(show):
                 ScrollView([.vertical]) {
                     ShowDetails(show: show)
                         .scenePadding(.bottom)
@@ -200,7 +200,7 @@ private struct ShowDetails: View {
                         switch phase {
                         case .empty:
                             ProgressView()
-                        case .success(let image):
+                        case let .success(image):
                             image.resizable()
                                 .cornerRadius(10)
                                 .aspectRatio(contentMode: .fit)
@@ -225,7 +225,7 @@ private struct ShowDetails: View {
                 ? [GridItem(.flexible(), spacing: 18, alignment: .topLeading)]
                 : [
                     GridItem(.flexible(), spacing: 18, alignment: .topLeading),
-                    GridItem(.flexible(), spacing: 18, alignment: .topLeading)
+                    GridItem(.flexible(), spacing: 18, alignment: .topLeading),
                 ]
 
             VStack(alignment: .trailing, spacing: 18) {
@@ -392,15 +392,19 @@ private struct EpisodePreviewList: View {
             }
 
             if self.isOngoing, let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: episodePreviews) {
-                Text("Это онгоинг. Обычно новые серии выходят по \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1).")
-                    .font(.subheadline)
+                Text(
+                    "Это онгоинг. Обычно новые серии выходят по \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1)."
+                )
+                .font(.subheadline)
             }
 
             ForEach(self.episodePreviews.prefix(5), id: \.self) { episodePreview in
-                NavigationLink(destination: EpisodeTranslationsView(viewModel: .init(
+                NavigationLink(destination: EpisodeTranslationsView(
                     episodeId: episodePreview.id,
-                    episodeTitle: episodePreview.title ?? episodePreview.typeAndNumber
-                ))) {
+                    episodeTitle: episodePreview
+                        .title ?? episodePreview
+                        .typeAndNumber
+                )) {
                     HStack {
                         EpisodePreviewRow(data: episodePreview)
 
@@ -411,7 +415,8 @@ private struct EpisodePreviewList: View {
                             .fontWeight(.bold)
                             .font(.footnote)
                     }
-                    .contentShape(Rectangle()) // по какой-то причине без этого не будет работать NavigationLink если нажимать на Spacer
+                    .contentShape(Rectangle()) // по какой-то причине без этого не будет работать NavigationLink если
+                    // нажимать на Spacer
                 }
                 .buttonStyle(.plain)
 

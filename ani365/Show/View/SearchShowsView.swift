@@ -23,88 +23,88 @@ class SearchShowsViewModel: ObservableObject {
 
     private let SHOWS_PER_PAGE = 20
 
-    init() {
-        self.state = .idle(self.recentSearches)
-        self.client = ServiceLocator.getAnime365Client()
+    init(client: Anime365Client = ApplicationDependency.container.resolve()) {
+        state = .idle(recentSearches)
+        self.client = client
     }
 
     func performInitialSearch() async {
-        if self.currentlyTypedSearchQuery.isEmpty {
+        if currentlyTypedSearchQuery.isEmpty {
             return
         }
 
-        self.state = .loading
-        self.lastPerformedSearchQuery = self.currentlyTypedSearchQuery
+        state = .loading
+        lastPerformedSearchQuery = currentlyTypedSearchQuery
 
-        self.addRecentSearch(searchQuery: self.currentlyTypedSearchQuery)
+        addRecentSearch(searchQuery: currentlyTypedSearchQuery)
 
         do {
             let shows = try await client.searchShows(
-                searchQuery: self.lastPerformedSearchQuery,
-                offset: self.currentOffset,
-                limit: self.SHOWS_PER_PAGE
+                searchQuery: lastPerformedSearchQuery,
+                offset: currentOffset,
+                limit: SHOWS_PER_PAGE
             )
 
             if shows.isEmpty {
-                self.state = .loadedButEmpty
+                state = .loadedButEmpty
             } else {
-                self.stopLazyLoading = false
-                self.currentOffset = self.SHOWS_PER_PAGE
+                stopLazyLoading = false
+                currentOffset = SHOWS_PER_PAGE
                 self.shows = shows
-                self.state = .loaded(self.shows)
+                state = .loaded(self.shows)
             }
         } catch {
-            self.state = .loadingFailed(error)
+            state = .loadingFailed(error)
         }
     }
 
     func performInitialSearchFromRecentSearch(
         searchQuery: String
     ) async {
-        self.currentlyTypedSearchQuery = searchQuery
+        currentlyTypedSearchQuery = searchQuery
 
-        await self.performInitialSearch()
+        await performInitialSearch()
     }
 
     func performLazyLoading() async {
-        if self.stopLazyLoading {
+        if stopLazyLoading {
             return
         }
 
         do {
             let shows = try await client.searchShows(
-                searchQuery: self.lastPerformedSearchQuery,
-                offset: self.currentOffset,
-                limit: self.SHOWS_PER_PAGE
+                searchQuery: lastPerformedSearchQuery,
+                offset: currentOffset,
+                limit: SHOWS_PER_PAGE
             )
 
-            if shows.count < self.SHOWS_PER_PAGE {
-                self.stopLazyLoading = true
+            if shows.count < SHOWS_PER_PAGE {
+                stopLazyLoading = true
             }
 
-            self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
+            currentOffset = currentOffset + SHOWS_PER_PAGE
             self.shows += shows
-            self.state = .loaded(self.shows)
+            state = .loaded(self.shows)
         } catch {
-            self.stopLazyLoading = true
+            stopLazyLoading = true
         }
     }
 
     func currentlyTypedSearchQueryChanged() {
-        if !self.currentlyTypedSearchQuery.isEmpty {
+        if !currentlyTypedSearchQuery.isEmpty {
             return
         }
 
-        self.state = .idle(self.recentSearches)
-        self.stopLazyLoading = false
-        self.currentOffset = 0
-        self.shows = []
+        state = .idle(recentSearches)
+        stopLazyLoading = false
+        currentOffset = 0
+        shows = []
     }
 
     private func addRecentSearch(searchQuery: String) {
         var uniqueRecentSearches: [String] = []
 
-        for query in [searchQuery] + self.recentSearches {
+        for query in [searchQuery] + recentSearches {
             if uniqueRecentSearches.contains(query) {
                 continue
             }
@@ -114,19 +114,19 @@ class SearchShowsViewModel: ObservableObject {
 
         uniqueRecentSearches = Array(uniqueRecentSearches.prefix(20))
 
-        self.recentSearches = uniqueRecentSearches
+        recentSearches = uniqueRecentSearches
 
         UserDefaults.standard.set(uniqueRecentSearches, forKey: "recentSearches")
     }
 }
 
 struct SearchShowsView: View {
-    @ObservedObject var viewModel: SearchShowsViewModel
+    @StateObject private var viewModel: SearchShowsViewModel = .init()
 
     var body: some View {
         Group {
             switch self.viewModel.state {
-            case .idle(let recentSearches):
+            case let .idle(recentSearches):
                 if recentSearches.isEmpty {
                     ContentUnavailableView {
                         Label("Тут пока ничего нет", systemImage: "magnifyingglass")
@@ -157,7 +157,7 @@ struct SearchShowsView: View {
             case .loading:
                 ProgressView()
 
-            case .loadingFailed(let error):
+            case let .loadingFailed(error):
                 ContentUnavailableView {
                     Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
                 } description: {
@@ -168,7 +168,7 @@ struct SearchShowsView: View {
             case .loadedButEmpty:
                 ContentUnavailableView.search
 
-            case .loaded(let shows):
+            case let .loaded(shows):
                 ScrollView([.vertical]) {
                     ShowsGrid(
                         shows: shows,
@@ -206,7 +206,7 @@ struct SearchShowsView: View {
 
 private struct ShowsGrid: View {
     let shows: [Show]
-    let loadMore: () async -> ()
+    let loadMore: () async -> Void
 
     var body: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 12, alignment: .topLeading)], spacing: 18) {
@@ -225,6 +225,6 @@ private struct ShowsGrid: View {
 
 #Preview {
     NavigationStack {
-        SearchShowsView(viewModel: .init())
+        SearchShowsView()
     }
 }

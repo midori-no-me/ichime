@@ -4,6 +4,7 @@
 //
 //  Created by p.flaks on 01.01.2024.
 //
+import DITranquillity
 import ScraperAPI
 import SwiftUI
 

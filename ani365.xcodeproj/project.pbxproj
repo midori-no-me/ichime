@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C61057002B99271F008012E7 /* NotificationCounterWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */; };
 		C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */; };
+		C64EB0182B68587700AC7C27 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = C64EB0172B68587700AC7C27 /* DITranquillity */; };
+		C64EB01A2B699C3D00AC7C27 /* DI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64EB0192B699C3D00AC7C27 /* DI.swift */; };
 		C651FD092B61745700E68341 /* ScraperAPI in Frameworks */ = {isa = PBXBuildFile; productRef = C651FD082B61745700E68341 /* ScraperAPI */; };
 		C65ACDE82B54466400C27FB3 /* ScraperClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65ACDE72B54466300C27FB3 /* ScraperClient.swift */; };
 		C6656A692B62E30500BF7412 /* MyListEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6656A682B62E30500BF7412 /* MyListEditView.swift */; };
@@ -62,7 +65,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCounterWatcher.swift; sourceTree = "<group>"; };
 		C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
+		C64EB0192B699C3D00AC7C27 /* DI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DI.swift; sourceTree = "<group>"; };
 		C651FD072B608A7600E68341 /* ScraperAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ScraperAPI; sourceTree = "<group>"; };
 		C65ACDE72B54466300C27FB3 /* ScraperClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScraperClient.swift; sourceTree = "<group>"; };
 		C6656A682B62E30500BF7412 /* MyListEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListEditView.swift; sourceTree = "<group>"; };
@@ -113,6 +118,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C651FD092B61745700E68341 /* ScraperAPI in Frameworks */,
+				C64EB0182B68587700AC7C27 /* DITranquillity in Frameworks */,
 				ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */,
 				ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */,
 			);
@@ -306,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				EDD353B32B5E82AF00313489 /* ServiceLocator.swift */,
+				C64EB0192B699C3D00AC7C27 /* DI.swift */,
 			);
 			path = DependencyInjection;
 			sourceTree = "<group>";
@@ -358,6 +365,7 @@
 				EDFF2D172B43471500F27E61 /* Preview Content */,
 				ED1919742B5F0089008C6C99 /* Profile */,
 				ED74304C2B4B07EB009BCE3A /* Show */,
+				C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */,
 			);
 			path = ani365;
 			sourceTree = "<group>";
@@ -399,6 +407,7 @@
 				ED8A40802B4C57410055DAB6 /* CachedAsyncImage */,
 				ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */,
 				C651FD082B61745700E68341 /* ScraperAPI */,
+				C64EB0172B68587700AC7C27 /* DITranquillity */,
 			);
 			productName = ani365;
 			productReference = EDFF2D0D2B43471300F27E61 /* ani365.app */;
@@ -433,6 +442,7 @@
 			packageReferences = (
 				ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				ED49A9AE2B5ED48C0016920B /* XCLocalSwiftPackageReference "Anime365ApiClient" */,
+				C64EB0162B68587700AC7C27 /* XCRemoteSwiftPackageReference "DITranquillity" */,
 			);
 			productRefGroup = EDFF2D0E2B43471300F27E61 /* Products */;
 			projectDirPath = "";
@@ -488,7 +498,9 @@
 				ED2D3E732B68342800F1EC40 /* ProfileView.swift in Sources */,
 				ED36C6252B52ECFB000D0A80 /* EpisodePreviewRow.swift in Sources */,
 				EDFF2D112B43471300F27E61 /* Anime365App.swift in Sources */,
+				C64EB01A2B699C3D00AC7C27 /* DI.swift in Sources */,
 				EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */,
+				C61057002B99271F008012E7 /* NotificationCounterWatcher.swift in Sources */,
 				C6B8331D2B66951700D4A1AC /* WatchCard.swift in Sources */,
 				ED1919772B5F00AD008C6C99 /* OnboardingView.swift in Sources */,
 				ED3D83FD2B5C3E710025BB5D /* MyListsView.swift in Sources */,
@@ -761,6 +773,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C64EB0162B68587700AC7C27 /* XCRemoteSwiftPackageReference "DITranquillity" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ivlevAstef/DITranquillity.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
 		ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
@@ -772,6 +792,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C64EB0172B68587700AC7C27 /* DITranquillity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C64EB0162B68587700AC7C27 /* XCRemoteSwiftPackageReference "DITranquillity" */;
+			productName = DITranquillity;
+		};
 		C651FD082B61745700E68341 /* ScraperAPI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ScraperAPI;

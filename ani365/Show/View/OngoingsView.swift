@@ -20,65 +20,65 @@ class OngoingsViewModel: ObservableObject {
     private let SHOWS_PER_PAGE = 20
 
     init(
-        preloadedShows: [Show]? = nil
+        preloadedShows: [Show]? = nil,
+        client: Anime365Client = ApplicationDependency.container.resolve()
     ) {
         if let preloadedShows = preloadedShows, !preloadedShows.isEmpty {
-            self.currentOffset = preloadedShows.count
-            self.shows = preloadedShows
-            self.state = .loaded(self.shows)
+            currentOffset = preloadedShows.count
+            shows = preloadedShows
+            state = .loaded(shows)
         }
 
-        self.client = ServiceLocator.getAnime365Client()
-        print("recreated")
+        self.client = client
     }
 
     @MainActor
     func updateState(_ newState: State) {
-        self.state = newState
+        state = newState
     }
 
     func performInitialLoad() async {
         print("initial load")
-        await self.updateState(.loading)
+        await updateState(.loading)
 
         do {
             let shows = try await client.getOngoings(
-                offset: self.currentOffset,
-                limit: self.SHOWS_PER_PAGE
+                offset: currentOffset,
+                limit: SHOWS_PER_PAGE
             )
 
             if shows.isEmpty {
-                await self.updateState(.loadedButEmpty)
+                await updateState(.loadedButEmpty)
             } else {
-                self.currentOffset = self.SHOWS_PER_PAGE
+                currentOffset = SHOWS_PER_PAGE
                 self.shows = shows
-                await self.updateState(.loaded(self.shows))
+                await updateState(.loaded(self.shows))
             }
         } catch {
-            await self.updateState(.loadingFailed(error))
+            await updateState(.loadingFailed(error))
         }
     }
 
     func performLazyLoading() async {
-        if self.stopLazyLoading {
+        if stopLazyLoading {
             return
         }
 
         do {
             let shows = try await client.getOngoings(
-                offset: self.currentOffset,
-                limit: self.SHOWS_PER_PAGE
+                offset: currentOffset,
+                limit: SHOWS_PER_PAGE
             )
 
-            if shows.count < self.SHOWS_PER_PAGE {
-                self.stopLazyLoading = true
+            if shows.count < SHOWS_PER_PAGE {
+                stopLazyLoading = true
             }
 
-            self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
+            currentOffset = currentOffset + SHOWS_PER_PAGE
             self.shows += shows
-            await self.updateState(.loaded(self.shows))
+            await updateState(.loaded(self.shows))
         } catch {
-            self.stopLazyLoading = true
+            stopLazyLoading = true
         }
     }
 
@@ -86,26 +86,26 @@ class OngoingsViewModel: ObservableObject {
         do {
             let shows = try await client.getOngoings(
                 offset: 0,
-                limit: self.SHOWS_PER_PAGE
+                limit: SHOWS_PER_PAGE
             )
 
             if shows.isEmpty {
-                await self.updateState(.loadedButEmpty)
+                await updateState(.loadedButEmpty)
             } else {
-                self.currentOffset = self.SHOWS_PER_PAGE
+                currentOffset = SHOWS_PER_PAGE
                 self.shows = shows
-                await self.updateState(.loaded(self.shows))
+                await updateState(.loaded(self.shows))
             }
         } catch {
-            await self.updateState(.loadingFailed(error))
+            await updateState(.loadingFailed(error))
         }
 
-        self.stopLazyLoading = false
+        stopLazyLoading = false
     }
 }
 
 struct OngoingsView: View {
-    @ObservedObject var viewModel: OngoingsViewModel
+    @StateObject private var viewModel: OngoingsViewModel = .init()
 
     var body: some View {
         Group {
@@ -124,7 +124,7 @@ struct OngoingsView: View {
                     ProgressView()
                 }
 
-            case .loadingFailed(let error):
+            case let .loadingFailed(error):
                 OngoingsViewWrapper {
                     ContentUnavailableView {
                         Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
@@ -143,7 +143,7 @@ struct OngoingsView: View {
                     }
                 }
 
-            case .loaded(let shows):
+            case let .loaded(shows):
                 ScrollView([.vertical]) {
                     OngoingsViewWrapper {
                         OngoingsGrid(
@@ -193,7 +193,7 @@ private struct OngoingsViewWrapper<Content>: View where Content: View {
 
 private struct OngoingsGrid: View {
     let shows: [Show]
-    let loadMore: () async -> ()
+    let loadMore: () async -> Void
 
     var body: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 12, alignment: .topLeading)], spacing: 18) {
@@ -212,6 +212,6 @@ private struct OngoingsGrid: View {
 
 #Preview {
     NavigationStack {
-        OngoingsView(viewModel: .init())
+        OngoingsView()
     }
 }

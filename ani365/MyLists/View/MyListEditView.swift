@@ -10,7 +10,7 @@ import SwiftUI
 
 class MyListEditViewModel: ObservableObject {
     private let client: ScraperClient
-    init(apiClient: ScraperClient) {
+    init(apiClient: ScraperClient = ApplicationDependency.container.resolve()) {
         client = apiClient
     }
 
@@ -69,9 +69,9 @@ class MyListEditViewModel: ObservableObject {
 
 struct MyListEditView: View {
     let show: ScraperAPI.Types.Show
-    @ObservedObject var viewModel: MyListEditViewModel
     let onUpdate: () -> Void
 
+    @StateObject private var viewModel: MyListEditViewModel = .init()
     @Environment(\.dismiss) private var dismiss
 
     var totalEpisodes: String {
@@ -84,7 +84,9 @@ struct MyListEditView: View {
             case .idle:
                 Color.clear.onAppear {
                     Task {
+                        print("loading")
                         await viewModel.performInitialLoad(show.id)
+                        print("success")
                     }
                 }
             case .loading:
@@ -114,6 +116,9 @@ struct MyListEditView: View {
                 }
             }
         }
+        .onReceive(viewModel.$state) { value in
+            print(value)
+        }
         .navigationTitle(show.name.ru)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -130,7 +135,6 @@ struct MyListEditView: View {
     NavigationStack {
         MyListEditView(
             show: ScraperAPI.Types.Show.sampleData,
-            viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())),
             onUpdate: {}
         )
     }

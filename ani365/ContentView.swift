@@ -33,11 +33,6 @@ struct ContentView: View {
         .onReceive(client.inited.dropFirst()) { _ in initialLoad = false }
         .onReceive(client.user) {
             user = $0
-        }.onAppear {
-//            if let user = client.user.value {
-//                self.user = user
-//                self.initialLoad = false
-//            }
         }
     }
 }
@@ -45,7 +40,8 @@ struct ContentView: View {
 struct ContentViewWithSideBar: View {
     @State private var navigationActiveTab: SideBarLinks? = .ongoings
     @EnvironmentObject private var scraperClient: ScraperClient
-    @State private var counter = 0
+    @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
+    @StateObject private var videoPlayerController: VideoPlayerController = .init()
 
     enum SideBarLinks {
         case searchShows
@@ -72,8 +68,7 @@ struct ContentViewWithSideBar: View {
                         .tag(SideBarLinks.myLists)
 
                     Label("Уведомления", systemImage: "bell")
-                        .badge(counter)
-                        .onReceive(scraperClient.counter) { counter = $0 }
+                        .badge(notificationCounterWatcher.counter)
                         .tag(SideBarLinks.notifications)
                 }
             }
@@ -83,35 +78,40 @@ struct ContentViewWithSideBar: View {
             switch navigationActiveTab {
             case .searchShows:
                 NavigationStack {
-                    SearchShowsView(viewModel: .init())
+                    SearchShowsView()
                 }
 
             case .ongoings:
                 NavigationStack {
-                    OngoingsView(viewModel: .init())
+                    OngoingsView()
                 }
 
             case .currentlyWatching:
                 NavigationStack {
-                    CurrentlyWatchingView(viewModel: .init(apiClient: scraperClient))
+                    CurrentlyWatchingView()
                         .navigationDestination(
                             for: WatchCardModel.self,
-                            destination: { viewShow(show: $0) }
+                            destination: { viewShow(show: $0, videoPlayerController: videoPlayerController) }
                         )
                 }
 
             case .myLists:
                 NavigationStack {
-                    MyListsView(viewModel: .init(apiClient: scraperClient))
+                    MyListsView()
                 }
 
             case .notifications:
                 NavigationStack {
-                    NotificationCenterView(viewModel: .init(apiClient: scraperClient))
-                        .navigationDestination(
-                            for: WatchCardModel.self,
-                            destination: { viewShow(show: $0) }
-                        )
+                    ZStack {
+                        NotificationCenterView()
+                            .navigationDestination(
+                                for: WatchCardModel.self,
+                                destination: { viewShow(show: $0, videoPlayerController: videoPlayerController) }
+                            )
+                        if videoPlayerController.loading {
+                            VideoPlayerLoader()
+                        }
+                    }
                 }
 
             default:
@@ -127,42 +127,50 @@ struct ContentViewWithSideBar: View {
 
 struct ContentViewWithTabBar: View {
     @EnvironmentObject var scraperClient: ScraperClient
-    @State private var counter = 0
+    @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
+    @StateObject private var videoPlayerController: VideoPlayerController = .init()
 
     var body: some View {
         TabView {
             NavigationStack {
-                OngoingsView(viewModel: .init())
+                OngoingsView()
             }
             .tabItem {
                 Label("Онгоинги", systemImage: "rectangle.grid.3x2.fill")
             }
 
             NavigationStack {
-                CurrentlyWatchingView(viewModel: .init(apiClient: scraperClient))
-                    .navigationDestination(for: String.self) { route in
-                        if route == "Notification" {
-                            NotificationCenterView(viewModel: .init(apiClient: scraperClient))
+                CurrentlyWatchingView()
+                    .navigationDestination(for: CurrentlyWatchingView.SubRoute.self) { route in
+                        if route == .notifications {
+                            ZStack {
+                                NotificationCenterView()
+                                if videoPlayerController.loading {
+                                    VideoPlayerLoader()
+                                }
+                            }
                         }
                     }
-                    .navigationDestination(for: WatchCardModel.self, destination: { viewShow(show: $0)
-                    })
+                    .navigationDestination(
+                        for: WatchCardModel.self,
+                        destination: { viewShow(show: $0, videoPlayerController: videoPlayerController)
+                        }
+                    )
             }
             .tabItem {
                 Label("Я смотрю", systemImage: "film.stack")
             }
-            .badge(counter)
-            .onReceive(scraperClient.counter) { counter = $0 }
+            .badge(notificationCounterWatcher.counter)
 
             NavigationStack {
-                MyListsView(viewModel: .init(apiClient: scraperClient))
+                MyListsView()
             }
             .tabItem {
                 Label("Мой список", systemImage: "list.and.film")
             }
 
             NavigationStack {
-                SearchShowsView(viewModel: .init())
+                SearchShowsView()
             }
             .tabItem {
                 Label("Поиск", systemImage: "magnifyingglass")
@@ -172,18 +180,19 @@ struct ContentViewWithTabBar: View {
 }
 
 @ViewBuilder
-func viewShow(show: WatchCardModel) -> some View {
+func viewShow(show: WatchCardModel, videoPlayerController: VideoPlayerController) -> some View {
     if show.type == .notication {
-        EpisodeTranslationQualitySelectorView(viewModel: .init(
+        EpisodeTranslationQualitySelectorView(
             translationId: show.id,
-            translationTeam: show.title
-        ), videoPlayerController: .init())
+            translationTeam: show.title,
+            videoPlayerController: videoPlayerController
+        )
     }
     if show.type == .show {
-        EpisodeTranslationsView(viewModel: .init(
+        EpisodeTranslationsView(
             episodeId: show.id,
             episodeTitle: show.title
-        ))
+        )
     }
 }
 
