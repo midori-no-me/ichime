@@ -5,6 +5,7 @@
 //  Created by Nikita Nafranets on 31.01.2024.
 //
 
+import Anime365ApiClient
 import DITranquillity
 import Foundation
 import ScraperAPI
@@ -33,6 +34,13 @@ class ApplicationDependency: DIFramework {
 
         container.register { ScraperClient(scraperClient: $0) }
             .lifetime(.objectGraph)
+
+        container.register { Anime365ApiClient(
+            baseURL: ServiceLocator.getWebsiteBaseUrl(),
+            userAgent: ServiceLocator.getUserAgent()
+        ) }
+
+        container.register { Anime365Client(apiClient: $0) }
 
         if !container.makeGraph().checkIsValid() {
             fatalError("Граф зависимостей не валиден")

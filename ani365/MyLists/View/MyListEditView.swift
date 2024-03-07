@@ -11,7 +11,6 @@ import SwiftUI
 class MyListEditViewModel: ObservableObject {
     private let client: ScraperClient
     init(apiClient: ScraperClient = ApplicationDependency.container.resolve()) {
-        print(apiClient)
         client = apiClient
     }
 
@@ -70,9 +69,9 @@ class MyListEditViewModel: ObservableObject {
 
 struct MyListEditView: View {
     let show: ScraperAPI.Types.Show
-    @ObservedObject var viewModel: MyListEditViewModel
     let onUpdate: () -> Void
 
+    @StateObject private var viewModel: MyListEditViewModel = .init()
     @Environment(\.dismiss) private var dismiss
 
     var totalEpisodes: String {
@@ -136,7 +135,6 @@ struct MyListEditView: View {
     NavigationStack {
         MyListEditView(
             show: ScraperAPI.Types.Show.sampleData,
-            viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())),
             onUpdate: {}
         )
     }

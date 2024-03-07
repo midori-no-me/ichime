@@ -121,10 +121,9 @@ class MyListViewModel: ObservableObject {
 }
 
 struct MyListsView: View {
-    @ObservedObject var viewModel: MyListViewModel = .init(apiClient: ApplicationDependency.container.resolve())
+    @StateObject private var viewModel: MyListViewModel = .init(apiClient: ApplicationDependency.container.resolve())
     @State private var categoryType: ScraperAPI.Types.ListCategoryType?
     @State private var selectedShowId: Int?
-    @EnvironmentObject private var scraperClient: ScraperClient
 
     var shareText: String {
         var categories = viewModel.categories
@@ -189,8 +188,7 @@ struct MyListsView: View {
         }, content: { show in
             NavigationStack {
                 MyListEditView(
-                    show: show,
-                    viewModel: .init()
+                    show: show
                 ) {
                     Task {
                         await viewModel.performUpdateState()
@@ -258,7 +256,7 @@ struct ToolbarWrapper<Content: View>: View {
 #Preview {
     AppPreview { _ in
         NavigationStack {
-            MyListsView(viewModel: .init())
+            MyListsView()
         }
     }
 }

@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-class EpisodeTranslationQualitySelectorViewModel: ObservableObject {
+@Observable
+class EpisodeTranslationQualitySelectorViewModel {
     enum State {
         case idle
         case loading
@@ -16,19 +17,14 @@ class EpisodeTranslationQualitySelectorViewModel: ObservableObject {
         case loaded(EpisodeStreamingInfo)
     }
 
-    @Published private(set) var state = State.idle
+    private(set) var state = State.idle
 
     private let client: Anime365Client
-    private let translationId: Int
-    public let translationTeam: String
 
     init(
-        translationId: Int,
-        translationTeam: String
+        client: Anime365Client = ApplicationDependency.container.resolve()
     ) {
-        self.translationId = translationId
-        self.translationTeam = translationTeam
-        self.client = ServiceLocator.getAnime365Client()
+        self.client = client
     }
 
     @MainActor
@@ -36,7 +32,7 @@ class EpisodeTranslationQualitySelectorViewModel: ObservableObject {
         state = newState
     }
 
-    func performInitialLoad() async {
+    func performInitialLoad(translationId: Int) async {
         await updateState(.loading)
 
         do {
@@ -58,8 +54,11 @@ class EpisodeTranslationQualitySelectorViewModel: ObservableObject {
 struct EpisodeTranslationQualitySelectorView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @ObservedObject var viewModel: EpisodeTranslationQualitySelectorViewModel
-    @ObservedObject var videoPlayerController: VideoPlayerController
+    let translationId: Int
+    let translationTeam: String
+    @ObservedObject var videoPlayerController: VideoPlayerController = .init()
+
+    @State private var viewModel: EpisodeTranslationQualitySelectorViewModel = .init()
 
     var body: some View {
         Group {
@@ -67,14 +66,14 @@ struct EpisodeTranslationQualitySelectorView: View {
             case .idle:
                 Color.clear.onAppear {
                     Task {
-                        await self.viewModel.performInitialLoad()
+                        await self.viewModel.performInitialLoad(translationId: translationId)
                     }
                 }
 
             case .loading:
                 ProgressView()
 
-            case .loadingFailed(let error):
+            case let .loadingFailed(error):
                 ContentUnavailableView {
                     Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
                 } description: {
@@ -89,7 +88,7 @@ struct EpisodeTranslationQualitySelectorView: View {
                     Text("Скорее всего, что-то пошло не так")
                 }
 
-            case .loaded(let episodeStreamingInfo):
+            case let .loaded(episodeStreamingInfo):
                 List {
                     Section {
                         ForEach(episodeStreamingInfo.streamQualityOptions) { streamQualityOption in
@@ -120,7 +119,7 @@ struct EpisodeTranslationQualitySelectorView: View {
                 }
             }
         }
-        .navigationTitle(self.viewModel.translationTeam)
+        .navigationTitle(translationTeam)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
@@ -134,9 +133,9 @@ struct EpisodeTranslationQualitySelectorView: View {
 
 #Preview {
     NavigationStack {
-        EpisodeTranslationQualitySelectorView(viewModel: .init(
-            translationId: 3061769,
+        EpisodeTranslationQualitySelectorView(
+            translationId: 3_061_769,
             translationTeam: "Crunchyroll"
-        ), videoPlayerController: .init())
+        )
     }
 }

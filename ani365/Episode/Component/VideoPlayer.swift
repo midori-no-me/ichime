@@ -71,7 +71,12 @@ class VideoPlayerController: NSObject, ObservableObject {
 
         let (tempLocalUrl, _) = try await URLSession.shared.download(from: url)
 
-        let documentsDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        let documentsDirectory = try FileManager.default.url(
+            for: .documentDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: false
+        )
         let destinationUrl = documentsDirectory.appendingPathComponent(fileName)
 
         // Remove the file if it already exists
@@ -111,10 +116,17 @@ class VideoPlayerController: NSObject, ObservableObject {
             }
 
             do {
-                let track = composition.addMutableTrack(withMediaType: mediaType, preferredTrackID: kCMPersistentTrackID_Invalid)!
+                let track = composition.addMutableTrack(
+                    withMediaType: mediaType,
+                    preferredTrackID: kCMPersistentTrackID_Invalid
+                )!
                 let assetTrack = try await avAsset.loadTracks(withMediaType: mediaType).first!
                 let trackTimeRange = try await assetTrack.load(.timeRange)
-                try track.insertTimeRange(CMTimeRangeMake(start: .zero, duration: trackTimeRange.duration), of: assetTrack, at: .zero)
+                try track.insertTimeRange(
+                    CMTimeRangeMake(start: .zero, duration: trackTimeRange.duration),
+                    of: assetTrack,
+                    at: .zero
+                )
             } catch {
                 print("Error inserting \(mediaType.rawValue) track: \(error)")
                 return
@@ -174,15 +186,15 @@ class VideoPlayerController: NSObject, ObservableObject {
         }
 
         func playerViewController(
-            _ playerViewController: AVPlayerViewController,
-            willBeginFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator
+            _: AVPlayerViewController,
+            willBeginFullScreenPresentationWithAnimationCoordinator _: UIViewControllerTransitionCoordinator
         ) {
             // Called when the player enters fullscreen mode
         }
 
         func playerViewController(
-            _ playerViewController: AVPlayerViewController,
-            willEndFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator
+            _: AVPlayerViewController,
+            willEndFullScreenPresentationWithAnimationCoordinator _: UIViewControllerTransitionCoordinator
         ) {
             // Called when the player exits fullscreen mode
             control.destroyPlayer()
@@ -190,6 +202,25 @@ class VideoPlayerController: NSObject, ObservableObject {
     }
 }
 
+struct VideoPlayerLoader: View {
+    var body: some View {
+        Color(UIColor.systemBackground).ignoresSafeArea(.all).overlay {
+            ProgressView("Загружаем видео")
+        }
+    }
+}
+
 #Preview {
-    VideoPlayerExample(video: .init(videoURL: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.mp4")!, subtitleURL: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.vtt")!, title: "Arknights", episodeTitle: "Episode 1"))
+    VideoPlayerExample(video: .init(
+        videoURL: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.mp4")!,
+        subtitleURL: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.vtt")!,
+        title: "Arknights",
+        episodeTitle: "Episode 1"
+    ))
+}
+
+#Preview("Loader") {
+    ZStack {
+        VideoPlayerLoader()
+    }
 }

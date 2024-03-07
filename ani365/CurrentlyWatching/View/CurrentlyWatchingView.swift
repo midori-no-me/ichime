@@ -8,9 +8,10 @@
 import ScraperAPI
 import SwiftUI
 
-class CurrentlyWatchingViewModel: ObservableObject {
+@Observable
+class CurrentlyWatchingViewModel {
     private let client: ScraperClient
-    init(apiClient: ScraperClient) {
+    init(apiClient: ScraperClient = ApplicationDependency.container.resolve()) {
         client = apiClient
     }
 
@@ -23,7 +24,7 @@ class CurrentlyWatchingViewModel: ObservableObject {
         case needAuth
     }
 
-    @Published private(set) var state = State.idle
+    private(set) var state = State.idle
     private var page = 1
     private var shows: [WatchCardModel] = []
     private var stopLazyLoading = false
@@ -83,10 +84,8 @@ class CurrentlyWatchingViewModel: ObservableObject {
 }
 
 struct CurrentlyWatchingView: View {
-    @ObservedObject var viewModel: CurrentlyWatchingViewModel
-    @EnvironmentObject var client: ScraperClient
-
-    @State private var counter = 0
+    @State private var viewModel: CurrentlyWatchingViewModel = .init()
+    @StateObject private var notificationCounter: NotificationCounterWatcher = .init()
 
     var body: some View {
         Group {
@@ -118,21 +117,24 @@ struct CurrentlyWatchingView: View {
                     Text("Вы еще ничего не добавили в свой список")
                 }
             case let .loaded(shows):
-                LoadedCurrentlyWatching(shows: shows, counter: counter) {
+                LoadedCurrentlyWatching(shows: shows, counter: notificationCounter.counter) {
                     await viewModel.performLazyLoad()
                 }.refreshable {
                     await viewModel.performRefresh()
-                    await client.checkCounter()
+                    await notificationCounter.checkCounter()
                 }
             }
         }
-        .onReceive(client.counter) { counter = $0 }
         .toolbar {
             NavigationLink(destination: ProfileView()) {
                 Image(systemName: "person.circle")
             }
         }
         .navigationTitle("Я смотрю")
+    }
+
+    enum SubRoute: Hashable {
+        case notifications
     }
 }
 
@@ -141,12 +143,11 @@ struct LoadedCurrentlyWatching: View {
     let counter: Int
     let loadMore: () async -> Void
 
-    @EnvironmentObject var client: ScraperClient
     var body: some View {
         List {
             if UIDevice.current.userInterfaceIdiom == .phone {
                 Section {
-                    NavigationLink(value: "Notification") {
+                    NavigationLink(value: CurrentlyWatchingView.SubRoute.notifications) {
                         Label("Уведомления", systemImage: "bell")
                             .badge(counter)
                     }
@@ -171,17 +172,21 @@ struct LoadedCurrentlyWatching: View {
     }
 }
 
-// #Preview {
-//    AppPreview {
-//        NavigationStack {
-//            CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator
-//                    .getScraperAPIClient())))
-//        }
-//    }
-// }
-//
-// #Preview("No navigation") {
-//    AppPreview {
-//        CurrentlyWatchingView(viewModel: .init(apiClient: .init(scraperClient: ServiceLocator.getScraperAPIClient())))
-//    }
-// }
+#Preview {
+    @StateObject var videoPlayerController: VideoPlayerController = .init()
+    return NavigationStack {
+        CurrentlyWatchingView()
+            .navigationDestination(for: CurrentlyWatchingView.SubRoute.self) { route in
+                if route == .notifications {
+                    NotificationCenterView()
+                }
+            }
+            .navigationDestination(for: WatchCardModel.self) {
+                viewShow(show: $0, videoPlayerController: videoPlayerController)
+            }
+    }
+}
+
+#Preview("No navigation") {
+    CurrentlyWatchingView()
+}
