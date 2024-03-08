@@ -383,7 +383,7 @@ private struct EpisodePreviewList: View {
                     .font(.title2)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                NavigationLink(destination: EpisodeListView(episodePreviews: self.episodePreviews)) {
+                NavigationLink(destination: EpisodeListView(episodePreviews: self.episodePreviews, lastEpisodeWatched: 0)) {
                     Text("Все серии")
                         .font(.callout)
                 }
