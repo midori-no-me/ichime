@@ -159,9 +159,7 @@ struct OngoingsView: View {
         }
         .navigationTitle("Онгоинги")
         .toolbar {
-            NavigationLink(destination: ProfileView()) {
-                Image(systemName: "person.circle")
-            }
+            ProfileButton()
         }
         .navigationBarTitleDisplayMode(.large)
         .refreshable {

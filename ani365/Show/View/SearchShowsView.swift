@@ -189,9 +189,7 @@ struct SearchShowsView: View {
             prompt: "Название тайтла"
         )
         .toolbar {
-            NavigationLink(destination: ProfileView()) {
-                Image(systemName: "person.circle")
-            }
+            ProfileButton()
         }
         .onChange(of: self.viewModel.currentlyTypedSearchQuery) {
             self.viewModel.currentlyTypedSearchQueryChanged()

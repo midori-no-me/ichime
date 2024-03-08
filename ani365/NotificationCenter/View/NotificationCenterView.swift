@@ -126,9 +126,7 @@ struct NotificationCenterView: View {
             }
         }
         .toolbar {
-            NavigationLink(destination: ProfileView()) {
-                Image(systemName: "person.circle")
-            }
+            ProfileButton()
         }
         .navigationTitle("Уведомления")
     }

@@ -245,9 +245,7 @@ struct ToolbarWrapper<Content: View>: View {
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink(destination: ProfileView()) {
-                        Image(systemName: "person.circle")
-                    }
+                    ProfileButton()
                 }
             }
     }
