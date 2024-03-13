@@ -2,13 +2,22 @@
 
 Нативное приложение для сайта Anime 365, созданное специально для iOS и iPadOS.
 
+## Скриншшоты
+<a href="https://github.com/midori-no-me/ichime/assets/11390039/15fd0d10-5293-4cce-8036-9b6cb8b8f9a3"><img src="https://github.com/midori-no-me/ichime/assets/11390039/15fd0d10-5293-4cce-8036-9b6cb8b8f9a3" width="250" /></a>
+<a href="https://github.com/midori-no-me/ichime/assets/11390039/2d9e939b-cc83-45a5-b643-b5eb4acdea16"><img src="https://github.com/midori-no-me/ichime/assets/11390039/2d9e939b-cc83-45a5-b643-b5eb4acdea16" width="250" /></a>
+<a href="https://github.com/midori-no-me/ichime/assets/11390039/16be5b21-a869-4a32-b3f3-11cfe4f50a97"><img src="https://github.com/midori-no-me/ichime/assets/11390039/16be5b21-a869-4a32-b3f3-11cfe4f50a97" width="250" /></a>
+<a href="https://github.com/midori-no-me/ichime/assets/11390039/3339bbc9-23b6-4131-8626-172001f45907"><img src="https://github.com/midori-no-me/ichime/assets/11390039/3339bbc9-23b6-4131-8626-172001f45907" width="250" /></a>
+<a href="https://github.com/midori-no-me/ichime/assets/11390039/e7b35282-a157-4b5b-a97c-f130ab80733e"><img src="https://github.com/midori-no-me/ichime/assets/11390039/e7b35282-a157-4b5b-a97c-f130ab80733e" width="250" /></a>
+<a href="https://github.com/midori-no-me/ichime/assets/11390039/10c0a60a-dcc6-4008-aea5-0984b80327c2"><img src="https://github.com/midori-no-me/ichime/assets/11390039/10c0a60a-dcc6-4008-aea5-0984b80327c2" width="250" /></a>
+
+
 ## Возможности приложения
 
 Плеер:
 
 - Нативный плеер - такой же, как в Safari и приложении "TV"
 - Поддержка субтитров
-- Поддержка AirPlay (с работающими субтитрами!)
+- Поддержка AirPlay
 - Плеер показывает название тайтла и номер серии внутри
 - Серия автоматически помечается просмотренной, когда вы ее досмотрите до конца - так же, как на сайте
 
