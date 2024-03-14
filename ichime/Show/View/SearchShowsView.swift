@@ -181,26 +181,35 @@ struct SearchShowsView: View {
             }
         }
         .navigationTitle("Поиск")
-        .navigationBarTitleDisplayMode(.large)
-        .searchable(
-            text: self.$viewModel.currentlyTypedSearchQuery,
-            isPresented: self.$viewModel.isSearchPresented,
-            placement: .navigationBarDrawer(displayMode: .always),
-            prompt: "Название тайтла"
-        )
-        .toolbar {
-            NavigationLink(destination: ProfileView()) {
-                Image(systemName: "person.circle")
+        #if os(iOS)
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                NavigationLink(destination: ProfileView()) {
+                    Image(systemName: "person.circle")
+                }
             }
-        }
-        .onChange(of: self.viewModel.currentlyTypedSearchQuery) {
-            self.viewModel.currentlyTypedSearchQueryChanged()
-        }
-        .onSubmit(of: .search) {
-            Task {
-                await self.viewModel.performInitialSearch()
+            .searchable(
+                text: self.$viewModel.currentlyTypedSearchQuery,
+                isPresented: self.$viewModel.isSearchPresented,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: "Название тайтла"
+            )
+        #else
+            .searchable(
+                text: self.$viewModel.currentlyTypedSearchQuery,
+                isPresented: self.$viewModel.isSearchPresented,
+                placement: .toolbar,
+                prompt: "Название тайтла"
+            )
+        #endif
+            .onChange(of: self.viewModel.currentlyTypedSearchQuery) {
+                self.viewModel.currentlyTypedSearchQueryChanged()
             }
-        }
+            .onSubmit(of: .search) {
+                Task {
+                    await self.viewModel.performInitialSearch()
+                }
+            }
     }
 }
 

@@ -242,6 +242,7 @@
       }
     },
     "Anime 365" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

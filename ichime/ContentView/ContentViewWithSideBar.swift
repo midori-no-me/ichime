@@ -1,38 +1,16 @@
 //
-//  ContentView.swift
-//  IchimeMac
+//  ContentViewWithSideBar.swift
+//  ichime
 //
-//  Created by Nikita Nafranets on 12.03.2024.
+//  Created by Nikita Nafranets on 14.03.2024.
 //
 
 import SwiftUI
 
-struct ContentView: View {
-    private var userManager: UserManager = ApplicationDependency.container.resolve()
-
-    var body: some View {
-        switch userManager.state {
-        case .idle:
-            Color.clear.onAppear {
-                Task {
-                    await userManager.checkAuth()
-                }
-            }
-        case .loading:
-            ProgressView()
-        case .isAuth:
-            ContentViewWithSideBar()
-        case .isAnonym:
-            NavigationStack {
-                OnboardingView()
-            }
-        }
-    }
-}
-
 struct ContentViewWithSideBar: View {
     @State private var navigationActiveTab: SideBarLinks? = .ongoings
     @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
+    @StateObject private var videoPlayerController: VideoPlayerController = .init()
 
     enum SideBarLinks {
         case searchShows
@@ -63,7 +41,7 @@ struct ContentViewWithSideBar: View {
                         .tag(SideBarLinks.notifications)
                 }
             }
-            .navigationTitle("Anime 365")
+            .navigationTitle("Ichime")
 
         } detail: {
             switch navigationActiveTab {
@@ -79,32 +57,29 @@ struct ContentViewWithSideBar: View {
 
             case .currentlyWatching:
                 NavigationStack {
-                    Text("currentwatch")
-//                    CurrentlyWatchingView()
-//                        .navigationDestination(
-//                            for: WatchCardModel.self,
-//                            destination: { viewShow(show: $0, videoPlayerController: videoPlayerController) }
-//                        )
+                    CurrentlyWatchingView()
+                        .navigationDestination(
+                            for: WatchCardModel.self,
+                            destination: { viewShow(show: $0, videoPlayerController: videoPlayerController) }
+                        )
                 }
 
             case .myLists:
                 NavigationStack {
-                    Text("mylists")
-//                    MyListsView()
+                    MyListsView()
                 }
 
             case .notifications:
                 NavigationStack {
                     ZStack {
-                        Text("Notifications")
-//                        NotificationCenterView()
-//                            .navigationDestination(
-//                                for: WatchCardModel.self,
-//                                destination: { viewShow(show: $0, videoPlayerController: videoPlayerController) }
-//                            )
-//                        if videoPlayerController.loading {
-//                            VideoPlayerLoader()
-//                        }
+                        NotificationCenterView()
+                            .navigationDestination(
+                                for: WatchCardModel.self,
+                                destination: { viewShow(show: $0, videoPlayerController: videoPlayerController) }
+                            )
+                        if videoPlayerController.loading {
+                            VideoPlayerLoader()
+                        }
                     }
                 }
 
@@ -121,8 +96,4 @@ struct ContentViewWithSideBar: View {
 
 #Preview {
     ContentViewWithSideBar()
-}
-
-#Preview {
-    ContentView()
 }

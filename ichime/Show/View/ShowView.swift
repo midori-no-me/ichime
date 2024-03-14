@@ -168,8 +168,12 @@ struct ShowView: View {
                         .scenePadding(.bottom)
                 }
                 .navigationTitle(show.title.translated.japaneseRomaji ?? show.title.full)
+                #if os(macOS)
+                    .navigationSubtitle(show.title.translated.russian ?? "")
+                #endif
             }
         }
+        #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
@@ -207,6 +211,7 @@ struct ShowView: View {
             }
         }
         .navigationBarTitleDisplayMode(.large)
+        #endif
         .refreshable {
             await self.viewModel.performPullToRefresh()
         }
@@ -219,14 +224,16 @@ private struct ShowDetails: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
-        if let russianTitle = show.title.translated.russian {
-            Text(russianTitle)
-                .font(.title3)
-                .scenePadding(.horizontal)
-                .foregroundColor(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .textSelection(.enabled)
-        }
+        #if os(iOS)
+            if let russianTitle = show.title.translated.russian {
+                Text(russianTitle)
+                    .font(.title3)
+                    .scenePadding(.horizontal)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .textSelection(.enabled)
+            }
+        #endif
 
         HStack(alignment: .top, spacing: 18) {
             GeometryReader { geometry in
@@ -396,14 +403,17 @@ private struct ShowDescriptionSheetView: View {
                 }
             }
             .navigationTitle("Описание от \(self.description.source)")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Закрыть") {
-                        self.dismiss()
+            #if os(iOS)
+                .navigationBarTitleDisplayMode(.inline)
+            #endif
+
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Закрыть") {
+                            self.dismiss()
+                        }
                     }
                 }
-            }
         }
     }
 }
@@ -419,7 +429,12 @@ private struct EpisodePreviewList: View {
                     .font(.title2)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                NavigationLink(destination: EpisodeListView(episodePreviews: self.episodePreviews)) {
+                #if os(iOS)
+                    let destination = EpisodeListView(episodePreviews: self.episodePreviews)
+                #else
+                    let destination = Text("lol")
+                #endif
+                NavigationLink(destination: destination) {
                     Text("Все серии")
                         .font(.callout)
                 }
@@ -435,19 +450,28 @@ private struct EpisodePreviewList: View {
             }
 
             ForEach(self.episodePreviews.prefix(5), id: \.self) { episodePreview in
-                NavigationLink(destination: EpisodeTranslationsView(
-                    episodeId: episodePreview.id,
-                    episodeTitle: episodePreview
-                        .title ?? episodePreview
-                        .typeAndNumber
-                )) {
+                #if os(iOS)
+                    let destination = EpisodeTranslationsView(
+                        episodeId: episodePreview.id,
+                        episodeTitle: episodePreview
+                            .title ?? episodePreview
+                            .typeAndNumber
+                    )
+                #else
+                    let destination = Text("hi")
+                #endif
+                NavigationLink(destination: destination) {
                     HStack {
-                        EpisodePreviewRow(data: episodePreview)
+                        #if os(iOS)
+                            EpisodePreviewRow(data: episodePreview)
+                        #endif
 
                         Spacer()
 
                         Image(systemName: "chevron.forward")
+                        #if os(iOS)
                             .foregroundColor(Color(UIColor.systemGray3))
+                        #endif
                             .fontWeight(.bold)
                             .font(.footnote)
                     }
@@ -467,5 +491,5 @@ private struct EpisodePreviewList: View {
 #Preview {
     NavigationStack {
         ShowView(showId: 8762)
-    }
+    }.frame(width: 800, height: 400)
 }

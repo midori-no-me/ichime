@@ -149,37 +149,46 @@ struct OngoingsView: View {
                             shows: shows,
                             loadMore: { await self.viewModel.performLazyLoading() }
                         )
+                        #if os(macOS)
+                        .padding()
+                        #else
                         .padding(.top, 18)
                         .scenePadding(.horizontal)
                         .scenePadding(.bottom)
+                        #endif
                     }
                 }
             }
         }
         .navigationTitle("Онгоинги")
-        .toolbar {
-            NavigationLink(destination: ProfileView()) {
-                Image(systemName: "person.circle")
+        #if os(iOS)
+            .toolbar {
+                NavigationLink(destination: ProfileView()) {
+                    Image(systemName: "person.circle")
+                }
             }
-        }
-        .navigationBarTitleDisplayMode(.large)
-        .refreshable {
-            await self.viewModel.performPullToRefresh()
-        }
+            .navigationBarTitleDisplayMode(.large)
+        #endif
+            .refreshable {
+                await self.viewModel.performPullToRefresh()
+            }
     }
 }
 
 private struct OngoingsViewWrapper<Content>: View where Content: View {
     @ViewBuilder let content: Content
 
+    let title = String(localized: "Сериалы, у которых продолжают выходить новые серии")
     var body: some View {
         VStack {
-            Text("Сериалы, у которых продолжают выходить новые серии")
-                .font(.title3)
-                .scenePadding(.horizontal)
-                .foregroundColor(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .textSelection(.enabled)
+            #if os(iOS)
+                Text(title)
+                    .font(.title3)
+                    .scenePadding(.horizontal)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .textSelection(.enabled)
+            #endif
 
             Spacer()
 
@@ -187,6 +196,9 @@ private struct OngoingsViewWrapper<Content>: View where Content: View {
 
             Spacer()
         }
+        #if os(macOS)
+        .navigationSubtitle(title)
+        #endif
     }
 }
 

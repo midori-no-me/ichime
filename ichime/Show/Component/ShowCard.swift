@@ -12,7 +12,7 @@ struct ShowCard: View {
     let show: Show
 
     var body: some View {
-        NavigationLink(destination: ShowView(showId: show.id, preloadedShow: show)) {
+        NavigationLink(value: show) {
             VStack(alignment: .leading) {
                 GeometryReader { geometry in
                     CachedAsyncImage(
@@ -24,7 +24,7 @@ struct ShowCard: View {
                                 VStack {
                                     ProgressView()
                                 }
-                            case .success(let image):
+                            case let .success(image):
                                 image.resizable()
                                     .scaledToFill()
                                     .clipped()
@@ -40,11 +40,16 @@ struct ShowCard: View {
                         }
                     )
                     .frame(width: geometry.size.width, height: geometry.size.height)
-                    .background(Color(UIColor.secondarySystemBackground))
-                    .cornerRadius(10)
+                    #if os(macOS)
+                        .background(Color(nsColor: .windowBackgroundColor))
+                    #else
+                        .background(Color(UIColor.secondarySystemBackground))
+                    #endif
+                        .cornerRadius(10)
                 }
 
-                Text(show.title.translated.japaneseRomaji ?? show.title.translated.english ?? show.title.translated.russian ?? show.title.full)
+                Text(show.title.translated.japaneseRomaji ?? show.title.translated.english ?? show.title.translated
+                    .russian ?? show.title.full)
                     .font(.subheadline)
                     .lineLimit(2, reservesSpace: true)
                     .truncationMode(.tail)
@@ -57,7 +62,8 @@ struct ShowCard: View {
             } preview: {
                 ShowCardContextMenuPreview(
                     posterUrl: show.posterUrl!,
-                    title: show.title.translated.japaneseRomaji ?? show.title.translated.english ?? show.title.translated.russian ?? show.title.full,
+                    title: show.title.translated.japaneseRomaji ?? show.title.translated.english ?? show.title
+                        .translated.russian ?? show.title.full,
                     calendarSeason: show.calendarSeason,
                     typeTitle: show.typeTitle
                 )
@@ -85,7 +91,7 @@ private struct ShowCardContextMenuPreview: View {
                         VStack {
                             ProgressView()
                         }
-                    case .success(let image):
+                    case let .success(image):
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -100,7 +106,11 @@ private struct ShowCardContextMenuPreview: View {
                     }
                 }
             )
+            #if os(macOS)
+            .background(Color(nsColor: .windowBackgroundColor))
+            #else
             .background(Color(UIColor.secondarySystemBackground))
+            #endif
             .cornerRadius(10)
 
             if let metaInformationLine = self.getMetaInformationLine(
