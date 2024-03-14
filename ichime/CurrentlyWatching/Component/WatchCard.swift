@@ -9,54 +9,52 @@ import CachedAsyncImage
 import SwiftUI
 
 struct WatchCard: View {
+    private let ROW_PADDING: CGFloat = 4
+
     let data: WatchCardModel
 
     var body: some View {
-        HStack(alignment: .top, spacing: 10.0) {
+        HStack(alignment: .top) {
             CachedAsyncImage(
                 url: data.image,
                 transaction: .init(animation: .easeInOut)
             ) { phase in
                 switch phase {
                 case .empty:
-                    VStack {
-                        ProgressView()
-                    }
+                    ProgressView()
                 case let .success(image):
                     image.resizable()
-                        .scaledToFill()
+                        .scaledToFit()
+                        .cornerRadius(4)
                         .clipped()
 
                 case .failure:
-                    VStack {
-                        Image(systemName: "wifi.slash")
-                    }
+                    Image(systemName: "wifi.slash")
                 @unknown default:
                     EmptyView()
                 }
             }
-            .padding(0)
-            .frame(width: 71, height: 100, alignment: .center)
-            .clipShape(RoundedRectangle(cornerRadius: 5))
+            .frame(width: 100, height: 135, alignment: .top)
+            .padding(.trailing, ROW_PADDING)
 
-            VStack(alignment: .leading) {
-                Text(data.title)
-                    .font(.callout)
-                    .foregroundColor(Color.blue)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(data.title + " • " + data.sideText)
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.secondary)
+
                 Text(data.name.ru)
-                    .font(.subheadline)
+                    .font(.callout)
+                    .fontWeight(.medium)
+
                 if !data.name.romaji.isEmpty {
                     Text(data.name.romaji)
                         .font(.caption)
-                        .foregroundColor(Color.gray)
+                        .foregroundStyle(Color.secondary)
                 }
-                Spacer()
-                Text(data.sideText)
-                    .font(.footnote)
-                    .foregroundColor(Color.gray)
             }
-            .padding(.bottom)
         }
+        .padding(.top, ROW_PADDING)
     }
 }
 
@@ -87,7 +85,36 @@ struct WatchCard: View {
                 sideText: "RAW",
                 type: .notication
             ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/35064.34978564114.jpg")!,
+                name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
+                title: "Фильм",
+                sideText: "RAW",
+                type: .notication
+            ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/31760.23724939004.jpg")!,
+                name: .init(
+                    ru: "Меня выгнали из гильдии героев, потому что я был плохим компаньоном, поэтому я решил неспешно жить в глуши 2 сезон",
+                    romaji: "Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni Shimashita 2nd Season"
+                ),
+                title: "Фильм",
+                sideText: "RAW",
+                type: .notication
+            ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/35509.36660560254.jpg")!,
+                name: .init(ru: "Братик-братик 2", romaji: "Shixiong A Shixiong 2nd Season"),
+                title: "Фильм",
+                sideText: "RAW",
+                type: .notication
+            ))
         }
+        .listStyle(.plain)
+        .navigationTitle("Уведомления")
     }
 }
 
@@ -142,6 +169,35 @@ struct WatchCard: View {
                 sideText: "Запланировали 18.01.24",
                 type: .show
             ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/35064.34978564114.jpg")!,
+                name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
+                title: "Фильм",
+                sideText: "Запланировали 18.01.24",
+                type: .show
+            ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/31760.23724939004.jpg")!,
+                name: .init(
+                    ru: "Меня выгнали из гильдии героев, потому что я был плохим компаньоном, поэтому я решил неспешно жить в глуши 2 сезон",
+                    romaji: "Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni Shimashita 2nd Season"
+                ),
+                title: "Фильм",
+                sideText: "Запланировали 18.01.24",
+                type: .show
+            ))
+            WatchCard(data: .init(
+                id: 1,
+                image: URL(string: "https://smotret-anime.com/posters/35509.36660560254.jpg")!,
+                name: .init(ru: "Братик-братик 2", romaji: "Shixiong A Shixiong 2nd Season"),
+                title: "Фильм",
+                sideText: "Запланировали 18.01.24",
+                type: .show
+            ))
         }
+        .listStyle(.plain)
+        .navigationTitle("Смотрю")
     }
 }

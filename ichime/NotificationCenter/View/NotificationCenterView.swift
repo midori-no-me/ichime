@@ -134,17 +134,22 @@ struct LoadedNotificationCenter: View {
 
     var body: some View {
         List {
-            ForEach(shows) { show in
-                NavigationLink(value: show) {
-                    WatchCard(data: show)
-                }
-                .task {
-                    if show == self.shows.last {
-                        await self.loadMore()
+            Section {
+                ForEach(shows) { show in
+                    NavigationLink(value: show) {
+                        WatchCard(data: show)
+                    }
+                    .task {
+                        if show == self.shows.last {
+                            await self.loadMore()
+                        }
                     }
                 }
+            } header: {
+                Text("Последние уведомления")
             }
         }
+        .listStyle(.plain)
     }
 }
 
