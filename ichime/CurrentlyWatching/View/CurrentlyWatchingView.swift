@@ -179,6 +179,7 @@ struct LoadedCurrentlyWatching: View {
                 Text("Серии к просмотру")
             }
         }
+        .listStyle(.plain)
     }
 }
 
