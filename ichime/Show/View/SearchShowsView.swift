@@ -184,9 +184,7 @@ struct SearchShowsView: View {
         #if os(iOS)
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
-                NavigationLink(destination: ProfileView()) {
-                    Image(systemName: "person.circle")
-                }
+                ProfileButton()
             }
             .searchable(
                 text: self.$viewModel.currentlyTypedSearchQuery,
