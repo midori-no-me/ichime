@@ -163,9 +163,7 @@ struct OngoingsView: View {
         .navigationTitle("Онгоинги")
         #if os(iOS)
             .toolbar {
-                NavigationLink(destination: ProfileView()) {
-                    Image(systemName: "person.circle")
-                }
+                ProfileButton()
             }
             .navigationBarTitleDisplayMode(.large)
         #endif

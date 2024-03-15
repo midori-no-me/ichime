@@ -12,11 +12,11 @@ import SwiftUI
 class AuthenticationViewModel {
     private let userManager: UserManager
 
-    var userEmail: String = ""
-    var userPassword: String = ""
-    var showInvalidCredentialsAlert: Bool = false
-    var showUnknownErrorAlert: Bool = false
-    var isLoadingAuthentication: Bool = false
+    var userEmail = ""
+    var userPassword = ""
+    var showInvalidCredentialsAlert = false
+    var showUnknownErrorAlert = false
+    var isLoadingAuthentication = false
     var isSuccess = false
     var baseUrlPreference: BaseUrlPreference = .init()
 
@@ -106,20 +106,20 @@ struct AuthenticationView: View {
             #if os(macOS)
             .padding(.all)
             #endif
-            .alert(isPresented: $viewModel.showInvalidCredentialsAlert) {
-                Alert(
-                    title: Text("Не удалось авторизоваться"),
-                    message: Text("Неправильный адрес электронной почты или пароль."),
-                    dismissButton: .cancel()
-                )
+            .alert("Не удалось авторизоваться", isPresented: $viewModel.showInvalidCredentialsAlert, actions: {
+                Button("Закрыть", role: .cancel, action: {
+                    viewModel.showInvalidCredentialsAlert.toggle()
+                })
+            }) {
+                Text("Неправильный адрес электронной почты или пароль.")
             }
-            .alert(isPresented: $viewModel.showUnknownErrorAlert) {
-                Alert(
-                    title: Text("Не удалось авторизоваться"),
-                    message: Text(
-                        "При авторизации что-то пошло не так. Если у вас включен VPN, попробуйте его выключить."
-                    ),
-                    dismissButton: .cancel()
+            .alert("Не удалось авторизоваться", isPresented: $viewModel.showUnknownErrorAlert, actions: {
+                Button("Закрыть", role: .cancel, action: {
+                    viewModel.showUnknownErrorAlert.toggle()
+                })
+            }) {
+                Text(
+                    "При авторизации что-то пошло не так. Если у вас включен VPN, попробуйте его выключить."
                 )
             }
             .toolbar {

@@ -40,7 +40,6 @@ class UserManager {
     }
 
     func startAuth(username: String, password: String) async throws -> ScraperAPI.Types.User {
-        await loading()
         let user = try await api.sendAPIRequest(ScraperAPI.Request.Login(username: username, password: password))
         print("success auth")
         await saveUser(user: user)

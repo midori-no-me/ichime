@@ -241,23 +241,6 @@
         }
       }
     },
-    "Anime 365" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anime 365"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anime 365"
-          }
-        }
-      }
-    },
     "Ichime" : {
       "localizations" : {
         "en" : {
@@ -321,6 +304,9 @@
           }
         }
       }
+    },
+    "Profile Button Preview" : {
+
     },
     "Авторизация" : {
       "localizations" : {
@@ -871,7 +857,14 @@
       }
     },
     "Нужна подписка" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A subscription is required"
+          }
+        }
+      }
     },
     "Онгоинги" : {
       "localizations" : {
@@ -1066,7 +1059,14 @@
       }
     },
     "Подпишись чтоб получить все возможности приложения" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscribe to unlock all the features of the application"
+          }
+        }
+      }
     },
     "Поиск" : {
       "localizations" : {
@@ -1705,6 +1705,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Это онгоинг. Обычно новые серии выходят по %1$@, примерно в %2$@."
+          }
+        }
+      }
+    },
+    "Этот адрес используется для работы приложения. Попробуйте выбрать другой адрес, если приложение работает некорректно. Для изменения адреса нужно выйти из аккаунта." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This address is used for the application to work. Try selecting a different address if the application is not functioning correctly. To change the address, you need to log out of the account."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Этот адрес используется для работы приложения. Попробуйте выбрать другой адрес, если приложение работает некорректно. Для изменения адреса нужно выйти из аккаунта."
           }
         }
       }
