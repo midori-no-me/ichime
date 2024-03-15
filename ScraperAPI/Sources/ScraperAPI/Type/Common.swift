@@ -53,19 +53,6 @@ public extension ScraperAPI.Types {
                 }
             }
         }
-
-        public var displayName: String {
-            switch type {
-            case .Movie:
-                return "Фильм"
-            case let .TV(episode):
-                return "\(String(format: "%.0f", episode)) серия"
-            case let .ONA(episode):
-                return "ONA \(String(format: "%.0f", episode)) серия"
-            case let .OVA(episode):
-                return "OVA \(String(format: "%.0f", episode)) серия"
-            }
-        }
     }
 
     struct Name: Hashable {

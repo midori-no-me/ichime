@@ -90,17 +90,11 @@ class ShowViewModel {
                 state = .loaded(show)
             }
 
+            await getUserRate()
+
             self.showId = showId
         } catch {
             state = .loadingFailed(error)
-        }
-
-        do {
-            userRate = try await scraperClient.sendAPIRequest(
-                ScraperAPI.Request.GetUserRate(showId: showId, fullCheck: true)
-            )
-        } catch {
-            print("\(error.localizedDescription)")
         }
     }
 
@@ -110,9 +104,21 @@ class ShowViewModel {
                 seriesId: showId
             )
 
+            await getUserRate()
+
             state = .loaded(show)
         } catch {
             state = .loadingFailed(error)
+        }
+    }
+
+    private func getUserRate() async {
+        do {
+            userRate = try await scraperClient.sendAPIRequest(
+                ScraperAPI.Request.GetUserRate(showId: showId, fullCheck: true)
+            )
+        } catch {
+            print("\(error.localizedDescription)")
         }
     }
 
