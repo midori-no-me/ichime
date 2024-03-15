@@ -1089,6 +1089,22 @@
         }
       }
     },
+    "Открыть" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть"
+          }
+        }
+      }
+    },
     "Отложено" : {
       "localizations" : {
         "en" : {

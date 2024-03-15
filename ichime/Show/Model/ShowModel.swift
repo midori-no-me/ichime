@@ -39,7 +39,9 @@ struct Show: Hashable, Identifiable {
                     id: episode.id,
                     title: episode.episodeTitle.isEmpty ? nil : episode.episodeTitle,
                     typeAndNumber: episode.episodeFull,
-                    uploadDate: episode.firstUploadedDateTime == "2000-01-01 00:00:00" ? nil : convertApiDateStringToDate(string: episode.firstUploadedDateTime)!,
+                    uploadDate: episode
+                        .firstUploadedDateTime == "2000-01-01 00:00:00" ? nil :
+                        convertApiDateStringToDate(string: episode.firstUploadedDateTime)!,
                     type: EpisodeType.createFromApiType(apiType: episode.episodeType),
                     episodeNumber: Float(episode.episodeInt),
                     isUnderProcessing: episode.isFirstUploaded == 0
@@ -78,6 +80,11 @@ struct Show: Hashable, Identifiable {
             let english: String?
             let japanese: String?
             let japaneseRomaji: String?
+        }
+
+        var compose: String {
+            translated.japaneseRomaji ?? translated.english ??
+                translated.russian ?? full
         }
     }
 

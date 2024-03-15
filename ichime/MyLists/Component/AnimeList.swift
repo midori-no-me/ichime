@@ -8,6 +8,12 @@
 import ScraperAPI
 import SwiftUI
 
+public extension ScraperAPI.Types.Show {
+    var websiteUrl: URL {
+        getWebsiteUrlByShowId(showId: id)
+    }
+}
+
 struct AnimeList: View {
     let categories: [ScraperAPI.Types.ListByCategory]
 
@@ -30,7 +36,16 @@ struct AnimeList: View {
                                 "\(show.episodes.watched) / \(show.episodes.total == Int.max ? "??" : String(show.episodes.total))"
                             )
                             .font(.footnote).padding(.leading)
-                        }
+                        }.contextMenu(menuItems: {
+                            ShareLink(item: show.websiteUrl) {
+                                Label("Поделиться", systemImage: "square.and.arrow.up")
+                            }
+                            NavigationLink(destination: ShowView(showId: show.id)) {
+                                Text("Открыть")
+                            }
+                        }, preview: {
+                            IndependentShowCardContextMenuPreview(showId: show.id)
+                        })
                     }
                 }
             }
@@ -41,5 +56,7 @@ struct AnimeList: View {
 #Preview {
     @State var showId: Int?
 
-    return AnimeList(categories: ScraperAPI.Types.ListByCategory.sampleData, selectedShow: $showId)
+    return NavigationStack {
+        AnimeList(categories: ScraperAPI.Types.ListByCategory.sampleData, selectedShow: $showId)
+    }
 }

@@ -62,8 +62,7 @@ struct ShowCard: View {
             } preview: {
                 ShowCardContextMenuPreview(
                     posterUrl: show.posterUrl!,
-                    title: show.title.translated.japaneseRomaji ?? show.title.translated.english ?? show.title
-                        .translated.russian ?? show.title.full,
+                    title: show.title.compose,
                     calendarSeason: show.calendarSeason,
                     typeTitle: show.typeTitle
                 )
@@ -71,6 +70,31 @@ struct ShowCard: View {
         }
         .contentShape(Rectangle()) // чтобы хитбокс у ссылки был такой же как и карточка, без этого он может быть больше
         .buttonStyle(.plain)
+    }
+}
+
+struct IndependentShowCardContextMenuPreview: View {
+    let showId: Int
+    @State var show: Show? = nil
+    var client: Anime365Client = ApplicationDependency.container.resolve()
+
+    var body: some View {
+        Group {
+            if let show, let posterUrl = show.posterUrl {
+                ShowCardContextMenuPreview(
+                    posterUrl: posterUrl,
+                    title: show.title.compose,
+                    calendarSeason: show.calendarSeason,
+                    typeTitle: show.typeTitle
+                )
+            } else {
+                ProgressView()
+            }
+        }.task {
+            show = try? await client.getShow(
+                seriesId: showId
+            )
+        }
     }
 }
 
@@ -183,5 +207,22 @@ private struct ShowCardContextMenuPreview: View {
 }
 
 // #Preview {
-//    ShowCard()
+//    @State var show: Show?
+//    let client: Anime365Client = ApplicationDependency.container.resolve()
+//
+//    return Group {
+//        VStack {
+//            if let show {
+//                ShowCard(show: show)
+//            }
+//        }.onAppear(perform: {
+//            Task {
+//                print("start")
+//                show = try? await client.getShow(
+//                    seriesId: 8762
+//                )
+//                print(show)
+//            }
+//        })
+//    }
 // }
