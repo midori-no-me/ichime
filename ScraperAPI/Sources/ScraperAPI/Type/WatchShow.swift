@@ -24,7 +24,7 @@ public extension ScraperAPI.Types {
             case release(date: Date)
             case update(date: Date)
 
-            var date: Date {
+            public var date: Date {
                 switch self {
                 case let .plan(date):
                     return date
@@ -32,33 +32,6 @@ public extension ScraperAPI.Types {
                     return date
                 case let .update(date):
                     return date
-                }
-            }
-
-            public var displayName: String {
-                let calendar = Calendar.current
-                let now = Date()
-                let components = calendar.dateComponents([.day], from: date, to: now)
-
-                let formatedDate: String
-                if components.day! < 7 {
-                    let formatter = RelativeDateTimeFormatter()
-                    formatter.dateTimeStyle = .named
-                    formatter.unitsStyle = .full
-                    formatedDate = formatter.localizedString(for: date, relativeTo: now)
-                } else {
-                    let formatter = DateFormatter()
-                    formatter.dateFormat = "dd.MM.yy"
-                    formatedDate = formatter.string(from: date)
-                }
-                
-                switch self {
-                case .plan:
-                    return "В плане \(formatedDate)"
-                case .release:
-                    return "Вышло \(formatedDate)"
-                case .update:
-                    return "Смотрели \(formatedDate)"
                 }
             }
         }

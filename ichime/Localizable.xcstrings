@@ -306,7 +306,14 @@
       }
     },
     "Profile Button Preview" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
     },
     "Авторизация" : {
       "localizations" : {
@@ -368,6 +375,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Брошено"
+          }
+        }
+      }
+    },
+    "В планах с %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planned from %@"
           }
         }
       }
@@ -608,6 +625,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выйти из аккаунта"
+          }
+        }
+      }
+    },
+    "Вышло %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Released on %@"
           }
         }
       }
@@ -859,6 +886,12 @@
             "state" : "translated",
             "value" : "A subscription is required"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нужна подписка"
+          }
         }
       }
     },
@@ -1060,6 +1093,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Subscribe to unlock all the features of the application"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подпишись чтоб получить все возможности приложения"
           }
         }
       }
@@ -1413,6 +1452,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скорее всего, что-то пошло не так"
+          }
+        }
+      }
+    },
+    "Смотрели %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watched on %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Смотрели %@"
           }
         }
       }
