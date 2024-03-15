@@ -12,7 +12,7 @@ struct ShowCard: View {
     let show: Show
 
     var body: some View {
-        NavigationLink(value: show) {
+        NavigationLink(destination: ShowView(showId: show.id, preloadedShow: show)) {
             VStack(alignment: .leading) {
                 GeometryReader { geometry in
                     CachedAsyncImage(
