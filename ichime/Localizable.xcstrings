@@ -404,25 +404,21 @@
         }
       }
     },
-    "Весь код приложения есть на [GitHub](https://github.com/flaksp/ichime). Будем рады вашей помощи 👉👈" : {
-      "extractionState" : "stale",
+    "Весь код приложения есть на [GitHub](https://github.com/midori-no-me/ichime). Будем рады вашей помощи 👉👈" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The entire application code is available on [GitHub](https://github.com/flaksp/ichime). We would appreciate your help 👉👈"
+            "value" : "The entire application code is available on [GitHub](https://github.com/midori-no-me/ichime). We would appreciate your help 👉👈"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Весь код приложения есть на [GitHub](https://github.com/flaksp/ichime). Будем рады вашей помощи 👉👈"
+            "value" : "Весь код приложения есть на [GitHub](https://github.com/midori-no-me/ichime). Будем рады вашей помощи 👉👈"
           }
         }
       }
-    },
-    "Весь код приложения есть на [GitHub](https://github.com/midori-no-me/ichime). Будем рады вашей помощи 👉👈" : {
-
     },
     "Видео можно вывести на телевизор или компьютер на macOS" : {
       "localizations" : {

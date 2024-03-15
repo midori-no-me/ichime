@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Observation
 import ScraperAPI
 import SwiftUI
 
@@ -18,6 +19,7 @@ class UserManager {
         case isAnonym
     }
 
+    @ObservationIgnored @AppStorage("userManagerCachedUser") private var cachedUser: Data?
     var state: State = .idle
     var subscribed: Bool = false
 
@@ -25,6 +27,7 @@ class UserManager {
 
     init(client: ScraperAPI.APIClient) {
         api = client
+        restoreUser()
     }
 
     func checkAuth() async {
@@ -49,6 +52,7 @@ class UserManager {
     func dropAuth() {
         api.session.logout()
         state = .isAnonym
+        cachedUser = nil
     }
 
     @MainActor
@@ -67,6 +71,19 @@ class UserManager {
     private func saveUser(user: ScraperAPI.Types.User) {
         state = .isAuth(user)
         subscribed = user.subscribed
+
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(user) {
+            cachedUser = encoded
+        }
         print("save user to auth")
+    }
+
+    private func restoreUser() {
+        let decoder = JSONDecoder()
+        if let cachedUser, let decodedUser = try? decoder.decode(ScraperAPI.Types.User.self, from: cachedUser) {
+            state = .isAuth(decodedUser)
+            subscribed = decodedUser.subscribed
+        }
     }
 }
