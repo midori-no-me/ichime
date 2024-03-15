@@ -57,20 +57,21 @@ struct WatchCardModel: Equatable, Identifiable, Hashable {
     let image: URL
     let title: String
     let sideText: String
-    let type: WatchType
+    let data: WatchData
 
-    enum WatchType {
-        case show
-        case notication
+    struct WatchData: Hashable {
+        let episode: Int
+        let title: String
+        let translation: Int?
     }
 
-    init(id: Int, image: URL, name: ScraperAPI.Types.Name, title: String, sideText: String, type: WatchType) {
+    init(id: Int, image: URL, name: ScraperAPI.Types.Name, title: String, sideText: String, data watchData: WatchData) {
         self.id = id
         self.name = name
         self.image = image
         self.title = title
         self.sideText = sideText
-        self.type = type
+        data = watchData
     }
 
     init(from show: ScraperAPI.Types.WatchShow) {
@@ -80,7 +81,7 @@ struct WatchCardModel: Equatable, Identifiable, Hashable {
             name: show.name,
             title: show.episode.displayName,
             sideText: show.update.displayName,
-            type: .show
+            data: .init(episode: show.episode.id, title: show.episode.displayName, translation: nil)
         )
     }
 
@@ -91,7 +92,11 @@ struct WatchCardModel: Equatable, Identifiable, Hashable {
             name: notification.name,
             title: notification.episode.displayName,
             sideText: notification.translation.type,
-            type: .notication
+            data: .init(
+                episode: notification.episode.id,
+                title: notification.episode.displayName,
+                translation: notification.translation.id
+            )
         )
     }
 }

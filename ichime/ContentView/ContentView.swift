@@ -39,7 +39,6 @@ struct ContentView: View {
 
 struct ContentViewWithTabBar: View {
     @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
-    @StateObject private var videoPlayerController: VideoPlayerController = .init()
 
     var body: some View {
         TabView {
@@ -56,16 +55,12 @@ struct ContentViewWithTabBar: View {
                         if route == .notifications {
                             ZStack {
                                 NotificationCenterView()
-                                if videoPlayerController.loading {
-                                    VideoPlayerLoader()
-                                }
                             }
                         }
                     }
                     .navigationDestination(
                         for: WatchCardModel.self,
-                        destination: { viewShow(show: $0, videoPlayerController: videoPlayerController)
-                        }
+                        destination: { viewShow(show: $0) }
                     )
             }
             .tabItem {
@@ -91,20 +86,12 @@ struct ContentViewWithTabBar: View {
 }
 
 @ViewBuilder
-func viewShow(show: WatchCardModel, videoPlayerController: VideoPlayerController) -> some View {
-    if show.type == .notication {
-        EpisodeTranslationQualitySelectorView(
-            translationId: show.id,
-            translationTeam: show.title,
-            videoPlayerController: videoPlayerController
-        )
-    }
-    if show.type == .show {
-        EpisodeTranslationsView(
-            episodeId: show.id,
-            episodeTitle: show.title
-        )
-    }
+func viewShow(show: WatchCardModel) -> some View {
+    EpisodeTranslationsView(
+        episodeId: show.data.episode,
+        episodeTitle: show.data.title,
+        preselectedTranslation: show.data.translation
+    )
 }
 
 #Preview {

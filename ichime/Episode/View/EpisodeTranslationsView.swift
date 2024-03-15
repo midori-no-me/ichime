@@ -1,5 +1,7 @@
 import SwiftUI
 
+typealias GroupedTranslation = [(key: Translation.CompositeType, value: [Translation])]
+
 @Observable
 class EpisodeViewModel {
     enum State {
@@ -7,7 +9,7 @@ class EpisodeViewModel {
         case loading
         case loadingFailed(Error)
         case loadedButEmpty
-        case loaded([(key: Translation.CompositeType, value: [Translation])])
+        case loaded(GroupedTranslation)
     }
 
     private(set) var state = State.idle
@@ -45,7 +47,7 @@ class EpisodeViewModel {
 
     private func getGroupedTranslations(
         episodeTranslations: [Translation]
-    ) -> [(key: Translation.CompositeType, value: [Translation])] {
+    ) -> GroupedTranslation {
         var translationsGroupedByLocalizedSection: [Translation.CompositeType: [Translation]] = [:]
 
         for episodeTranslation in episodeTranslations {
@@ -66,6 +68,7 @@ class EpisodeViewModel {
 struct EpisodeTranslationsView: View {
     let episodeId: Int
     let episodeTitle: String
+    var preselectedTranslation: Int? = nil
 
     @State private var viewModel: EpisodeViewModel = .init()
     @StateObject private var videoPlayerController: VideoPlayerController = .init()
@@ -100,6 +103,20 @@ struct EpisodeTranslationsView: View {
 
             case let .loaded(groupedTranslations):
                 List {
+                    if let preselectedTranslation, let translation = findTranslation(
+                        id: preselectedTranslation,
+                        groupedTranslations: groupedTranslations
+                    ) {
+                        Section {
+                            TranslationRow(
+                                episodeTranslation: translation,
+                                videoPlayerController: videoPlayerController
+                            )
+                        } header: {
+                            Text("Последний раз смотрели")
+                        }
+                    }
+
                     ForEach(groupedTranslations, id: \.key) { translationGroup in
                         Section {
                             ForEach(translationGroup.value, id: \.id) { episodeTranslation in
@@ -121,6 +138,15 @@ struct EpisodeTranslationsView: View {
         }
         .navigationTitle(episodeTitle)
         .navigationBarTitleDisplayMode(.large)
+    }
+
+    func findTranslation(id: Int, groupedTranslations: GroupedTranslation) -> Translation? {
+        for group in groupedTranslations {
+            if let translation = group.value.first(where: { $0.id == id }) {
+                return translation
+            }
+        }
+        return nil
     }
 }
 

@@ -67,7 +67,7 @@ struct WatchCard: View {
                 name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
                 title: "2 серия",
                 sideText: "Русские субтитры",
-                type: .notication
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -75,7 +75,7 @@ struct WatchCard: View {
                 name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
                 title: "OVA 2 серия",
                 sideText: "Русская озвучка",
-                type: .notication
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -83,7 +83,7 @@ struct WatchCard: View {
                 name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
                 title: "Фильм",
                 sideText: "RAW",
-                type: .notication
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -91,7 +91,7 @@ struct WatchCard: View {
                 name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
                 title: "Фильм",
                 sideText: "RAW",
-                type: .notication
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -102,7 +102,7 @@ struct WatchCard: View {
                 ),
                 title: "Фильм",
                 sideText: "RAW",
-                type: .notication
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -110,7 +110,7 @@ struct WatchCard: View {
                 name: .init(ru: "Братик-братик 2", romaji: "Shixiong A Shixiong 2nd Season"),
                 title: "Фильм",
                 sideText: "RAW",
-                type: .notication
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
         }
         .listStyle(.plain)
@@ -127,7 +127,7 @@ struct WatchCard: View {
                 name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
                 title: "2 серия",
                 sideText: "Вышло сегодня",
-                type: .show
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -135,7 +135,7 @@ struct WatchCard: View {
                 name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
                 title: "2 серия",
                 sideText: "Вышло 18.01.24",
-                type: .show
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -143,7 +143,7 @@ struct WatchCard: View {
                 name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
                 title: "OVA 2 серия",
                 sideText: "Смотрели вчера",
-                type: .show
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -151,7 +151,7 @@ struct WatchCard: View {
                 name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
                 title: "Фильм",
                 sideText: "В плане с 18.01.24",
-                type: .show
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -159,7 +159,7 @@ struct WatchCard: View {
                 name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
                 title: "4000 серия",
                 sideText: "В плане сегодня",
-                type: .show
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -167,7 +167,7 @@ struct WatchCard: View {
                 name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
                 title: "4000 серия",
                 sideText: "Запланировали 18.01.24",
-                type: .show
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -175,7 +175,7 @@ struct WatchCard: View {
                 name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
                 title: "Фильм",
                 sideText: "Запланировали 18.01.24",
-                type: .show
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -186,7 +186,7 @@ struct WatchCard: View {
                 ),
                 title: "Фильм",
                 sideText: "Запланировали 18.01.24",
-                type: .show
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
             WatchCard(data: .init(
                 id: 1,
@@ -194,7 +194,7 @@ struct WatchCard: View {
                 name: .init(ru: "Братик-братик 2", romaji: "Shixiong A Shixiong 2nd Season"),
                 title: "Фильм",
                 sideText: "Запланировали 18.01.24",
-                type: .show
+                data: .init(episode: 1, title: "2 серия", translation: 1)
             ))
         }
         .listStyle(.plain)

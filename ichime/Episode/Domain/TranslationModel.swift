@@ -5,8 +5,8 @@
 //  Created by p.flaks on 15.01.2024.
 //
 
-import Foundation
 import Anime365ApiClient
+import Foundation
 
 struct Translation: Hashable, Identifiable {
     static func createFromApiSeries(
@@ -51,7 +51,8 @@ struct Translation: Hashable, Identifiable {
 
         return Translation(
             id: translation.id,
-            translationTeam: translation.authorsSummary == "" ? "???" : translation.authorsSummary.trimmingCharacters(in: .whitespacesAndNewlines),
+            translationTeam: translation.authorsSummary == "" ? "???" : translation.authorsSummary
+                .trimmingCharacters(in: .whitespacesAndNewlines),
             websiteUrl: URL(string: translation.url)!,
             translatedToLanguage: translatedToLanguage,
             translationMethod: translationMethod,
@@ -65,7 +66,7 @@ struct Translation: Hashable, Identifiable {
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
+        hasher.combine(id)
     }
 
     let id: Int
@@ -84,11 +85,11 @@ struct Translation: Hashable, Identifiable {
         func getLocalizaedTranslation() -> String {
             switch self {
             case .tv:
-                "TV"
+                String(localized: "TV")
             case .bd:
-                "BD"
+                String(localized: "BD")
             case .other:
-                "Качество неизвестно"
+                String(localized: "Качество неизвестно")
             }
         }
     }
@@ -130,39 +131,39 @@ struct Translation: Hashable, Identifiable {
         func getLocalizaedTranslation() -> String {
             switch self {
             case .russianSubtitles:
-                "Русские субтитры"
+                String(localized: "Русские субтитры")
             case .russianVoiceOver:
-                "Русская озвучка"
+                String(localized: "Русская озвучка")
             case .englishSubtitles:
-                "Английские субтитры"
+                String(localized: "Английские субтитры")
             case .englishVoiceOver:
-                "Английская озвучка"
+                String(localized: "Английская озвучка")
             case .japanese:
-                "Японский"
+                String(localized: "Японский")
             case .other:
-                "Прочее"
+                String(localized: "Прочее")
             }
         }
     }
 
     func getCompositeType() -> CompositeType {
-        if self.translatedToLanguage == .russian && self.translationMethod == .subtitles {
+        if translatedToLanguage == .russian && translationMethod == .subtitles {
             return .russianSubtitles
         }
 
-        if self.translatedToLanguage == .russian && self.translationMethod == .voiceover {
+        if translatedToLanguage == .russian && translationMethod == .voiceover {
             return .russianVoiceOver
         }
 
-        if self.translatedToLanguage == .english && self.translationMethod == .subtitles {
+        if translatedToLanguage == .english && translationMethod == .subtitles {
             return .englishSubtitles
         }
 
-        if self.translatedToLanguage == .english && self.translationMethod == .voiceover {
+        if translatedToLanguage == .english && translationMethod == .voiceover {
             return .englishVoiceOver
         }
 
-        if self.translatedToLanguage == .japanese {
+        if translatedToLanguage == .japanese {
             return .japanese
         }
 
