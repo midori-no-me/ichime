@@ -182,8 +182,7 @@ struct LoadedCurrentlyWatching: View {
 }
 
 #Preview {
-    @StateObject var videoPlayerController: VideoPlayerController = .init()
-    return NavigationStack {
+    NavigationStack {
         CurrentlyWatchingView()
             .navigationDestination(for: CurrentlyWatchingView.SubRoute.self) { route in
                 if route == .notifications {
@@ -191,7 +190,7 @@ struct LoadedCurrentlyWatching: View {
                 }
             }
             .navigationDestination(for: WatchCardModel.self) {
-                viewShow(show: $0, videoPlayerController: videoPlayerController)
+                viewShow(show: $0)
             }
     }
 }

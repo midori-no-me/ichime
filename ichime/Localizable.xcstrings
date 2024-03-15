@@ -257,6 +257,22 @@
         }
       }
     },
+    "BD" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BD"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BD"
+          }
+        }
+      }
+    },
     "Ichime" : {
       "localizations" : {
         "en" : {
@@ -360,6 +376,28 @@
             "state" : "translated",
             "value" : ""
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile Button Preview"
+          }
+        }
+      }
+    },
+    "TV" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TV"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TV"
+          }
         }
       }
     },
@@ -407,6 +445,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Адрес электронной почты"
+          }
+        }
+      }
+    },
+    "Английская озвучка" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "English dub"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Английская озвучка"
+          }
+        }
+      }
+    },
+    "Английские субтитры" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "English sub"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Английские субтитры"
           }
         }
       }
@@ -690,6 +760,12 @@
             "state" : "translated",
             "value" : "Released on %@"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вышло %@"
+          }
         }
       }
     },
@@ -817,6 +893,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Качество видео"
+          }
+        }
+      }
+    },
+    "Качество неизвестно" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown quality"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Качество неизвестно"
           }
         }
       }
@@ -1254,6 +1346,22 @@
         }
       }
     },
+    "Последний раз смотрели" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last watched"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Последний раз смотрели"
+          }
+        }
+      }
+    },
     "Постарались сделать красиво и удобно — на Swift и SwiftUI" : {
       "localizations" : {
         "en" : {
@@ -1382,6 +1490,22 @@
         }
       }
     },
+    "Прочее" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прочее"
+          }
+        }
+      }
+    },
     "Ранее вы искали" : {
       "localizations" : {
         "en" : {
@@ -1394,6 +1518,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ранее вы искали"
+          }
+        }
+      }
+    },
+    "Русская озвучка" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Russian dub"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Русская озвучка"
+          }
+        }
+      }
+    },
+    "Русские субтитры" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Russian sub"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Русские субтитры"
           }
         }
       }
@@ -1842,6 +1998,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Я смотрю"
+          }
+        }
+      }
+    },
+    "Японский" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Japanese"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Японский"
           }
         }
       }
