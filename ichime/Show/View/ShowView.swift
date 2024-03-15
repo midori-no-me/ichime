@@ -282,7 +282,7 @@ private struct ShowDetails: View {
                                 }
                             }
                         }
-                }
+                }.preferredColorScheme(.dark)
             })
 
             let gridColumns = self.horizontalSizeClass == .compact

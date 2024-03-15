@@ -14,39 +14,31 @@ struct ShowCard: View {
     var body: some View {
         NavigationLink(destination: ShowView(showId: show.id, preloadedShow: show)) {
             VStack(alignment: .leading) {
-                GeometryReader { geometry in
-                    CachedAsyncImage(
-                        url: show.posterUrl!,
-                        transaction: .init(animation: .easeInOut),
-                        content: { phase in
-                            switch phase {
-                            case .empty:
-                                VStack {
-                                    ProgressView()
-                                }
-                            case let .success(image):
-                                image.resizable()
-                                    .scaledToFill()
-                                    .clipped()
-                                    .shadow(radius: 4)
-
-                            case .failure:
-                                VStack {
-                                    Image(systemName: "wifi.slash")
-                                }
-                            @unknown default:
-                                EmptyView()
+                CachedAsyncImage(
+                    url: show.posterUrl!,
+                    transaction: .init(animation: .easeInOut),
+                    content: { phase in
+                        switch phase {
+                        case .empty:
+                            VStack {
+                                ProgressView()
                             }
+                        case let .success(image):
+                            image.resizable()
+                                .scaledToFit()
+                                .cornerRadius(10)
+                                .clipped()
+                                .shadow(radius: 4)
+
+                        case .failure:
+                            VStack {
+                                Image(systemName: "wifi.slash")
+                            }
+                        @unknown default:
+                            EmptyView()
                         }
-                    )
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-                    #if os(macOS)
-                        .background(Color(nsColor: .windowBackgroundColor))
-                    #else
-                        .background(Color(UIColor.secondarySystemBackground))
-                    #endif
-                        .cornerRadius(10)
-                }
+                    }
+                )
 
                 Text(show.title.translated.japaneseRomaji ?? show.title.translated.english ?? show.title.translated
                     .russian ?? show.title.full)
