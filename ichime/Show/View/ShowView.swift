@@ -226,7 +226,7 @@ struct ShowView: View {
 
 private struct ShowDetails: View {
     let show: Show
-
+    @State private var showImage = false
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
@@ -257,6 +257,9 @@ private struct ShowDetails: View {
                                 .frame(width: geometry.size.width, height: geometry.size.height)
                                 .clipped()
                                 .shadow(radius: 8)
+                                .onTapGesture(perform: {
+                                    self.showImage = true
+                                })
 
                         case .failure:
                             VStack {
@@ -269,7 +272,18 @@ private struct ShowDetails: View {
                     }
                 )
                 .frame(width: geometry.size.width, height: geometry.size.height)
-            }
+            }.fullScreenCover(isPresented: $showImage, content: {
+                NavigationStack {
+                    CachedAsyncImage(url: self.show.posterUrl)
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Закрыть") {
+                                    showImage = false
+                                }
+                            }
+                        }
+                }
+            })
 
             let gridColumns = self.horizontalSizeClass == .compact
                 ? [GridItem(.flexible(), spacing: 18, alignment: .topLeading)]
@@ -497,5 +511,5 @@ private struct EpisodePreviewList: View {
 #Preview {
     NavigationStack {
         ShowView(showId: 8762)
-    }.frame(width: 800, height: 400)
+    }
 }
