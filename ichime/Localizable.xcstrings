@@ -17,6 +17,22 @@
         }
       }
     },
+    "%@ серия" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Episode %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ серия"
+          }
+        }
+      }
+    },
     "%@p" : {
       "localizations" : {
         "en" : {
@@ -273,6 +289,38 @@
         }
       }
     },
+    "ONA %@ серия" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ONA episode %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ONA %@ серия"
+          }
+        }
+      }
+    },
+    "OVA %@ серия" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OVA episode %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OVA %@ серия"
+          }
+        }
+      }
+    },
     "Picture-in-Picture" : {
       "localizations" : {
         "en" : {
@@ -385,6 +433,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Planned from %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В планах с %@"
           }
         }
       }
