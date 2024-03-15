@@ -79,6 +79,8 @@ class ShowViewModel {
     func performInitialLoad(showId: Int, preloadedShow: Show?) async {
         state = .loading
 
+        self.showId = showId
+
         do {
             if let preloadedShow {
                 state = .loaded(preloadedShow)
@@ -90,9 +92,7 @@ class ShowViewModel {
                 state = .loaded(show)
             }
 
-            await getUserRate()
-
-            self.showId = showId
+            await getUserRate(showId: showId)
         } catch {
             state = .loadingFailed(error)
         }
@@ -104,7 +104,7 @@ class ShowViewModel {
                 seriesId: showId
             )
 
-            await getUserRate()
+            await getUserRate(showId: showId)
 
             state = .loaded(show)
         } catch {
@@ -112,7 +112,7 @@ class ShowViewModel {
         }
     }
 
-    private func getUserRate() async {
+    private func getUserRate(showId: Int) async {
         do {
             userRate = try await scraperClient.sendAPIRequest(
                 ScraperAPI.Request.GetUserRate(showId: showId, fullCheck: true)
