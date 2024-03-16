@@ -9,13 +9,48 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ContentViewWithTabBar()
+    }
+}
+
+struct ContentViewWithTabBar: View {
+    var body: some View {
+        TabView {
+            NavigationStack {
+                OngoingsViewList()
+            }
+            .tabItem {
+                Text("Онгоинги")
+            }
+
+            NavigationStack {
+                Text("Я смотрю")
+            }
+            .tabItem {
+                Text("Я смотрю")
+            }
+
+            NavigationStack {
+                Text("Мой список")
+            }
+            .tabItem {
+                Text("Мой список")
+            }
+
+            NavigationStack {
+                Text("Профиль")
+            }
+            .tabItem {
+                Text("Профиль")
+            }
+
+            NavigationStack {
+                Text("Поиск")
+            }
+            .tabItem {
+                Image(systemName: "magnifyingglass")
+            }
         }
-        .padding()
     }
 }
 

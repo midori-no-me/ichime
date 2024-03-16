@@ -66,6 +66,21 @@
 		ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
 		ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = ED8A40802B4C57410055DAB6 /* CachedAsyncImage */; };
+		EDA3BC4F2BA59A480082AE07 /* IchimeTVApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC4E2BA59A480082AE07 /* IchimeTVApp.swift */; };
+		EDA3BC512BA59A480082AE07 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC502BA59A480082AE07 /* ContentView.swift */; };
+		EDA3BC532BA59A4A0082AE07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA3BC522BA59A4A0082AE07 /* Assets.xcassets */; };
+		EDA3BC562BA59A4A0082AE07 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA3BC552BA59A4A0082AE07 /* Preview Assets.xcassets */; };
+		EDA3BC612BA59CBA0082AE07 /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = EDA3BC602BA59CBA0082AE07 /* Anime365ApiClient */; };
+		EDA3BC632BA59CBA0082AE07 /* ScraperAPI in Frameworks */ = {isa = PBXBuildFile; productRef = EDA3BC622BA59CBA0082AE07 /* ScraperAPI */; };
+		EDA3BC652BA59CBA0082AE07 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = EDA3BC642BA59CBA0082AE07 /* CachedAsyncImage */; };
+		EDA3BC672BA59CBA0082AE07 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = EDA3BC662BA59CBA0082AE07 /* DITranquillity */; };
+		EDA3BC6C2BA5A73F0082AE07 /* OngoingsViewList.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC6B2BA5A73F0082AE07 /* OngoingsViewList.swift */; };
+		EDA3BC6E2BA5A8FC0082AE07 /* ShowCardList.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC6D2BA5A8FC0082AE07 /* ShowCardList.swift */; };
+		EDA3BC712BA5EBEA0082AE07 /* ShowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC702BA5EBEA0082AE07 /* ShowModel.swift */; };
+		EDA3BC732BA5ECB60082AE07 /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC722BA5ECB60082AE07 /* ShowView.swift */; };
+		EDA3BC772BA5EE670082AE07 /* EpisodePreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC762BA5EE670082AE07 /* EpisodePreviewModel.swift */; };
+		EDA3BC792BA5EEB70082AE07 /* EpisodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC782BA5EEB70082AE07 /* EpisodeModel.swift */; };
+		EDA3BC7C2BA5EF170082AE07 /* Anime365Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC7B2BA5EF170082AE07 /* Anime365Client.swift */; };
 		EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD353B32B5E82AF00313489 /* ServiceLocator.swift */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
@@ -131,6 +146,18 @@
 		ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365ApiClient; sourceTree = "<group>"; };
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		EDA3BC4C2BA59A480082AE07 /* IchimeTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IchimeTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDA3BC4E2BA59A480082AE07 /* IchimeTVApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IchimeTVApp.swift; sourceTree = "<group>"; };
+		EDA3BC502BA59A480082AE07 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EDA3BC522BA59A4A0082AE07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EDA3BC552BA59A4A0082AE07 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		EDA3BC6B2BA5A73F0082AE07 /* OngoingsViewList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingsViewList.swift; sourceTree = "<group>"; };
+		EDA3BC6D2BA5A8FC0082AE07 /* ShowCardList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCardList.swift; sourceTree = "<group>"; };
+		EDA3BC702BA5EBEA0082AE07 /* ShowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowModel.swift; sourceTree = "<group>"; };
+		EDA3BC722BA5ECB60082AE07 /* ShowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowView.swift; sourceTree = "<group>"; };
+		EDA3BC762BA5EE670082AE07 /* EpisodePreviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePreviewModel.swift; sourceTree = "<group>"; };
+		EDA3BC782BA5EEB70082AE07 /* EpisodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeModel.swift; sourceTree = "<group>"; };
+		EDA3BC7B2BA5EF170082AE07 /* Anime365Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365Client.swift; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		EDD353B32B5E82AF00313489 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		EDE9592B2B47167B0030B23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -156,6 +183,17 @@
 				C6D0DA6D2B9FBE4C0000255C /* DITranquillity in Frameworks */,
 				C6D0DA692B9FBE4C0000255C /* ScraperAPI in Frameworks */,
 				C6D0DA672B9FBE4C0000255C /* Anime365ApiClient in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDA3BC492BA59A480082AE07 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDA3BC652BA59CBA0082AE07 /* CachedAsyncImage in Frameworks */,
+				EDA3BC672BA59CBA0082AE07 /* DITranquillity in Frameworks */,
+				EDA3BC632BA59CBA0082AE07 /* ScraperAPI in Frameworks */,
+				EDA3BC612BA59CBA0082AE07 /* Anime365ApiClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,6 +428,88 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		EDA3BC4D2BA59A480082AE07 /* IchimeTV */ = {
+			isa = PBXGroup;
+			children = (
+				EDA3BC7A2BA5EF060082AE07 /* Anime365 */,
+				EDA3BC742BA5EE560082AE07 /* Episode */,
+				EDA3BC5A2BA59B3B0082AE07 /* Show */,
+				EDA3BC4E2BA59A480082AE07 /* IchimeTVApp.swift */,
+				EDA3BC502BA59A480082AE07 /* ContentView.swift */,
+				EDA3BC522BA59A4A0082AE07 /* Assets.xcassets */,
+				EDA3BC542BA59A4A0082AE07 /* Preview Content */,
+			);
+			path = IchimeTV;
+			sourceTree = "<group>";
+		};
+		EDA3BC542BA59A4A0082AE07 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				EDA3BC552BA59A4A0082AE07 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EDA3BC5A2BA59B3B0082AE07 /* Show */ = {
+			isa = PBXGroup;
+			children = (
+				EDA3BC6F2BA5EBD80082AE07 /* Model */,
+				EDA3BC5F2BA59B650082AE07 /* Component */,
+				EDA3BC682BA5A6FB0082AE07 /* View */,
+			);
+			path = Show;
+			sourceTree = "<group>";
+		};
+		EDA3BC5F2BA59B650082AE07 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				EDA3BC6D2BA5A8FC0082AE07 /* ShowCardList.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		EDA3BC682BA5A6FB0082AE07 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EDA3BC6B2BA5A73F0082AE07 /* OngoingsViewList.swift */,
+				EDA3BC722BA5ECB60082AE07 /* ShowView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		EDA3BC6F2BA5EBD80082AE07 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				EDA3BC702BA5EBEA0082AE07 /* ShowModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		EDA3BC742BA5EE560082AE07 /* Episode */ = {
+			isa = PBXGroup;
+			children = (
+				EDA3BC752BA5EE5B0082AE07 /* Model */,
+			);
+			path = Episode;
+			sourceTree = "<group>";
+		};
+		EDA3BC752BA5EE5B0082AE07 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				EDA3BC762BA5EE670082AE07 /* EpisodePreviewModel.swift */,
+				EDA3BC782BA5EEB70082AE07 /* EpisodeModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		EDA3BC7A2BA5EF060082AE07 /* Anime365 */ = {
+			isa = PBXGroup;
+			children = (
+				EDA3BC7B2BA5EF170082AE07 /* Anime365Client.swift */,
+			);
+			path = Anime365;
+			sourceTree = "<group>";
+		};
 		EDA628FF2B4576BE0093F8E5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -426,6 +546,7 @@
 				C6D413FE2B9FB2BB006735D9 /* Localizable.xcstrings */,
 				EDFF2D0F2B43471300F27E61 /* ichime */,
 				C6D414052B9FBAAC006735D9 /* IchimeMac */,
+				EDA3BC4D2BA59A480082AE07 /* IchimeTV */,
 				EDA628FF2B4576BE0093F8E5 /* Frameworks */,
 				EDFF2D0E2B43471300F27E61 /* Products */,
 			);
@@ -436,6 +557,7 @@
 			children = (
 				EDFF2D0D2B43471300F27E61 /* Ichime.app */,
 				C6D414042B9FBAAC006735D9 /* IchimeMac.app */,
+				EDA3BC4C2BA59A480082AE07 /* IchimeTV.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -506,6 +628,29 @@
 			productReference = C6D414042B9FBAAC006735D9 /* IchimeMac.app */;
 			productType = "com.apple.product-type.application";
 		};
+		EDA3BC4B2BA59A480082AE07 /* IchimeTV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDA3BC592BA59A4A0082AE07 /* Build configuration list for PBXNativeTarget "IchimeTV" */;
+			buildPhases = (
+				EDA3BC482BA59A480082AE07 /* Sources */,
+				EDA3BC492BA59A480082AE07 /* Frameworks */,
+				EDA3BC4A2BA59A480082AE07 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IchimeTV;
+			packageProductDependencies = (
+				EDA3BC602BA59CBA0082AE07 /* Anime365ApiClient */,
+				EDA3BC622BA59CBA0082AE07 /* ScraperAPI */,
+				EDA3BC642BA59CBA0082AE07 /* CachedAsyncImage */,
+				EDA3BC662BA59CBA0082AE07 /* DITranquillity */,
+			);
+			productName = IchimeTV;
+			productReference = EDA3BC4C2BA59A480082AE07 /* IchimeTV.app */;
+			productType = "com.apple.product-type.application";
+		};
 		EDFF2D0C2B43471300F27E61 /* Ichime */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EDFF2D1C2B43471500F27E61 /* Build configuration list for PBXNativeTarget "Ichime" */;
@@ -537,11 +682,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1520;
+				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					C6D414032B9FBAAC006735D9 = {
 						CreatedOnToolsVersion = 15.2;
+					};
+					EDA3BC4B2BA59A480082AE07 = {
+						CreatedOnToolsVersion = 15.3;
 					};
 					EDFF2D0C2B43471300F27E61 = {
 						CreatedOnToolsVersion = 15.1;
@@ -570,6 +718,7 @@
 			targets = (
 				EDFF2D0C2B43471300F27E61 /* Ichime */,
 				C6D414032B9FBAAC006735D9 /* IchimeMac */,
+				EDA3BC4B2BA59A480082AE07 /* IchimeTV */,
 			);
 		};
 /* End PBXProject section */
@@ -581,6 +730,15 @@
 			files = (
 				C6D4140E2B9FBAAE006735D9 /* Preview Assets.xcassets in Resources */,
 				C6D4140B2B9FBAAE006735D9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDA3BC4A2BA59A480082AE07 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDA3BC562BA59A4A0082AE07 /* Preview Assets.xcassets in Resources */,
+				EDA3BC532BA59A4A0082AE07 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -622,6 +780,22 @@
 				C6899EB92BA25DA000E63311 /* ShowView.swift in Sources */,
 				C6D0DA762B9FBFC20000255C /* EpisodeStreamingInfo.swift in Sources */,
 				C6D0DA772B9FBFD80000255C /* BaseUrlPreference.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDA3BC482BA59A480082AE07 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDA3BC6E2BA5A8FC0082AE07 /* ShowCardList.swift in Sources */,
+				EDA3BC6C2BA5A73F0082AE07 /* OngoingsViewList.swift in Sources */,
+				EDA3BC712BA5EBEA0082AE07 /* ShowModel.swift in Sources */,
+				EDA3BC512BA59A480082AE07 /* ContentView.swift in Sources */,
+				EDA3BC7C2BA5EF170082AE07 /* Anime365Client.swift in Sources */,
+				EDA3BC772BA5EE670082AE07 /* EpisodePreviewModel.swift in Sources */,
+				EDA3BC4F2BA59A480082AE07 /* IchimeTVApp.swift in Sources */,
+				EDA3BC732BA5ECB60082AE07 /* ShowView.swift in Sources */,
+				EDA3BC792BA5EEB70082AE07 /* EpisodeModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -725,6 +899,63 @@
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		EDA3BC572BA59A4A0082AE07 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"IchimeTV/Preview Content\"";
+				DEVELOPMENT_TEAM = YBBAN7R28K;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.IchimeTV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.4;
+			};
+			name = Debug;
+		};
+		EDA3BC582BA59A4A0082AE07 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"IchimeTV/Preview Content\"";
+				DEVELOPMENT_TEAM = YBBAN7R28K;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.IchimeTV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.4;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -972,6 +1203,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		EDA3BC592BA59A4A0082AE07 /* Build configuration list for PBXNativeTarget "IchimeTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDA3BC572BA59A4A0082AE07 /* Debug */,
+				EDA3BC582BA59A4A0082AE07 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		EDFF2D082B43471300F27E61 /* Build configuration list for PBXProject "ichime" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1054,6 +1294,24 @@
 			isa = XCSwiftPackageProductDependency;
 			package = ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
 			productName = CachedAsyncImage;
+		};
+		EDA3BC602BA59CBA0082AE07 /* Anime365ApiClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Anime365ApiClient;
+		};
+		EDA3BC622BA59CBA0082AE07 /* ScraperAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ScraperAPI;
+		};
+		EDA3BC642BA59CBA0082AE07 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
+		};
+		EDA3BC662BA59CBA0082AE07 /* DITranquillity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C64EB0162B68587700AC7C27 /* XCRemoteSwiftPackageReference "DITranquillity" */;
+			productName = DITranquillity;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

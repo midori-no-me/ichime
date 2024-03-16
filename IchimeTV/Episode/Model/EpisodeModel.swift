@@ -1,8 +1,18 @@
-//
-//  EpisodeModel.swift
-//  IchimeTV
-//
-//  Created by p.flaks on 16.03.2024.
-//
-
 import Foundation
+
+enum EpisodeType {
+    static func createFromApiType(apiType: String) -> Self {
+        switch apiType {
+        case "tv":
+            return .tv
+        case "preview":
+            return .trailer
+        default:
+            return .other
+        }
+    }
+
+    case trailer
+    case tv
+    case other
+}
