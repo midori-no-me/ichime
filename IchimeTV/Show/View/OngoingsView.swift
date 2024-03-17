@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct OngoingsViewList: View {
+struct OngoingsView: View {
     var body: some View {
         List {
-            ShowCardList(
+            ShowCard(
                 id: 35064,
                 posterUrl: URL(string: "https://smotret-anime.com/posters/35064.34978564114.jpg")!,
                 titleFull: "Провожающая в последний путь Фрирен: Магия ●● / Sousou no Frieren: ●● no Mahou",
@@ -21,7 +21,7 @@ struct OngoingsViewList: View {
                 numberOfEpisodes: 28
             )
 
-            ShowCardList(
+            ShowCard(
                 id: 35509,
                 posterUrl: URL(string: "https://smotret-anime.com/posters/35509.36660560254.jpg")!,
                 titleFull: "Братик-братик 2 / Shixiong A Shixiong 2nd Season",
@@ -32,7 +32,7 @@ struct OngoingsViewList: View {
                 numberOfEpisodes: 28
             )
             
-            ShowCardList(
+            ShowCard(
                 id: 35064,
                 posterUrl: URL(string: "https://smotret-anime.com/posters/35064.34978564114.jpg")!,
                 titleFull: "Провожающая в последний путь Фрирен: Магия ●● / Sousou no Frieren: ●● no Mahou",
@@ -43,7 +43,7 @@ struct OngoingsViewList: View {
                 numberOfEpisodes: 28
             )
 
-            ShowCardList(
+            ShowCard(
                 id: 35509,
                 posterUrl: URL(string: "https://smotret-anime.com/posters/35509.36660560254.jpg")!,
                 titleFull: "Братик-братик 2 / Shixiong A Shixiong 2nd Season",
@@ -54,7 +54,7 @@ struct OngoingsViewList: View {
                 numberOfEpisodes: 28
             )
 
-            ShowCardList(
+            ShowCard(
                 id: 35064,
                 posterUrl: URL(string: "https://smotret-anime.com/posters/35064.34978564114.jpg")!,
                 titleFull: "Провожающая в последний путь Фрирен: Магия ●● / Sousou no Frieren: ●● no Mahou",
@@ -65,7 +65,7 @@ struct OngoingsViewList: View {
                 numberOfEpisodes: 28
             )
 
-            ShowCardList(
+            ShowCard(
                 id: 35509,
                 posterUrl: URL(string: "https://smotret-anime.com/posters/35509.36660560254.jpg")!,
                 titleFull: "Братик-братик 2 / Shixiong A Shixiong 2nd Season",
@@ -82,6 +82,6 @@ struct OngoingsViewList: View {
 
 #Preview {
     NavigationStack {
-        OngoingsViewList()
+        OngoingsView()
     }
 }

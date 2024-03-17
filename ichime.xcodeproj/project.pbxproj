@@ -74,13 +74,15 @@
 		EDA3BC632BA59CBA0082AE07 /* ScraperAPI in Frameworks */ = {isa = PBXBuildFile; productRef = EDA3BC622BA59CBA0082AE07 /* ScraperAPI */; };
 		EDA3BC652BA59CBA0082AE07 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = EDA3BC642BA59CBA0082AE07 /* CachedAsyncImage */; };
 		EDA3BC672BA59CBA0082AE07 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = EDA3BC662BA59CBA0082AE07 /* DITranquillity */; };
-		EDA3BC6C2BA5A73F0082AE07 /* OngoingsViewList.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC6B2BA5A73F0082AE07 /* OngoingsViewList.swift */; };
-		EDA3BC6E2BA5A8FC0082AE07 /* ShowCardList.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC6D2BA5A8FC0082AE07 /* ShowCardList.swift */; };
+		EDA3BC6C2BA5A73F0082AE07 /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC6B2BA5A73F0082AE07 /* OngoingsView.swift */; };
+		EDA3BC6E2BA5A8FC0082AE07 /* ShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC6D2BA5A8FC0082AE07 /* ShowCard.swift */; };
 		EDA3BC712BA5EBEA0082AE07 /* ShowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC702BA5EBEA0082AE07 /* ShowModel.swift */; };
 		EDA3BC732BA5ECB60082AE07 /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC722BA5ECB60082AE07 /* ShowView.swift */; };
 		EDA3BC772BA5EE670082AE07 /* EpisodePreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC762BA5EE670082AE07 /* EpisodePreviewModel.swift */; };
 		EDA3BC792BA5EEB70082AE07 /* EpisodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC782BA5EEB70082AE07 /* EpisodeModel.swift */; };
 		EDA3BC7C2BA5EF170082AE07 /* Anime365Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC7B2BA5EF170082AE07 /* Anime365Client.swift */; };
+		EDA3BC7F2BA72F370082AE07 /* EpisodeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC7E2BA72F370082AE07 /* EpisodeListView.swift */; };
+		EDA3BC822BA72F660082AE07 /* EpisodePreviewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3BC812BA72F660082AE07 /* EpisodePreviewRow.swift */; };
 		EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD353B32B5E82AF00313489 /* ServiceLocator.swift */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
@@ -151,13 +153,15 @@
 		EDA3BC502BA59A480082AE07 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EDA3BC522BA59A4A0082AE07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDA3BC552BA59A4A0082AE07 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		EDA3BC6B2BA5A73F0082AE07 /* OngoingsViewList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingsViewList.swift; sourceTree = "<group>"; };
-		EDA3BC6D2BA5A8FC0082AE07 /* ShowCardList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCardList.swift; sourceTree = "<group>"; };
+		EDA3BC6B2BA5A73F0082AE07 /* OngoingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingsView.swift; sourceTree = "<group>"; };
+		EDA3BC6D2BA5A8FC0082AE07 /* ShowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCard.swift; sourceTree = "<group>"; };
 		EDA3BC702BA5EBEA0082AE07 /* ShowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowModel.swift; sourceTree = "<group>"; };
 		EDA3BC722BA5ECB60082AE07 /* ShowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowView.swift; sourceTree = "<group>"; };
 		EDA3BC762BA5EE670082AE07 /* EpisodePreviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePreviewModel.swift; sourceTree = "<group>"; };
 		EDA3BC782BA5EEB70082AE07 /* EpisodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeModel.swift; sourceTree = "<group>"; };
 		EDA3BC7B2BA5EF170082AE07 /* Anime365Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365Client.swift; sourceTree = "<group>"; };
+		EDA3BC7E2BA72F370082AE07 /* EpisodeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeListView.swift; sourceTree = "<group>"; };
+		EDA3BC812BA72F660082AE07 /* EpisodePreviewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodePreviewRow.swift; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		EDD353B32B5E82AF00313489 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		EDE9592B2B47167B0030B23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -463,7 +467,7 @@
 		EDA3BC5F2BA59B650082AE07 /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				EDA3BC6D2BA5A8FC0082AE07 /* ShowCardList.swift */,
+				EDA3BC6D2BA5A8FC0082AE07 /* ShowCard.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -471,7 +475,7 @@
 		EDA3BC682BA5A6FB0082AE07 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				EDA3BC6B2BA5A73F0082AE07 /* OngoingsViewList.swift */,
+				EDA3BC6B2BA5A73F0082AE07 /* OngoingsView.swift */,
 				EDA3BC722BA5ECB60082AE07 /* ShowView.swift */,
 			);
 			path = View;
@@ -488,6 +492,8 @@
 		EDA3BC742BA5EE560082AE07 /* Episode */ = {
 			isa = PBXGroup;
 			children = (
+				EDA3BC802BA72F5A0082AE07 /* Component */,
+				EDA3BC7D2BA72F270082AE07 /* View */,
 				EDA3BC752BA5EE5B0082AE07 /* Model */,
 			);
 			path = Episode;
@@ -508,6 +514,22 @@
 				EDA3BC7B2BA5EF170082AE07 /* Anime365Client.swift */,
 			);
 			path = Anime365;
+			sourceTree = "<group>";
+		};
+		EDA3BC7D2BA72F270082AE07 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EDA3BC7E2BA72F370082AE07 /* EpisodeListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		EDA3BC802BA72F5A0082AE07 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				EDA3BC812BA72F660082AE07 /* EpisodePreviewRow.swift */,
+			);
+			path = Component;
 			sourceTree = "<group>";
 		};
 		EDA628FF2B4576BE0093F8E5 /* Frameworks */ = {
@@ -787,13 +809,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDA3BC6E2BA5A8FC0082AE07 /* ShowCardList.swift in Sources */,
-				EDA3BC6C2BA5A73F0082AE07 /* OngoingsViewList.swift in Sources */,
+				EDA3BC6E2BA5A8FC0082AE07 /* ShowCard.swift in Sources */,
+				EDA3BC6C2BA5A73F0082AE07 /* OngoingsView.swift in Sources */,
+				EDA3BC7F2BA72F370082AE07 /* EpisodeListView.swift in Sources */,
 				EDA3BC712BA5EBEA0082AE07 /* ShowModel.swift in Sources */,
 				EDA3BC512BA59A480082AE07 /* ContentView.swift in Sources */,
 				EDA3BC7C2BA5EF170082AE07 /* Anime365Client.swift in Sources */,
 				EDA3BC772BA5EE670082AE07 /* EpisodePreviewModel.swift in Sources */,
 				EDA3BC4F2BA59A480082AE07 /* IchimeTVApp.swift in Sources */,
+				EDA3BC822BA72F660082AE07 /* EpisodePreviewRow.swift in Sources */,
 				EDA3BC732BA5ECB60082AE07 /* ShowView.swift in Sources */,
 				EDA3BC792BA5EEB70082AE07 /* EpisodeModel.swift in Sources */,
 			);
@@ -1123,14 +1147,15 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
 			};
 			name = Debug;
 		};
@@ -1180,14 +1205,15 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
 			};
 			name = Release;
 		};

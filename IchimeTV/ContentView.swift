@@ -17,7 +17,7 @@ struct ContentViewWithTabBar: View {
     var body: some View {
         TabView {
             NavigationStack {
-                OngoingsViewList()
+                OngoingsView()
             }
             .tabItem {
                 Text("Онгоинги")

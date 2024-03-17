@@ -47,6 +47,7 @@ struct ShowCard: View {
                     .truncationMode(.tail)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
             }
+            #if !os(tvOS)
             .contextMenu {
                 ShareLink(item: show.websiteUrl) {
                     Label("Поделиться", systemImage: "square.and.arrow.up")
@@ -59,6 +60,7 @@ struct ShowCard: View {
                     typeTitle: show.typeTitle
                 )
             }
+            #endif
         }
         .contentShape(Rectangle()) // чтобы хитбокс у ссылки был такой же как и карточка, без этого он может быть больше
         .buttonStyle(.plain)
