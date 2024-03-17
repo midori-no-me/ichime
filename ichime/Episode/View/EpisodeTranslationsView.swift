@@ -92,7 +92,9 @@ struct EpisodeTranslationsView: View {
                 } description: {
                     Text(error.localizedDescription)
                 }
+                #if !os(tvOS)
                 .textSelection(.enabled)
+                #endif
 
             case .loadedButEmpty:
                 ContentUnavailableView {
@@ -137,7 +139,9 @@ struct EpisodeTranslationsView: View {
             }
         }
         .navigationTitle(episodeTitle)
-        .navigationBarTitleDisplayMode(.large)
+        #if !os(tvOS)
+            .navigationBarTitleDisplayMode(.large)
+        #endif
     }
 
     func findTranslation(id: Int, groupedTranslations: GroupedTranslation) -> Translation? {

@@ -94,8 +94,9 @@ struct EpisodeTranslationQualitySelectorView: View {
                 } description: {
                     Text(error.localizedDescription)
                 }
+                #if !os(tvOS)
                 .textSelection(.enabled)
-
+                #endif
             case .loadedButEmpty:
                 ContentUnavailableView {
                     Label("Ничего не нашлось", systemImage: "list.bullet")
@@ -125,8 +126,6 @@ struct EpisodeTranslationQualitySelectorView: View {
                 }
             }
         }
-        .navigationTitle(translationTeam)
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Закрыть") {
@@ -134,6 +133,10 @@ struct EpisodeTranslationQualitySelectorView: View {
                 }
             }
         }
+        .navigationTitle(translationTeam)
+        #if !os(tvOS)
+            .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 
     func handleStartPlay(video: URL, subtitle: URL?) {

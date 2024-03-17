@@ -233,13 +233,15 @@ final class VideoPlayerController: NSObject, ObservableObject {
         return metadata
     }
 
-    private func changeOrientation(to orientation: UIInterfaceOrientationMask) {
-        // tell the app to change the orientation
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        else { return }
-        windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientation))
-        print("Changing to", orientation == .portrait ? "portrait" : "landscape")
-    }
+    #if !os(tvOS)
+        private func changeOrientation(to orientation: UIInterfaceOrientationMask) {
+            // tell the app to change the orientation
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            else { return }
+            windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientation))
+            print("Changing to", orientation == .portrait ? "portrait" : "landscape")
+        }
+    #endif
 
     class Coordinator: NSObject, AVPlayerViewControllerDelegate {
         var control: VideoPlayerController
@@ -248,20 +250,22 @@ final class VideoPlayerController: NSObject, ObservableObject {
             self.control = control
         }
 
-        func playerViewController(
-            _: AVPlayerViewController,
-            willBeginFullScreenPresentationWithAnimationCoordinator _: UIViewControllerTransitionCoordinator
-        ) {
-            // Called when the player enters fullscreen mode
-        }
+        #if !os(tvOS)
+            func playerViewController(
+                _: AVPlayerViewController,
+                willBeginFullScreenPresentationWithAnimationCoordinator _: UIViewControllerTransitionCoordinator
+            ) {
+                // Called when the player enters fullscreen mode
+            }
 
-        func playerViewController(
-            _: AVPlayerViewController,
-            willEndFullScreenPresentationWithAnimationCoordinator _: UIViewControllerTransitionCoordinator
-        ) {
-            // Called when the player exits fullscreen mode
-            control.destroyPlayer()
-        }
+            func playerViewController(
+                _: AVPlayerViewController,
+                willEndFullScreenPresentationWithAnimationCoordinator _: UIViewControllerTransitionCoordinator
+            ) {
+                // Called when the player exits fullscreen mode
+                control.destroyPlayer()
+            }
+        #endif
 
         // Не ломает пип после выхода из пипа
         func playerViewController(
@@ -284,9 +288,11 @@ final class VideoPlayerController: NSObject, ObservableObject {
 
 struct VideoPlayerLoader: View {
     var body: some View {
-        Color(UIColor.systemBackground).ignoresSafeArea(.all).overlay {
-            ProgressView("Загружаем видео")
-        }
+        #if !os(tvOS)
+            Color(UIColor.systemBackground).ignoresSafeArea(.all).overlay {
+                ProgressView("Загружаем видео")
+            }
+        #endif
     }
 }
 

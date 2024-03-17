@@ -133,7 +133,8 @@ struct AuthenticationAppFeature: View {
         .padding(.all)
         #if os(macOS)
             .background(Color.primary.blendMode(.overlay), in: RoundedRectangle(cornerRadius: 12))
-        #else
+        #endif
+        #if !os(tvOS)
             .background(Color(uiColor: UIColor.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12))
         #endif
 

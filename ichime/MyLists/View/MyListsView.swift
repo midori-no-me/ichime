@@ -74,7 +74,7 @@ class MyListViewModel: ObservableObject {
         guard case let .isAuth(user) = userManager.state else {
             fatalError("This screen can use only with auth")
         }
-        
+
         if !userManager.subscribed {
             return await updateState(.needSubscribe)
         }
@@ -101,7 +101,7 @@ class MyListViewModel: ObservableObject {
         if !userManager.subscribed {
             return await updateState(.needSubscribe)
         }
-        
+
         guard let type else {
             return await updateState(.loaded(categories))
         }
@@ -164,14 +164,18 @@ struct MyListsView: View {
                 } description: {
                     Text("Подпишись чтоб получить все возможности приложения")
                 }
+                #if !os(tvOS)
                 .textSelection(.enabled)
+                #endif
             case let .loadingFailed(error):
                 ContentUnavailableView {
                     Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
                 } description: {
                     Text(error.localizedDescription)
                 }
+                #if !os(tvOS)
                 .textSelection(.enabled)
+                #endif
             case .loadedButEmpty:
                 ContentUnavailableView {
                     Label("Ничего не нашлось", systemImage: "list.bullet")
@@ -221,9 +225,11 @@ struct ToolbarWrapper<Content: View>: View {
         content()
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    ShareLink(item: shareText) {
-                        Label("Поделиться", systemImage: "square.and.arrow.up")
-                    }
+                    #if !os(tvOS)
+                        ShareLink(item: shareText) {
+                            Label("Поделиться", systemImage: "square.and.arrow.up")
+                        }
+                    #endif
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {

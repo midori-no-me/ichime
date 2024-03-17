@@ -49,8 +49,10 @@ struct ProfileSheet: View {
                             }
                         )
                         .frame(width: 50, height: 50)
-                        .background(Color(UIColor.secondarySystemBackground))
-                        .clipShape(.circle)
+                        #if !os(tvOS)
+                            .background(Color(UIColor.secondarySystemBackground))
+                        #endif
+                            .clipShape(.circle)
                     }
 
                     Section {
@@ -69,8 +71,6 @@ struct ProfileSheet: View {
                         }
                     }
                 }
-                .navigationTitle("Ваш профиль")
-                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Закрыть") {
@@ -78,6 +78,10 @@ struct ProfileSheet: View {
                         }
                     }
                 }
+                .navigationTitle("Ваш профиль")
+                #if !os(tvOS)
+                    .navigationBarTitleDisplayMode(.inline)
+                #endif
             }
         }
     }

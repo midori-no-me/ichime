@@ -66,7 +66,9 @@ struct ContentViewWithTabBar: View {
             .tabItem {
                 Label("Я смотрю", systemImage: "film.stack")
             }
+            #if !os(tvOS)
             .badge(notificationCounterWatcher.counter)
+            #endif
 
             NavigationStack {
                 MyListsView()

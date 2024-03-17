@@ -95,8 +95,9 @@ struct MyListEditView: View {
                 } description: {
                     Text(error.localizedDescription)
                 }
+                #if !os(tvOS)
                 .textSelection(.enabled)
-
+                #endif
             case let .loaded(userRate):
                 UserRateForm(userRate, totalEpisodes: totalEpisodes) { newUserRate in
                     Task {
@@ -114,8 +115,6 @@ struct MyListEditView: View {
                 }
             }
         }
-        .navigationTitle(show.name.ru)
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Закрыть") {
@@ -123,6 +122,10 @@ struct MyListEditView: View {
                 }
             }
         }
+        .navigationTitle(show.name.ru)
+        #if !os(tvOS)
+            .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 }
 

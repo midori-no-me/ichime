@@ -147,9 +147,11 @@ struct UserRateForm: View {
                         Text("/ \(totalEpisodes)")
                     }
                 }
-                Section("Ваша заметка") {
-                    TextEditor(text: $comment)
-                }
+                #if !os(tvOS)
+                    Section("Ваша заметка") {
+                        TextEditor(text: $comment)
+                    }
+                #endif
                 Button("Удалить из списка", role: .destructive) {
                     isDeleteDialogOpen = true
                 }

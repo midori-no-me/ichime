@@ -130,7 +130,9 @@ struct OngoingsView: View {
                     } description: {
                         Text(error.localizedDescription)
                     }
+                    #if !os(tvOS)
                     .textSelection(.enabled)
+                    #endif
                 }
 
             case .loadedButEmpty:
@@ -160,16 +162,16 @@ struct OngoingsView: View {
                 }
             }
         }
+        .toolbar {
+            ProfileButton()
+        }
+        .refreshable {
+            await self.viewModel.performPullToRefresh()
+        }
         .navigationTitle("Онгоинги")
-        #if os(iOS)
-            .toolbar {
-                ProfileButton()
-            }
+        #if !os(tvOS)
             .navigationBarTitleDisplayMode(.large)
         #endif
-            .refreshable {
-                await self.viewModel.performPullToRefresh()
-            }
     }
 }
 

@@ -166,7 +166,9 @@ struct ShowView: View {
                 } description: {
                     Text(error.localizedDescription)
                 }
+                #if !os(tvOS)
                 .textSelection(.enabled)
+                #endif
 
             case let .loaded(show):
                 ScrollView([.vertical]) {
@@ -210,7 +212,9 @@ private struct ShowDetails: View {
                             .font(.title2)
                             .foregroundColor(.secondary)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                        #if !os(tvOS)
                             .textSelection(.enabled)
+                        #endif
                     }
                 }
             #endif
@@ -224,7 +228,9 @@ private struct ShowDetails: View {
                                     .font(.title2)
                                     .foregroundColor(.secondary)
                                     .frame(maxWidth: .infinity, alignment: .leading)
+                                #if !os(tvOS)
                                     .textSelection(.enabled)
+                                #endif
                             }
                         }
                     #endif
@@ -416,17 +422,21 @@ private struct ShowDescription: View {
         Button {
             self.showingSheet.toggle()
         } label: {
-            GroupBox(label: Text("Описание от \(self.description.source)")) {
-                VStack(alignment: .leading) {
-                    Text(self.description.text)
-                        .lineLimit(5)
-                        .truncationMode(.tail)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+            #if !os(tvOS)
+                GroupBox(label: Text("Описание от \(self.description.source)")) {
+                    VStack(alignment: .leading) {
+                        Text(self.description.text)
+                            .lineLimit(5)
+                            .truncationMode(.tail)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding(.top, 4)
                 }
-                .padding(.top, 4)
-            }
+            #else
+                Text("feel me please")
+            #endif
         }
         .sheet(isPresented: $showingSheet) {
             ShowDescriptionSheetView(
@@ -449,7 +459,9 @@ private struct ShowDescriptionSheetView: View {
                     Text(self.description.text)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .scenePadding()
+                    #if !os(tvOS)
                         .textSelection(.enabled)
+                    #endif
 
                     Spacer()
                 }

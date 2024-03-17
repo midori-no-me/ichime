@@ -104,7 +104,9 @@ struct NotificationCenterView: View {
                 } description: {
                     Text(error.localizedDescription)
                 }
+                #if !os(tvOS)
                 .textSelection(.enabled)
+                #endif
             case .loadedButEmpty:
                 ContentUnavailableView {
                     Label("Пока еще не было уведомлений", systemImage: "list.bullet")

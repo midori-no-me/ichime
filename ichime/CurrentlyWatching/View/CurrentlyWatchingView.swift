@@ -112,14 +112,18 @@ struct CurrentlyWatchingView: View {
                 } description: {
                     Text("Подпишись чтоб получить все возможности приложения")
                 }
+                #if !os(tvOS)
                 .textSelection(.enabled)
+                #endif
             case let .loadingFailed(error):
                 ContentUnavailableView {
                     Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
                 } description: {
                     Text(error.localizedDescription)
                 }
+                #if !os(tvOS)
                 .textSelection(.enabled)
+                #endif
             case .loadedButEmpty:
                 ContentUnavailableView {
                     Label("Ничего не нашлось", systemImage: "list.bullet")
@@ -157,7 +161,9 @@ struct LoadedCurrentlyWatching: View {
                 Section {
                     NavigationLink(value: CurrentlyWatchingView.SubRoute.notifications) {
                         Label("Уведомления", systemImage: "bell")
+                        #if !os(tvOS)
                             .badge(counter)
+                        #endif
                     }
                 }
             }

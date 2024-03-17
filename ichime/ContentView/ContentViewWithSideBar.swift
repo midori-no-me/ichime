@@ -37,7 +37,9 @@ struct ContentViewWithSideBar: View {
                         .tag(SideBarLinks.myLists)
 
                     Label("Уведомления", systemImage: "bell")
+                    #if !os(tvOS)
                         .badge(notificationCounterWatcher.counter)
+                    #endif
                         .tag(SideBarLinks.notifications)
                 }
             }

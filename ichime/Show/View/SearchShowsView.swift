@@ -163,7 +163,9 @@ struct SearchShowsView: View {
                 } description: {
                     Text(error.localizedDescription)
                 }
+                #if !os(tvOS)
                 .textSelection(.enabled)
+                #endif
 
             case .loadedButEmpty:
                 ContentUnavailableView.search
@@ -181,33 +183,34 @@ struct SearchShowsView: View {
             }
         }
         .navigationTitle("Поиск")
-        #if os(iOS)
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ProfileButton()
-            }
-            .searchable(
-                text: self.$viewModel.currentlyTypedSearchQuery,
-                isPresented: self.$viewModel.isSearchPresented,
-                placement: .navigationBarDrawer(displayMode: .always),
-                prompt: "Название тайтла"
-            )
-        #else
-            .searchable(
-                text: self.$viewModel.currentlyTypedSearchQuery,
-                isPresented: self.$viewModel.isSearchPresented,
-                placement: .toolbar,
-                prompt: "Название тайтла"
-            )
+        .toolbar {
+            ProfileButton()
+        }
+        #if os(iOS) // !is(tvOS)
+        .navigationBarTitleDisplayMode(.large)
+        .searchable(
+            text: self.$viewModel.currentlyTypedSearchQuery,
+            isPresented: self.$viewModel.isSearchPresented,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: "Название тайтла"
+        )
         #endif
-            .onChange(of: self.viewModel.currentlyTypedSearchQuery) {
-                self.viewModel.currentlyTypedSearchQueryChanged()
+        #if os(macOS)
+        .searchable(
+            text: self.$viewModel.currentlyTypedSearchQuery,
+            isPresented: self.$viewModel.isSearchPresented,
+            placement: .toolbar,
+            prompt: "Название тайтла"
+        )
+        #endif
+        .onChange(of: self.viewModel.currentlyTypedSearchQuery) {
+            self.viewModel.currentlyTypedSearchQueryChanged()
+        }
+        .onSubmit(of: .search) {
+            Task {
+                await self.viewModel.performInitialSearch()
             }
-            .onSubmit(of: .search) {
-                Task {
-                    await self.viewModel.performInitialSearch()
-                }
-            }
+        }
     }
 }
 

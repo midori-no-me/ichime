@@ -7,7 +7,8 @@ let package = Package(
     name: "Anime365ApiClient",
     platforms: [
         .iOS(.v17),
-        .macOS(.v14)
+        .macOS(.v14),
+        .tvOS(.v16)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
