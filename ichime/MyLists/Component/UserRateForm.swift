@@ -26,6 +26,23 @@ extension ScraperAPI.Types.UserRateStatus {
             return String(localized: "Удалить из списка")
         }
     }
+
+    var statusDisplayName: String {
+        switch self {
+        case .planned:
+            return String(localized: "Запланировано")
+        case .watching:
+            return String(localized: "Смотрю")
+        case .completed:
+            return String(localized: "Просмотрено")
+        case .onHold:
+            return String(localized: "Отложено")
+        case .dropped:
+            return String(localized: "Брошено")
+        case .deleted:
+            return String(localized: "Добавить в список")
+        }
+    }
 }
 
 enum Score: Int, CaseIterable {

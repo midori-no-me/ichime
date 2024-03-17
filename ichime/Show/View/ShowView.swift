@@ -170,7 +170,7 @@ struct ShowView: View {
 
             case let .loaded(show):
                 ScrollView([.vertical]) {
-                    ShowDetails(show: show)
+                    ShowDetails(show: show, viewModel: self.viewModel)
                         .scenePadding(.bottom)
                 }
                 .navigationTitle(show.title.translated.japaneseRomaji ?? show.title.full)
@@ -182,6 +182,169 @@ struct ShowView: View {
         #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
+                ShareLink(item: self.viewModel.shareUrl) {
+                    Label("Поделиться", systemImage: "square.and.arrow.up")
+                }
+            }
+        }
+        .navigationBarTitleDisplayMode(.large)
+        #endif
+        .refreshable {
+            await self.viewModel.performPullToRefresh()
+        }
+    }
+}
+
+private struct ShowDetails: View {
+    let show: Show
+    @State private var showImage = false
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @State public var viewModel: ShowViewModel
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 30) {
+            #if !os(macOS)
+                if horizontalSizeClass == .compact {
+                    if let russianTitle = show.title.translated.russian {
+                        Text(russianTitle)
+                            .font(.title2)
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .textSelection(.enabled)
+                    }
+                }
+            #endif
+
+            HStack(alignment: .top, spacing: 18) {
+                VStack(alignment: .leading, spacing: 30) {
+                    #if !os(macOS)
+                        if horizontalSizeClass == .regular {
+                            if let russianTitle = show.title.translated.russian {
+                                Text(russianTitle)
+                                    .font(.title2)
+                                    .foregroundColor(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .textSelection(.enabled)
+                            }
+                        }
+                    #endif
+
+                    LazyVGrid(columns: [
+                        GridItem(.flexible(), spacing: 18, alignment: .topLeading),
+                    ], spacing: 18) {
+                        ShowProperty(
+                            label: "Рейтинг",
+                            value: self.show.score != nil ? self.show.score!.formatted() : "???"
+                        )
+
+                        ShowProperty(
+                            label: "Сезон",
+                            value: self.show.calendarSeason
+                        )
+
+                        ShowProperty(
+                            label: "Количество эпизодов",
+                            value: (self.show.numberOfEpisodes != nil ? self.show.numberOfEpisodes!.formatted() : "???")
+                                + (self.show.isOngoing ? " — онгоинг" : "")
+                        )
+
+                        ShowProperty(
+                            label: "Тип",
+                            value: self.show.typeTitle
+                        )
+
+                        if !self.show.genres.isEmpty {
+                            ShowProperty(
+                                label: "Жанры",
+                                value: self.show.genres.formatted(.list(type: .and, width: .narrow))
+                            )
+                        }
+                    }
+
+                    if self.horizontalSizeClass == .regular {
+                        Spacer()
+
+                        ActionButtons(show: show, viewModel: viewModel)
+                    }
+                }
+
+                GeometryReader { geometry in
+                    CachedAsyncImage(
+                        url: self.show.posterUrl!,
+                        transaction: .init(animation: .easeInOut),
+                        content: { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                            case let .success(image):
+                                image.resizable()
+                                    .cornerRadius(10)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: geometry.size.width, height: geometry.size.height)
+                                    .clipped()
+                                    .onTapGesture(perform: {
+                                        self.showImage = true
+                                    })
+
+                            case .failure:
+                                VStack {
+                                    Image(systemName: "wifi.slash")
+                                }
+                                .scaledToFit()
+                            @unknown default:
+                                EmptyView()
+                            }
+                        }
+                    )
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                }
+                .fullScreenCover(isPresented: $showImage, content: {
+                    NavigationStack {
+                        CachedAsyncImage(url: self.show.posterUrl)
+                            .toolbar {
+                                ToolbarItem(placement: .cancellationAction) {
+                                    Button("Закрыть") {
+                                        showImage = false
+                                    }
+                                }
+                            }
+                    }
+                    .preferredColorScheme(.dark)
+                })
+            }
+
+            if horizontalSizeClass == .compact {
+                ActionButtons(show: show, viewModel: viewModel)
+            }
+
+            if !show.descriptions.isEmpty {
+                LazyVGrid(columns: [
+                    GridItem(.adaptive(minimum: 500, maximum: .infinity), spacing: 18, alignment: .topLeading),
+                ], spacing: 18) {
+                    ForEach(self.show.descriptions, id: \.self) { description in
+                        ShowDescription(description: description)
+                    }
+                }
+            }
+        }
+        .scenePadding(.horizontal)
+    }
+}
+
+private struct ActionButtons: View {
+    let show: Show
+    @State public var viewModel: ShowViewModel
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .top) {
+                NavigationLink(
+                    destination: EpisodeListView(episodePreviews: self.show.episodePreviews)
+                ) {
+                    Label("Смотреть", systemImage: "play.fill")
+                }
+                .buttonStyle(.borderedProminent)
+
                 Menu {
                     Section("Добавить в список") {
                         Picker(selection: self.$viewModel.showRateStatus, label: Text("Управление списком")) {
@@ -204,157 +367,26 @@ struct ShowView: View {
                             )
                         }
                     }
+                } label: {
+                    Label(
+                        self.viewModel.showRateStatus.statusDisplayName,
+                        systemImage: self.viewModel.showRateStatus.imageInToolbar
+                    )
                 }
-                label: {
-                    Label("Управлять списком", systemImage: self.viewModel.showRateStatus.imageInToolbar)
-                }
+                .buttonStyle(.bordered)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
-            ToolbarItem(placement: .navigationBarTrailing) {
-                ShareLink(item: self.viewModel.shareUrl) {
-                    Label("Поделиться", systemImage: "square.and.arrow.up")
-                }
-            }
-        }
-        .navigationBarTitleDisplayMode(.large)
-        #endif
-        .refreshable {
-            await self.viewModel.performPullToRefresh()
-        }
-    }
-}
-
-private struct ShowDetails: View {
-    let show: Show
-    @State private var showImage = false
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-
-    var body: some View {
-        #if os(iOS)
-            if let russianTitle = show.title.translated.russian {
-                Text(russianTitle)
-                    .font(.title3)
-                    .scenePadding(.horizontal)
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .textSelection(.enabled)
-            }
-        #endif
-
-        HStack(alignment: .top, spacing: 18) {
-            GeometryReader { geometry in
-                CachedAsyncImage(
-                    url: self.show.posterUrl!,
-                    transaction: .init(animation: .easeInOut),
-                    content: { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView()
-                        case let .success(image):
-                            image.resizable()
-                                .cornerRadius(10)
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: geometry.size.width, height: geometry.size.height)
-                                .clipped()
-                                .shadow(radius: 8)
-                                .onTapGesture(perform: {
-                                    self.showImage = true
-                                })
-
-                        case .failure:
-                            VStack {
-                                Image(systemName: "wifi.slash")
-                            }
-                            .scaledToFit()
-                        @unknown default:
-                            EmptyView()
-                        }
-                    }
+            if !show.episodePreviews.isEmpty && show.isOngoing,
+               let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: show.episodePreviews)
+            {
+                Text(
+                    "Обычно новые серии выходят по \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1)."
                 )
-                .frame(width: geometry.size.width, height: geometry.size.height)
-            }.fullScreenCover(isPresented: $showImage, content: {
-                NavigationStack {
-                    CachedAsyncImage(url: self.show.posterUrl)
-                        .toolbar {
-                            ToolbarItem(placement: .cancellationAction) {
-                                Button("Закрыть") {
-                                    showImage = false
-                                }
-                            }
-                        }
-                }.preferredColorScheme(.dark)
-            })
-
-            let gridColumns = self.horizontalSizeClass == .compact
-                ? [GridItem(.flexible(), spacing: 18, alignment: .topLeading)]
-                : [
-                    GridItem(.flexible(), spacing: 18, alignment: .topLeading),
-                    GridItem(.flexible(), spacing: 18, alignment: .topLeading),
-                ]
-
-            VStack(alignment: .trailing, spacing: 18) {
-                LazyVGrid(columns: gridColumns, spacing: 18) {
-                    ShowProperty(
-                        label: "Рейтинг",
-                        value: self.show.score != nil ? self.show.score!.formatted() : "???"
-                    )
-
-                    ShowProperty(
-                        label: "Сезон",
-                        value: self.show.calendarSeason
-                    )
-
-                    ShowProperty(
-                        label: "Количество эпизодов",
-                        value: (self.show.numberOfEpisodes != nil ? self.show.numberOfEpisodes!.formatted() : "???")
-                            + (self.show.isOngoing ? " — онгоинг" : "")
-                    )
-
-                    ShowProperty(
-                        label: "Тип",
-                        value: self.show.typeTitle
-                    )
-
-                    if !self.show.genres.isEmpty {
-                        ShowProperty(
-                            label: "Жанры",
-                            value: self.show.genres.formatted(.list(type: .and, width: .narrow))
-                        )
-                    }
-                }
-
-                if self.horizontalSizeClass == .regular {
-                    if !self.show.descriptions.isEmpty {
-                        VStack {
-                            ForEach(self.show.descriptions, id: \.self) { description in
-                                ShowDescription(description: description)
-                            }
-                        }
-                        .padding(.top, 18)
-                    }
-                }
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.caption)
             }
-        }
-        .scenePadding(.horizontal)
-        .padding(.top, 18)
-
-        if self.horizontalSizeClass == .compact {
-            if !self.show.descriptions.isEmpty {
-                VStack {
-                    ForEach(self.show.descriptions, id: \.self) { description in
-                        ShowDescription(description: description)
-                    }
-                }
-                .scenePadding(.horizontal)
-                .padding(.top, 18)
-            }
-        }
-
-        if !self.show.episodePreviews.isEmpty {
-            EpisodePreviewList(
-                isOngoing: self.show.isOngoing,
-                episodePreviews: self.show.episodePreviews
-            )
         }
     }
 }
@@ -396,7 +428,7 @@ private struct ShowDescription: View {
                 .padding(.top, 4)
             }
         }
-        .sheet(isPresented: self.$showingSheet) {
+        .sheet(isPresented: $showingSheet) {
             ShowDescriptionSheetView(
                 description: self.description
             )
@@ -435,76 +467,6 @@ private struct ShowDescriptionSheetView: View {
                     }
                 }
         }
-    }
-}
-
-private struct EpisodePreviewList: View {
-    let isOngoing: Bool
-    let episodePreviews: [EpisodePreview]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text("Серии")
-                    .font(.title2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                #if os(iOS)
-                    let destination = EpisodeListView(episodePreviews: self.episodePreviews)
-                #else
-                    let destination = Text("lol")
-                #endif
-                NavigationLink(destination: destination) {
-                    Text("Все серии")
-                        .font(.callout)
-                }
-                .buttonStyle(.borderless)
-                .frame(alignment: .trailing)
-            }
-
-            if self.isOngoing, let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: episodePreviews) {
-                Text(
-                    "Это онгоинг. Обычно новые серии выходят по \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1)."
-                )
-                .font(.subheadline)
-            }
-
-            ForEach(self.episodePreviews.prefix(5), id: \.self) { episodePreview in
-                #if os(iOS)
-                    let destination = EpisodeTranslationsView(
-                        episodeId: episodePreview.id,
-                        episodeTitle: episodePreview
-                            .title ?? episodePreview
-                            .typeAndNumber
-                    )
-                #else
-                    let destination = Text("hi")
-                #endif
-                NavigationLink(destination: destination) {
-                    HStack {
-                        #if os(iOS)
-                            EpisodePreviewRow(data: episodePreview)
-                        #endif
-
-                        Spacer()
-
-                        Image(systemName: "chevron.forward")
-                        #if os(iOS)
-                            .foregroundColor(Color(UIColor.systemGray3))
-                        #endif
-                            .fontWeight(.bold)
-                            .font(.footnote)
-                    }
-                    .contentShape(Rectangle()) // по какой-то причине без этого не будет работать NavigationLink если
-                    // нажимать на Spacer
-                }
-                .buttonStyle(.plain)
-
-                Divider()
-            }
-        }
-        .padding(.top, 22)
-        .scenePadding(.horizontal)
     }
 }
 

@@ -641,22 +641,6 @@
         }
       }
     },
-    "Все серии" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "All episodes"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Все серии"
-          }
-        }
-      }
-    },
     "Вход" : {
       "localizations" : {
         "en" : {
@@ -1037,6 +1021,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Нужна подписка"
+          }
+        }
+      }
+    },
+    "Обычно новые серии выходят по %@, примерно в %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usually new episodes released at %1$@ at %2$@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Обычно новые серии выходят по %1$@, примерно в %2$@."
           }
         }
       }
@@ -1602,22 +1602,6 @@
         }
       }
     },
-    "Серии" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Episodes"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Серии"
-          }
-        }
-      }
-    },
     "Серии к просмотру" : {
       "localizations" : {
         "en" : {
@@ -1694,6 +1678,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Смотрели %@"
+          }
+        }
+      }
+    },
+    "Смотреть" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Смотреть"
           }
         }
       }
@@ -1966,22 +1966,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Это неофициальное приложение для просмотра сериалов с сайта Anime 365. Приложение бесплатное, но для просмотра видео требуется активная подписка на сайте."
-          }
-        }
-      }
-    },
-    "Это онгоинг. Обычно новые серии выходят по %@, примерно в %@." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This is an ongoing series. New episodes usually release on %1$@, around %2$@."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Это онгоинг. Обычно новые серии выходят по %1$@, примерно в %2$@."
           }
         }
       }
