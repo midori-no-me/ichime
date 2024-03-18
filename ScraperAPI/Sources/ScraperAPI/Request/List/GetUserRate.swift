@@ -26,7 +26,7 @@ public extension ScraperAPI.Request {
 
         public func getQueryItems() -> [URLQueryItem] {
             if fullCheck {
-                return []
+                return [.init(name: "mode", value: "mini")]
             }
 
             return [.init(name: "mode", value: "for_list")]
@@ -37,7 +37,7 @@ public extension ScraperAPI.Request {
         }
 
         public func parseResponse(html: String, baseURL: URL) throws -> ScraperAPI.Types.UserRate {
-            let fragment = try? SwiftSoup.parse(html, baseURL.absoluteString)
+            let fragment = try? SwiftSoup.parseBodyFragment(html, baseURL.absoluteString)
             guard let fragment else {
                 throw ScraperAPI.APIClientError.parseError
             }

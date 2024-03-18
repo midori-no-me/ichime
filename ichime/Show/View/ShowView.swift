@@ -59,6 +59,10 @@ class ShowViewModel {
             }
         }
     }
+    
+    var statusReady: Bool {
+        userRate != nil
+    }
 
     private let client: Anime365Client
     private let scraperClient: ScraperAPI.APIClient
@@ -374,11 +378,16 @@ private struct ActionButtons: View {
                         }
                     }
                 } label: {
-                    Label(
-                        self.viewModel.showRateStatus.statusDisplayName,
-                        systemImage: self.viewModel.showRateStatus.imageInToolbar
-                    )
+                    if viewModel.statusReady {
+                        Label(
+                            self.viewModel.showRateStatus.statusDisplayName,
+                            systemImage: self.viewModel.showRateStatus.imageInToolbar
+                        )
+                    } else {
+                        ProgressView()
+                    }
                 }
+                .disabled(!viewModel.statusReady)
                 .buttonStyle(.bordered)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
