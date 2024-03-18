@@ -63,6 +63,8 @@
 		ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */; };
 		ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */; };
 		ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */; };
+		ED7357BE2BA8871A005C69B4 /* CardWithExpandableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */; };
+		ED7357C12BA890CD005C69B4 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357C02BA890CD005C69B4 /* UIScrollView.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
 		ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = ED8A40802B4C57410055DAB6 /* CachedAsyncImage */; };
 		EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD353B32B5E82AF00313489 /* ServiceLocator.swift */; };
@@ -127,6 +129,8 @@
 		ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyWatchingView.swift; sourceTree = "<group>"; };
 		ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterView.swift; sourceTree = "<group>"; };
 		ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365ApiClient; sourceTree = "<group>"; };
+		ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWithExpandableText.swift; sourceTree = "<group>"; };
+		ED7357C02BA890CD005C69B4 /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -360,6 +364,22 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		ED7357BC2BA886E9005C69B4 /* CommonViewComponents */ = {
+			isa = PBXGroup;
+			children = (
+				ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */,
+			);
+			path = CommonViewComponents;
+			sourceTree = "<group>";
+		};
+		ED7357BF2BA890BF005C69B4 /* ViewExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				ED7357C02BA890CD005C69B4 /* UIScrollView.swift */,
+			);
+			path = ViewExtensions;
+			sourceTree = "<group>";
+		};
 		ED74304C2B4B07EB009BCE3A /* Show */ = {
 			isa = PBXGroup;
 			children = (
@@ -440,6 +460,8 @@
 		EDFF2D0F2B43471300F27E61 /* ichime */ = {
 			isa = PBXGroup;
 			children = (
+				ED7357BF2BA890BF005C69B4 /* ViewExtensions */,
+				ED7357BC2BA886E9005C69B4 /* CommonViewComponents */,
 				C6899EAF2BA2530D00E63311 /* ContentView */,
 				ED0D29932B66C82D00C5AC9E /* AppPreferences */,
 				EDFF2D162B43471500F27E61 /* ichime.entitlements */,
@@ -625,6 +647,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED7357BE2BA8871A005C69B4 /* CardWithExpandableText.swift in Sources */,
 				EDE959332B484C8A0030B23D /* ContentView.swift in Sources */,
 				C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */,
 				EDE959312B4762690030B23D /* OngoingsView.swift in Sources */,
@@ -638,6 +661,7 @@
 				ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */,
 				ED3A674B2B56FBBA00FB3975 /* ShowModel.swift in Sources */,
 				C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */,
+				ED7357C12BA890CD005C69B4 /* UIScrollView.swift in Sources */,
 				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
 				ED36C62A2B53FB81000D0A80 /* EpisodeModel.swift in Sources */,
 				C6656A6C2B630C7C00BF7412 /* UserRateForm.swift in Sources */,

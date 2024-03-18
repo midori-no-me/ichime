@@ -59,7 +59,7 @@ class ShowViewModel {
             }
         }
     }
-    
+
     var statusReady: Bool {
         userRate != nil
     }
@@ -328,13 +328,7 @@ private struct ShowDetails: View {
             }
 
             if !show.descriptions.isEmpty {
-                LazyVGrid(columns: [
-                    GridItem(.adaptive(minimum: 500, maximum: .infinity), spacing: 18, alignment: .topLeading),
-                ], spacing: 18) {
-                    ForEach(self.show.descriptions, id: \.self) { description in
-                        ShowDescription(description: description)
-                    }
-                }
+                ShowDescriptionCards(descriptions: show.descriptions)
             }
         }
         .scenePadding(.horizontal)
@@ -422,71 +416,22 @@ private struct ShowProperty: View {
     }
 }
 
-private struct ShowDescription: View {
-    let description: Show.Description
-
-    @State private var showingSheet = false
+private struct ShowDescriptionCards: View {
+    let descriptions: [Show.Description]
 
     var body: some View {
-        Button {
-            self.showingSheet.toggle()
-        } label: {
-            #if !os(tvOS)
-                GroupBox(label: Text("Описание от \(self.description.source)")) {
-                    VStack(alignment: .leading) {
-                        Text(self.description.text)
-                            .lineLimit(5)
-                            .truncationMode(.tail)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                    .padding(.top, 4)
-                }
-            #else
-                Text("feel me please")
-            #endif
-        }
-        .sheet(isPresented: $showingSheet) {
-            ShowDescriptionSheetView(
-                description: self.description
-            )
-        }
-        .buttonStyle(.plain)
-    }
-}
-
-private struct ShowDescriptionSheetView: View {
-    let description: Show.Description
-
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        NavigationStack {
-            ScrollView([.vertical]) {
-                VStack(alignment: .leading) {
-                    Text(self.description.text)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .scenePadding()
-                    #if !os(tvOS)
-                        .textSelection(.enabled)
-                    #endif
-
-                    Spacer()
-                }
+        LazyVGrid(columns: [
+            GridItem(
+                .adaptive(minimum: CardWithExpandableText.RECOMMENDED_MINIMUM_WIDTH),
+                spacing: CardWithExpandableText.RECOMMENDED_SPACING
+            ),
+        ], spacing: CardWithExpandableText.RECOMMENDED_SPACING) {
+            ForEach(descriptions, id: \.self) { description in
+                CardWithExpandableText(
+                    title: "Описание от \(description.source)",
+                    text: description.text
+                )
             }
-            .navigationTitle("Описание от \(self.description.source)")
-            #if os(iOS)
-                .navigationBarTitleDisplayMode(.inline)
-            #endif
-
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Закрыть") {
-                            self.dismiss()
-                        }
-                    }
-                }
         }
     }
 }
