@@ -185,7 +185,7 @@ struct ShowView: View {
                 #endif
             }
         }
-        #if os(iOS)
+        #if !os(tvOS)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 ShareLink(item: self.viewModel.shareUrl) {
@@ -194,6 +194,9 @@ struct ShowView: View {
             }
         }
         .navigationBarTitleDisplayMode(.large)
+        #endif
+        #if os(tvOS)
+        .toolbar(.hidden)
         #endif
         .refreshable {
             await self.viewModel.performPullToRefresh()
@@ -207,36 +210,32 @@ private struct ShowDetails: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State public var viewModel: ShowViewModel
 
+    #if os(tvOS)
+        private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
+    #else
+        private let SPACING_BETWEEN_SECTIONS: CGFloat = 20
+    #endif
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 30) {
-            #if !os(macOS)
-                if horizontalSizeClass == .compact {
-                    if let russianTitle = show.title.translated.russian {
-                        Text(russianTitle)
-                            .font(.title2)
-                            .foregroundColor(.secondary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        #if !os(tvOS)
-                            .textSelection(.enabled)
-                        #endif
-                    }
+        VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
+            #if os(iOS)
+                if let russianTitle = show.title.translated.russian, horizontalSizeClass == .compact {
+                    ShowSecondaryTitle(title: russianTitle)
                 }
             #endif
 
-            HStack(alignment: .top, spacing: 18) {
-                VStack(alignment: .leading, spacing: 30) {
-                    #if !os(macOS)
-                        if horizontalSizeClass == .regular {
-                            if let russianTitle = show.title.translated.russian {
-                                Text(russianTitle)
-                                    .font(.title2)
-                                    .foregroundColor(.secondary)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                #if !os(tvOS)
-                                    .textSelection(.enabled)
-                                #endif
-                            }
+            HStack(alignment: .top, spacing: SPACING_BETWEEN_SECTIONS) {
+                VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
+                    #if os(tvOS)
+                        ShowPrimaryAndSecondaryTitles(title: show.title)
+                    #elseif os(iOS)
+                        if let russianTitle = show.title.translated.russian, horizontalSizeClass == .regular {
+                            ShowSecondaryTitle(title: russianTitle)
                         }
+                    #endif
+
+                    #if os(tvOS)
+                        ShowActionButtons(show: show, viewModel: viewModel)
                     #endif
 
                     LazyVGrid(columns: [
@@ -271,11 +270,13 @@ private struct ShowDetails: View {
                         }
                     }
 
-                    if self.horizontalSizeClass == .regular {
-                        Spacer()
+                    #if !os(tvOS)
+                        if horizontalSizeClass == .regular {
+                            Spacer()
 
-                        ActionButtons(show: show, viewModel: viewModel)
-                    }
+                            ShowActionButtons(show: show, viewModel: viewModel)
+                        }
+                    #endif
                 }
 
                 GeometryReader { geometry in
@@ -290,7 +291,11 @@ private struct ShowDetails: View {
                                 image.resizable()
                                     .cornerRadius(10)
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: geometry.size.width, height: geometry.size.height)
+                                    .frame(
+                                        width: geometry.size.width,
+                                        height: geometry.size.height,
+                                        alignment: .trailing
+                                    )
                                     .clipped()
                                     .onTapGesture(perform: {
                                         self.showImage = true
@@ -323,9 +328,11 @@ private struct ShowDetails: View {
                 })
             }
 
-            if horizontalSizeClass == .compact {
-                ActionButtons(show: show, viewModel: viewModel)
-            }
+            #if !os(tvOS)
+                if horizontalSizeClass == .compact {
+                    ShowActionButtons(show: show, viewModel: viewModel)
+                }
+            #endif
 
             if !show.descriptions.isEmpty {
                 ShowDescriptionCards(descriptions: show.descriptions)
@@ -335,20 +342,81 @@ private struct ShowDetails: View {
     }
 }
 
-private struct ActionButtons: View {
+@available(tvOS 17.0, *)
+@available(iOS, unavailable)
+@available(macOS, unavailable)
+@available(watchOS, unavailable)
+@available(visionOS, unavailable)
+private struct ShowPrimaryAndSecondaryTitles: View {
+    let title: Show.Title
+
+    var body: some View {
+        VStack {
+            Group {
+                if title.translated.japaneseRomaji == nil || title.translated.russian == nil {
+                    Text(title.full)
+                        .font(.title2)
+                }
+
+                if let japaneseRomajiTitle = title.translated.japaneseRomaji {
+                    Text(japaneseRomajiTitle)
+                        .font(.title2)
+                }
+
+                if let russianTitle = title.translated.russian {
+                    Text(russianTitle)
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .lineLimit(2)
+            .truncationMode(.tail)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+}
+
+@available(tvOS, unavailable)
+private struct ShowSecondaryTitle: View {
+    let title: String
+
+    var body: some View {
+        Text(title)
+            .font(.title2)
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .textSelection(.enabled)
+    }
+}
+
+private struct ShowActionButtons: View {
     let show: Show
     @State public var viewModel: ShowViewModel
 
+    #if os(tvOS)
+        private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
+    #else
+        private let SPACING_BETWEEN_BUTTONS: CGFloat = 10
+    #endif
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .top) {
+            HStack(alignment: .center, spacing: SPACING_BETWEEN_BUTTONS) {
                 NavigationLink(
                     destination: EpisodeListView(episodePreviews: self.show.episodePreviews)
                 ) {
                     Label("Смотреть", systemImage: "play.fill")
+                    #if os(tvOS)
+                        .padding(20)
+                    #endif
                 }
+                #if os(tvOS)
+                .buttonStyle(.card)
+                #else
                 .buttonStyle(.borderedProminent)
+                #endif
 
+                // TODO: Поменять Menu на Button, который будет открывать .sheet
                 Menu {
                     Section("Добавить в список") {
                         Picker(selection: self.$viewModel.showRateStatus, label: Text("Управление списком")) {
