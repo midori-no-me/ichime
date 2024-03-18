@@ -44,7 +44,6 @@
 		C6D0DA752B9FBFBE0000255C /* EpisodePreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6272B530535000D0A80 /* EpisodePreviewModel.swift */; };
 		C6D0DA762B9FBFC20000255C /* EpisodeStreamingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D83F82B5BFA890025BB5D /* EpisodeStreamingInfo.swift */; };
 		C6D0DA772B9FBFD80000255C /* BaseUrlPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0D29942B66C84600C5AC9E /* BaseUrlPreference.swift */; };
-		C6D413FF2B9FB2BB006735D9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C6D413FE2B9FB2BB006735D9 /* Localizable.xcstrings */; };
 		C6D414072B9FBAAC006735D9 /* IchimeMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D414062B9FBAAC006735D9 /* IchimeMacApp.swift */; };
 		C6D414092B9FBAAC006735D9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D414082B9FBAAC006735D9 /* ContentView.swift */; };
 		C6D4140B2B9FBAAE006735D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D4140A2B9FBAAE006735D9 /* Assets.xcassets */; };
@@ -107,7 +106,6 @@
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C6B8331C2B66951700D4A1AC /* WatchCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCard.swift; sourceTree = "<group>"; };
 		C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCardModel.swift; sourceTree = "<group>"; };
-		C6D413FE2B9FB2BB006735D9 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = ichime/Localizable.xcstrings; sourceTree = "<group>"; };
 		C6D414042B9FBAAC006735D9 /* IchimeMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IchimeMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6D414062B9FBAAC006735D9 /* IchimeMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IchimeMacApp.swift; sourceTree = "<group>"; };
 		C6D414082B9FBAAC006735D9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -423,7 +421,6 @@
 				EDA277052B457B2E003A97F0 /* README.md */,
 				C68C6E1D2B4AFDD5008D796D /* .gitignore */,
 				EDB21EA02B4AD268001282FE /* .swiftlint.yml */,
-				C6D413FE2B9FB2BB006735D9 /* Localizable.xcstrings */,
 				EDFF2D0F2B43471300F27E61 /* ichime */,
 				C6D414052B9FBAAC006735D9 /* IchimeMac */,
 				EDA628FF2B4576BE0093F8E5 /* Frameworks */,
@@ -589,7 +586,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6656A722B6325D400BF7412 /* .swiftformat in Resources */,
-				C6D413FF2B9FB2BB006735D9 /* Localizable.xcstrings in Resources */,
 				EDFF2D192B43471500F27E61 /* Preview Assets.xcassets in Resources */,
 				C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */,
 				EDFF2D152B43471500F27E61 /* Assets.xcassets in Resources */,
