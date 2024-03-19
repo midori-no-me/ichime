@@ -86,6 +86,21 @@ enum Score: Int, CaseIterable {
     }
 }
 
+public extension Binding where Value: Equatable {
+    init(_ source: Binding<Value?>, replacingNilWith nilProxy: Value) {
+        self.init(
+            get: { source.wrappedValue ?? nilProxy },
+            set: { newValue in
+                if newValue == nilProxy {
+                    source.wrappedValue = nil
+                } else {
+                    source.wrappedValue = newValue
+                }
+            }
+        )
+    }
+}
+
 struct UserRateForm: View {
     let onSubmit: (_ userRate: ScraperAPI.Types.UserRate) -> Void
     let onRemove: () -> Void
@@ -149,7 +164,15 @@ struct UserRateForm: View {
                 }
                 #if !os(tvOS)
                     Section("Ваша заметка") {
-                        TextEditor(text: $comment)
+                        ZStack(alignment: .topLeading) {
+                            Text(comment)
+                                .padding()
+                                .opacity(comment.isEmpty ? 1 : 0)
+                            TextEditor(text: $comment)
+                                .frame(minHeight: 30, alignment: .leading)
+                                .multilineTextAlignment(.leading)
+                                .padding(9)
+                        }
                     }
                 #endif
                 Button("Удалить из списка", role: .destructive) {
@@ -180,7 +203,12 @@ struct UserRateForm: View {
 #Preview {
     NavigationStack {
         UserRateForm(
-            .init(score: 6, currentEpisode: 3, status: .watching, comment: "Test"),
+            .init(
+                score: 6,
+                currentEpisode: 3,
+                status: .watching,
+                comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas id felis ut lorem tempus ornare. Morbi nec enim vel ex lobortis blandit quis ut lectus. Nam gravida mi eu elit posuere tincidunt."
+            ),
             totalEpisodes: "??",
             onSubmit: { print($0) },
             onRemove: {}

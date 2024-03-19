@@ -46,17 +46,10 @@ class ShowViewModel {
     private(set) var state = State.idle
     private var userRate: ScraperAPI.Types.UserRate?
     var showRateStatus: UserRateStatus {
-        get {
-            if let userRate {
-                return userRate.status
-            } else {
-                return .deleted
-            }
-        }
-        set {
-            Task {
-                await updateUserRateShow(rate: newValue)
-            }
+        if let userRate {
+            return userRate.status
+        } else {
+            return .deleted
         }
     }
 
@@ -126,13 +119,13 @@ class ShowViewModel {
         }
     }
 
-    func updateUserRateShow(rate newRate: UserRateStatus) async {
+    func addToList() async {
         let request = ScraperAPI.Request.UpdateUserRate(
             showId: showId,
             userRate: .init(
                 score: userRate?.score ?? 0,
                 currentEpisode: userRate?.currentEpisode ?? 0,
-                status: newRate,
+                status: .planned,
                 comment: ""
             )
         )
@@ -208,7 +201,7 @@ private struct ShowDetails: View {
     let show: Show
     @State private var showImage = false
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State public var viewModel: ShowViewModel
+    var viewModel: ShowViewModel
 
     #if os(tvOS)
         private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
@@ -391,13 +384,18 @@ private struct ShowSecondaryTitle: View {
 
 private struct ShowActionButtons: View {
     let show: Show
-    @State public var viewModel: ShowViewModel
+    var viewModel: ShowViewModel
+    @State var showEdit = false
 
     #if os(tvOS)
         private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
     #else
         private let SPACING_BETWEEN_BUTTONS: CGFloat = 10
     #endif
+
+    var isInMyList: Bool {
+        viewModel.showRateStatus != UserRateStatus.deleted
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -416,41 +414,40 @@ private struct ShowActionButtons: View {
                 .buttonStyle(.borderedProminent)
                 #endif
 
-                // TODO: Поменять Menu на Button, который будет открывать .sheet
-                Menu {
-                    Section("Добавить в список") {
-                        Picker(selection: self.$viewModel.showRateStatus, label: Text("Управление списком")) {
-                            ForEach(UserRateStatus.allCases, id: \.self) { status in
-                                if status != .deleted {
-                                    Label(status.displayName, systemImage: status.imageInDropdown)
-                                        .tag(status)
-                                }
-                            }
+                Button(action: {
+                    if isInMyList {
+                        showEdit = true
+                    } else {
+                        Task {
+                            await viewModel.addToList()
                         }
                     }
-
-                    if self.viewModel.showRateStatus != UserRateStatus.deleted {
-                        Button(role: .destructive) {
-                            self.viewModel.showRateStatus = .deleted
-                        } label: {
+                }) {
+                    Group {
+                        if !viewModel.statusReady {
+                            ProgressView()
+                        } else if isInMyList {
                             Label(
-                                UserRateStatus.deleted.displayName,
-                                systemImage: UserRateStatus.deleted.imageInDropdown
+                                self.viewModel.showRateStatus.statusDisplayName,
+                                systemImage: self.viewModel.showRateStatus.imageInToolbar
+                            )
+                        } else {
+                            Label(
+                                UserRateStatus.deleted.statusDisplayName,
+                                systemImage: UserRateStatus.deleted.imageInToolbar
                             )
                         }
                     }
-                } label: {
-                    if viewModel.statusReady {
-                        Label(
-                            self.viewModel.showRateStatus.statusDisplayName,
-                            systemImage: self.viewModel.showRateStatus.imageInToolbar
-                        )
-                    } else {
-                        ProgressView()
-                    }
+                    #if os(tvOS)
+                    .padding(20)
+                    #endif
                 }
                 .disabled(!viewModel.statusReady)
-                .buttonStyle(.bordered)
+                #if os(tvOS)
+                    .buttonStyle(.card)
+                #else
+                    .if(isInMyList, if: { $0.buttonStyle(.borderedProminent) }, else: { $0.buttonStyle(.bordered) })
+                #endif
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -465,6 +462,16 @@ private struct ShowActionButtons: View {
                 .font(.caption)
             }
         }
+        .sheet(isPresented: $showEdit, content: {
+            MyListEditView(
+                show: .init(id: show.id, name: show.title.compose, totalEpisodes: show.numberOfEpisodes ?? Int.max),
+                onUpdate: {
+                    Task {
+                        await self.viewModel.performPullToRefresh()
+                    }
+                }
+            )
+        })
     }
 }
 

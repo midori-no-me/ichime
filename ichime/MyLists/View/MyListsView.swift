@@ -197,16 +197,13 @@ struct MyListsView: View {
         .sheet(item: $viewModel.selectedShow, onDismiss: {
             selectedShowId = nil
         }, content: { show in
-            NavigationStack {
-                MyListEditView(
-                    show: show
-                ) {
-                    Task {
-                        await viewModel.performUpdateState()
-                    }
+            MyListEditView(
+                show: .init(id: show.id, name: show.name.ru, totalEpisodes: show.episodes.total)
+            ) {
+                Task {
+                    await viewModel.performUpdateState()
                 }
             }
-            .presentationDetents([.medium, .large])
         })
         .refreshable {
             await viewModel.performUpdateState()

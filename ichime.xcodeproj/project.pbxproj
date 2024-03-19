@@ -27,6 +27,8 @@
 		C6899EB92BA25DA000E63311 /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
 		C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F22BAA4088007A2E84 /* Logger.swift */; };
+		C68F69F52BAA54A0007A2E84 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F42BAA54A0007A2E84 /* ViewExtensions.swift */; };
+		C68F69F82BAA5645007A2E84 /* MyListShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F72BAA5645007A2E84 /* MyListShow.swift */; };
 		C6B8331D2B66951700D4A1AC /* WatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331C2B66951700D4A1AC /* WatchCard.swift */; };
 		C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */; };
 		C6D0DA642B9FBDF00000255C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1919762B5F00AD008C6C99 /* OnboardingView.swift */; };
@@ -108,6 +110,8 @@
 		C6899EB02BA2532E00E63311 /* ContentViewWithSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithSideBar.swift; sourceTree = "<group>"; };
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C68F69F22BAA4088007A2E84 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		C68F69F42BAA54A0007A2E84 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
+		C68F69F72BAA5645007A2E84 /* MyListShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListShow.swift; sourceTree = "<group>"; };
 		C6B8331C2B66951700D4A1AC /* WatchCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCard.swift; sourceTree = "<group>"; };
 		C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCardModel.swift; sourceTree = "<group>"; };
 		C6D414042B9FBAAC006735D9 /* IchimeMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IchimeMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -211,6 +215,14 @@
 			path = ContentView;
 			sourceTree = "<group>";
 		};
+		C68F69F62BAA5636007A2E84 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C68F69F72BAA5645007A2E84 /* MyListShow.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		C6B8331B2B6694EC00D4A1AC /* Component */ = {
 			isa = PBXGroup;
 			children = (
@@ -279,6 +291,7 @@
 			children = (
 				ED1D3E142BAA11AF005B324A /* DateUtils.swift */,
 				C68F69F22BAA4088007A2E84 /* Logger.swift */,
+				C68F69F42BAA54A0007A2E84 /* ViewExtensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -325,6 +338,7 @@
 		ED3D83FA2B5C3E540025BB5D /* MyLists */ = {
 			isa = PBXGroup;
 			children = (
+				C68F69F62BAA5636007A2E84 /* Model */,
 				C6656A6A2B630C6B00BF7412 /* Component */,
 				ED3D83FB2B5C3E610025BB5D /* View */,
 			);
@@ -665,6 +679,7 @@
 				C61BC4002BA3C5CC00AAEC1E /* ProfileButton.swift in Sources */,
 				C6656A692B62E30500BF7412 /* MyListEditView.swift in Sources */,
 				ED0D29952B66C84600C5AC9E /* BaseUrlPreference.swift in Sources */,
+				C68F69F52BAA54A0007A2E84 /* ViewExtensions.swift in Sources */,
 				ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */,
 				ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */,
 				ED36C6282B530535000D0A80 /* EpisodePreviewModel.swift in Sources */,
@@ -688,6 +703,7 @@
 				EDFF2D112B43471300F27E61 /* IchimeApp.swift in Sources */,
 				C64EB01A2B699C3D00AC7C27 /* DI.swift in Sources */,
 				EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */,
+				C68F69F82BAA5645007A2E84 /* MyListShow.swift in Sources */,
 				C61057002B99271F008012E7 /* NotificationCounterWatcher.swift in Sources */,
 				C6B8331D2B66951700D4A1AC /* WatchCard.swift in Sources */,
 				ED1919772B5F00AD008C6C99 /* OnboardingView.swift in Sources */,

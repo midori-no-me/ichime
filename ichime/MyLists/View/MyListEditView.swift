@@ -8,7 +8,8 @@
 import ScraperAPI
 import SwiftUI
 
-class MyListEditViewModel: ObservableObject {
+@Observable
+class MyListEditViewModel {
     private let client: ScraperAPI.APIClient
     init(apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve()) {
         client = apiClient
@@ -22,7 +23,7 @@ class MyListEditViewModel: ObservableObject {
         case formSended
     }
 
-    @Published private(set) var state = State.idle
+    private(set) var state = State.idle
 
     @MainActor
     private func updateState(_ newState: State) {
@@ -44,7 +45,7 @@ class MyListEditViewModel: ObservableObject {
         await updateState(.loading)
 
         do {
-            let _ = try await client
+            _ = try await client
                 .sendAPIRequest(ScraperAPI.Request.UpdateUserRate(showId: showId, userRate: userRate))
             await updateState(.formSended)
         } catch {
@@ -56,7 +57,7 @@ class MyListEditViewModel: ObservableObject {
         await updateState(.loading)
 
         do {
-            let _ = try await client.sendAPIRequest(ScraperAPI.Request.UpdateUserRate(
+            _ = try await client.sendAPIRequest(ScraperAPI.Request.UpdateUserRate(
                 showId: showId,
                 userRate: .init(score: 0, currentEpisode: 0, status: .deleted, comment: "")
             ))
@@ -68,72 +69,72 @@ class MyListEditViewModel: ObservableObject {
 }
 
 struct MyListEditView: View {
-    let show: ScraperAPI.Types.Show
+    let show: MyListShow
     let onUpdate: () -> Void
 
-    @StateObject private var viewModel: MyListEditViewModel = .init()
+    @State private var viewModel: MyListEditViewModel = .init()
     @Environment(\.dismiss) private var dismiss
 
     var totalEpisodes: String {
-        show.episodes.total == Int.max ? "??" : String(show.episodes.total)
+        show.totalEpisodes == Int.max ? "??" : String(show.totalEpisodes)
     }
 
     var body: some View {
-        Group {
-            switch viewModel.state {
-            case .idle:
-                Color.clear.onAppear {
-                    Task {
-                        await viewModel.performInitialLoad(show.id)
+        NavigationStack {
+            Group {
+                switch viewModel.state {
+                case .idle:
+                    Color.clear.onAppear {
+                        Task {
+                            await viewModel.performInitialLoad(show.id)
+                        }
                     }
-                }
-            case .loading:
-                ProgressView()
-            case let .loadingFailed(error):
-                ContentUnavailableView {
-                    Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-                } description: {
-                    Text(error.localizedDescription)
-                }
-                #if !os(tvOS)
-                .textSelection(.enabled)
-                #endif
-            case let .loaded(userRate):
-                UserRateForm(userRate, totalEpisodes: totalEpisodes) { newUserRate in
-                    Task {
-                        await viewModel.performUpdate(show.id, newUserRate)
+                case .loading:
+                    ProgressView()
+                case let .loadingFailed(error):
+                    ContentUnavailableView {
+                        Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+                    } description: {
+                        Text(error.localizedDescription)
                     }
-                } onRemove: {
-                    Task {
-                        await viewModel.performDelete(show.id)
+                    #if !os(tvOS)
+                    .textSelection(.enabled)
+                    #endif
+                case let .loaded(userRate):
+                    UserRateForm(userRate, totalEpisodes: totalEpisodes) { newUserRate in
+                        Task {
+                            await viewModel.performUpdate(show.id, newUserRate)
+                        }
+                    } onRemove: {
+                        Task {
+                            await viewModel.performDelete(show.id)
+                        }
                     }
-                }
-            case .formSended:
-                Color.clear.onAppear {
-                    dismiss()
-                    onUpdate()
+                case .formSended:
+                    Color.clear.onAppear {
+                        dismiss()
+                        onUpdate()
+                    }
                 }
             }
-        }
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Закрыть") {
-                    self.dismiss()
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Закрыть") {
+                        self.dismiss()
+                    }
                 }
             }
-        }
-        .navigationTitle(show.name.ru)
-        #if !os(tvOS)
-            .navigationBarTitleDisplayMode(.inline)
-        #endif
+            .navigationTitle(show.name)
+            #if !os(tvOS)
+                .navigationBarTitleDisplayMode(.inline)
+            #endif
+        }.presentationDetents([.medium, .large])
     }
 }
 
 #Preview {
-    NavigationStack {
-        MyListEditView(
-            show: ScraperAPI.Types.Show.sampleData,
-            onUpdate: {}
-        )
-    }
+    MyListEditView(
+        show: .init(id: 21587, name: "Благословение небожителей", totalEpisodes: 11),
+        onUpdate: {}
+    )
 }
