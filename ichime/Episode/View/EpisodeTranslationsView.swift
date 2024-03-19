@@ -74,7 +74,7 @@ struct EpisodeTranslationsView: View {
     @StateObject private var videoPlayerController: VideoPlayerController = .init()
 
     var body: some View {
-        ZStack {
+        Group {
             switch self.viewModel.state {
             case .idle:
                 Color.clear.onAppear {
@@ -132,10 +132,6 @@ struct EpisodeTranslationsView: View {
                         }
                     }
                 }
-            }
-
-            if videoPlayerController.loading {
-                VideoPlayerLoader()
             }
         }
         .navigationTitle(episodeTitle)

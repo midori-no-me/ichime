@@ -11,13 +11,13 @@ import SwiftUI
 
 struct VideoPlayerExample: View {
     let video: VideoModel
-
+    
     @StateObject var manager: VideoPlayerController = .init()
-
+    
     var body: some View {
         Button("Play video") {
             Task {
-                await manager.play(video: video, onDoneWatch: {})
+                await manager.createPlayer(video: video, onDoneWatch: {})
             }
         }
     }
@@ -32,14 +32,16 @@ struct VideoModel {
 }
 
 final class VideoPlayerController: NSObject, ObservableObject {
-    @Published var player: AVPlayer?
-    @Published var loading = false
+    var player: AVPlayer?
+    var loading = false
 
     var timeObserverToken: Any?
-    var onDoneWatch: (() -> Void)?
+    var onDoneWatch: (() async -> Void)?
 
     var coordinator: Coordinator?
     var videoDuration: Double = 0.0
+    
+    private let logger = createLogger(category: String(describing: VideoPlayerController.self))
 
     static func enableBackgroundMode() {
         let audioSession = AVAudioSession.sharedInstance()
@@ -66,8 +68,8 @@ final class VideoPlayerController: NSObject, ObservableObject {
         }
     }
 
-    private func createPlayer() {
-        print("create player")
+    func showPlayer() {
+        logger.debug("create player")
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
         playerViewController.allowsPictureInPicturePlayback = true
@@ -80,7 +82,7 @@ final class VideoPlayerController: NSObject, ObservableObject {
     }
 
     private func destroyPlayer() {
-        print("stop")
+        logger.debug("destroy player")
         if let player {
             player.pause()
             if let timeObserverToken {
@@ -153,7 +155,7 @@ final class VideoPlayerController: NSObject, ObservableObject {
         return composition
     }
 
-    func play(video: VideoModel, onDoneWatch: @escaping () -> Void) async {
+    func createPlayer(video: VideoModel, onDoneWatch: @escaping () async -> Void) async {
         if loading {
             return
         }
@@ -200,7 +202,9 @@ final class VideoPlayerController: NSObject, ObservableObject {
                    let player = self.player,
                    let onDoneWatch = self.onDoneWatch
                 {
-                    onDoneWatch()
+                    Task {
+                        await onDoneWatch()
+                    }
                     player.removeTimeObserver(timeObserverToken)
                     self.timeObserverToken = nil
                 }
@@ -210,7 +214,6 @@ final class VideoPlayerController: NSObject, ObservableObject {
         await MainActor.run {
             self.player = player
             self.loading = false
-            self.createPlayer()
         }
     }
 

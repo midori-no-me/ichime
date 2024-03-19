@@ -75,6 +75,8 @@ struct EpisodeTranslationQualitySelectorView: View {
 
     @State private var viewModel: EpisodeTranslationQualitySelectorViewModel = .init()
 
+    @State private var selectedUrl: URL?
+
     var body: some View {
         Group {
             switch self.viewModel.state {
@@ -112,7 +114,13 @@ struct EpisodeTranslationQualitySelectorView: View {
                                 Button(action: {
                                     handleStartPlay(video: url, subtitle: episodeStreamingInfo.subtitles?.vtt)
                                 }) {
-                                    Text("\(String(streamQualityOption.height))p")
+                                    HStack {
+                                        Text("\(String(streamQualityOption.height))p")
+                                        if selectedUrl == url {
+                                            Spacer()
+                                            ProgressView()
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -140,9 +148,9 @@ struct EpisodeTranslationQualitySelectorView: View {
     }
 
     func handleStartPlay(video: URL, subtitle: URL?) {
-        dismiss()
+        selectedUrl = video
         Task {
-            await self.videoPlayerController.play(
+            await self.videoPlayerController.createPlayer(
                 video: .init(
                     videoURL: video,
                     subtitleURL: subtitle,
@@ -151,13 +159,20 @@ struct EpisodeTranslationQualitySelectorView: View {
                 ),
                 onDoneWatch: self.handleDoneWatch
             )
+            closeModal()
         }
     }
 
-    func handleDoneWatch() {
-        Task {
-            await self.viewModel.performUpdateWatch(translationId: self.translationId)
+    @MainActor
+    func closeModal() {
+        dismiss()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            videoPlayerController.showPlayer()
         }
+    }
+
+    func handleDoneWatch() async {
+        await viewModel.performUpdateWatch(translationId: translationId)
     }
 }
 

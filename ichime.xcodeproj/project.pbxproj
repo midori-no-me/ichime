@@ -26,6 +26,7 @@
 		C6899EB82BA2583100E63311 /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		C6899EB92BA25DA000E63311 /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
+		C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F22BAA4088007A2E84 /* Logger.swift */; };
 		C6B8331D2B66951700D4A1AC /* WatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331C2B66951700D4A1AC /* WatchCard.swift */; };
 		C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */; };
 		C6D0DA642B9FBDF00000255C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1919762B5F00AD008C6C99 /* OnboardingView.swift */; };
@@ -106,6 +107,7 @@
 		C6656A712B6325D400BF7412 /* .swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
 		C6899EB02BA2532E00E63311 /* ContentViewWithSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithSideBar.swift; sourceTree = "<group>"; };
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		C68F69F22BAA4088007A2E84 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C6B8331C2B66951700D4A1AC /* WatchCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCard.swift; sourceTree = "<group>"; };
 		C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCardModel.swift; sourceTree = "<group>"; };
 		C6D414042B9FBAAC006735D9 /* IchimeMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IchimeMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -276,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				ED1D3E142BAA11AF005B324A /* DateUtils.swift */,
+				C68F69F22BAA4088007A2E84 /* Logger.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -674,6 +677,7 @@
 				ED36C62A2B53FB81000D0A80 /* EpisodeModel.swift in Sources */,
 				C6656A6C2B630C7C00BF7412 /* UserRateForm.swift in Sources */,
 				ED3A674D2B5739B600FB3975 /* EpisodeTranslationQualitySelectorView.swift in Sources */,
+				C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */,
 				EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */,
 				ED3D83F92B5BFA890025BB5D /* EpisodeStreamingInfo.swift in Sources */,
 				ED1D3E152BAA11AF005B324A /* DateUtils.swift in Sources */,
