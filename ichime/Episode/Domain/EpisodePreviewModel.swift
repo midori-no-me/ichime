@@ -177,5 +177,14 @@ enum EpisodePreviewSampleData {
             episodeNumber: 1100,
             isUnderProcessing: false
         ),
+        EpisodePreview(
+            id: 314105,
+            title: nil,
+            typeAndNumber: "1101 серия",
+            uploadDate: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,
+            type: .tv,
+            episodeNumber: 1101,
+            isUnderProcessing: true
+        ),
     ]
 }

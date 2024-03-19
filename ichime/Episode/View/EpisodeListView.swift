@@ -10,7 +10,7 @@ struct EpisodeListView: View {
                     episodeId: episodePreview.id,
                     episodeTitle: episodePreview.title ?? episodePreview.typeAndNumber
                 )) {
-                    EpisodePreviewRow(data: episodePreview)
+                    EpisodePreviewRow(episodePreview: episodePreview)
                 }
             }
         }
@@ -19,6 +19,57 @@ struct EpisodeListView: View {
             .navigationBarTitleDisplayMode(.large)
         #endif
     }
+}
+
+struct EpisodePreviewRow: View {
+    let episodePreview: EpisodePreview
+
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+
+    var body: some View {
+        let releaseDateAndStatus = formatEpisodeReleaseDateAndStatus(
+            episodePreview.uploadDate,
+            episodePreview.isUnderProcessing
+        )
+
+        HStack {
+            VStack(alignment: .leading) {
+                if horizontalSizeClass == .compact {
+                    Text(releaseDateAndStatus)
+                        .foregroundStyle(.secondary)
+                        .font(.caption)
+                }
+
+                if let title = episodePreview.title {
+                    Text(title)
+                        + Text(" — \(episodePreview.typeAndNumber)")
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text(episodePreview.typeAndNumber)
+                }
+            }
+
+            if horizontalSizeClass != .compact {
+                Spacer()
+
+                Text(releaseDateAndStatus)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+}
+
+private func formatEpisodeReleaseDateAndStatus(
+    _ uploadDate: Date?,
+    _ isUnderProcessing: Bool
+) -> String {
+    var dateString = formatRelativeDate(uploadDate)
+
+    if isUnderProcessing {
+        dateString += " (в обработке)"
+    }
+
+    return dateString
 }
 
 #Preview {
