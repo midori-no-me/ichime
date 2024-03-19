@@ -128,7 +128,7 @@ struct EpisodeTranslationsView: View {
                                 )
                             }
                         } header: {
-                            Text(translationGroup.key.getLocalizaedTranslation())
+                            Text(translationGroup.key.getLocalizedTranslation())
                         }
                     }
                 }
@@ -158,22 +158,34 @@ private struct TranslationRow: View {
     let episodeTranslation: Translation
     @ObservedObject var videoPlayerController: VideoPlayerController
 
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+
     @State private var showingSheet = false
 
     var body: some View {
         Button(action: {
             self.showingSheet.toggle()
         }) {
-            VStack(alignment: .leading) {
-                Text([self.episodeTranslation.sourceVideoQuality.getLocalizaedTranslation(),
-                      String(self.episodeTranslation.height) + "p"].formatted(.list(type: .and, width: .narrow)))
-                    .font(.caption)
-                    .foregroundStyle(Color.secondary)
+            HStack {
+                VStack(alignment: .leading) {
+                    if horizontalSizeClass == .compact {
+                        Text(formatTranslationQuality(episodeTranslation, qualityNameFirst: false))
+                            .foregroundStyle(Color.secondary)
+                            .font(.caption)
+                    }
 
-                Text(self.episodeTranslation.translationTeam)
+                    Text(self.episodeTranslation.translationTeam)
+                }
+
+                if horizontalSizeClass != .compact {
+                    Spacer()
+
+                    Text(formatTranslationQuality(episodeTranslation, qualityNameFirst: true))
+                        .foregroundStyle(Color.secondary)
+                }
             }
         }
-        .sheet(isPresented: self.$showingSheet) {
+        .sheet(isPresented: $showingSheet) {
             NavigationStack {
                 EpisodeTranslationQualitySelectorView(
                     translationId: episodeTranslation.id,
@@ -184,6 +196,23 @@ private struct TranslationRow: View {
             .presentationDetents([.medium])
         }
     }
+}
+
+private func formatTranslationQuality(
+    _ translation: Translation,
+    qualityNameFirst: Bool
+) -> String {
+    var stringComponents = [String(translation.height) + "p"]
+
+    if translation.sourceVideoQuality != .tv {
+        stringComponents.append(translation.sourceVideoQuality.getLocalizedTranslation())
+    }
+
+    if qualityNameFirst {
+        stringComponents.reverse()
+    }
+
+    return stringComponents.joined(separator: " • ")
 }
 
 #Preview {

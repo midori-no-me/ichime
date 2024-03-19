@@ -82,7 +82,7 @@ struct Translation: Hashable, Identifiable {
         case bd
         case other
 
-        func getLocalizaedTranslation() -> String {
+        func getLocalizedTranslation() -> String {
             switch self {
             case .tv:
                 String(localized: "TV")
@@ -128,7 +128,7 @@ struct Translation: Hashable, Identifiable {
             return lhs.rawValue < rhs.rawValue
         }
 
-        func getLocalizaedTranslation() -> String {
+        func getLocalizedTranslation() -> String {
             switch self {
             case .russianSubtitles:
                 String(localized: "Русские субтитры")
