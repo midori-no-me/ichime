@@ -168,9 +168,9 @@ struct OngoingsView: View {
         .refreshable {
             await self.viewModel.performPullToRefresh()
         }
-        .navigationTitle("Онгоинги")
         #if !os(tvOS)
-            .navigationBarTitleDisplayMode(.large)
+        .navigationTitle("Онгоинги")
+        .navigationBarTitleDisplayMode(.large)
         #endif
     }
 }
