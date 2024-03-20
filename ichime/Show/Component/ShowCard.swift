@@ -42,7 +42,7 @@ struct ShowCard: View {
             destination: ShowView(showId: show.id, preloadedShow: show)
         ) {
             HStack(alignment: .top, spacing: ShowCard.SPACING_BETWEEN_IMAGE_AND_CONTENT) {
-                AsyncImage(
+                CachedAsyncImage(
                     url: show.posterUrl!,
                     transaction: .init(animation: .easeInOut)
                 ) { phase in
