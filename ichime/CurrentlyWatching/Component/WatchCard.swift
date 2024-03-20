@@ -38,7 +38,7 @@ struct WatchCard: View {
             .padding(.trailing, ROW_PADDING)
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(data.title + " • " + data.sideText)
+                Text([data.title, data.sideText].joined(separator: " • "))
                     .font(.caption)
                     .fontWeight(.medium)
                     .foregroundStyle(.secondary)

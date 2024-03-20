@@ -30,6 +30,7 @@ struct Show: Hashable, Identifiable {
             calendarSeason: series.season,
             numberOfEpisodes: series.numberOfEpisodes <= 0 ? nil : series.numberOfEpisodes,
             typeTitle: series.typeTitle,
+            broadcastType: .createFromApiType(apiType: series.type),
             genres: (series.genres ?? []).map { genre in
                 genre.title
             },
@@ -67,6 +68,7 @@ struct Show: Hashable, Identifiable {
     let calendarSeason: String
     let numberOfEpisodes: Int?
     let typeTitle: String
+    let broadcastType: BroadcastType
     let genres: [String]
     let isOngoing: Bool
     let episodePreviews: [EpisodePreview]
@@ -99,6 +101,20 @@ struct Show: Hashable, Identifiable {
 
         let text: String
         let source: String
+    }
+
+    enum BroadcastType {
+        static func createFromApiType(apiType: String) -> Self {
+            switch apiType {
+            case "tv":
+                return .tv
+            default:
+                return .other
+            }
+        }
+
+        case tv
+        case other
     }
 }
 
