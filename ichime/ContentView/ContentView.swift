@@ -23,7 +23,7 @@ struct ContentView: View {
             case .loading:
                 ProgressView()
             case .isAuth:
-                if UIDevice.current.userInterfaceIdiom == .tv || UIDevice.current.userInterfaceIdiom == .phone {
+                if UIDevice.current.isPhoneOrTv {
                     ContentViewWithTabBar()
                 } else {
                     ContentViewWithSideBar()

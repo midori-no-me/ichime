@@ -157,7 +157,7 @@ struct LoadedCurrentlyWatching: View {
 
     var body: some View {
         List {
-            if UIDevice.current.userInterfaceIdiom == .phone {
+            if UIDevice.current.isPhoneOrTv {
                 Section {
                     NavigationLink(value: CurrentlyWatchingView.SubRoute.notifications) {
                         Label("Уведомления", systemImage: "bell")
