@@ -446,7 +446,7 @@ private struct ShowActionButtons: View {
                 #if os(tvOS)
                     .buttonStyle(.card)
                 #else
-                    .if(isInMyList, if: { $0.buttonStyle(.borderedProminent) }, else: { $0.buttonStyle(.bordered) })
+                    .buttonStyle(.bordered)
                 #endif
             }
             .frame(maxWidth: .infinity, alignment: .leading)
