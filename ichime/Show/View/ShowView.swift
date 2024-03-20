@@ -172,9 +172,11 @@ struct ShowView: View {
                     ShowDetails(show: show, viewModel: self.viewModel)
                         .scenePadding(.bottom)
                 }
+                #if !os(tvOS)
                 .navigationTitle(show.title.translated.japaneseRomaji ?? show.title.full)
+                #endif
                 #if os(macOS)
-                    .navigationSubtitle(show.title.translated.russian ?? "")
+                .navigationSubtitle(show.title.translated.russian ?? "")
                 #endif
             }
         }
@@ -189,7 +191,7 @@ struct ShowView: View {
         .navigationBarTitleDisplayMode(.large)
         #endif
         #if os(tvOS)
-        .toolbar(.hidden)
+        .toolbar(.hidden, for: .tabBar)
         #endif
         .refreshable {
             await self.viewModel.performPullToRefresh()
