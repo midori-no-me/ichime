@@ -25,7 +25,7 @@ struct WatchCard: View {
                 case let .success(image):
                     image.resizable()
                         .scaledToFit()
-                        .cornerRadius(4)
+                        .cornerRadiusForMediumObject()
                         .clipped()
 
                 case .failure:

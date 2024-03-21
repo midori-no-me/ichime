@@ -51,7 +51,7 @@ struct CardWithExpandableText: View {
         #else
         .buttonStyle(.plain)
         .background(Material.ultraThick)
-        .cornerRadius(10)
+        .cornerRadiusForLargeObject()
         .clipped()
         #endif
     }

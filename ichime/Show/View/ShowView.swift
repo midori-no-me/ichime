@@ -284,7 +284,7 @@ private struct ShowDetails: View {
                                 ProgressView()
                             case let .success(image):
                                 image.resizable()
-                                    .cornerRadius(10)
+                                    .cornerRadiusForLargeObject()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(
                                         width: geometry.size.width,

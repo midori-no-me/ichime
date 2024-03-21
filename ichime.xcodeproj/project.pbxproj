@@ -67,6 +67,8 @@
 		ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */; };
 		ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */; };
 		ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */; };
+		ED5C74812BAC401C002E0E1B /* CorderRadiusForMediumObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */; };
+		ED5C74832BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */; };
 		ED7357BE2BA8871A005C69B4 /* CardWithExpandableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */; };
 		ED7357C12BA890CD005C69B4 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357C02BA890CD005C69B4 /* UIScrollView.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
@@ -137,6 +139,8 @@
 		ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyWatchingView.swift; sourceTree = "<group>"; };
 		ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterView.swift; sourceTree = "<group>"; };
 		ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365ApiClient; sourceTree = "<group>"; };
+		ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorderRadiusForMediumObject.swift; sourceTree = "<group>"; };
+		ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusForLargeObject.swift; sourceTree = "<group>"; };
 		ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWithExpandableText.swift; sourceTree = "<group>"; };
 		ED7357C02BA890CD005C69B4 /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
@@ -389,6 +393,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		ED5C747E2BAC3FF4002E0E1B /* ViewModifier */ = {
+			isa = PBXGroup;
+			children = (
+				ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */,
+				ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */,
+			);
+			path = ViewModifier;
+			sourceTree = "<group>";
+		};
 		ED7357BC2BA886E9005C69B4 /* CommonViewComponents */ = {
 			isa = PBXGroup;
 			children = (
@@ -487,6 +500,7 @@
 		EDFF2D0F2B43471300F27E61 /* ichime */ = {
 			isa = PBXGroup;
 			children = (
+				ED5C747E2BAC3FF4002E0E1B /* ViewModifier */,
 				ED1D3E132BAA119E005B324A /* Utils */,
 				ED7357BF2BA890BF005C69B4 /* ViewExtensions */,
 				ED7357BC2BA886E9005C69B4 /* CommonViewComponents */,
@@ -685,10 +699,12 @@
 				ED0D29952B66C84600C5AC9E /* BaseUrlPreference.swift in Sources */,
 				ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */,
 				ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */,
+				ED5C74812BAC401C002E0E1B /* CorderRadiusForMediumObject.swift in Sources */,
 				ED36C6282B530535000D0A80 /* EpisodePreviewModel.swift in Sources */,
 				EDF7104E2B4B344F001C2008 /* ShowCard.swift in Sources */,
 				ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */,
 				ED3A674B2B56FBBA00FB3975 /* ShowModel.swift in Sources */,
+				ED5C74832BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift in Sources */,
 				C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */,
 				ED7357C12BA890CD005C69B4 /* UIScrollView.swift in Sources */,
 				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
