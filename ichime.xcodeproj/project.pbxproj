@@ -67,6 +67,7 @@
 		ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */; };
 		ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */; };
 		ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */; };
+		ED5B39DD2BACB65A00C6D672 /* HorizontalScreenEdgePadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5B39DC2BACB65A00C6D672 /* HorizontalScreenEdgePadding.swift */; };
 		ED5C74812BAC401C002E0E1B /* CorderRadiusForMediumObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */; };
 		ED5C74832BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */; };
 		ED7357BE2BA8871A005C69B4 /* CardWithExpandableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */; };
@@ -139,6 +140,7 @@
 		ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyWatchingView.swift; sourceTree = "<group>"; };
 		ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterView.swift; sourceTree = "<group>"; };
 		ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365ApiClient; sourceTree = "<group>"; };
+		ED5B39DC2BACB65A00C6D672 /* HorizontalScreenEdgePadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalScreenEdgePadding.swift; sourceTree = "<group>"; };
 		ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorderRadiusForMediumObject.swift; sourceTree = "<group>"; };
 		ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusForLargeObject.swift; sourceTree = "<group>"; };
 		ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWithExpandableText.swift; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 			children = (
 				ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */,
 				ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */,
+				ED5B39DC2BACB65A00C6D672 /* HorizontalScreenEdgePadding.swift */,
 			);
 			path = ViewModifier;
 			sourceTree = "<group>";
@@ -718,6 +721,7 @@
 				ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */,
 				C65ACDE82B54466400C27FB3 /* UserManager.swift in Sources */,
 				C6656A6E2B631EBE00BF7412 /* AnimeList.swift in Sources */,
+				ED5B39DD2BACB65A00C6D672 /* HorizontalScreenEdgePadding.swift in Sources */,
 				EDE9592F2B475E590030B23D /* ShowView.swift in Sources */,
 				EDFF2D112B43471300F27E61 /* IchimeApp.swift in Sources */,
 				C64EB01A2B699C3D00AC7C27 /* DI.swift in Sources */,

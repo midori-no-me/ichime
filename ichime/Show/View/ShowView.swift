@@ -333,7 +333,7 @@ private struct ShowDetails: View {
                 ShowDescriptionCards(descriptions: show.descriptions)
             }
         }
-        .scenePadding(.horizontal)
+        .horizontalScreenEdgePadding()
     }
 }
 

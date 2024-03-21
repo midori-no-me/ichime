@@ -155,7 +155,7 @@ struct OngoingsView: View {
                         .padding()
                         #else
                         .padding(.top, 8)
-                        .scenePadding(.horizontal)
+                        .horizontalScreenEdgePadding()
                         .scenePadding(.bottom)
                         #endif
                     }
@@ -184,7 +184,7 @@ private struct OngoingsViewWrapper<Content>: View where Content: View {
             #if os(iOS)
                 Text(title)
                     .font(.title3)
-                    .scenePadding(.horizontal)
+                    .horizontalScreenEdgePadding()
                     .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .textSelection(.enabled)
