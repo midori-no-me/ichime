@@ -4,12 +4,17 @@
 
 ## Скриншоты
 
-<img src="https://github.com/midori-no-me/ichime/assets/11390039/15fd0d10-5293-4cce-8036-9b6cb8b8f9a3" width="250" />
-<img src="https://github.com/midori-no-me/ichime/assets/11390039/2d9e939b-cc83-45a5-b643-b5eb4acdea16" width="250" />
-<img src="https://github.com/midori-no-me/ichime/assets/11390039/16be5b21-a869-4a32-b3f3-11cfe4f50a97" width="250" />
-<img src="https://github.com/midori-no-me/ichime/assets/11390039/3339bbc9-23b6-4131-8626-172001f45907" width="250" />
-<img src="https://github.com/midori-no-me/ichime/assets/11390039/e7b35282-a157-4b5b-a97c-f130ab80733e" width="250" />
-<img src="https://github.com/midori-no-me/ichime/assets/11390039/10c0a60a-dcc6-4008-aea5-0984b80327c2" width="250" />
+<details>
+<summary>iPhone</summary>
+<img src="https://github.com/midori-no-me/ichime/assets/12474739/1b41d896-4695-415e-94a8-a49fc7a18ecb" width="393" height="852">
+<img src="https://github.com/midori-no-me/ichime/assets/12474739/95b50bf5-97f8-4aab-bcec-49cf6875d948" width="393" height="852">
+<img src="https://github.com/midori-no-me/ichime/assets/12474739/b3524b4c-1781-40e8-9e90-0f2d3d568457" width="393" height="852">
+<img src="https://github.com/midori-no-me/ichime/assets/12474739/4155ee84-dbbf-4229-943f-48125b3065d6" width="393" height="852">
+<img src="https://github.com/midori-no-me/ichime/assets/12474739/07eb2b25-54d7-444e-a62a-4137c3a52c62" width="393" height="852">
+<img src="https://github.com/midori-no-me/ichime/assets/12474739/5b632026-edc6-4888-81b5-49429c82868e" width="393" height="852">
+<img src="https://github.com/midori-no-me/ichime/assets/12474739/f2a9896a-677d-4ada-bfc9-dcd55f51811e" width="393" height="852">
+<img src="https://github.com/midori-no-me/ichime/assets/12474739/7261729d-56aa-4178-927f-e66fc873edef" width="393" height="852">
+</details>
 
 ## Возможности приложения
 
