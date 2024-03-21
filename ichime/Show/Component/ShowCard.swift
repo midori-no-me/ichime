@@ -44,11 +44,12 @@ struct ShowCard: View {
             HStack(alignment: .top, spacing: ShowCard.SPACING_BETWEEN_IMAGE_AND_CONTENT) {
                 CachedAsyncImage(
                     url: show.posterUrl!,
-                    transaction: .init(animation: .easeInOut)
+                    transaction: .init(animation: .easeInOut(duration: 0.5))
                 ) { phase in
                     switch phase {
                     case .empty:
-                        EmptyView()
+                        Rectangle()
+                            .fill(Color.clear)
                     case let .success(image):
                         image
                             .resizable()
@@ -57,9 +58,11 @@ struct ShowCard: View {
                             .clipped()
 
                     case .failure:
-                        EmptyView()
+                        Rectangle()
+                            .fill(Color.clear)
                     @unknown default:
-                        EmptyView()
+                        Rectangle()
+                            .fill(Color.clear)
                     }
                 }
                 .frame(
