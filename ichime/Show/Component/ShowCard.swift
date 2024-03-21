@@ -12,13 +12,13 @@ struct ShowCard: View {
     #if os(tvOS)
         public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 500
     #else
-        public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 250
+        public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 300
     #endif
 
     #if os(tvOS)
         public static let RECOMMENDED_SPACING: CGFloat = 80
     #else
-        public static let RECOMMENDED_SPACING: CGFloat = 10
+        public static let RECOMMENDED_SPACING: CGFloat = 16
     #endif
 
     #if os(tvOS)
@@ -32,7 +32,7 @@ struct ShowCard: View {
     #if os(tvOS)
         private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 20
     #else
-        private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 10
+        private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 8
     #endif
 
     let show: Show
@@ -90,7 +90,7 @@ struct ShowCard: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(4)
+                .padding(.vertical, 4)
             }
         }
         #if !os(tvOS)

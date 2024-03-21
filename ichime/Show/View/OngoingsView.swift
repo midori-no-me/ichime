@@ -154,7 +154,7 @@ struct OngoingsView: View {
                         #if os(macOS)
                         .padding()
                         #else
-                        .padding(.top, 18)
+                        .padding(.top, 8)
                         .scenePadding(.horizontal)
                         .scenePadding(.bottom)
                         #endif
@@ -180,7 +180,7 @@ private struct OngoingsViewWrapper<Content>: View where Content: View {
 
     let title = String(localized: "Сериалы, у которых продолжают выходить новые серии")
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             #if os(iOS)
                 Text(title)
                     .font(.title3)
