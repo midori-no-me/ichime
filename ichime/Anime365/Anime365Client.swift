@@ -41,16 +41,17 @@ class Anime365Client {
     ) async throws -> [Show] {
         let currentDate = Date()
         let currentYear = Calendar.current.component(.year, from: currentDate)
+        let previousYear = currentYear - 1
         let currentMonthNumber = Calendar.current.component(.month, from: currentDate)
 
         let currentAnimeSeason = switch currentMonthNumber {
-        case 12, 1, 2: // December, January, February
+        case 1, 2, 3: // January, February, March
             "winter"
-        case 3, 4, 5: // March, April, May
+        case 4, 5, 6: // April, May, June
             "spring"
-        case 6, 7, 8: // June, July, August
+        case 7, 8, 9: // July, August, September
             "summer"
-        default: // September, October, November
+        default: // October, November, December
             "autumn"
         }
 
@@ -60,7 +61,7 @@ class Anime365Client {
             chips: [
                 "isAiring": "1",
                 "isActive": "1",
-                "yearseason": "\(currentAnimeSeason)_\(currentYear - 1)-\(currentAnimeSeason)_\(currentYear)",
+                "yearseason": "\(currentAnimeSeason)_\(previousYear)-",
             ]
         ))
 
