@@ -71,16 +71,19 @@ struct ProfileSheet: View {
                         }
                     }
                 }
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Закрыть") {
-                            self.dismiss()
-                        }
-                    }
-                }
+                #if os(tvOS)
+                .listStyle(.grouped)
+                #endif
                 .navigationTitle("Ваш профиль")
                 #if !os(tvOS)
                     .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Закрыть") {
+                                self.dismiss()
+                            }
+                        }
+                    }
                 #endif
             }
         }
