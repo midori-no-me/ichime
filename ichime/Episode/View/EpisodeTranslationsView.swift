@@ -134,9 +134,12 @@ struct EpisodeTranslationsView: View {
                 }
             }
         }
-        .navigationTitle(episodeTitle)
+        #if os(tvOS)
+        .listStyle(.grouped)
+        #endif
         #if !os(tvOS)
-            .navigationBarTitleDisplayMode(.large)
+        .navigationTitle(episodeTitle)
+        .navigationBarTitleDisplayMode(.large)
         #endif
     }
 
