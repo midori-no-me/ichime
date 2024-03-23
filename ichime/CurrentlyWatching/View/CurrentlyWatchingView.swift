@@ -158,8 +158,30 @@ struct LoadedCurrentlyWatching: View {
     let loadMore: () async -> Void
 
     var body: some View {
-        List {
-            #if os(iOS)
+        #if os(tvOS)
+            ScrollView(.vertical) {
+                LazyVGrid(columns: [
+                    GridItem(
+                        .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+                        spacing: RawShowCard.RECOMMENDED_SPACING,
+                        alignment: .topLeading
+                    ),
+                ], spacing: RawShowCard.RECOMMENDED_SPACING) {
+                    ForEach(self.shows) { show in
+                        NavigationLink(value: show) {
+                            WatchCard(data: show)
+                        }
+                        .buttonStyle(.plain)
+                        .task {
+                            if show == self.shows.last {
+                                await self.loadMore()
+                            }
+                        }
+                    }
+                }
+            }
+        #else
+            List {
                 if UIDevice.current.userInterfaceIdiom == .phone {
                     Section {
                         NavigationLink(value: CurrentlyWatchingView.SubRoute.notifications) {
@@ -168,26 +190,24 @@ struct LoadedCurrentlyWatching: View {
                         }
                     }
                 }
-            #endif
 
-            Section {
-                ForEach(shows) { show in
-                    NavigationLink(value: show) {
-                        WatchCard(data: show)
-                    }
-                    .task {
-                        if show == self.shows.last {
-                            await self.loadMore()
+                Section {
+                    ForEach(shows) { show in
+                        NavigationLink(value: show) {
+                            WatchCard(data: show)
+                        }
+                        .task {
+                            if show == self.shows.last {
+                                await self.loadMore()
+                            }
                         }
                     }
-                }
-            } header: {
-                #if !os(tvOS)
+                } header: {
                     Text("Серии к просмотру")
-                #endif
+                }
             }
-        }
-        .listStyle(.plain)
+            .listStyle(.plain)
+        #endif
     }
 }
 

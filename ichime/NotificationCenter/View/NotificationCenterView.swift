@@ -135,25 +135,47 @@ struct LoadedNotificationCenter: View {
     let loadMore: () async -> Void
 
     var body: some View {
-        List {
-            Section {
-                ForEach(shows) { show in
-                    NavigationLink(value: show) {
-                        WatchCard(data: show)
-                    }
-                    .task {
-                        if show == self.shows.last {
-                            await self.loadMore()
+        #if os(tvOS)
+            ScrollView(.vertical) {
+                LazyVGrid(columns: [
+                    GridItem(
+                        .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+                        spacing: RawShowCard.RECOMMENDED_SPACING,
+                        alignment: .topLeading
+                    ),
+                ], spacing: RawShowCard.RECOMMENDED_SPACING) {
+                    ForEach(self.shows) { show in
+                        NavigationLink(value: show) {
+                            WatchCard(data: show)
+                        }
+                        .buttonStyle(.plain)
+                        .task {
+                            if show == self.shows.last {
+                                await self.loadMore()
+                            }
                         }
                     }
                 }
-            } header: {
-                #if !os(tvOS)
-                    Text("Последние уведомления")
-                #endif
             }
-        }
-        .listStyle(.plain)
+        #else
+            List {
+                Section {
+                    ForEach(shows) { show in
+                        NavigationLink(value: show) {
+                            WatchCard(data: show)
+                        }
+                        .task {
+                            if show == self.shows.last {
+                                await self.loadMore()
+                            }
+                        }
+                    }
+                } header: {
+                    Text("Последние уведомления")
+                }
+            }
+            .listStyle(.plain)
+        #endif
     }
 }
 
