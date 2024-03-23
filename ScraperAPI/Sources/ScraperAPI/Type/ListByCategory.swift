@@ -43,7 +43,7 @@ public extension ScraperAPI.Types {
         }
     }
 
-    enum ListCategoryType: String, CaseIterable {
+    enum ListCategoryType: String, CaseIterable, Hashable {
         case watching = "Смотрю"
         case completed = "Просмотрено"
         case onHold = "Отложено"
