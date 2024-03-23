@@ -26,16 +26,14 @@ struct ContentViewWithTabBar: View {
 
             NavigationStack {
                 CurrentlyWatchingView()
-                    .navigationDestination(for: CurrentlyWatchingView.SubRoute.self) { route in
+                    .navigationDestination(for: CurrentlyWatchingView.Navigation.self) { route in
                         if route == .notifications {
-                            ZStack {
-                                NotificationCenterView()
-                            }
+                            NotificationCenterView()
                         }
                     }
                     .navigationDestination(
                         for: WatchCardModel.self,
-                        destination: { viewShow(show: $0) }
+                        destination: { viewEpisodes(show: $0) }
                     )
             }
             .tabItem {
@@ -62,6 +60,6 @@ struct ContentViewWithTabBar: View {
     }
 }
 
-//#Preview {
-//    ContentViewWithTabBar()
-//}
+#Preview {
+    ContentViewWithTabBar()
+}

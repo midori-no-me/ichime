@@ -67,7 +67,7 @@ struct ContentViewWithSideBar: View {
                     CurrentlyWatchingView()
                         .navigationDestination(
                             for: WatchCardModel.self,
-                            destination: { viewShow(show: $0) }
+                            destination: { viewEpisodes(show: $0) }
                         )
                 }
 
@@ -82,7 +82,7 @@ struct ContentViewWithSideBar: View {
                         NotificationCenterView()
                             .navigationDestination(
                                 for: WatchCardModel.self,
-                                destination: { viewShow(show: $0) }
+                                destination: { viewEpisodes(show: $0) }
                             )
                     }
                 }

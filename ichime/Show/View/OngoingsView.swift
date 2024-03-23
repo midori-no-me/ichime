@@ -162,6 +162,14 @@ struct OngoingsView: View {
                 }
             }
         }
+        .task {
+            switch viewModel.state {
+            case .loadedButEmpty, .loaded, .loadingFailed:
+                await self.viewModel.performPullToRefresh()
+            case .idle, .loading:
+                return
+            }
+        }
         .refreshable {
             await self.viewModel.performPullToRefresh()
         }

@@ -205,6 +205,15 @@ struct MyListsView: View {
                 }
             }
         })
+        .task {
+            switch viewModel.state {
+            case .loaded, .loadedButEmpty, .loadingFailed, .needSubscribe:
+                await viewModel.performUpdateState()
+                await viewModel.performFilter(type: categoryType)
+            case .idle, .loading:
+                return
+            }
+        }
         .refreshable {
             await viewModel.performUpdateState()
             await viewModel.performFilter(type: categoryType)

@@ -116,10 +116,19 @@ struct NotificationCenterView: View {
             case let .loaded(shows):
                 LoadedNotificationCenter(shows: shows) {
                     await viewModel.performLazyLoad()
-                }.refreshable {
-                    await viewModel.performRefresh()
                 }
             }
+        }
+        .task {
+            switch viewModel.state {
+            case .loadedButEmpty, .loaded, .loadingFailed:
+                await viewModel.performRefresh()
+            case .idle, .loading:
+                return
+            }
+        }
+        .refreshable {
+            await viewModel.performRefresh()
         }
         #if !os(tvOS)
         .toolbar {

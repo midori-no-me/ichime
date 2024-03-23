@@ -133,11 +133,21 @@ struct CurrentlyWatchingView: View {
             case let .loaded(shows):
                 LoadedCurrentlyWatching(shows: shows, counter: notificationCounter.counter) {
                     await viewModel.performLazyLoad()
-                }.refreshable {
-                    await viewModel.performRefresh()
-                    await notificationCounter.checkCounter()
                 }
             }
+        }
+        .task {
+            switch viewModel.state {
+            case .loadedButEmpty, .loadingFailed, .loaded, .needSubscribe:
+                await viewModel.performRefresh()
+                await notificationCounter.checkCounter()
+            case .idle, .loading:
+                return
+            }
+        }
+        .refreshable {
+            await viewModel.performRefresh()
+            await notificationCounter.checkCounter()
         }
         #if !os(tvOS)
         .toolbar {
@@ -147,7 +157,7 @@ struct CurrentlyWatchingView: View {
         #endif
     }
 
-    enum SubRoute: Hashable {
+    enum Navigation: Hashable {
         case notifications
     }
 }
@@ -184,7 +194,7 @@ struct LoadedCurrentlyWatching: View {
             List {
                 if UIDevice.current.userInterfaceIdiom == .phone {
                     Section {
-                        NavigationLink(value: CurrentlyWatchingView.SubRoute.notifications) {
+                        NavigationLink(value: CurrentlyWatchingView.Navigation.notifications) {
                             Label("Уведомления", systemImage: "bell")
                                 .badge(counter)
                         }
@@ -214,13 +224,13 @@ struct LoadedCurrentlyWatching: View {
 #Preview {
     NavigationStack {
         CurrentlyWatchingView()
-            .navigationDestination(for: CurrentlyWatchingView.SubRoute.self) { route in
+            .navigationDestination(for: CurrentlyWatchingView.Navigation.self) { route in
                 if route == .notifications {
                     NotificationCenterView()
                 }
             }
             .navigationDestination(for: WatchCardModel.self) {
-                viewShow(show: $0)
+                viewEpisodes(show: $0)
             }
     }
 }
