@@ -133,6 +133,9 @@ struct EpisodeTranslationQualitySelectorView: View {
                         }
                     }
                 }
+                #if os(tvOS)
+                .listStyle(.grouped)
+                #endif
             }
         }
         .toolbar {
