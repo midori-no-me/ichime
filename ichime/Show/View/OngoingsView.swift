@@ -162,15 +162,15 @@ struct OngoingsView: View {
                 }
             }
         }
-        .toolbar {
-            ProfileButton()
-        }
         .refreshable {
             await self.viewModel.performPullToRefresh()
         }
         #if !os(tvOS)
         .navigationTitle("Онгоинги")
         .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ProfileButton()
+        }
         #endif
     }
 }
