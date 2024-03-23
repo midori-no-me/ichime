@@ -11,13 +11,14 @@ import SwiftUI
 
 struct VideoPlayerExample: View {
     let video: VideoModel
-    
+
     @StateObject var manager: VideoPlayerController = .init()
-    
+
     var body: some View {
         Button("Play video") {
             Task {
                 await manager.createPlayer(video: video, onDoneWatch: {})
+                manager.showPlayer()
             }
         }
     }
@@ -40,7 +41,7 @@ final class VideoPlayerController: NSObject, ObservableObject {
 
     var coordinator: Coordinator?
     var videoDuration: Double = 0.0
-    
+
     private let logger = createLogger(category: String(describing: VideoPlayerController.self))
 
     static func enableBackgroundMode() {
@@ -93,6 +94,28 @@ final class VideoPlayerController: NSObject, ObservableObject {
 
         player = nil
         loading = false
+    }
+
+    func downloadFileToTemporaryDirectory(from url: URL) async throws -> URL {
+        let session = URLSession(configuration: .default)
+        let (data, response) = try await session.data(from: url)
+
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+            throw NSError(domain: "HTTP Error", code: statusCode, userInfo: nil)
+        }
+
+        let temporaryDirectoryURL = FileManager.default.temporaryDirectory
+        let filename = "\(url.lastPathComponent).vtt"
+        let destinationURL = temporaryDirectoryURL.appendingPathComponent(filename)
+
+        // Remove the file if it already exists
+        try? FileManager.default.removeItem(at: destinationURL)
+
+        try data.write(to: destinationURL)
+
+        print("file downloaded \(destinationURL)")
+        return destinationURL
     }
 
     private func downloadSubtitles(from url: URL) async throws -> URL {
@@ -174,7 +197,7 @@ final class VideoPlayerController: NSObject, ObservableObject {
         let playerItem: AVPlayerItem
 
         if let subtitleURL,
-           let subtitleFile = try? await downloadSubtitles(from: subtitleURL),
+           let subtitleFile = try? await downloadFileToTemporaryDirectory(from: subtitleURL),
            let composition = try? await createMutableComposition(videoAsset, AVAsset(url: subtitleFile))
         {
             playerItem = .init(asset: composition)
