@@ -23,65 +23,22 @@ struct ContentView: View {
             case .loading:
                 ProgressView()
             case .isAuth:
-                if UIDevice.current.isPhoneOrTv {
-                    ContentViewWithTabBar()
-                } else {
+                #if os(iOS)
+                    if UIDevice.userInterfaceIdiom == .phone {
+                        ContentViewWithTabBar()
+
+                    } else {
+                        ContentViewWithSideBar()
+                    }
+                #elseif os(tvOS)
+                    ContentViewWithTabBarTV()
+                #else
                     ContentViewWithSideBar()
-                }
+                #endif
             case .isAnonym:
                 NavigationStack {
                     OnboardingView()
                 }
-            }
-        }
-    }
-}
-
-struct ContentViewWithTabBar: View {
-    @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
-
-    var body: some View {
-        TabView {
-            NavigationStack {
-                OngoingsView()
-            }
-            .tabItem {
-                Label("Онгоинги", systemImage: "rectangle.grid.3x2.fill")
-            }
-
-            NavigationStack {
-                CurrentlyWatchingView()
-                    .navigationDestination(for: CurrentlyWatchingView.SubRoute.self) { route in
-                        if route == .notifications {
-                            ZStack {
-                                NotificationCenterView()
-                            }
-                        }
-                    }
-                    .navigationDestination(
-                        for: WatchCardModel.self,
-                        destination: { viewShow(show: $0) }
-                    )
-            }
-            .tabItem {
-                Label("Я смотрю", systemImage: "film.stack")
-            }
-            #if !os(tvOS)
-            .badge(notificationCounterWatcher.counter)
-            #endif
-
-            NavigationStack {
-                MyListsView()
-            }
-            .tabItem {
-                Label("Мой список", systemImage: "list.and.film")
-            }
-
-            NavigationStack {
-                SearchShowsView()
-            }
-            .tabItem {
-                Label("Поиск", systemImage: "magnifyingglass")
             }
         }
     }

@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+@available(iOS 17.0, *)
+@available(macOS 14.0, *)
+@available(tvOS, unavailable)
+@available(watchOS, unavailable)
+@available(visionOS, unavailable)
 struct ContentViewWithSideBar: View {
     @State private var navigationActiveTab: SideBarLinks? = .ongoings
     @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
@@ -93,6 +98,6 @@ struct ContentViewWithSideBar: View {
     }
 }
 
-#Preview {
-    ContentViewWithSideBar()
-}
+//#Preview {
+//    ContentViewWithSideBar()
+//}

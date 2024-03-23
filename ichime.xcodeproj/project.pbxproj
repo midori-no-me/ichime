@@ -77,6 +77,8 @@
 		ED7357C12BA890CD005C69B4 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357C02BA890CD005C69B4 /* UIScrollView.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
 		ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = ED8A40802B4C57410055DAB6 /* CachedAsyncImage */; };
+		EDC57C192BAF6448001533E7 /* ContentViewWithTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */; };
+		EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */; };
 		EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD353B32B5E82AF00313489 /* ServiceLocator.swift */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
@@ -154,6 +156,8 @@
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithTabBar.swift; sourceTree = "<group>"; };
+		EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithTabBarTV.swift; sourceTree = "<group>"; };
 		EDD353B32B5E82AF00313489 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		EDE9592B2B47167B0030B23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchShowsView.swift; sourceTree = "<group>"; };
@@ -235,6 +239,8 @@
 			isa = PBXGroup;
 			children = (
 				EDE959322B484C8A0030B23D /* ContentView.swift */,
+				EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */,
+				EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */,
 				C6899EB02BA2532E00E63311 /* ContentViewWithSideBar.swift */,
 			);
 			path = ContentView;
@@ -728,11 +734,13 @@
 				C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */,
 				ED7357C12BA890CD005C69B4 /* UIScrollView.swift in Sources */,
 				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
+				EDC57C192BAF6448001533E7 /* ContentViewWithTabBar.swift in Sources */,
 				ED36C62A2B53FB81000D0A80 /* EpisodeModel.swift in Sources */,
 				C6213C872BAF603800E08736 /* SceneController.swift in Sources */,
 				C6656A6C2B630C7C00BF7412 /* UserRateForm.swift in Sources */,
 				ED3A674D2B5739B600FB3975 /* EpisodeTranslationQualitySelectorView.swift in Sources */,
 				C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */,
+				EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */,
 				EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */,
 				ED3D83F92B5BFA890025BB5D /* EpisodeStreamingInfo.swift in Sources */,
 				ED1D3E152BAA11AF005B324A /* DateUtils.swift in Sources */,
