@@ -121,10 +121,12 @@ struct NotificationCenterView: View {
                 }
             }
         }
+        #if !os(tvOS)
         .toolbar {
             ProfileButton()
         }
         .navigationTitle("Уведомления")
+        #endif
     }
 }
 
@@ -146,7 +148,9 @@ struct LoadedNotificationCenter: View {
                     }
                 }
             } header: {
-                Text("Последние уведомления")
+                #if !os(tvOS)
+                    Text("Последние уведомления")
+                #endif
             }
         }
         .listStyle(.plain)
