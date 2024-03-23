@@ -102,14 +102,8 @@ public extension ScraperAPI.Types.Show {
                     List {
                         Section {
                             ForEach(category.shows, id: \.id) { show in
-                                NavigationLink(destination: {
-                                    MyListEditView(
-                                        show: .init(id: show.id, name: show.name.ru, totalEpisodes: show.episodes.total)
-                                    ) {
-                                        Task {
-                                            await onUpdate()
-                                        }
-                                    }
+                                Button(action: {
+                                    selectedShow = show
                                 }) {
                                     HStack {
                                         VStack(alignment: .leading) {
@@ -142,6 +136,16 @@ public extension ScraperAPI.Types.Show {
                             Text(category.type.rawValue)
                         }
                     }
+                    .listStyle(.grouped)
+                    .sheet(item: $selectedShow, content: { show in
+                        MyListEditView(
+                            show: .init(id: show.id, name: show.name.ru, totalEpisodes: show.episodes.total)
+                        ) {
+                            Task {
+                                await onUpdate()
+                            }
+                        }
+                    })
                 }
             })
         }
