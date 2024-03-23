@@ -79,9 +79,6 @@ struct ContentViewWithSideBar: View {
                                 for: WatchCardModel.self,
                                 destination: { viewShow(show: $0) }
                             )
-                        if videoPlayerController.loading {
-                            VideoPlayerLoader()
-                        }
                     }
                 }
 

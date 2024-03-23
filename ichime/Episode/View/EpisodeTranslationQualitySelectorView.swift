@@ -82,6 +82,7 @@ struct EpisodeTranslationQualitySelectorView: View {
             switch self.viewModel.state {
             case .idle:
                 Color.clear.onAppear {
+                    videoPlayerController.addDelegate(WatchChecker(translationId: translationId))
                     Task {
                         await self.viewModel.performInitialLoad(translationId: translationId)
                     }
@@ -156,8 +157,7 @@ struct EpisodeTranslationQualitySelectorView: View {
                     subtitleURL: subtitle,
                     title: nil,
                     episodeTitle: nil
-                ),
-                onDoneWatch: self.handleDoneWatch
+                )
             )
             closeModal()
         }
@@ -169,10 +169,6 @@ struct EpisodeTranslationQualitySelectorView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             videoPlayerController.showPlayer()
         }
-    }
-
-    func handleDoneWatch() async {
-        await viewModel.performUpdateWatch(translationId: translationId)
     }
 }
 
