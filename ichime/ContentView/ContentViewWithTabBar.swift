@@ -60,6 +60,8 @@ struct ContentViewWithTabBar: View {
     }
 }
 
-#Preview {
-    ContentViewWithTabBar()
-}
+#if os(iOS)
+    #Preview {
+        ContentViewWithTabBar()
+    }
+#endif

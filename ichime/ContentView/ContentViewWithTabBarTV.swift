@@ -19,6 +19,10 @@ struct ContentViewWithTabBarTV: View {
 
             NavigationStack {
                 CurrentlyWatchingView()
+                    .navigationDestination(
+                        for: WatchCardModel.self,
+                        destination: { viewEpisodes(show: $0) }
+                    )
             }
             .tabItem {
                 Text("Я смотрю")
@@ -26,6 +30,10 @@ struct ContentViewWithTabBarTV: View {
 
             NavigationStack {
                 NotificationCenterView()
+                    .navigationDestination(
+                        for: WatchCardModel.self,
+                        destination: { viewEpisodes(show: $0) }
+                    )
             }
             .tabItem {
                 Text("Уведомления")
@@ -55,6 +63,6 @@ struct ContentViewWithTabBarTV: View {
     }
 }
 
-//#Preview {
+// #Preview {
 //    ContentViewWithTabBar()
-//}
+// }
