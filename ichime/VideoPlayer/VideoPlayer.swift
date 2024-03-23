@@ -11,36 +11,31 @@ import SwiftUI
 
 struct VideoPlayerExample: View {
     let video: VideoModel
-    
+
     @StateObject var manager: VideoPlayerController = .init()
-    
+
     var body: some View {
         Button("Play video") {
             Task {
-                await manager.createPlayer(video: video, onDoneWatch: {})
+                await manager.createPlayer(video: video)
+                manager.showPlayer()
             }
         }
     }
 }
 
-struct VideoModel {
-    let videoURL: URL
-    let subtitleURL: URL?
-
-    let title: String?
-    let episodeTitle: String?
+protocol VideoPlayerDelegate {
+    func show(player: AVPlayer) -> Void
+    func destroy() -> Void
 }
 
 final class VideoPlayerController: NSObject, ObservableObject {
     var player: AVPlayer?
-    var loading = false
 
-    var timeObserverToken: Any?
-    var onDoneWatch: (() async -> Void)?
+    private var coordinator: Coordinator?
+    private let sceneController = SceneController()
+    private var delegate: VideoPlayerDelegate?
 
-    var coordinator: Coordinator?
-    var videoDuration: Double = 0.0
-    
     private let logger = createLogger(category: String(describing: VideoPlayerController.self))
 
     static func enableBackgroundMode() {
@@ -52,20 +47,8 @@ final class VideoPlayerController: NSObject, ObservableObject {
         }
     }
 
-    private var scene: UIWindowScene? {
-        UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .first(where: { $0.activationState == .foregroundActive })
-    }
-
-    private func present(_ controller: AVPlayerViewController, _ onPresent: @escaping () -> Void) {
-        // Get the key window scene
-        if let keyWindowScene = scene {
-            // Present the AVPlayerViewController modally
-            keyWindowScene.windows.first?.rootViewController?.present(controller, animated: true) {
-                onPresent()
-            }
-        }
+    func addDelegate(_ delegate: VideoPlayerDelegate) {
+        self.delegate = delegate
     }
 
     func showPlayer() {
@@ -76,71 +59,75 @@ final class VideoPlayerController: NSObject, ObservableObject {
         coordinator = Coordinator(self)
         playerViewController.delegate = coordinator
 
-        present(playerViewController) {
+        if let player, let delegate {
+            delegate.show(player: player)
+        }
+
+        sceneController.present(playerViewController) {
             self.player?.play()
         }
     }
 
     private func destroyPlayer() {
-        logger.debug("destroy player")
-        if let player {
-            player.pause()
-            if let timeObserverToken {
-                player.removeTimeObserver(timeObserverToken)
-                self.timeObserverToken = nil
-            }
-        }
+        logger.info("destroy player")
+        player?.pause()
+        delegate?.destroy()
 
+        delegate = nil
         player = nil
-        loading = false
     }
 
-    private func downloadSubtitles(from url: URL) async throws -> URL {
-        let fileName = "\(url.absoluteString.components(separatedBy: "/").last ?? UUID().uuidString).vtt"
+    func downloadFileToTemporaryDirectory(from url: URL) async throws -> URL {
+        let session = URLSession(configuration: .default)
+        let (data, response) = try await session.data(from: url)
 
-        let (tempLocalUrl, _) = try await URLSession.shared.download(from: url)
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+            throw NSError(domain: "HTTP Error", code: statusCode, userInfo: nil)
+        }
 
-        let documentsDirectory = try FileManager.default.url(
-            for: .documentDirectory,
-            in: .userDomainMask,
-            appropriateFor: nil,
-            create: false
-        )
-        let destinationUrl = documentsDirectory.appendingPathComponent(fileName)
+        let temporaryDirectoryURL = FileManager.default.temporaryDirectory
+        let filename = "\(url.lastPathComponent).vtt"
+        let destinationURL = temporaryDirectoryURL.appendingPathComponent(filename)
 
         // Remove the file if it already exists
-        try? FileManager.default.removeItem(at: destinationUrl)
+        try? FileManager.default.removeItem(at: destinationURL)
 
-        try FileManager.default.copyItem(at: tempLocalUrl, to: destinationUrl)
+        try data.write(to: destinationURL)
 
-        return destinationUrl
+        print("file downloaded \(destinationURL)")
+        return destinationURL
+    }
+
+    func createSubtitleAsset(from url: URL?) async -> AVAsset? {
+        guard let url, let filepath = try? await downloadFileToTemporaryDirectory(from: url) else {
+            return nil
+        }
+        return AVAsset(url: filepath)
     }
 
     enum PlayerError: Error {
         case compositionError(String)
     }
 
-    func createMutableComposition(_ videoAsset: AVAsset,
-                                  _ subtitleAsset: AVAsset) async throws -> AVMutableComposition
-    {
+    func createMutableComposition(
+        _ videoAsset: AVAsset,
+        _ subtitleAsset: AVAsset
+    ) async throws -> AVMutableComposition {
         let composition = AVMutableComposition()
 
         let mediaTypes: [AVMediaType: AVAsset] = [.video: videoAsset, .audio: videoAsset, .text: subtitleAsset]
 
         for (mediaType, avAsset) in mediaTypes {
             do {
-                let track = composition.addMutableTrack(
-                    withMediaType: mediaType,
-                    preferredTrackID: kCMPersistentTrackID_Invalid
-                )!
-
                 let assetTrack = try await avAsset.loadTracks(withMediaType: mediaType).first!
 
                 let trackTimeRange = try await assetTrack.load(.timeRange)
 
-                if mediaType == .video {
-                    videoDuration = trackTimeRange.duration.seconds
-                }
+                let track = composition.addMutableTrack(
+                    withMediaType: mediaType,
+                    preferredTrackID: kCMPersistentTrackID_Invalid
+                )!
 
                 try track.insertTimeRange(
                     CMTimeRangeMake(start: .zero, duration: trackTimeRange.duration),
@@ -155,27 +142,17 @@ final class VideoPlayerController: NSObject, ObservableObject {
         return composition
     }
 
-    func createPlayer(video: VideoModel, onDoneWatch: @escaping () async -> Void) async {
-        if loading {
-            return
-        }
-
-        self.onDoneWatch = onDoneWatch
-
-        DispatchQueue.main.async {
-            self.loading = true
-        }
-
+    func createPlayer(video: VideoModel) async {
         let videoURL = video.videoURL
         let subtitleURL = video.subtitleURL
 
         let videoAsset = AVAsset(url: videoURL)
+        let subtitleAsset = await createSubtitleAsset(from: subtitleURL)
 
         let playerItem: AVPlayerItem
 
-        if let subtitleURL,
-           let subtitleFile = try? await downloadSubtitles(from: subtitleURL),
-           let composition = try? await createMutableComposition(videoAsset, AVAsset(url: subtitleFile))
+        if let subtitleAsset,
+           let composition = try? await createMutableComposition(videoAsset, subtitleAsset)
         {
             playerItem = .init(asset: composition)
         } else {
@@ -192,29 +169,7 @@ final class VideoPlayerController: NSObject, ObservableObject {
         player.usesExternalPlaybackWhileExternalScreenIsActive = true
         player.preventsDisplaySleepDuringVideoPlayback = true
 
-        // Set up an observer to track changes in the current time
-        timeObserverToken = player.addPeriodicTimeObserver(
-            forInterval: CMTimeMake(value: 1, timescale: 1),
-            queue: .main
-        ) { time in
-            if time.seconds / self.videoDuration >= 0.9 {
-                if let timeObserverToken = self.timeObserverToken,
-                   let player = self.player,
-                   let onDoneWatch = self.onDoneWatch
-                {
-                    Task {
-                        await onDoneWatch()
-                    }
-                    player.removeTimeObserver(timeObserverToken)
-                    self.timeObserverToken = nil
-                }
-            }
-        }
-
-        await MainActor.run {
-            self.player = player
-            self.loading = false
-        }
+        self.player = player
     }
 
     private func prepareMetadata(video: VideoModel) -> [AVMetadataItem] {
@@ -278,11 +233,11 @@ final class VideoPlayerController: NSObject, ObservableObject {
             )
                 -> Void
         ) {
-            if playerViewController === control.scene?.windows.first?.rootViewController?.presentedViewController {
+            if control.sceneController.isPresent(playerViewController) {
                 return
             }
 
-            control.present(playerViewController) {
+            control.sceneController.present(playerViewController) {
                 completionHandler(false)
             }
         }
