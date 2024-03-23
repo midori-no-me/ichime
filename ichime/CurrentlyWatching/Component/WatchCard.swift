@@ -14,47 +14,12 @@ struct WatchCard: View {
     let data: WatchCardModel
 
     var body: some View {
-        HStack(alignment: .top) {
-            CachedAsyncImage(
-                url: data.image,
-                transaction: .init(animation: .easeInOut)
-            ) { phase in
-                switch phase {
-                case .empty:
-                    ProgressView()
-                case let .success(image):
-                    image.resizable()
-                        .scaledToFit()
-                        .cornerRadiusForMediumObject()
-                        .clipped()
-
-                case .failure:
-                    Image(systemName: "wifi.slash")
-                @unknown default:
-                    EmptyView()
-                }
-            }
-            .frame(width: 100, height: 135, alignment: .top)
-            .padding(.trailing, ROW_PADDING)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text([data.title, data.sideText].joined(separator: " • "))
-                    .font(.caption)
-                    .fontWeight(.medium)
-                    .foregroundStyle(.secondary)
-
-                Text(data.name.ru)
-                    .font(.callout)
-                    .fontWeight(.medium)
-
-                if !data.name.romaji.isEmpty {
-                    Text(data.name.romaji)
-                        .font(.caption)
-                        .foregroundStyle(Color.secondary)
-                }
-            }
-        }
-        .padding(.top, ROW_PADDING)
+        RawShowCard(
+            metadataLineComponents: [data.title, data.sideText],
+            cover: data.image,
+            primaryTitle: data.name.romaji,
+            secondaryTitle: data.name.ru
+        )
     }
 }
 

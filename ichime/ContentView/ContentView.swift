@@ -24,7 +24,7 @@ struct ContentView: View {
                 ProgressView()
             case .isAuth:
                 #if os(iOS)
-                    if UIDevice.userInterfaceIdiom == .phone {
+                    if UIDevice.current.userInterfaceIdiom == .phone {
                         ContentViewWithTabBar()
 
                     } else {

@@ -139,10 +139,12 @@ struct CurrentlyWatchingView: View {
                 }
             }
         }
+        #if !os(tvOS)
         .toolbar {
             ProfileButton()
         }
         .navigationTitle("Я смотрю")
+        #endif
     }
 
     enum SubRoute: Hashable {
@@ -157,16 +159,16 @@ struct LoadedCurrentlyWatching: View {
 
     var body: some View {
         List {
-            if UIDevice.current.isPhoneOrTv {
-                Section {
-                    NavigationLink(value: CurrentlyWatchingView.SubRoute.notifications) {
-                        Label("Уведомления", systemImage: "bell")
-                        #if !os(tvOS)
-                            .badge(counter)
-                        #endif
+            #if os(iOS)
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    Section {
+                        NavigationLink(value: CurrentlyWatchingView.SubRoute.notifications) {
+                            Label("Уведомления", systemImage: "bell")
+                                .badge(counter)
+                        }
                     }
                 }
-            }
+            #endif
 
             Section {
                 ForEach(shows) { show in
@@ -180,7 +182,9 @@ struct LoadedCurrentlyWatching: View {
                     }
                 }
             } header: {
-                Text("Серии к просмотру")
+                #if !os(tvOS)
+                    Text("Серии к просмотру")
+                #endif
             }
         }
         .listStyle(.plain)

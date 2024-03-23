@@ -209,11 +209,11 @@ private struct OngoingsGrid: View {
     var body: some View {
         LazyVGrid(columns: [
             GridItem(
-                .adaptive(minimum: ShowCard.RECOMMENDED_MINIMUM_WIDTH),
-                spacing: ShowCard.RECOMMENDED_SPACING,
+                .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+                spacing: RawShowCard.RECOMMENDED_SPACING,
                 alignment: .topLeading
             ),
-        ], spacing: ShowCard.RECOMMENDED_SPACING) {
+        ], spacing: RawShowCard.RECOMMENDED_SPACING) {
             ForEach(self.shows) { show in
                 ShowCard(show: show)
                     .task {

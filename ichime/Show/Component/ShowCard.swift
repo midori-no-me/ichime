@@ -9,91 +9,18 @@ import CachedAsyncImage
 import SwiftUI
 
 struct ShowCard: View {
-    #if os(tvOS)
-        public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 500
-    #else
-        public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 300
-    #endif
-
-    #if os(tvOS)
-        public static let RECOMMENDED_SPACING: CGFloat = 80
-    #else
-        public static let RECOMMENDED_SPACING: CGFloat = 16
-    #endif
-
-    #if os(tvOS)
-        private static let IMAGE_WIDTH: CGFloat = 200
-        private static let IMAGE_HEIGHT: CGFloat = 270
-    #else
-        private static let IMAGE_WIDTH: CGFloat = 100
-        private static let IMAGE_HEIGHT: CGFloat = 135
-    #endif
-
-    #if os(tvOS)
-        private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 20
-    #else
-        private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 8
-    #endif
-
     let show: Show
 
     var body: some View {
         NavigationLink(
             destination: ShowView(showId: show.id, preloadedShow: show)
         ) {
-            HStack(alignment: .top, spacing: ShowCard.SPACING_BETWEEN_IMAGE_AND_CONTENT) {
-                CachedAsyncImage(
-                    url: show.posterUrl!,
-                    transaction: .init(animation: .easeInOut(duration: 0.5))
-                ) { phase in
-                    switch phase {
-                    case .empty:
-                        Rectangle()
-                            .fill(Color.clear)
-                    case let .success(image):
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .cornerRadiusForMediumObject()
-                            .clipped()
-
-                    case .failure:
-                        Rectangle()
-                            .fill(Color.clear)
-                    @unknown default:
-                        Rectangle()
-                            .fill(Color.clear)
-                    }
-                }
-                .frame(
-                    width: ShowCard.IMAGE_WIDTH,
-                    height: ShowCard.IMAGE_HEIGHT,
-                    alignment: .top
-                )
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(formatMetadataLine(show))
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .foregroundStyle(.secondary)
-
-                    if show.title.translated.japaneseRomaji == nil || show.title.translated.russian == nil {
-                        Text(show.title.full)
-                            .font(.callout)
-                            .fontWeight(.medium)
-                    } else {
-                        Text(show.title.translated.japaneseRomaji!)
-                            .font(.callout)
-                            .fontWeight(.medium)
-
-                        Text(show.title.translated.russian!)
-                            .font(.caption)
-                            .foregroundStyle(Color.secondary)
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, 4)
-            }
+            RawShowCard(
+                metadataLineComponents: formatMetadataLine(show),
+                cover: show.posterUrl,
+                primaryTitle: show.title.translated.japaneseRomaji ?? show.title.full,
+                secondaryTitle: show.title.translated.russian
+            )
         }
         #if !os(tvOS)
         .contextMenu {
@@ -113,7 +40,7 @@ struct ShowCard: View {
     }
 }
 
-private func formatMetadataLine(_ show: Show) -> String {
+private func formatMetadataLine(_ show: Show) -> [String] {
     var metadataLineComponents: [String] = []
 
     if let score = show.score {
@@ -126,7 +53,7 @@ private func formatMetadataLine(_ show: Show) -> String {
         metadataLineComponents.append(show.typeTitle)
     }
 
-    return metadataLineComponents.joined(separator: " • ")
+    return metadataLineComponents
 }
 
 struct IndependentShowCardContextMenuPreview: View {
