@@ -14,9 +14,12 @@ struct EpisodeListView: View {
                 }
             }
         }
-        .navigationTitle("Список серий")
+        #if os(tvOS)
+        .listStyle(.grouped)
+        #endif
         #if !os(tvOS)
-            .navigationBarTitleDisplayMode(.large)
+        .navigationTitle("Список серий")
+        .navigationBarTitleDisplayMode(.large)
         #endif
     }
 }
