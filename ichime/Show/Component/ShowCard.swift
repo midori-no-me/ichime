@@ -79,6 +79,8 @@ struct ShowCard: View {
 
                     if show.title.translated.japaneseRomaji == nil || show.title.translated.russian == nil {
                         Text(show.title.full)
+                            .font(.callout)
+                            .fontWeight(.medium)
                     } else {
                         Text(show.title.translated.japaneseRomaji!)
                             .font(.callout)
