@@ -25,17 +25,17 @@ struct ContentViewWithTabBarTV: View {
             }
 
             NavigationStack {
-                MyListsView()
-            }
-            .tabItem {
-                Text("Мой список")
-            }
-
-            NavigationStack {
                 NotificationCenterView()
             }
             .tabItem {
                 Text("Уведомления")
+            }
+
+            NavigationStack {
+                MyListsView()
+            }
+            .tabItem {
+                Text("Мой список")
             }
 
             NavigationStack {
