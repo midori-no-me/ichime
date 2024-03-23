@@ -16,49 +16,65 @@ public extension ScraperAPI.Types.Show {
 
 struct AnimeList: View {
     let categories: [ScraperAPI.Types.ListByCategory]
+    let onUpdate: () async -> Void
 
-    @Binding var selectedShow: Int?
+    @State var selectedShow: ScraperAPI.Types.Show?
 
     var body: some View {
-        List(selection: $selectedShow) {
+        List {
             ForEach(categories, id: \.type) { category in
-                Section(category.type.rawValue) {
+                Section {
                     ForEach(category.shows, id: \.id) { show in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(show.name.ru).font(.body)
-                                if !show.name.romaji.isEmpty {
-                                    Text(show.name.romaji).font(.caption).foregroundColor(Color.gray)
+                        Button(action: {
+                            selectedShow = show
+                        }) {
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(show.name.ru).font(.body)
+                                    if !show.name.romaji.isEmpty {
+                                        Text(show.name.romaji).font(.caption).foregroundColor(Color.gray)
+                                    }
                                 }
+                                Spacer()
+                                Text(
+                                    "\(show.episodes.watched) / \(show.episodes.total == Int.max ? "??" : String(show.episodes.total))"
+                                )
+                                .font(.footnote).padding(.leading)
                             }
-                            Spacer()
-                            Text(
-                                "\(show.episodes.watched) / \(show.episodes.total == Int.max ? "??" : String(show.episodes.total))"
-                            )
-                            .font(.footnote).padding(.leading)
-                        }.contextMenu(menuItems: {
-                            #if !os(tvOS)
-                                ShareLink(item: show.websiteUrl) {
-                                    Label("Поделиться", systemImage: "square.and.arrow.up")
+                            .contextMenu(menuItems: {
+                                #if !os(tvOS)
+                                    ShareLink(item: show.websiteUrl) {
+                                        Label("Поделиться", systemImage: "square.and.arrow.up")
+                                    }
+                                #endif
+                                NavigationLink(destination: ShowView(showId: show.id)) {
+                                    Text("Открыть")
                                 }
-                            #endif
-                            NavigationLink(destination: ShowView(showId: show.id)) {
-                                Text("Открыть")
-                            }
-                        }, preview: {
-                            IndependentShowCardContextMenuPreview(showId: show.id)
-                        })
+                            }, preview: {
+                                IndependentShowCardContextMenuPreview(showId: show.id)
+                            })
+                        }
                     }
+                } header: {
+                    Text(category.type.rawValue)
                 }
             }
         }
+        .listStyle(.grouped)
+        .sheet(item: $selectedShow, content: { show in
+            MyListEditView(
+                show: .init(id: show.id, name: show.name.ru, totalEpisodes: show.episodes.total)
+            ) {
+                Task {
+                    await onUpdate()
+                }
+            }
+        })
     }
 }
 
 #Preview {
-    @State var showId: Int?
-
-    return NavigationStack {
-        AnimeList(categories: ScraperAPI.Types.ListByCategory.sampleData, selectedShow: $showId)
+    NavigationStack {
+        AnimeList(categories: ScraperAPI.Types.ListByCategory.sampleData) {}
     }
 }

@@ -31,7 +31,8 @@ extension ScraperAPI.Types.ListCategoryType {
     }
 }
 
-class MyListViewModel: ObservableObject {
+@Observable
+class MyListViewModel {
     private let apiClient: ScraperAPI.APIClient
     private let userManager: UserManager
     init(apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
@@ -50,8 +51,8 @@ class MyListViewModel: ObservableObject {
         case needSubscribe
     }
 
-    @Published private(set) var state = State.idle
-    @Published var selectedShow: ScraperAPI.Types.Show?
+    private(set) var state = State.idle
+    var selectedShow: ScraperAPI.Types.Show?
 
     var categories: [ScraperAPI.Types.ListByCategory] = []
 
@@ -68,8 +69,6 @@ class MyListViewModel: ObservableObject {
         await performUpdateState()
     }
 
-    var cancel: Cancellable?
-
     func performUpdateState() async {
         guard case let .isAuth(user) = userManager.state else {
             fatalError("This screen can use only with auth")
@@ -77,11 +76,6 @@ class MyListViewModel: ObservableObject {
 
         if !userManager.subscribed {
             return await updateState(.needSubscribe)
-        }
-
-        if let cancel {
-            cancel.cancel()
-            self.cancel = nil
         }
 
         do {
@@ -108,27 +102,11 @@ class MyListViewModel: ObservableObject {
         let filtered = categories.filter { $0.type == type }
         return await updateState(.loaded(filtered))
     }
-
-    func selectShow(showId: Int?) {
-        guard let showId else {
-            selectedShow = nil
-            return
-        }
-
-        for category in categories {
-            for show in category.shows {
-                if show.id == showId {
-                    selectedShow = show
-                }
-            }
-        }
-    }
 }
 
 struct MyListsView: View {
-    @StateObject private var viewModel: MyListViewModel = .init()
+    @State private var viewModel: MyListViewModel = .init()
     @State private var categoryType: ScraperAPI.Types.ListCategoryType?
-    @State private var selectedShowId: Int?
 
     var shareText: String {
         var categories = viewModel.categories
@@ -183,7 +161,9 @@ struct MyListsView: View {
                     Text("Вы еще ничего не добавили в свой список")
                 }
             case let .loaded(categories):
-                AnimeList(categories: categories, selectedShow: $selectedShowId)
+                AnimeList(categories: categories) {
+                    await viewModel.performUpdateState()
+                }
             }
         }
         .onChange(of: categoryType) {
@@ -191,20 +171,6 @@ struct MyListsView: View {
                 await viewModel.performFilter(type: categoryType)
             }
         }
-        .onChange(of: selectedShowId) {
-            viewModel.selectShow(showId: selectedShowId)
-        }
-        .sheet(item: $viewModel.selectedShow, onDismiss: {
-            selectedShowId = nil
-        }, content: { show in
-            MyListEditView(
-                show: .init(id: show.id, name: show.name.ru, totalEpisodes: show.episodes.total)
-            ) {
-                Task {
-                    await viewModel.performUpdateState()
-                }
-            }
-        })
         .task {
             switch viewModel.state {
             case .loaded, .loadedButEmpty, .loadingFailed, .needSubscribe:
@@ -218,7 +184,9 @@ struct MyListsView: View {
             await viewModel.performUpdateState()
             await viewModel.performFilter(type: categoryType)
         }
+        #if !os(tvOS)
         .navigationTitle("Мой список")
+        #endif
     }
 }
 
@@ -229,13 +197,12 @@ struct ToolbarWrapper<Content: View>: View {
 
     var body: some View {
         content()
+        #if !os(tvOS)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    #if !os(tvOS)
-                        ShareLink(item: shareText) {
-                            Label("Поделиться", systemImage: "square.and.arrow.up")
-                        }
-                    #endif
+                    ShareLink(item: shareText) {
+                        Label("Поделиться", systemImage: "square.and.arrow.up")
+                    }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
@@ -262,11 +229,11 @@ struct ToolbarWrapper<Content: View>: View {
                         )
                     }
                 }
-
                 ToolbarItem(placement: .topBarTrailing) {
                     ProfileButton()
                 }
             }
+        #endif
     }
 }
 
