@@ -69,15 +69,3 @@ extension ScraperAPI.Types.Notification {
         return ScraperAPI.Types.Name(ru: "", romaji: "")
     }
 }
-
-extension Elements {
-    // background-image: url('/posters/26142.5187294764.140x140.1.jpg'); -> /posters/26142.5187294764.140x140.1.jpg
-    func imageBackground() throws -> String {
-        let styleAttr = try attr("style")
-        guard let matchedText = styleAttr.firstMatch(of: #/url\('(.*)'\);/#)?.output.1 else {
-            return ""
-        }
-
-        return String(matchedText)
-    }
-}
