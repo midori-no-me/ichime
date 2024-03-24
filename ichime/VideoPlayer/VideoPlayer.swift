@@ -164,11 +164,18 @@ final class VideoPlayerController: NSObject, ObservableObject {
             playerItem.externalMetadata = metadata
         }
 
+        // Буферим 10 секунд видео
+        playerItem.preferredForwardBufferDuration = 10
+
         let player = AVPlayer(playerItem: playerItem)
         player.allowsExternalPlayback = subtitleURL == nil
         player.usesExternalPlaybackWhileExternalScreenIsActive = true
         player.preventsDisplaySleepDuringVideoPlayback = true
 
+        // TODO: Проверить что на tvOS что оно не в тру по умолчанию
+        print("automaticallyWaitsToMinimizeStalling \(player.automaticallyWaitsToMinimizeStalling)")
+
+        player.automaticallyWaitsToMinimizeStalling = true
         self.player = player
     }
 
