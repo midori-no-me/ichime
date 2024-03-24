@@ -35,7 +35,11 @@ struct ShowCard: View {
             )
         }
         #endif
+        #if os(tvOS)
+        .buttonStyle(.borderless)
+        #else
         .buttonStyle(.plain)
+        #endif
     }
 }
 

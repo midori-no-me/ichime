@@ -181,7 +181,7 @@ struct LoadedCurrentlyWatching: View {
                         NavigationLink(value: show) {
                             WatchCard(data: show)
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(.borderless)
                         .task {
                             if show == self.shows.last {
                                 await self.loadMore()

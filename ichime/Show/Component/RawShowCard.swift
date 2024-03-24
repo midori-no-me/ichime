@@ -8,31 +8,31 @@
 import SwiftUI
 
 struct RawShowCard: View {
-#if os(tvOS)
-    public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 500
-#else
-    public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 300
-#endif
+    #if os(tvOS)
+        public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 600
+    #else
+        public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 300
+    #endif
 
-#if os(tvOS)
-    public static let RECOMMENDED_SPACING: CGFloat = 80
-#else
-    public static let RECOMMENDED_SPACING: CGFloat = 16
-#endif
+    #if os(tvOS)
+        public static let RECOMMENDED_SPACING: CGFloat = 60
+    #else
+        public static let RECOMMENDED_SPACING: CGFloat = 16
+    #endif
 
-#if os(tvOS)
-    private static let IMAGE_WIDTH: CGFloat = 200
-    private static let IMAGE_HEIGHT: CGFloat = 270
-#else
-    private static let IMAGE_WIDTH: CGFloat = 100
-    private static let IMAGE_HEIGHT: CGFloat = 135
-#endif
+    #if os(tvOS)
+        private static let IMAGE_WIDTH: CGFloat = 200
+        private static let IMAGE_HEIGHT: CGFloat = 270
+    #else
+        private static let IMAGE_WIDTH: CGFloat = 100
+        private static let IMAGE_HEIGHT: CGFloat = 135
+    #endif
 
-#if os(tvOS)
-    private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 20
-#else
-    private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 8
-#endif
+    #if os(tvOS)
+        private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 50
+    #else
+        private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 8
+    #endif
 
     let metadataLineComponents: [String]
     let cover: URL?
@@ -54,8 +54,10 @@ struct RawShowCard: View {
                         image
                             .resizable()
                             .scaledToFit()
+                        #if !os(tvOS)
                             .cornerRadiusForMediumObject()
                             .clipped()
+                        #endif
 
                     case .failure:
                         EmptyView()
@@ -88,12 +90,10 @@ struct RawShowCard: View {
                         .font(.caption)
                         .foregroundStyle(Color.secondary)
                 }
-
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 4)
         }
-
     }
 }
 
