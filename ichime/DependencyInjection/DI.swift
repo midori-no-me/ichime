@@ -20,14 +20,14 @@ class ApplicationDependency: DIFramework {
     static func load(container: DIContainer) {
         container
             .register {
-                ScraperAPI.Session(cookieStorage: HTTPCookieStorage.shared, baseURL: ServiceLocator.getWebsiteBaseUrl())
+                ScraperAPI.Session(cookieStorage: HTTPCookieStorage.shared, baseURL: ServiceLocator.getWebsiteBaseUrl)
             }
 
         container
             .register {
                 ScraperAPI.APIClient(
-                    baseURL: ServiceLocator.getWebsiteBaseUrl(),
-                    userAgent: ServiceLocator.getUserAgent(),
+                    baseURL: ServiceLocator.getWebsiteBaseUrl,
+                    userAgent: ServiceLocator.getUserAgent,
                     session: $0
                 )
             }
@@ -36,8 +36,8 @@ class ApplicationDependency: DIFramework {
             .lifetime(.single)
 
         container.register { Anime365ApiClient(
-            baseURL: ServiceLocator.getWebsiteBaseUrl(),
-            userAgent: ServiceLocator.getUserAgent()
+            baseURL: ServiceLocator.getWebsiteBaseUrl,
+            userAgent: ServiceLocator.getUserAgent
         ) }
 
         container.register { Anime365Client(apiClient: $0) }

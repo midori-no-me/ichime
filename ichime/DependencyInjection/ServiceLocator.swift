@@ -10,31 +10,27 @@ import Foundation
 import ScraperAPI
 
 enum ServiceLocator {
-    static func getWebsiteBaseUrl() -> URL {
-        return URL(string: "https://anime365.ru")!
+    static var getWebsiteBaseUrl: URL {
+        URL(string: "https://anime365.ru")!
     }
 
-    static func getApplicationName() -> String {
-        if let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String {
-            return appName
-        } else {
-            return "ichime"
-        }
+    static var getApplicationId: String {
+        Bundle.main.bundleIdentifier ?? "ichime"
+    }
+
+    static var getApplicationName: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? "Ichime"
     }
 
     static var getPermittedScheduleBGTaskName: String {
         "dev.midorinome.ichime.background-tasks"
     }
 
-    static func getApplicationVersion() -> String {
-        if let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
-            return appVersion
-        } else {
-            return "0.0.1"
-        }
+    static var getApplicationVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.0.1"
     }
 
-    static func getUserAgent() -> String {
-        return "\(getApplicationName()) (\(getApplicationVersion())) / Contact: petr@flaks.xyz"
+    static var getUserAgent: String {
+        return "\(getApplicationName) (\(getApplicationVersion) / Contact: petr@flaks.xyz"
     }
 }
