@@ -1,11 +1,12 @@
 {
   "images" : [
     {
+      "filename" : "Ichime tvOS App Icon Middle 1x.png",
       "idiom" : "tv",
       "scale" : "1x"
     },
     {
-      "filename" : "Layer 2.png",
+      "filename" : "Ichime tvOS App Icon Middle 2x.png",
       "idiom" : "tv",
       "scale" : "2x"
     }
