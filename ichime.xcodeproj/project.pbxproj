@@ -38,7 +38,6 @@
 		C6D0DA652B9FBE010000255C /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED269F612B6034810083A62F /* AuthenticationView.swift */; };
 		C6D0DA672B9FBE4C0000255C /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = C6D0DA662B9FBE4C0000255C /* Anime365ApiClient */; };
 		C6D0DA692B9FBE4C0000255C /* ScraperAPI in Frameworks */ = {isa = PBXBuildFile; productRef = C6D0DA682B9FBE4C0000255C /* ScraperAPI */; };
-		C6D0DA6B2B9FBE4C0000255C /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = C6D0DA6A2B9FBE4C0000255C /* CachedAsyncImage */; };
 		C6D0DA6D2B9FBE4C0000255C /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = C6D0DA6C2B9FBE4C0000255C /* DITranquillity */; };
 		C6D0DA6E2B9FBE9A0000255C /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD353B32B5E82AF00313489 /* ServiceLocator.swift */; };
 		C6D0DA6F2B9FBE9E0000255C /* DI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64EB0192B699C3D00AC7C27 /* DI.swift */; };
@@ -75,7 +74,6 @@
 		ED7357BE2BA8871A005C69B4 /* CardWithExpandableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */; };
 		ED7357C12BA890CD005C69B4 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357C02BA890CD005C69B4 /* UIScrollView.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
-		ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = ED8A40802B4C57410055DAB6 /* CachedAsyncImage */; };
 		EDC57C192BAF6448001533E7 /* ContentViewWithTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */; };
 		EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */; };
 		EDC57C1D2BAF6F3F001533E7 /* RawShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1C2BAF6F3F001533E7 /* RawShowCard.swift */; };
@@ -180,7 +178,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6D0DA6B2B9FBE4C0000255C /* CachedAsyncImage in Frameworks */,
 				C6D0DA6D2B9FBE4C0000255C /* DITranquillity in Frameworks */,
 				C6D0DA692B9FBE4C0000255C /* ScraperAPI in Frameworks */,
 				C6D0DA672B9FBE4C0000255C /* Anime365ApiClient in Frameworks */,
@@ -194,7 +191,6 @@
 				C651FD092B61745700E68341 /* ScraperAPI in Frameworks */,
 				C64EB0182B68587700AC7C27 /* DITranquillity in Frameworks */,
 				ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */,
-				ED8A40812B4C57410055DAB6 /* CachedAsyncImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -581,7 +577,6 @@
 			packageProductDependencies = (
 				C6D0DA662B9FBE4C0000255C /* Anime365ApiClient */,
 				C6D0DA682B9FBE4C0000255C /* ScraperAPI */,
-				C6D0DA6A2B9FBE4C0000255C /* CachedAsyncImage */,
 				C6D0DA6C2B9FBE4C0000255C /* DITranquillity */,
 			);
 			productName = IchimeMac;
@@ -603,7 +598,6 @@
 			);
 			name = Ichime;
 			packageProductDependencies = (
-				ED8A40802B4C57410055DAB6 /* CachedAsyncImage */,
 				ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */,
 				C651FD082B61745700E68341 /* ScraperAPI */,
 				C64EB0172B68587700AC7C27 /* DITranquillity */,
@@ -641,7 +635,6 @@
 			);
 			mainGroup = EDFF2D042B43471300F27E61;
 			packageReferences = (
-				ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				ED49A9AE2B5ED48C0016920B /* XCLocalSwiftPackageReference "Anime365ApiClient" */,
 				C64EB0162B68587700AC7C27 /* XCRemoteSwiftPackageReference "DITranquillity" */,
 			);
@@ -1118,14 +1111,6 @@
 				minimumVersion = 4.5.0;
 			};
 		};
-		ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.1;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1146,11 +1131,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = ScraperAPI;
 		};
-		C6D0DA6A2B9FBE4C0000255C /* CachedAsyncImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
-			productName = CachedAsyncImage;
-		};
 		C6D0DA6C2B9FBE4C0000255C /* DITranquillity */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C64EB0162B68587700AC7C27 /* XCRemoteSwiftPackageReference "DITranquillity" */;
@@ -1159,11 +1139,6 @@
 		ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Anime365ApiClient;
-		};
-		ED8A40802B4C57410055DAB6 /* CachedAsyncImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = ED8A407F2B4C57410055DAB6 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
-			productName = CachedAsyncImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

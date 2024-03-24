@@ -5,7 +5,6 @@
 //  Created by p.flaks on 07.01.2024.
 //
 
-import CachedAsyncImage
 import SwiftUI
 
 struct RawShowCard: View {
@@ -43,14 +42,13 @@ struct RawShowCard: View {
     var body: some View {
         HStack(alignment: .top, spacing: RawShowCard.SPACING_BETWEEN_IMAGE_AND_CONTENT) {
             if let cover {
-                CachedAsyncImage(
+                AsyncImage(
                     url: cover,
                     transaction: .init(animation: .easeInOut(duration: 0.5))
                 ) { phase in
                     switch phase {
                     case .empty:
-                        Rectangle()
-                            .fill(Color.clear)
+                        EmptyView()
 
                     case let .success(image):
                         image
@@ -60,12 +58,10 @@ struct RawShowCard: View {
                             .clipped()
 
                     case .failure:
-                        Rectangle()
-                            .fill(Color.clear)
+                        EmptyView()
 
                     @unknown default:
-                        Rectangle()
-                            .fill(Color.clear)
+                        EmptyView()
                     }
                 }
                 .frame(

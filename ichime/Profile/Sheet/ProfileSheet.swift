@@ -5,7 +5,6 @@
 //  Created by p.flaks on 29.01.2024.
 //
 
-import CachedAsyncImage
 import ScraperAPI
 import SwiftUI
 
@@ -24,7 +23,7 @@ struct ProfileSheet: View {
                                 .padding()
                         }
                     } icon: {
-                        CachedAsyncImage(
+                        AsyncImage(
                             url: user.avatarURL,
                             transaction: .init(animation: .easeInOut),
                             content: { phase in

@@ -5,7 +5,6 @@
 //  Created by p.flaks on 05.02.2024.
 //
 
-import CachedAsyncImage
 import ScraperAPI
 import SwiftUI
 
@@ -19,7 +18,7 @@ struct ProfileButton: View {
             profileSheetPresented.toggle()
         }, label: {
             if case let .isAuth(user) = userManager.state {
-                CachedAsyncImage(
+                AsyncImage(
                     url: user.avatarURL,
                     transaction: .init(animation: .easeInOut),
                     content: { phase in

@@ -5,7 +5,6 @@
 //  Created by p.flaks on 07.01.2024.
 //
 
-import CachedAsyncImage
 import SwiftUI
 
 struct ShowCard: View {
@@ -89,7 +88,7 @@ private struct ShowCardContextMenuPreview: View {
 
     var body: some View {
         VStack(alignment: .center) {
-            CachedAsyncImage(
+            AsyncImage(
                 url: posterUrl,
                 transaction: .init(animation: .easeInOut),
                 content: { phase in

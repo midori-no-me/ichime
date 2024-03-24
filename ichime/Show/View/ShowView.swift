@@ -5,7 +5,6 @@
 //  Created by p.flaks on 05.01.2024.
 //
 
-import CachedAsyncImage
 import ScraperAPI
 import SwiftUI
 
@@ -275,7 +274,7 @@ private struct ShowDetails: View {
                 }
 
                 GeometryReader { geometry in
-                    CachedAsyncImage(
+                    AsyncImage(
                         url: self.show.posterUrl!,
                         transaction: .init(animation: .easeInOut),
                         content: { phase in
@@ -310,7 +309,7 @@ private struct ShowDetails: View {
                 }
                 .fullScreenCover(isPresented: $showImage, content: {
                     NavigationStack {
-                        CachedAsyncImage(url: self.show.posterUrl)
+                        AsyncImage(url: self.show.posterUrl)
                             .toolbar {
                                 ToolbarItem(placement: .cancellationAction) {
                                     Button("Закрыть") {
