@@ -15,19 +15,34 @@ enum ServiceLocator {
     }
 
     static var getApplicationId: String {
-        Bundle.main.bundleIdentifier ?? "ichime"
+        guard let appId = Bundle.main.bundleIdentifier else {
+            fatalError("Cannot get App Id")
+        }
+        return appId
     }
 
     static var getApplicationName: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? "Ichime"
+        guard let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String else {
+            fatalError("Cannot get App Name")
+        }
+        return appName
     }
 
     static var getPermittedScheduleBGTaskName: String {
-        "dev.midorinome.ichime.background-tasks"
+        guard let tasks = Bundle.main.object(forInfoDictionaryKey: "BGTaskSchedulerPermittedIdentifiers") as? [String],
+              let task = tasks.first
+        else {
+            fatalError("Cannot get bg task name")
+        }
+
+        return task
     }
 
     static var getApplicationVersion: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.0.1"
+        guard let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String else {
+            fatalError("Cannot get App Version")
+        }
+        return version
     }
 
     static var getUserAgent: String {
