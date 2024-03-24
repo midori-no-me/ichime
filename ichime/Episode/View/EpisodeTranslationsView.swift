@@ -111,6 +111,7 @@ struct EpisodeTranslationsView: View {
                     ) {
                         Section {
                             TranslationRow(
+                                episodeId: episodeId,
                                 episodeTranslation: translation,
                                 videoPlayerController: videoPlayerController
                             )
@@ -123,6 +124,7 @@ struct EpisodeTranslationsView: View {
                         Section {
                             ForEach(translationGroup.value, id: \.id) { episodeTranslation in
                                 TranslationRow(
+                                    episodeId: episodeId,
                                     episodeTranslation: episodeTranslation,
                                     videoPlayerController: videoPlayerController
                                 )
@@ -154,6 +156,7 @@ struct EpisodeTranslationsView: View {
 }
 
 private struct TranslationRow: View {
+    let episodeId: Int
     let episodeTranslation: Translation
     @ObservedObject var videoPlayerController: VideoPlayerController
 
@@ -187,6 +190,7 @@ private struct TranslationRow: View {
         .sheet(isPresented: $showingSheet) {
             NavigationStack {
                 EpisodeTranslationQualitySelectorView(
+                    episodeId: episodeId,
                     translationId: episodeTranslation.id,
                     translationTeam: episodeTranslation.translationTeam,
                     videoPlayerController: videoPlayerController

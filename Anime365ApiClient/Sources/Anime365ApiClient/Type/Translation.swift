@@ -14,4 +14,6 @@ public struct Anime365ApiTranslation: Decodable {
     public let duration: String
     public let width: Int
     public let height: Int
+    public let seriesId: Int
+    public let episodeId: Int
 }

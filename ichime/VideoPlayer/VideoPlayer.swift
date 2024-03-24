@@ -159,7 +159,12 @@ final class VideoPlayerController: NSObject, ObservableObject {
             playerItem = .init(asset: videoAsset)
         }
 
-        let metadata = prepareMetadata(video: video)
+        let metadata = MetadataCollector.createMetadata(
+            title: video.title,
+            subtitle: video.subtitle,
+            description: video.description
+        )
+
         if !metadata.isEmpty {
             playerItem.externalMetadata = metadata
         }
@@ -177,25 +182,6 @@ final class VideoPlayerController: NSObject, ObservableObject {
 
         player.automaticallyWaitsToMinimizeStalling = true
         self.player = player
-    }
-
-    private func prepareMetadata(video: VideoModel) -> [AVMetadataItem] {
-        var metadata: [AVMetadataItem] = []
-        if let episodeTitle = video.episodeTitle {
-            let episodeTitleItem = AVMutableMetadataItem()
-            episodeTitleItem.identifier = .commonIdentifierTitle
-            episodeTitleItem.value = NSString(string: episodeTitle)
-            metadata.append(episodeTitleItem)
-        }
-
-        if let title = video.title {
-            let showTitleItem = AVMutableMetadataItem()
-            showTitleItem.identifier = .iTunesMetadataTrackSubTitle
-            showTitleItem.value = NSString(string: title)
-            metadata.append(showTitleItem)
-        }
-
-        return metadata
     }
 
     #if !os(tvOS)
@@ -265,8 +251,9 @@ struct VideoPlayerLoader: View {
     VideoPlayerExample(video: .init(
         videoURL: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.mp4")!,
         subtitleURL: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.vtt")!,
-        title: "Arknights",
-        episodeTitle: "Episode 1"
+        title: "Episode 1",
+        subtitle: "Arknights",
+        description: nil
     ))
 }
 

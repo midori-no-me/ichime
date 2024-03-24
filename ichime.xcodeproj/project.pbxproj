@@ -22,6 +22,7 @@
 		C6656A6C2B630C7C00BF7412 /* UserRateForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6656A6B2B630C7C00BF7412 /* UserRateForm.swift */; };
 		C6656A6E2B631EBE00BF7412 /* AnimeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6656A6D2B631EBE00BF7412 /* AnimeList.swift */; };
 		C6656A722B6325D400BF7412 /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = C6656A712B6325D400BF7412 /* .swiftformat */; };
+		C6698C672BB0D4F4008A9274 /* MetadataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6698C662BB0D4F4008A9274 /* MetadataCollector.swift */; };
 		C6899EB12BA2532E00E63311 /* ContentViewWithSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6899EB02BA2532E00E63311 /* ContentViewWithSideBar.swift */; };
 		C6899EB32BA2535100E63311 /* NotificationCounterWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */; };
 		C6899EB52BA254C900E63311 /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959302B4762690030B23D /* OngoingsView.swift */; };
@@ -118,6 +119,7 @@
 		C6656A6B2B630C7C00BF7412 /* UserRateForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRateForm.swift; sourceTree = "<group>"; };
 		C6656A6D2B631EBE00BF7412 /* AnimeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeList.swift; sourceTree = "<group>"; };
 		C6656A712B6325D400BF7412 /* .swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
+		C6698C662BB0D4F4008A9274 /* MetadataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCollector.swift; sourceTree = "<group>"; };
 		C6899EB02BA2532E00E63311 /* ContentViewWithSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithSideBar.swift; sourceTree = "<group>"; };
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C68F69F22BAA4088007A2E84 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				C6213C862BAF603800E08736 /* SceneController.swift */,
 				C6213C882BAF605F00E08736 /* WatchChecker.swift */,
 				C6213C8A2BAF607E00E08736 /* VideoModel.swift */,
+				C6698C662BB0D4F4008A9274 /* MetadataCollector.swift */,
 			);
 			path = VideoPlayer;
 			sourceTree = "<group>";
@@ -713,6 +716,7 @@
 				EDC57C1D2BAF6F3F001533E7 /* RawShowCard.swift in Sources */,
 				C6656A692B62E30500BF7412 /* MyListEditView.swift in Sources */,
 				ED0D29952B66C84600C5AC9E /* BaseUrlPreference.swift in Sources */,
+				C6698C672BB0D4F4008A9274 /* MetadataCollector.swift in Sources */,
 				ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */,
 				ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */,
 				ED5C74812BAC401C002E0E1B /* CorderRadiusForMediumObject.swift in Sources */,

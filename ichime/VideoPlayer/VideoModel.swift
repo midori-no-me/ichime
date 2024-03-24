@@ -4,6 +4,7 @@
 //
 //  Created by Nikita Nafranets on 23.03.2024.
 //
+import AVFoundation
 import Foundation
 
 struct VideoModel {
@@ -11,5 +12,6 @@ struct VideoModel {
     let subtitleURL: URL?
 
     let title: String?
-    let episodeTitle: String?
+    let subtitle: String?
+    let description: String?
 }

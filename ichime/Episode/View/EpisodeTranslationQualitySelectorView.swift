@@ -69,6 +69,7 @@ class EpisodeTranslationQualitySelectorViewModel {
 struct EpisodeTranslationQualitySelectorView: View {
     @Environment(\.dismiss) private var dismiss
 
+    let episodeId: Int
     let translationId: Int
     let translationTeam: String
     @ObservedObject var videoPlayerController: VideoPlayerController = .init()
@@ -156,12 +157,15 @@ struct EpisodeTranslationQualitySelectorView: View {
     func handleStartPlay(video: URL, subtitle: URL?) {
         selectedUrl = video
         Task {
+            let collector = MetadataCollector(episodeId: episodeId, translationId: translationId)
+            let metadata = await collector.getMetadata()
             await self.videoPlayerController.createPlayer(
                 video: .init(
                     videoURL: video,
                     subtitleURL: subtitle,
-                    title: nil,
-                    episodeTitle: nil
+                    title: metadata?.title,
+                    subtitle: metadata?.subtitle,
+                    description: metadata?.description
                 )
             )
             closeModal()
@@ -180,6 +184,7 @@ struct EpisodeTranslationQualitySelectorView: View {
 #Preview {
     NavigationStack {
         EpisodeTranslationQualitySelectorView(
+            episodeId: 184_037,
             translationId: 3_061_769,
             translationTeam: "Crunchyroll"
         )
