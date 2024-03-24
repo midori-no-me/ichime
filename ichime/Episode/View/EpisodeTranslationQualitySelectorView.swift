@@ -128,9 +128,11 @@ struct EpisodeTranslationQualitySelectorView: View {
                     } header: {
                         Text("Качество видео")
                     } footer: {
-                        if episodeStreamingInfo.subtitles != nil {
-                            Text("AirPlay не доступен для серий с софтсабом.")
-                        }
+                        #if !os(tvOS)
+                            if episodeStreamingInfo.subtitles != nil {
+                                Text("AirPlay не доступен для серий с софтсабом.")
+                            }
+                        #endif
                     }
                 }
                 #if os(tvOS)
