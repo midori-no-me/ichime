@@ -22,6 +22,10 @@ enum ServiceLocator {
         }
     }
 
+    static var getPermittedScheduleBGTaskName: String {
+        "dev.midorinome.ichime.background-tasks"
+    }
+
     static func getApplicationVersion() -> String {
         if let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
             return appVersion
