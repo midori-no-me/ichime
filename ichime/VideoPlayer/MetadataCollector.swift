@@ -79,15 +79,10 @@ struct MetadataCollector {
             var description = ""
 
             if let translation {
-                description = "Переведено командой: \(translation.authorsSummary)"
                 if let desc = showData.descriptions?.first {
-                    description += "\n\n"
-                    description += """
-                    Описание от \(desc.source):
-
-                    \(desc.value)
-                    """
+                    description = "\(desc.value)\n\n© \(desc.source)"
                 }
+                description += "\n\nПереведено командой: \(translation.authorsSummary)"
             }
 
             var image: Data?
