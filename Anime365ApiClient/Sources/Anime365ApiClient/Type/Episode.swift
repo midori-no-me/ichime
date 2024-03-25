@@ -19,4 +19,6 @@ public struct Anime365ApiEpisode: Decodable {
 public enum Anime365ApiEpisodeTypeEnum: String, Codable {
     case bd
     case tv
+    case ona
+    case ova
 }

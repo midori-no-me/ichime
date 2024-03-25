@@ -84,7 +84,7 @@ public extension ScraperAPI {
 
                 logger
                     .debug(
-                        "HTML request: Append form data to request, change type request to post \(queryString, privacy: .sensitive)"
+                        "HTML request: Append form data to request, change type request to post \(formData, privacy: .sensitive)"
                     )
             }
 
@@ -99,7 +99,7 @@ public extension ScraperAPI {
                 }
 
                 logger
-                    .info("HTML request: \(httpRequest.httpMethod ?? "GET") \(requestUrl) [\(httpResponse.statusCode)]")
+                    .notice("HTML request: \(httpRequest.httpMethod ?? "GET") \(requestUrl) [\(httpResponse.statusCode)]")
 
                 switch httpResponse.statusCode {
                 case 200 ... 299:

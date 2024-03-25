@@ -10,7 +10,7 @@ import OSLog
 import SwiftSoup
 
 let logger = Logger(
-    subsystem: Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "dev.midorinome.ichime",
+    subsystem: Bundle.main.bundleIdentifier ?? "dev.midorinome.ichime",
     category: "ScaperAPI"
 )
 
@@ -39,7 +39,6 @@ func extractIDs(from url: String) -> (showID: Int, episodeID: Int, translationID
     let ids = components.map { getId(from: $0) }
     return (showID: ids[0], episodeID: ids[1], translationID: ids.item(at: 2))
 }
-
 
 extension Elements {
     // background-image: url('/posters/26142.5187294764.140x140.1.jpg'); -> /posters/26142.5187294764.140x140.1.jpg

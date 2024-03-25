@@ -1,4 +1,11 @@
 import Foundation
+import OSLog
+
+let logger = Logger(
+    subsystem: Bundle.main.bundleIdentifier ?? "dev.midorinome.ichime",
+    category: "Anime365ApiClient"
+)
+
 
 public struct Anime365ApiResponse<T: Decodable>: Decodable {
     let data: T
@@ -45,7 +52,7 @@ public final class Anime365ApiClient {
         let (data, httpResponse) = try await URLSession.shared.data(for: httpRequest)
 
         if let requestUrl = httpRequest.url?.absoluteString, let httpResponse = httpResponse as? HTTPURLResponse {
-            print("[Anime365ApiClient] API request: GET \(requestUrl) [\(httpResponse.statusCode)]")
+            logger.notice("[Anime365ApiClient] API request: GET \(requestUrl) [\(httpResponse.statusCode)]")
         }
 
         do {
@@ -54,15 +61,15 @@ public final class Anime365ApiClient {
 
             return apiResponse.data
         } catch {
-            print("[Anime365ApiClient] Decoding JSON error: \(error.localizedDescription)")
-            print("[Anime365ApiClient] JSON Decoder detailed error:")
-            print(error)
-            print("[Anime365ApiClient] API response:")
+            logger.error("[Anime365ApiClient] Decoding JSON error: \(error.localizedDescription, privacy: .public)")
+            logger.error("[Anime365ApiClient] JSON Decoder detailed error:")
+            logger.error("\(error, privacy: .public)")
+            logger.error("[Anime365ApiClient] API response:")
 
             if let responseBodyString = String(data: data, encoding: .utf8) {
-                print(responseBodyString)
+                logger.error("\(responseBodyString, privacy: .public)")
             } else {
-                print("[Anime365ApiClient] Unable to convert response body to a string")
+                logger.error("[Anime365ApiClient] Unable to convert response body to a string")
             }
 
             throw Anime365ApiClientError.invalidData
