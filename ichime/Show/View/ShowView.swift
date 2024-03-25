@@ -418,42 +418,40 @@ private struct ShowActionButtons: View {
                 .buttonStyle(.borderedProminent)
                 #endif
 
-                Button(action: {
-                    if isInMyList {
-                        showEdit = true
-                    } else {
-                        Task {
-                            await viewModel.addToList()
-                        }
-                    }
-                }) {
-                    Group {
-                        if !viewModel.statusReady {
-                            ProgressView()
-                        } else if isInMyList {
-                            Label(
-                                self.viewModel.showRateStatus.statusDisplayName,
-                                systemImage: self.viewModel.showRateStatus.imageInToolbar
-                            )
+                if viewModel.statusReady {
+                    Button(action: {
+                        if isInMyList {
+                            showEdit = true
                         } else {
-                            Label(
-                                UserRateStatus.deleted.statusDisplayName,
-                                systemImage: UserRateStatus.deleted.imageInToolbar
-                            )
+                            Task {
+                                await viewModel.addToList()
+                            }
                         }
+                    }) {
+                        Group {
+                            if isInMyList {
+                                Label(
+                                    self.viewModel.showRateStatus.statusDisplayName,
+                                    systemImage: self.viewModel.showRateStatus.imageInToolbar
+                                )
+                            } else {
+                                Label(
+                                    UserRateStatus.deleted.statusDisplayName,
+                                    systemImage: UserRateStatus.deleted.imageInToolbar
+                                )
+                            }
+                        }
+                        #if os(tvOS)
+                        .padding(20)
+                        #endif
                     }
                     #if os(tvOS)
-                    .padding(20)
+                    .buttonStyle(.card)
+                    #else
+                    .buttonStyle(.bordered)
                     #endif
                 }
-                .disabled(!viewModel.statusReady)
-                #if os(tvOS)
-                    .buttonStyle(.card)
-                #else
-                    .buttonStyle(.bordered)
-                #endif
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
 
             if !show.episodePreviews.isEmpty && show.isOngoing,
                let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: show.episodePreviews)
