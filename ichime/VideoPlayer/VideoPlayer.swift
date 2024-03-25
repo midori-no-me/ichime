@@ -254,7 +254,6 @@ struct VideoPlayerLoader: View {
             subtitle: "Arknights",
             description: nil,
             genre: nil,
-            rating: nil,
             image: nil,
             year: nil
         )

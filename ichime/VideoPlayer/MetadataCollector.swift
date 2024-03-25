@@ -18,9 +18,8 @@ struct MetadataPlayer {
     /** текст который открывается если нажать на title */
     let description: String?
     let genre: String?
-    let rating: String?
     let image: Data?
-    let year: String?
+    let year: Int?
 }
 
 struct MetadataCollector {
@@ -40,12 +39,8 @@ struct MetadataCollector {
             .iTunesMetadataTrackSubTitle: metadata.subtitle,
             .commonIdentifierArtwork: metadata.image != nil ? (UIImage(data: metadata.image!)?.pngData() as Any) : nil,
             .commonIdentifierDescription: metadata.description,
-            .iTunesMetadataContentRating: metadata.rating,
             .quickTimeMetadataGenre: metadata.genre,
-            .quickTimeMetadataYear: "2010",
-            .id3MetadataYear: "2012",
-            .id3MetadataOriginalReleaseYear: "2014",
-            .identifier3GPUserDataRecordingYear: "2018",
+            .identifier3GPUserDataRecordingYear: metadata.year,
         ]
 
         return mapping.compactMap { createMetadataItem(for: $0, value: $1) }
@@ -63,6 +58,18 @@ struct MetadataCollector {
         return item.copy() as! AVMetadataItem
     }
 
+    private func getRating(malScore: String, worldartScore: String) -> String? {
+        if malScore != "-1" {
+            return "MAL: \(malScore)"
+        }
+
+        if worldartScore != "-1" {
+            return "WorldART: \(worldartScore)"
+        }
+
+        return nil
+    }
+
     func getMetadata() async -> MetadataPlayer? {
         do {
             let episodeData = try await api.sendApiRequest(GetEpisodeRequest(episodeId: episodeId))
@@ -72,14 +79,18 @@ struct MetadataCollector {
             var description = ""
 
             if let translation {
-                description = """
-                Переведено командой: \(translation.authorsSummary)
-                Описание:
-                \(showData.descriptions?.first?.value ?? "Описания нет")
-                """
+                description = "Переведено командой: \(translation.authorsSummary)"
+                if let desc = showData.descriptions?.first {
+                    description += "\n\n"
+                    description += """
+                    Описание от \(desc.source):
+
+                    \(desc.value)
+                    """
+                }
             }
 
-            var image: Data? = nil
+            var image: Data?
 
             if let imageURL = URL(string: showData.posterUrl) {
                 do {
@@ -90,16 +101,13 @@ struct MetadataCollector {
                 }
             }
 
-            print(showData.season)
-            print(showData.year)
             return .init(
                 title: episodeData.episodeFull,
                 subtitle: showData.titles.romaji ?? showData.title,
                 description: description,
-                genre: "Китайские геи",
-                rating: "8 из 10",
+                genre: showData.genres?.map { $0.title }.joined(separator: ", "),
                 image: image,
-                year: showData.season
+                year: showData.year
             )
         } catch {
             print("Cannot download metadata \(error)")
