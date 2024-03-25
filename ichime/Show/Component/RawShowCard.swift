@@ -40,7 +40,10 @@ struct RawShowCard: View {
     let secondaryTitle: String?
 
     var body: some View {
-        HStack(alignment: .top, spacing: RawShowCard.SPACING_BETWEEN_IMAGE_AND_CONTENT) {
+        HStack(
+            alignment: .top,
+            spacing: RawShowCard.SPACING_BETWEEN_IMAGE_AND_CONTENT
+        ) {
             if let cover {
                 AsyncImage(
                     url: cover,
@@ -94,6 +97,7 @@ struct RawShowCard: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 4)
         }
+        .contentShape(Rectangle()) // fixes hitbox of NavigationLink
     }
 }
 
