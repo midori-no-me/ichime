@@ -169,8 +169,8 @@ final class VideoPlayerController: NSObject, ObservableObject {
             playerItem.externalMetadata = metadata
         }
 
-        // Буферим 10 секунд видео
-        playerItem.preferredForwardBufferDuration = 10
+        // Буферим 600 секунд видео
+        playerItem.preferredForwardBufferDuration = 600
 
         let player = AVPlayer(playerItem: playerItem)
         player.allowsExternalPlayback = subtitleURL == nil
