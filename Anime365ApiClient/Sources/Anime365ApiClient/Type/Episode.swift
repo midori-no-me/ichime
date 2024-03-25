@@ -21,4 +21,5 @@ public enum Anime365ApiEpisodeTypeEnum: String, Codable {
     case tv
     case ona
     case ova
+    case movie
 }
