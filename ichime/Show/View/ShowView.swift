@@ -276,53 +276,47 @@ private struct ShowDetails: View {
                     #endif
                 }
 
-                GeometryReader { geometry in
-                    AsyncImage(
-                        url: self.show.posterUrl!,
-                        transaction: .init(animation: .easeInOut),
-                        content: { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                            case let .success(image):
-                                image.resizable()
-                                    .cornerRadiusForLargeObject()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(
-                                        width: geometry.size.width,
-                                        height: geometry.size.height,
-                                        alignment: .trailing
-                                    )
-                                    .clipped()
-                                    .onTapGesture(perform: {
-                                        self.showImage = true
-                                    })
+                if let posterUrl = self.show.posterUrl {
+                    GeometryReader { geometry in
+                        AsyncImage(
+                            url: posterUrl,
+                            transaction: .init(animation: .easeInOut(duration: 0.5)),
+                            content: { phase in
+                                switch phase {
+                                case .empty:
+                                    EmptyView()
+                                case let .success(image):
+                                    image.resizable()
+                                        .cornerRadiusForLargeObject()
+                                        .aspectRatio(contentMode: .fit)
+                                        .clipped()
+                                        .onTapGesture(perform: {
+                                            self.showImage = true
+                                        })
 
-                            case .failure:
-                                VStack {
-                                    Image(systemName: "wifi.slash")
+                                case .failure:
+                                    EmptyView()
+                                @unknown default:
+                                    EmptyView()
                                 }
-                                .scaledToFit()
-                            @unknown default:
-                                EmptyView()
                             }
-                        }
-                    )
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-                }
-                .fullScreenCover(isPresented: $showImage, content: {
-                    NavigationStack {
-                        AsyncImage(url: self.show.posterUrl)
-                            .toolbar {
-                                ToolbarItem(placement: .cancellationAction) {
-                                    Button("Закрыть") {
-                                        showImage = false
+                        )
+                        .frame(width: geometry.size.width, height: geometry.size.height, alignment: .trailing)
+                    }
+                    .fullScreenCover(isPresented: $showImage, content: {
+                        NavigationStack {
+                            AsyncImage(url: self.show.posterUrl)
+                                .toolbar {
+                                    ToolbarItem(placement: .cancellationAction) {
+                                        Button("Закрыть") {
+                                            showImage = false
+                                        }
                                     }
                                 }
-                            }
-                    }
-                    .preferredColorScheme(.dark)
-                })
+                        }
+                        .preferredColorScheme(.dark)
+                    })
+                }
             }
 
             #if !os(tvOS)
