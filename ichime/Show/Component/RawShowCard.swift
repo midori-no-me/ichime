@@ -44,37 +44,41 @@ struct RawShowCard: View {
             alignment: .top,
             spacing: RawShowCard.SPACING_BETWEEN_IMAGE_AND_CONTENT
         ) {
-            if let cover {
-                AsyncImage(
-                    url: cover,
-                    transaction: .init(animation: .easeInOut(duration: 0.5))
-                ) { phase in
-                    switch phase {
-                    case .empty:
-                        EmptyView()
+            Group {
+                if let cover {
+                    AsyncImage(
+                        url: cover,
+                        transaction: .init(animation: .easeInOut(duration: 0.5))
+                    ) { phase in
+                        switch phase {
+                        case .empty:
+                            EmptyView()
 
-                    case let .success(image):
-                        image
-                            .resizable()
-                            .scaledToFit()
-                        #if !os(tvOS)
-                            .cornerRadiusForMediumObject()
-                            .clipped()
-                        #endif
+                        case let .success(image):
+                            image
+                                .resizable()
+                                .scaledToFit()
+                            #if !os(tvOS)
+                                .cornerRadiusForMediumObject()
+                                .clipped()
+                            #endif
 
-                    case .failure:
-                        EmptyView()
+                        case .failure:
+                            ImagePlaceholder()
 
-                    @unknown default:
-                        EmptyView()
+                        @unknown default:
+                            EmptyView()
+                        }
                     }
+                } else {
+                    ImagePlaceholder()
                 }
-                .frame(
-                    width: RawShowCard.IMAGE_WIDTH,
-                    height: RawShowCard.IMAGE_HEIGHT,
-                    alignment: .top
-                )
             }
+            .frame(
+                width: RawShowCard.IMAGE_WIDTH,
+                height: RawShowCard.IMAGE_HEIGHT,
+                alignment: .top
+            )
 
             VStack(alignment: .leading, spacing: 4) {
                 if !metadataLineComponents.isEmpty {
@@ -98,6 +102,21 @@ struct RawShowCard: View {
             .padding(.vertical, 4)
         }
         .contentShape(Rectangle()) // fixes hitbox of NavigationLink
+    }
+}
+
+private struct ImagePlaceholder: View {
+    var body: some View {
+        Image(systemName: "photo")
+        #if os(tvOS)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+        #else
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(HierarchicalShapeStyle.quinary)
+            .cornerRadiusForMediumObject()
+            .clipped()
+        #endif
     }
 }
 
