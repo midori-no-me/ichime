@@ -58,10 +58,10 @@ public extension ScraperAPI.Types {
     struct Show: Identifiable {
         public let id: Int
         public let name: Name
-        public let episodes: (watched: Int, total: Int)
+        public let episodes: (watched: Int, total: Int?)
         public let score: Int?
 
-        init(id: Int, name: Name, episodes: (watched: Int, total: Int), score: Int?) {
+        init(id: Int, name: Name, episodes: (watched: Int, total: Int?), score: Int?) {
             self.id = id
             self.name = name
             self.episodes = episodes
@@ -84,7 +84,7 @@ public extension ScraperAPI.Types {
             let episodes = try item.select("[data-name=episodes]").text().components(separatedBy: "/")
                 .map { $0.trimmingCharacters(in: .whitespaces) }
             let episodesWatched = Int(episodes.item(at: 0) ?? "") ?? 0
-            let totalEpisodes = Int(episodes.item(at: 1) ?? "") ?? Int.max
+            let totalEpisodes = Int(episodes.item(at: 1) ?? "") ?? nil
 
             let score = try Int(item.select("[data-name=score]").text())
 

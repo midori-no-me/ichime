@@ -117,7 +117,11 @@ struct MyListsView: View {
         return categories.map { category in
             let textShows = category.shows
                 .map {
-                    "— \($0.name.ru): \($0.episodes.watched) из \($0.episodes.total == Int.max ? "??" : String($0.episodes.total))"
+                    if let total = $0.episodes.total {
+                        "- \($0.name.ru): \($0.episodes.watched) из \(total)"
+                    } else {
+                        "- \($0.name.ru): \($0.episodes.watched) из ??"
+                    }
                 }
                 .joined(separator: "\n")
 

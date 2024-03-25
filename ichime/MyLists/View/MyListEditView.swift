@@ -76,7 +76,11 @@ struct MyListEditView: View {
     @Environment(\.dismiss) private var dismiss
 
     var totalEpisodes: String {
-        show.totalEpisodes == Int.max ? "??" : String(show.totalEpisodes)
+        if let totalEpisodes = show.totalEpisodes {
+            String(totalEpisodes)
+        } else {
+            "??"
+        }
     }
 
     var body: some View {
