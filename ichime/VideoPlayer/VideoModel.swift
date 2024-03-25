@@ -11,7 +11,5 @@ struct VideoModel {
     let videoURL: URL
     let subtitleURL: URL?
 
-    let title: String?
-    let subtitle: String?
-    let description: String?
+    let metadata: MetadataPlayer?
 }
