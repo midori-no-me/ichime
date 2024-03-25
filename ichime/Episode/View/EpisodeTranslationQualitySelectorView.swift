@@ -163,9 +163,7 @@ struct EpisodeTranslationQualitySelectorView: View {
                 video: .init(
                     videoURL: video,
                     subtitleURL: subtitle,
-                    title: metadata?.title,
-                    subtitle: metadata?.subtitle,
-                    description: metadata?.description
+                    metadata: metadata
                 )
             )
             closeModal()

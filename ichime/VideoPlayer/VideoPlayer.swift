@@ -159,14 +159,12 @@ final class VideoPlayerController: NSObject, ObservableObject {
             playerItem = .init(asset: videoAsset)
         }
 
-        let metadata = MetadataCollector.createMetadata(
-            title: video.title,
-            subtitle: video.subtitle,
-            description: video.description
-        )
+        if let metadata = video.metadata {
+            let metadata = MetadataCollector.createMetadataItems(for: metadata)
 
-        if !metadata.isEmpty {
-            playerItem.externalMetadata = metadata
+            if !metadata.isEmpty {
+                playerItem.externalMetadata = metadata
+            }
         }
 
         // Буферим 600 секунд видео
@@ -251,9 +249,15 @@ struct VideoPlayerLoader: View {
     VideoPlayerExample(video: .init(
         videoURL: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.mp4")!,
         subtitleURL: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.vtt")!,
-        title: "Episode 1",
-        subtitle: "Arknights",
-        description: nil
+        metadata: .init(
+            title: "Episode 1",
+            subtitle: "Arknights",
+            description: nil,
+            genre: nil,
+            rating: nil,
+            image: nil,
+            year: nil
+        )
     ))
 }
 
