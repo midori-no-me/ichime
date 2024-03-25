@@ -42,7 +42,10 @@ struct MetadataCollector {
             .commonIdentifierDescription: metadata.description,
             .iTunesMetadataContentRating: metadata.rating,
             .quickTimeMetadataGenre: metadata.genre,
-            .quickTimeMetadataYear: metadata.year,
+            .quickTimeMetadataYear: "2010",
+            .id3MetadataYear: "2012",
+            .id3MetadataOriginalReleaseYear: "2014",
+            .identifier3GPUserDataRecordingYear: "2018",
         ]
 
         return mapping.compactMap { createMetadataItem(for: $0, value: $1) }
