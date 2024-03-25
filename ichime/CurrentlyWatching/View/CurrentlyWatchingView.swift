@@ -190,6 +190,7 @@ struct LoadedCurrentlyWatching: View {
                     }
                 }
             }
+            .scrollClipDisabled(true)
         #else
             List {
                 if UIDevice.current.userInterfaceIdiom == .phone {

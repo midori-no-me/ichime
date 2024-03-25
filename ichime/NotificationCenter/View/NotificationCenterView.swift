@@ -166,6 +166,7 @@ struct LoadedNotificationCenter: View {
                     }
                 }
             }
+            .scrollClipDisabled(true)
         #else
             List {
                 Section {

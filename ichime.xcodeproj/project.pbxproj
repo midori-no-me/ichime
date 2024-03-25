@@ -73,7 +73,6 @@
 		ED5C74812BAC401C002E0E1B /* CorderRadiusForMediumObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */; };
 		ED5C74832BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */; };
 		ED7357BE2BA8871A005C69B4 /* CardWithExpandableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */; };
-		ED7357C12BA890CD005C69B4 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357C02BA890CD005C69B4 /* UIScrollView.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
 		EDC57C192BAF6448001533E7 /* ContentViewWithTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */; };
 		EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */; };
@@ -153,7 +152,6 @@
 		ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorderRadiusForMediumObject.swift; sourceTree = "<group>"; };
 		ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusForLargeObject.swift; sourceTree = "<group>"; };
 		ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWithExpandableText.swift; sourceTree = "<group>"; };
-		ED7357C02BA890CD005C69B4 /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -431,7 +429,6 @@
 		ED7357BF2BA890BF005C69B4 /* ViewExtensions */ = {
 			isa = PBXGroup;
 			children = (
-				ED7357C02BA890CD005C69B4 /* UIScrollView.swift */,
 				C68F69F92BAA616F007A2E84 /* ifCondition.swift */,
 			);
 			path = ViewExtensions;
@@ -726,7 +723,6 @@
 				ED3A674B2B56FBBA00FB3975 /* ShowModel.swift in Sources */,
 				ED5C74832BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift in Sources */,
 				C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */,
-				ED7357C12BA890CD005C69B4 /* UIScrollView.swift in Sources */,
 				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
 				EDC57C192BAF6448001533E7 /* ContentViewWithTabBar.swift in Sources */,
 				ED36C62A2B53FB81000D0A80 /* EpisodeModel.swift in Sources */,

@@ -160,6 +160,9 @@ struct OngoingsView: View {
                         #endif
                     }
                 }
+                #if os(tvOS)
+                .scrollClipDisabled(true)
+                #endif
             }
         }
         .task {

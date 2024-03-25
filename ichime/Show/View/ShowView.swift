@@ -171,6 +171,9 @@ struct ShowView: View {
                     ShowDetails(show: show, viewModel: self.viewModel)
                         .scenePadding(.bottom)
                 }
+                #if os(tvOS)
+                .scrollClipDisabled(true)
+                #endif
                 #if !os(tvOS)
                 .navigationTitle(show.title.translated.japaneseRomaji ?? show.title.full)
                 #endif
