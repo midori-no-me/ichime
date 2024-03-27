@@ -48,6 +48,7 @@ public final class Anime365ApiClient {
 
         httpRequest.setValue("application/json", forHTTPHeaderField: "Accept")
         httpRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        httpRequest.timeoutInterval = 3
 
         let (data, httpResponse) = try await URLSession.shared.data(for: httpRequest)
 

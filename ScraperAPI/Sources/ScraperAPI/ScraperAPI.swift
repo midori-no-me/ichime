@@ -60,7 +60,7 @@ public extension ScraperAPI {
 
             var httpRequest = URLRequest(url: fullURL)
 
-            httpRequest.timeoutInterval = 10
+            httpRequest.timeoutInterval = 3
             httpRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
 
             var formData = request.getFormData()
