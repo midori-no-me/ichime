@@ -354,7 +354,7 @@ private struct ShowKeyDetailsSection: View {
                 }
             #endif
 
-            ShowMomentCards()
+            ShowMomentsCardsView(showId: show.id)
         }
     }
 }
@@ -529,71 +529,6 @@ private struct ShowDescriptionCards: View {
                     text: description.text
                 )
             }
-        }
-    }
-}
-
-private struct ShowMomentCards: View {
-    #if os(tvOS)
-    private static let SPACING_BETWEEN_TITLE_AND_CARDS: CGFloat = 40
-    #else
-    private static let SPACING_BETWEEN_TITLE_AND_CARDS: CGFloat = 10
-    #endif
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: ShowMomentCards.SPACING_BETWEEN_TITLE_AND_CARDS) {
-            VStack(alignment: .leading) {
-                Text("Моменты")
-                    .font(.title3)
-            }
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHGrid(rows: [GridItem(.flexible())], content: {
-                    MomentCard(
-                        title: "Воздушный поцелуй",
-                        cover: URL(string: "https://anime365.ru/moments/thumbnail/219167.320x180.jpg?5")!,
-                        websiteUrl: URL(string: "https://anime365.ru/moments/219167")!,
-                        id: 219_167
-                    )
-                    MomentCard(
-                        title: "Воздушный поцелуй",
-                        cover: URL(string: "https://anime365.ru/moments/thumbnail/219167.320x180.jpg?5")!,
-                        websiteUrl: URL(string: "https://anime365.ru/moments/219167")!,
-                        id: 219_167
-                    )
-                    MomentCard(
-                        title: "Воздушный поцелуй",
-                        cover: URL(string: "https://anime365.ru/moments/thumbnail/219167.320x180.jpg?5")!,
-                        websiteUrl: URL(string: "https://anime365.ru/moments/219167")!,
-                        id: 219_167
-                    )
-                    MomentCard(
-                        title: "Я уверен, что однажды дорого сведёт нас вместе. Да и не стоит прощаться с людьми в слезах. Чтобы не было стыдно, когда встретимся вновь.",
-                        cover: URL(string: "https://anime365.ru/moments/thumbnail/219007.320x180.jpg?5")!,
-                        websiteUrl: URL(string: "https://anime365.ru/moments/219007")!,
-                        id: 219_007
-                    )
-                    MomentCard(
-                        title: "100 x 300",
-                        cover: URL(string: "https://random.imagecdn.app/100/300")!,
-                        websiteUrl: URL(string: "https://random.imagecdn.app/100/300")!,
-                        id: 100300
-                    )
-                    MomentCard(
-                        title: "300 x 300",
-                        cover: URL(string: "https://random.imagecdn.app/300/300")!,
-                        websiteUrl: URL(string: "https://random.imagecdn.app/300/300")!,
-                        id: 300300
-                    )
-                    MomentCard(
-                        title: "300 x 100",
-                        cover: URL(string: "https://random.imagecdn.app/300/100")!,
-                        websiteUrl: URL(string: "https://random.imagecdn.app/300/100")!,
-                        id: 300100
-                    )
-                })
-            }
-            .scrollClipDisabled(true)
         }
     }
 }
