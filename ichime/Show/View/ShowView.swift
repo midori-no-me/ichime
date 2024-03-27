@@ -504,6 +504,7 @@ private struct ShowProperty: View {
             Text(self.label)
                 .foregroundStyle(.secondary)
                 .font(.caption)
+                .fontWeight(.medium)
 
             Text(self.value)
                 .font(.caption)
