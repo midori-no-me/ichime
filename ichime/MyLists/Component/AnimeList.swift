@@ -36,7 +36,6 @@ private struct MyListEntry: View {
 
             Text(formatEpisodeProgressString())
                 .foregroundStyle(Color.secondary)
-                .font(.caption)
         }
     }
 
