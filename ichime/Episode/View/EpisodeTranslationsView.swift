@@ -71,7 +71,6 @@ struct EpisodeTranslationsView: View {
     var preselectedTranslation: Int? = nil
 
     @State private var viewModel: EpisodeViewModel = .init()
-    @StateObject private var videoPlayerController: VideoPlayerController = .init()
 
     var body: some View {
         Group {
@@ -112,8 +111,7 @@ struct EpisodeTranslationsView: View {
                         Section {
                             TranslationRow(
                                 episodeId: episodeId,
-                                episodeTranslation: translation,
-                                videoPlayerController: videoPlayerController
+                                episodeTranslation: translation
                             )
                         } header: {
                             Text("Последний раз смотрели")
@@ -125,8 +123,7 @@ struct EpisodeTranslationsView: View {
                             ForEach(translationGroup.value, id: \.id) { episodeTranslation in
                                 TranslationRow(
                                     episodeId: episodeId,
-                                    episodeTranslation: episodeTranslation,
-                                    videoPlayerController: videoPlayerController
+                                    episodeTranslation: episodeTranslation
                                 )
                             }
                         } header: {
@@ -158,7 +155,6 @@ struct EpisodeTranslationsView: View {
 private struct TranslationRow: View {
     let episodeId: Int
     let episodeTranslation: Translation
-    @ObservedObject var videoPlayerController: VideoPlayerController
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
@@ -192,8 +188,7 @@ private struct TranslationRow: View {
                 EpisodeTranslationQualitySelectorView(
                     episodeId: episodeId,
                     translationId: episodeTranslation.id,
-                    translationTeam: episodeTranslation.translationTeam,
-                    videoPlayerController: videoPlayerController
+                    translationTeam: episodeTranslation.translationTeam
                 )
             }
             .presentationDetents([.medium])

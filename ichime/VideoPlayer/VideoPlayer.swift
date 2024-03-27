@@ -1,83 +1,44 @@
 //
-//  Player.swift
-//  ichime
+//  ViewPlayer.swift
+//  Ichime
 //
-//  Created by Nikita Nafranets on 21.01.2024.
+//  Created by Nikita Nafranets on 28.03.2024.
 //
+import AVFoundation
 
-import AVKit
-import Foundation
-import SwiftUI
-
-struct VideoPlayerExample: View {
-    let video: VideoModel
-
-    @StateObject var manager: VideoPlayerController = .init()
-
-    var body: some View {
-        Button("Play video") {
-            Task {
-                await manager.createPlayer(video: video)
-                manager.showPlayer()
-            }
-        }
-    }
-}
-
-protocol VideoPlayerDelegate {
-    func show(player: AVPlayer) -> Void
+protocol VideoPlayerObserver: AnyObject {
+    func create(player: AVPlayer) -> Void
     func destroy() -> Void
 }
 
-final class VideoPlayerController: NSObject, ObservableObject {
-    var player: AVPlayer?
-
-    private var coordinator: Coordinator?
-    private let sceneController = SceneController()
-    private var delegate: VideoPlayerDelegate?
-
-    private let logger = createLogger(category: String(describing: VideoPlayerController.self))
-
-    static func enableBackgroundMode() {
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(.playback, mode: .moviePlayback)
-        } catch {
-            print("Setting category to AVAudioSessionCategoryPlayback failed.")
+final class VideoPlayer {
+    var player: AVPlayer? {
+        didSet {
+            if let observer, let player {
+                observer.create(player: player)
+            }
         }
     }
 
-    func addDelegate(_ delegate: VideoPlayerDelegate) {
-        self.delegate = delegate
-    }
+    private var observer: VideoPlayerObserver?
 
-    func showPlayer() {
-        logger.debug("create player")
-        let playerViewController = AVPlayerViewController()
-        playerViewController.player = player
-        playerViewController.allowsPictureInPicturePlayback = true
-        coordinator = Coordinator(self)
-        playerViewController.delegate = coordinator
+    private let logger = createLogger(category: String(describing: VideoPlayer.self))
 
-        if let player, let delegate {
-            delegate.show(player: player)
-        }
-
-        sceneController.present(playerViewController) {
-            self.player?.play()
+    func addObserver(_ observer: VideoPlayerObserver) {
+        self.observer = observer
+        if let player {
+            observer.create(player: player)
         }
     }
 
-    private func destroyPlayer() {
-        logger.info("destroy player")
-        player?.pause()
-        delegate?.destroy()
-
-        delegate = nil
-        player = nil
+    deinit {
+        if let observer {
+            observer.destroy()
+            self.observer = nil
+        }
     }
 
-    func downloadFileToTemporaryDirectory(from url: URL) async throws -> URL {
+    private func downloadFileToTemporaryDirectory(from url: URL) async throws -> URL {
         let session = URLSession(configuration: .default)
         let (data, response) = try await session.data(from: url)
 
@@ -99,7 +60,7 @@ final class VideoPlayerController: NSObject, ObservableObject {
         return destinationURL
     }
 
-    func createSubtitleAsset(from url: URL?) async -> AVAsset? {
+    private func createSubtitleAsset(from url: URL?) async -> AVAsset? {
         guard let url, let filepath = try? await downloadFileToTemporaryDirectory(from: url) else {
             return nil
         }
@@ -110,7 +71,7 @@ final class VideoPlayerController: NSObject, ObservableObject {
         case compositionError(String)
     }
 
-    func createMutableComposition(
+    private func createMutableComposition(
         _ videoAsset: AVAsset,
         _ subtitleAsset: AVAsset
     ) async throws -> AVMutableComposition {
@@ -135,6 +96,7 @@ final class VideoPlayerController: NSObject, ObservableObject {
                     at: .zero
                 )
             } catch {
+                logger.error("Error inserting \(mediaType.rawValue) track: \(error, privacy: .public)")
                 throw PlayerError.compositionError("Error inserting \(mediaType.rawValue) track: \(error)")
             }
         }
@@ -174,94 +136,9 @@ final class VideoPlayerController: NSObject, ObservableObject {
         player.allowsExternalPlayback = subtitleURL == nil
         player.usesExternalPlaybackWhileExternalScreenIsActive = true
         player.preventsDisplaySleepDuringVideoPlayback = true
-
-        // TODO: Проверить что на tvOS что оно не в тру по умолчанию
-        print("automaticallyWaitsToMinimizeStalling \(player.automaticallyWaitsToMinimizeStalling)")
-
+        // TODO: кажется всегда true
         player.automaticallyWaitsToMinimizeStalling = true
+
         self.player = player
-    }
-
-    #if !os(tvOS)
-        private func changeOrientation(to orientation: UIInterfaceOrientationMask) {
-            // tell the app to change the orientation
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            else { return }
-            windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: orientation))
-            print("Changing to", orientation == .portrait ? "portrait" : "landscape")
-        }
-    #endif
-
-    class Coordinator: NSObject, AVPlayerViewControllerDelegate {
-        var control: VideoPlayerController
-
-        init(_ control: VideoPlayerController) {
-            self.control = control
-        }
-
-        #if !os(tvOS)
-            func playerViewController(
-                _: AVPlayerViewController,
-                willBeginFullScreenPresentationWithAnimationCoordinator _: UIViewControllerTransitionCoordinator
-            ) {
-                // Called when the player enters fullscreen mode
-            }
-
-            func playerViewController(
-                _: AVPlayerViewController,
-                willEndFullScreenPresentationWithAnimationCoordinator _: UIViewControllerTransitionCoordinator
-            ) {
-                // Called when the player exits fullscreen mode
-                control.destroyPlayer()
-            }
-        #endif
-
-        // Не ломает пип после выхода из пипа
-        func playerViewController(
-            _ playerViewController: AVPlayerViewController,
-            restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (
-                Bool
-            )
-                -> Void
-        ) {
-            if control.sceneController.isPresent(playerViewController) {
-                return
-            }
-
-            control.sceneController.present(playerViewController) {
-                completionHandler(false)
-            }
-        }
-    }
-}
-
-struct VideoPlayerLoader: View {
-    var body: some View {
-        #if !os(tvOS)
-            Color(UIColor.systemBackground).ignoresSafeArea(.all).overlay {
-                ProgressView("Загружаем видео")
-            }
-        #endif
-    }
-}
-
-#Preview {
-    VideoPlayerExample(video: .init(
-        videoURL: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.mp4")!,
-        subtitleURL: URL(string: "https://storage.yandexcloud.net/incubator.flaks.dev/1_testvideo/arknights.vtt")!,
-        metadata: .init(
-            title: "Episode 1",
-            subtitle: "Arknights",
-            description: nil,
-            genre: nil,
-            image: nil,
-            year: nil
-        )
-    ))
-}
-
-#Preview("Loader") {
-    ZStack {
-        VideoPlayerLoader()
     }
 }
