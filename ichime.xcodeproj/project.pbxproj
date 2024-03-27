@@ -55,6 +55,7 @@
 		C6D4140B2B9FBAAE006735D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D4140A2B9FBAAE006735D9 /* Assets.xcassets */; };
 		C6D4140E2B9FBAAE006735D9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D4140D2B9FBAAE006735D9 /* Preview Assets.xcassets */; };
 		ED0D29952B66C84600C5AC9E /* BaseUrlPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0D29942B66C84600C5AC9E /* BaseUrlPreference.swift */; };
+		ED1392312BB4C85900C2A9FC /* HeadingSectionWithBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1392302BB4C85900C2A9FC /* HeadingSectionWithBackground.swift */; };
 		ED1919772B5F00AD008C6C99 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1919762B5F00AD008C6C99 /* OnboardingView.swift */; };
 		ED1D3E152BAA11AF005B324A /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1D3E142BAA11AF005B324A /* DateUtils.swift */; };
 		ED269F622B6034810083A62F /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED269F612B6034810083A62F /* AuthenticationView.swift */; };
@@ -133,6 +134,7 @@
 		C6D4140D2B9FBAAE006735D9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C6D4140F2B9FBAAE006735D9 /* IchimeMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IchimeMac.entitlements; sourceTree = "<group>"; };
 		ED0D29942B66C84600C5AC9E /* BaseUrlPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUrlPreference.swift; sourceTree = "<group>"; };
+		ED1392302BB4C85900C2A9FC /* HeadingSectionWithBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingSectionWithBackground.swift; sourceTree = "<group>"; };
 		ED1919762B5F00AD008C6C99 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		ED1D3E142BAA11AF005B324A /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		ED233FE02BB052E4002CCAD9 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 			isa = PBXGroup;
 			children = (
 				ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */,
+				ED1392302BB4C85900C2A9FC /* HeadingSectionWithBackground.swift */,
 			);
 			path = CommonViewComponents;
 			sourceTree = "<group>";
@@ -705,6 +708,7 @@
 			files = (
 				ED7357BE2BA8871A005C69B4 /* CardWithExpandableText.swift in Sources */,
 				EDE959332B484C8A0030B23D /* ContentView.swift in Sources */,
+				ED1392312BB4C85900C2A9FC /* HeadingSectionWithBackground.swift in Sources */,
 				C68F69FA2BAA616F007A2E84 /* ifCondition.swift in Sources */,
 				C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */,
 				EDE959312B4762690030B23D /* OngoingsView.swift in Sources */,

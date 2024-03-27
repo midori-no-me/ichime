@@ -201,17 +201,45 @@ struct ShowView: View {
     }
 }
 
+#if os(tvOS)
+    private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
+#else
+    private let SPACING_BETWEEN_SECTIONS: CGFloat = 20
+#endif
+
 private struct ShowDetails: View {
     let show: Show
-    @State private var showImage = false
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     var viewModel: ShowViewModel
 
-    #if os(tvOS)
-        private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
-    #else
-        private let SPACING_BETWEEN_SECTIONS: CGFloat = 20
-    #endif
+    var body: some View {
+        #if !os(tvOS)
+            HeadingSectionWithBackground(imageUrl: show.posterUrl!) {
+                ShowKeyDetailsSection(show: show, viewModel: viewModel)
+                    .padding(.bottom, SPACING_BETWEEN_SECTIONS)
+                    .horizontalScreenEdgePadding()
+            }
+            .padding(.bottom, SPACING_BETWEEN_SECTIONS)
+        #endif
+
+        VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
+            #if os(tvOS)
+                ShowKeyDetailsSection(show: show, viewModel: viewModel)
+            #endif
+
+            if !show.descriptions.isEmpty {
+                ShowDescriptionCards(descriptions: show.descriptions)
+            }
+        }
+        .horizontalScreenEdgePadding()
+    }
+}
+
+private struct ShowKeyDetailsSection: View {
+    let show: Show
+    @State private var showImage = false
+    var viewModel: ShowViewModel
+
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     var body: some View {
         VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
@@ -250,7 +278,8 @@ private struct ShowDetails: View {
 
                         ShowProperty(
                             label: "Количество эпизодов",
-                            value: (self.show.numberOfEpisodes != nil ? self.show.numberOfEpisodes!.formatted() : "???")
+                            value: (self.show.numberOfEpisodes != nil ? self.show.numberOfEpisodes!
+                                .formatted() : "???")
                                 + (self.show.isOngoing ? " — онгоинг" : "")
                         )
 
@@ -324,12 +353,7 @@ private struct ShowDetails: View {
                     ShowActionButtons(show: show, viewModel: viewModel)
                 }
             #endif
-
-            if !show.descriptions.isEmpty {
-                ShowDescriptionCards(descriptions: show.descriptions)
-            }
         }
-        .horizontalScreenEdgePadding()
     }
 }
 
