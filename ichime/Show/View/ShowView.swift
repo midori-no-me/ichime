@@ -353,6 +353,8 @@ private struct ShowKeyDetailsSection: View {
                     ShowActionButtons(show: show, viewModel: viewModel)
                 }
             #endif
+
+            ShowMomentsCardsView(showId: show.id)
         }
     }
 }

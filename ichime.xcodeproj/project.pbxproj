@@ -14,6 +14,7 @@
 		C6213C892BAF605F00E08736 /* WatchChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6213C882BAF605F00E08736 /* WatchChecker.swift */; };
 		C6213C8B2BAF607E00E08736 /* VideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6213C8A2BAF607E00E08736 /* VideoModel.swift */; };
 		C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */; };
+		C64B6ED22BB49AA300DB2D62 /* ShowMomentsCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64B6ED12BB49AA300DB2D62 /* ShowMomentsCardsView.swift */; };
 		C64EB0182B68587700AC7C27 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = C64EB0172B68587700AC7C27 /* DITranquillity */; };
 		C64EB01A2B699C3D00AC7C27 /* DI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64EB0192B699C3D00AC7C27 /* DI.swift */; };
 		C651FD092B61745700E68341 /* ScraperAPI in Frameworks */ = {isa = PBXBuildFile; productRef = C651FD082B61745700E68341 /* ScraperAPI */; };
@@ -85,6 +86,7 @@
 		EDE959312B4762690030B23D /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959302B4762690030B23D /* OngoingsView.swift */; };
 		EDE959332B484C8A0030B23D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959322B484C8A0030B23D /* ContentView.swift */; };
 		EDF7104E2B4B344F001C2008 /* ShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7104D2B4B344F001C2008 /* ShowCard.swift */; };
+		EDFE91AB2BB334D8000FB5B0 /* MomentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFE91AA2BB334D8000FB5B0 /* MomentCard.swift */; };
 		EDFF2D112B43471300F27E61 /* IchimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D102B43471300F27E61 /* IchimeApp.swift */; };
 		EDFF2D152B43471500F27E61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D142B43471500F27E61 /* Assets.xcassets */; };
 		EDFF2D192B43471500F27E61 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */; };
@@ -112,6 +114,7 @@
 		C6213C882BAF605F00E08736 /* WatchChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchChecker.swift; sourceTree = "<group>"; };
 		C6213C8A2BAF607E00E08736 /* VideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModel.swift; sourceTree = "<group>"; };
 		C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
+		C64B6ED12BB49AA300DB2D62 /* ShowMomentsCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMomentsCardsView.swift; sourceTree = "<group>"; };
 		C64EB0192B699C3D00AC7C27 /* DI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DI.swift; sourceTree = "<group>"; };
 		C651FD072B608A7600E68341 /* ScraperAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ScraperAPI; sourceTree = "<group>"; };
 		C65ACDE72B54466300C27FB3 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
@@ -167,6 +170,7 @@
 		EDE959302B4762690030B23D /* OngoingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingsView.swift; sourceTree = "<group>"; };
 		EDE959322B484C8A0030B23D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EDF7104D2B4B344F001C2008 /* ShowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCard.swift; sourceTree = "<group>"; };
+		EDFE91AA2BB334D8000FB5B0 /* MomentCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentCard.swift; sourceTree = "<group>"; };
 		EDFF2D0D2B43471300F27E61 /* Ichime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ichime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDFF2D102B43471300F27E61 /* IchimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IchimeApp.swift; sourceTree = "<group>"; };
 		EDFF2D142B43471500F27E61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -461,6 +465,7 @@
 				EDE959302B4762690030B23D /* OngoingsView.swift */,
 				EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */,
 				EDE9592E2B475E590030B23D /* ShowView.swift */,
+				C64B6ED12BB49AA300DB2D62 /* ShowMomentsCardsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -492,6 +497,22 @@
 			path = Component;
 			sourceTree = "<group>";
 		};
+		EDFE91A82BB334C1000FB5B0 /* Moment */ = {
+			isa = PBXGroup;
+			children = (
+				EDFE91A92BB334C9000FB5B0 /* Component */,
+			);
+			path = Moment;
+			sourceTree = "<group>";
+		};
+		EDFE91A92BB334C9000FB5B0 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				EDFE91AA2BB334D8000FB5B0 /* MomentCard.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
 		EDFF2D042B43471300F27E61 = {
 			isa = PBXGroup;
 			children = (
@@ -519,28 +540,29 @@
 		EDFF2D0F2B43471300F27E61 /* ichime */ = {
 			isa = PBXGroup;
 			children = (
-				C6213C852BAF601A00E08736 /* VideoPlayer */,
-				ED5C747E2BAC3FF4002E0E1B /* ViewModifier */,
-				ED1D3E132BAA119E005B324A /* Utils */,
-				ED7357BF2BA890BF005C69B4 /* ViewExtensions */,
+				EDFF2D252B443D8100F27E61 /* Anime365 */,
+				ED0D29932B66C82D00C5AC9E /* AppPreferences */,
+				EDFF2D142B43471500F27E61 /* Assets.xcassets */,
 				ED7357BC2BA886E9005C69B4 /* CommonViewComponents */,
 				C6899EAF2BA2530D00E63311 /* ContentView */,
-				ED0D29932B66C82D00C5AC9E /* AppPreferences */,
-				EDFF2D162B43471500F27E61 /* ichime.entitlements */,
-				EDFF2D252B443D8100F27E61 /* Anime365 */,
-				EDFF2D102B43471300F27E61 /* IchimeApp.swift */,
-				C65ACDE72B54466300C27FB3 /* UserManager.swift */,
-				EDFF2D142B43471500F27E61 /* Assets.xcassets */,
 				ED3D83FE2B5C404A0025BB5D /* CurrentlyWatching */,
 				EDD353B22B5E829B00313489 /* DependencyInjection */,
 				ED36C61D2B52D280000D0A80 /* Episode */,
+				EDFF2D162B43471500F27E61 /* ichime.entitlements */,
+				EDFF2D102B43471300F27E61 /* IchimeApp.swift */,
 				EDE9592B2B47167B0030B23D /* Info.plist */,
+				EDFE91A82BB334C1000FB5B0 /* Moment */,
 				ED3D83FA2B5C3E540025BB5D /* MyLists */,
 				ED3D84022B5C42670025BB5D /* NotificationCenter */,
+				C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */,
 				EDFF2D172B43471500F27E61 /* Preview Content */,
 				ED1919742B5F0089008C6C99 /* Profile */,
 				ED74304C2B4B07EB009BCE3A /* Show */,
-				C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */,
+				C65ACDE72B54466300C27FB3 /* UserManager.swift */,
+				ED1D3E132BAA119E005B324A /* Utils */,
+				C6213C852BAF601A00E08736 /* VideoPlayer */,
+				ED7357BF2BA890BF005C69B4 /* ViewExtensions */,
+				ED5C747E2BAC3FF4002E0E1B /* ViewModifier */,
 			);
 			path = ichime;
 			sourceTree = "<group>";
@@ -716,6 +738,7 @@
 				C6213C8B2BAF607E00E08736 /* VideoModel.swift in Sources */,
 				EDC57C1D2BAF6F3F001533E7 /* RawShowCard.swift in Sources */,
 				C6656A692B62E30500BF7412 /* MyListEditView.swift in Sources */,
+				EDFE91AB2BB334D8000FB5B0 /* MomentCard.swift in Sources */,
 				ED0D29952B66C84600C5AC9E /* BaseUrlPreference.swift in Sources */,
 				C6698C672BB0D4F4008A9274 /* MetadataCollector.swift in Sources */,
 				ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */,
@@ -742,6 +765,7 @@
 				C65ACDE82B54466400C27FB3 /* UserManager.swift in Sources */,
 				C6656A6E2B631EBE00BF7412 /* AnimeList.swift in Sources */,
 				ED5B39DD2BACB65A00C6D672 /* HorizontalScreenEdgePadding.swift in Sources */,
+				C64B6ED22BB49AA300DB2D62 /* ShowMomentsCardsView.swift in Sources */,
 				EDE9592F2B475E590030B23D /* ShowView.swift in Sources */,
 				C6213C892BAF605F00E08736 /* WatchChecker.swift in Sources */,
 				EDFF2D112B43471300F27E61 /* IchimeApp.swift in Sources */,

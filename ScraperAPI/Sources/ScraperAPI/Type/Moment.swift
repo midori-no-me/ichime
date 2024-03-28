@@ -9,7 +9,7 @@ import Foundation
 import SwiftSoup
 
 public extension ScraperAPI.Types {
-    struct Moment {
+    struct Moment: Identifiable {
         public let id: Int
         public let title: String
         public let duration: String
