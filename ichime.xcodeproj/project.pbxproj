@@ -83,6 +83,9 @@
 		EDE018192BB98CEA00DAE593 /* ShowSeasonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE018182BB98CEA00DAE593 /* ShowSeasonService.swift */; };
 		EDE0181B2BB9AB2500DAE593 /* FilteredShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0181A2BB9AB2500DAE593 /* FilteredShowsView.swift */; };
 		EDE0181C2BB9AB2500DAE593 /* FilteredShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0181A2BB9AB2500DAE593 /* FilteredShowsView.swift */; };
+		EDD9F7A12BB73F80004B46E7 /* TVServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDD9F7A02BB73F80004B46E7 /* TVServices.framework */; };
+		EDD9F7A42BB73F80004B46E7 /* ContentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD9F7A32BB73F80004B46E7 /* ContentProvider.swift */; };
+		EDD9F7A82BB73F80004B46E7 /* TopShelf.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EDD9F79F2BB73F80004B46E7 /* TopShelf.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
 		EDE959332B484C8A0030B23D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959322B484C8A0030B23D /* ContentView.swift */; };
@@ -93,6 +96,16 @@
 		EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D292B4476D300F27E61 /* Anime365Client.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		EDD9F7A62BB73F80004B46E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EDFF2D052B43471300F27E61 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EDD9F79E2BB73F80004B46E7;
+			remoteInfo = TopShelf;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		EDA629182B4576BE0093F8E5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -102,6 +115,17 @@
 			files = (
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDD9F7A92BB73F80004B46E7 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				EDD9F7A82BB73F80004B46E7 /* TopShelf.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -166,6 +190,10 @@
 		EDD353B32B5E82AF00313489 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		EDE018182BB98CEA00DAE593 /* ShowSeasonService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeasonService.swift; sourceTree = "<group>"; };
 		EDE0181A2BB9AB2500DAE593 /* FilteredShowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredShowsView.swift; sourceTree = "<group>"; };
+		EDD9F79F2BB73F80004B46E7 /* TopShelf.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TopShelf.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDD9F7A02BB73F80004B46E7 /* TVServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TVServices.framework; path = Library/Frameworks/TVServices.framework; sourceTree = DEVELOPER_DIR; };
+		EDD9F7A32BB73F80004B46E7 /* ContentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentProvider.swift; sourceTree = "<group>"; };
+		EDD9F7A52BB73F80004B46E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDE9592B2B47167B0030B23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchShowsView.swift; sourceTree = "<group>"; };
 		EDE9592E2B475E590030B23D /* ShowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowView.swift; sourceTree = "<group>"; };
@@ -187,6 +215,14 @@
 				C6D0DA6D2B9FBE4C0000255C /* DITranquillity in Frameworks */,
 				C6D0DA692B9FBE4C0000255C /* ScraperAPI in Frameworks */,
 				C6D0DA672B9FBE4C0000255C /* Anime365ApiClient in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDD9F79C2BB73F80004B46E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDD9F7A12BB73F80004B46E7 /* TVServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,6 +527,7 @@
 			children = (
 				C651FD072B608A7600E68341 /* ScraperAPI */,
 				ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */,
+				EDD9F7A02BB73F80004B46E7 /* TVServices.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -502,6 +539,15 @@
 				C64EB0192B699C3D00AC7C27 /* DI.swift */,
 			);
 			path = DependencyInjection;
+			sourceTree = "<group>";
+		};
+		EDD9F7A22BB73F80004B46E7 /* TopShelf */ = {
+			isa = PBXGroup;
+			children = (
+				EDD9F7A32BB73F80004B46E7 /* ContentProvider.swift */,
+				EDD9F7A52BB73F80004B46E7 /* Info.plist */,
+			);
+			path = TopShelf;
 			sourceTree = "<group>";
 		};
 		EDF7104C2B4B3438001C2008 /* Component */ = {
@@ -523,6 +569,7 @@
 				EDB21EA02B4AD268001282FE /* .swiftlint.yml */,
 				EDFF2D0F2B43471300F27E61 /* ichime */,
 				C6D414052B9FBAAC006735D9 /* IchimeMac */,
+				EDD9F7A22BB73F80004B46E7 /* TopShelf */,
 				EDA628FF2B4576BE0093F8E5 /* Frameworks */,
 				EDFF2D0E2B43471300F27E61 /* Products */,
 			);
@@ -533,6 +580,7 @@
 			children = (
 				EDFF2D0D2B43471300F27E61 /* Ichime.app */,
 				C6D414042B9FBAAC006735D9 /* IchimeMac.app */,
+				EDD9F79F2BB73F80004B46E7 /* TopShelf.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -608,6 +656,23 @@
 			productReference = C6D414042B9FBAAC006735D9 /* IchimeMac.app */;
 			productType = "com.apple.product-type.application";
 		};
+		EDD9F79E2BB73F80004B46E7 /* TopShelf */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDD9F7AC2BB73F80004B46E7 /* Build configuration list for PBXNativeTarget "TopShelf" */;
+			buildPhases = (
+				EDD9F79B2BB73F80004B46E7 /* Sources */,
+				EDD9F79C2BB73F80004B46E7 /* Frameworks */,
+				EDD9F79D2BB73F80004B46E7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TopShelf;
+			productName = TopShelf;
+			productReference = EDD9F79F2BB73F80004B46E7 /* TopShelf.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		EDFF2D0C2B43471300F27E61 /* Ichime */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EDFF2D1C2B43471500F27E61 /* Build configuration list for PBXNativeTarget "Ichime" */;
@@ -616,10 +681,12 @@
 				EDFF2D0A2B43471300F27E61 /* Frameworks */,
 				EDFF2D0B2B43471300F27E61 /* Resources */,
 				EDA629182B4576BE0093F8E5 /* Embed Frameworks */,
+				EDD9F7A92BB73F80004B46E7 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				EDD9F7A72BB73F80004B46E7 /* PBXTargetDependency */,
 			);
 			name = Ichime;
 			packageProductDependencies = (
@@ -638,11 +705,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1520;
+				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					C6D414032B9FBAAC006735D9 = {
 						CreatedOnToolsVersion = 15.2;
+					};
+					EDD9F79E2BB73F80004B46E7 = {
+						CreatedOnToolsVersion = 15.3;
 					};
 					EDFF2D0C2B43471300F27E61 = {
 						CreatedOnToolsVersion = 15.1;
@@ -669,6 +739,7 @@
 			targets = (
 				EDFF2D0C2B43471300F27E61 /* Ichime */,
 				C6D414032B9FBAAC006735D9 /* IchimeMac */,
+				EDD9F79E2BB73F80004B46E7 /* TopShelf */,
 			);
 		};
 /* End PBXProject section */
@@ -680,6 +751,13 @@
 			files = (
 				C6D4140E2B9FBAAE006735D9 /* Preview Assets.xcassets in Resources */,
 				C6D4140B2B9FBAAE006735D9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDD9F79D2BB73F80004B46E7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,6 +799,14 @@
 				EDC57C1E2BAF6F3F001533E7 /* RawShowCard.swift in Sources */,
 				C6D0DA762B9FBFC20000255C /* EpisodeStreamingInfo.swift in Sources */,
 				C6D0DA772B9FBFD80000255C /* BaseUrlPreference.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDD9F79B2BB73F80004B46E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDD9F7A42BB73F80004B46E7 /* ContentProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -785,6 +871,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		EDD9F7A72BB73F80004B46E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EDD9F79E2BB73F80004B46E7 /* TopShelf */;
+			targetProxy = EDD9F7A62BB73F80004B46E7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		C6D414112B9FBAAE006735D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -841,6 +935,63 @@
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		EDD9F7AA2BB73F80004B46E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YBBAN7R28K;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TopShelf/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TopShelf;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.ichime.TopShelf;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.4;
+			};
+			name = Debug;
+		};
+		EDD9F7AB2BB73F80004B46E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YBBAN7R28K;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TopShelf/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TopShelf;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.ichime.TopShelf;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 17.4;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -975,6 +1126,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon";
 				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=appletvos*]" = "App Icon tvOS";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1035,6 +1187,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon";
 				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=appletvos*]" = "App Icon tvOS";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1099,6 +1252,15 @@
 			buildConfigurations = (
 				C6D414112B9FBAAE006735D9 /* Debug */,
 				C6D414122B9FBAAE006735D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDD9F7AC2BB73F80004B46E7 /* Build configuration list for PBXNativeTarget "TopShelf" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDD9F7AA2BB73F80004B46E7 /* Debug */,
+				EDD9F7AB2BB73F80004B46E7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
