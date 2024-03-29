@@ -72,8 +72,7 @@ struct EpisodeTranslationQualitySelectorView: View {
     let episodeId: Int
     let translationId: Int
     let translationTeam: String
-    var videoPlayerController: VideoPlayerController = ApplicationDependency.container.resolve()
-    var videoPlayer: VideoPlayer = .init()
+    @ObservedObject var videoPlayerController: VideoPlayerController = .init()
 
     @State private var viewModel: EpisodeTranslationQualitySelectorViewModel = .init()
 
@@ -84,8 +83,7 @@ struct EpisodeTranslationQualitySelectorView: View {
             switch self.viewModel.state {
             case .idle:
                 Color.clear.onAppear {
-                    videoPlayer.addObserver(WatchChecker(translationId: translationId))
-
+                    videoPlayerController.addDelegate(WatchChecker(translationId: translationId))
                     Task {
                         await self.viewModel.performInitialLoad(translationId: translationId)
                     }
@@ -161,15 +159,14 @@ struct EpisodeTranslationQualitySelectorView: View {
         Task {
             let collector = MetadataCollector(episodeId: episodeId, translationId: translationId)
             let metadata = await collector.getMetadata()
-
-            await self.videoPlayer.createPlayer(
+            await self.videoPlayerController.createPlayer(
                 video: .init(
                     videoURL: video,
                     subtitleURL: subtitle,
                     metadata: metadata
                 )
             )
-            await closeModal()
+            closeModal()
         }
     }
 
@@ -177,7 +174,7 @@ struct EpisodeTranslationQualitySelectorView: View {
     func closeModal() {
         dismiss()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            videoPlayerController.player = videoPlayer.player
+            videoPlayerController.showPlayer()
         }
     }
 }

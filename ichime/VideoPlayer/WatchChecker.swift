@@ -9,14 +9,11 @@ import AVFoundation
 import Foundation
 import ScraperAPI
 
-actor WatchChecker: VideoPlayerObserver {
+actor WatchChecker: VideoPlayerDelegate {
     let translationId: Int
     let api: ScraperAPI.APIClient
-
-    let logger = createLogger(category: String(describing: WatchChecker.self))
-
     var videoDuration: CMTime = .zero
-    weak var player: AVPlayer?
+    var player: AVPlayer = .init()
     var timeObserverToken: Any?
 
     init(translationId: Int) {
@@ -28,8 +25,8 @@ actor WatchChecker: VideoPlayerObserver {
         self.player = player
     }
 
-    nonisolated func create(player: AVPlayer) {
-        logger.notice("add watcher to player")
+    nonisolated func show(player: AVPlayer) {
+        print("show player")
         Task {
             await savePlayer(player)
             await saveDuration(player)
@@ -57,11 +54,10 @@ actor WatchChecker: VideoPlayerObserver {
             times.append(NSValue(time: currentTime))
         }
 
-        logger.notice("add observer")
+        print("add observer")
         timeObserverToken = player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
-            guard let self = self else {
-                return
-            }
+            print(player.currentTime().seconds)
+            guard let self = self else { return }
             Task {
                 await self.performUpdateWatch()
                 await self.removeObserver()
@@ -70,8 +66,8 @@ actor WatchChecker: VideoPlayerObserver {
     }
 
     func removeObserver() {
-        logger.notice("remove watcher observer")
-        if let timeObserverToken, let player {
+        print("remove observer")
+        if let timeObserverToken = timeObserverToken {
             player.removeTimeObserver(timeObserverToken)
             self.timeObserverToken = nil
         }
@@ -82,20 +78,19 @@ actor WatchChecker: VideoPlayerObserver {
         do {
             videoDuration = try await asset.load(.duration)
         } catch {
-            logger.error("Cannot get duration \(error)")
+            print("cannot get duration \(error)")
         }
     }
 
     func performUpdateWatch() async {
-        let id = translationId
         do {
-            logger.notice("Update watch translationId: \(id)")
+            print("update watch")
             try await api.sendAPIRequest(
                 ScraperAPI.Request
                     .UpdateCurrentWatch(translationId: translationId)
             )
         } catch {
-            logger.error("Cannot update watch \(error)")
+            print("Cannot update watch \(error)")
         }
     }
 }

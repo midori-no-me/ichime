@@ -13,9 +13,7 @@
 		C6213C872BAF603800E08736 /* SceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6213C862BAF603800E08736 /* SceneController.swift */; };
 		C6213C892BAF605F00E08736 /* WatchChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6213C882BAF605F00E08736 /* WatchChecker.swift */; };
 		C6213C8B2BAF607E00E08736 /* VideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6213C8A2BAF607E00E08736 /* VideoModel.swift */; };
-		C63B02342BB4D6C30009A6F7 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63B02332BB4D6C30009A6F7 /* VideoPlayer.swift */; };
-		C63B02362BB4E05B0009A6F7 /* VideoPlayerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63B02352BB4E05B0009A6F7 /* VideoPlayerExample.swift */; };
-		C63C91862B5DAC8E00B44CC8 /* VideoPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63C91852B5DAC8E00B44CC8 /* VideoPlayerController.swift */; };
+		C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */; };
 		C64EB0182B68587700AC7C27 /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = C64EB0172B68587700AC7C27 /* DITranquillity */; };
 		C64EB01A2B699C3D00AC7C27 /* DI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64EB0192B699C3D00AC7C27 /* DI.swift */; };
 		C651FD092B61745700E68341 /* ScraperAPI in Frameworks */ = {isa = PBXBuildFile; productRef = C651FD082B61745700E68341 /* ScraperAPI */; };
@@ -113,9 +111,7 @@
 		C6213C862BAF603800E08736 /* SceneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneController.swift; sourceTree = "<group>"; };
 		C6213C882BAF605F00E08736 /* WatchChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchChecker.swift; sourceTree = "<group>"; };
 		C6213C8A2BAF607E00E08736 /* VideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModel.swift; sourceTree = "<group>"; };
-		C63B02332BB4D6C30009A6F7 /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
-		C63B02352BB4E05B0009A6F7 /* VideoPlayerExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerExample.swift; sourceTree = "<group>"; };
-		C63C91852B5DAC8E00B44CC8 /* VideoPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerController.swift; sourceTree = "<group>"; };
+		C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
 		C64EB0192B699C3D00AC7C27 /* DI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DI.swift; sourceTree = "<group>"; };
 		C651FD072B608A7600E68341 /* ScraperAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ScraperAPI; sourceTree = "<group>"; };
 		C65ACDE72B54466300C27FB3 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
@@ -222,13 +218,11 @@
 		C6213C852BAF601A00E08736 /* VideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				C63C91852B5DAC8E00B44CC8 /* VideoPlayerController.swift */,
-				C63B02332BB4D6C30009A6F7 /* VideoPlayer.swift */,
+				C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */,
 				C6213C862BAF603800E08736 /* SceneController.swift */,
 				C6213C882BAF605F00E08736 /* WatchChecker.swift */,
 				C6213C8A2BAF607E00E08736 /* VideoModel.swift */,
 				C6698C662BB0D4F4008A9274 /* MetadataCollector.swift */,
-				C63B02352BB4E05B0009A6F7 /* VideoPlayerExample.swift */,
 			);
 			path = VideoPlayer;
 			sourceTree = "<group>";
@@ -727,19 +721,17 @@
 				ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */,
 				ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */,
 				ED5C74812BAC401C002E0E1B /* CorderRadiusForMediumObject.swift in Sources */,
-				C63B02362BB4E05B0009A6F7 /* VideoPlayerExample.swift in Sources */,
 				ED36C6282B530535000D0A80 /* EpisodePreviewModel.swift in Sources */,
 				EDF7104E2B4B344F001C2008 /* ShowCard.swift in Sources */,
 				ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */,
 				ED3A674B2B56FBBA00FB3975 /* ShowModel.swift in Sources */,
 				ED5C74832BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift in Sources */,
-				C63C91862B5DAC8E00B44CC8 /* VideoPlayerController.swift in Sources */,
+				C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */,
 				EDFF2D2A2B4476D300F27E61 /* Anime365Client.swift in Sources */,
 				EDC57C192BAF6448001533E7 /* ContentViewWithTabBar.swift in Sources */,
 				ED36C62A2B53FB81000D0A80 /* EpisodeModel.swift in Sources */,
 				C6213C872BAF603800E08736 /* SceneController.swift in Sources */,
 				C6656A6C2B630C7C00BF7412 /* UserRateForm.swift in Sources */,
-				C63B02342BB4D6C30009A6F7 /* VideoPlayer.swift in Sources */,
 				ED3A674D2B5739B600FB3975 /* EpisodeTranslationQualitySelectorView.swift in Sources */,
 				C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */,
 				EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */,
