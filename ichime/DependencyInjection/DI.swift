@@ -18,9 +18,6 @@ class ApplicationDependency: DIFramework {
     }()
 
     static func load(container: DIContainer) {
-        container.register { VideoPlayerController() }
-            .lifetime(.single)
-
         container
             .register {
                 ScraperAPI.Session(cookieStorage: HTTPCookieStorage.shared, baseURL: ServiceLocator.getWebsiteBaseUrl)
