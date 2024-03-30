@@ -354,7 +354,9 @@ private struct ShowKeyDetailsSection: View {
                 }
             #endif
         }
+        #if os(tvOS)
         .focusSection()
+        #endif
     }
 }
 
@@ -471,7 +473,9 @@ private struct ShowActionButtons: View {
                     #endif
                 }
             }
+            #if os(tvOS)
             .focusSection()
+            #endif
 
             if !show.episodePreviews.isEmpty && show.isOngoing,
                let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: show.episodePreviews)
@@ -531,7 +535,9 @@ private struct ShowDescriptionCards: View {
                 )
             }
         }
+        #if os(tvOS)
         .focusSection()
+        #endif
     }
 }
 
