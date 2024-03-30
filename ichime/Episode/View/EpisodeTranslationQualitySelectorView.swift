@@ -91,6 +91,9 @@ struct EpisodeTranslationQualitySelectorView: View {
 
             case .loading:
                 ProgressView()
+                #if os(tvOS)
+                    .focusable()
+                #endif
 
             case let .loadingFailed(error):
                 ContentUnavailableView {

@@ -22,6 +22,9 @@ struct ContentView: View {
                 }
             case .loading:
                 ProgressView()
+                #if os(tvOS)
+                    .focusable()
+                #endif
             case .isAuth:
                 #if os(iOS)
                     if UIDevice.current.userInterfaceIdiom == .phone {

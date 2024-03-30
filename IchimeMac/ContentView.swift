@@ -20,6 +20,9 @@ struct ContentView: View {
             }
         case .loading:
             ProgressView()
+            #if os(tvOS)
+                .focusable()
+            #endif
         case .isAuth:
             ContentViewWithSideBar()
         case .isAnonym:

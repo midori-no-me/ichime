@@ -106,6 +106,9 @@ struct CurrentlyWatchingView: View {
                 }
             case .loading:
                 ProgressView()
+                #if os(tvOS)
+                    .focusable()
+                #endif
             case .needSubscribe:
                 ContentUnavailableView {
                     Label("Нужна подписка", systemImage: "person.fill.badge.plus")

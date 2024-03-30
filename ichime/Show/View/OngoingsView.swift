@@ -121,6 +121,9 @@ struct OngoingsView: View {
             case .loading:
                 OngoingsViewWrapper {
                     ProgressView()
+                    #if os(tvOS)
+                        .focusable()
+                    #endif
                 }
 
             case let .loadingFailed(error):

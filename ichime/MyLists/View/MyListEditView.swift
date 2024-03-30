@@ -95,6 +95,10 @@ struct MyListEditView: View {
                     }
                 case .loading:
                     ProgressView()
+                    #if os(tvOS)
+                        .focusable()
+                    #endif
+
                 case let .loadingFailed(error):
                     ContentUnavailableView {
                         Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")

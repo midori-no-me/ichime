@@ -156,6 +156,9 @@ struct SearchShowsView: View {
 
             case .loading:
                 ProgressView()
+                #if os(tvOS)
+                    .focusable()
+                #endif
 
             case let .loadingFailed(error):
                 ContentUnavailableView {
@@ -189,21 +192,21 @@ struct SearchShowsView: View {
         #if os(iOS) // !is(tvOS)
         .navigationBarTitleDisplayMode(.large)
         .searchable(
-            text: self.$viewModel.currentlyTypedSearchQuery,
-            isPresented: self.$viewModel.isSearchPresented,
+            text: $viewModel.currentlyTypedSearchQuery,
+            isPresented: $viewModel.isSearchPresented,
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: "Название тайтла"
         )
         #endif
         #if os(macOS)
         .searchable(
-            text: self.$viewModel.currentlyTypedSearchQuery,
-            isPresented: self.$viewModel.isSearchPresented,
+            text: $viewModel.currentlyTypedSearchQuery,
+            isPresented: $viewModel.isSearchPresented,
             placement: .toolbar,
             prompt: "Название тайтла"
         )
         #endif
-        .onChange(of: self.viewModel.currentlyTypedSearchQuery) {
+        .onChange(of: viewModel.currentlyTypedSearchQuery) {
             self.viewModel.currentlyTypedSearchQueryChanged()
         }
         .onSubmit(of: .search) {
