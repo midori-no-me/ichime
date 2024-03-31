@@ -1,6 +1,6 @@
 import SwiftUI
 
-protocol ShowsSectionLoader: Identifiable {
+private protocol ShowsSectionLoader: Identifiable {
     var id: String { get }
 
     func getTitle() -> String
@@ -9,7 +9,7 @@ protocol ShowsSectionLoader: Identifiable {
     func displaySeason() -> Bool
 }
 
-class OngoingsSectionLoader: ShowsSectionLoader {
+private class OngoingsSectionLoader: ShowsSectionLoader {
     private let client: Anime365Client
 
     init(
@@ -41,7 +41,7 @@ class OngoingsSectionLoader: ShowsSectionLoader {
     }
 }
 
-class TopSectionLoader: ShowsSectionLoader {
+private class TopSectionLoader: ShowsSectionLoader {
     private let client: Anime365Client
 
     init(
@@ -73,16 +73,19 @@ class TopSectionLoader: ShowsSectionLoader {
     }
 }
 
-class SeasonalSectionLoader: ShowsSectionLoader {
+private class SeasonalSectionLoader: ShowsSectionLoader {
     private let client: Anime365Client
     private let yearAndSeason: (Int, SeasonName)
+    private let description: String?
 
     init(
         yearAndSeason: (Int, SeasonName),
+        description: String?,
         client: Anime365Client = ApplicationDependency.container.resolve()
     ) {
         self.client = client
         self.yearAndSeason = yearAndSeason
+        self.description = description
         id = "\(yearAndSeason.0)_\(yearAndSeason.1)"
     }
 
@@ -93,7 +96,7 @@ class SeasonalSectionLoader: ShowsSectionLoader {
     }
 
     func getSubtitle() -> String? {
-        nil
+        self.description
     }
 
     func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
@@ -115,7 +118,7 @@ class SeasonalSectionLoader: ShowsSectionLoader {
 }
 
 struct HomeView: View {
-    @State var sectionLoaderQueue: [any ShowsSectionLoader] = []
+    @State private var sectionLoaderQueue: [any ShowsSectionLoader] = []
 
     #if os(tvOS)
         private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
@@ -158,9 +161,21 @@ struct HomeView: View {
             OngoingsSectionLoader()
         case 1:
             TopSectionLoader()
+        case 2:
+            SeasonalSectionLoader(
+                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: 0),
+                description: "Текущий сезон"
+            )
+        case 3:
+            SeasonalSectionLoader(
+                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: 1),
+                description: "Следующий сезон"
+            )
         default:
-            SeasonalSectionLoader(yearAndSeason: ShowSeasonService()
-                .getRelativeSeason(shift: (sectionLoaderQueue.count - 2) * -1))
+            SeasonalSectionLoader(
+                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: (sectionLoaderQueue.count - 3) * -1),
+                description: nil
+            )
         }
     }
 }
