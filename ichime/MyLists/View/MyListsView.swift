@@ -237,9 +237,6 @@ struct ToolbarWrapper<Content: View>: View {
                         )
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    ProfileButton()
-                }
             }
         #endif
     }

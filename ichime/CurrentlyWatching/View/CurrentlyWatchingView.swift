@@ -153,9 +153,6 @@ struct CurrentlyWatchingView: View {
             await notificationCounter.checkCounter()
         }
         #if !os(tvOS)
-        .toolbar {
-            ProfileButton()
-        }
         .navigationTitle("Я смотрю")
         #endif
     }

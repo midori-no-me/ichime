@@ -13,13 +13,13 @@ import SwiftUI
 @available(watchOS, unavailable)
 @available(visionOS, unavailable)
 struct ContentViewWithSideBar: View {
-    @State private var navigationActiveTab: SideBarLinks? = .ongoings
+    @State private var navigationActiveTab: SideBarLinks? = .home
     @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
     @StateObject private var videoPlayerController: VideoPlayerController = .init()
 
     enum SideBarLinks {
         case searchShows
-        case ongoings
+        case home
         case currentlyWatching
         case myLists
         case notifications
@@ -31,8 +31,8 @@ struct ContentViewWithSideBar: View {
                 Label("Поиск", systemImage: "magnifyingglass")
                     .tag(SideBarLinks.searchShows)
 
-                Label("Онгоинги", systemImage: "rectangle.grid.3x2.fill")
-                    .tag(SideBarLinks.ongoings)
+                Label("Главная", systemImage: "house.fill")
+                    .tag(SideBarLinks.home)
 
                 Section(header: Text("Моя библиотека")) {
                     Label("Я смотрю", systemImage: "film.stack")
@@ -57,9 +57,9 @@ struct ContentViewWithSideBar: View {
                     SearchShowsView()
                 }
 
-            case .ongoings:
+            case .home:
                 NavigationStack {
-                    OngoingsView()
+                    HomeView()
                 }
 
             case .currentlyWatching:

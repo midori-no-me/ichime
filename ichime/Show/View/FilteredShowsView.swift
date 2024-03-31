@@ -1,6 +1,6 @@
 import SwiftUI
 
-class OngoingsViewModel: ObservableObject {
+class FilteredShowsViewModel: ObservableObject {
     enum State {
         case idle
         case loading
@@ -11,17 +11,16 @@ class OngoingsViewModel: ObservableObject {
 
     @Published private(set) var state = State.idle
 
-    private let client: Anime365Client
-
     private var currentOffset: Int = 0
     private var shows: [Show] = []
     private var stopLazyLoading: Bool = false
+    private let fetchShows: (_ offset: Int, _ limit: Int) async throws -> [Show]
 
     private let SHOWS_PER_PAGE = 20
 
     init(
         preloadedShows: [Show]? = nil,
-        client: Anime365Client = ApplicationDependency.container.resolve()
+        fetchShows: @escaping (_ offset: Int, _ limit: Int) async throws -> [Show]
     ) {
         if let preloadedShows = preloadedShows, !preloadedShows.isEmpty {
             currentOffset = preloadedShows.count
@@ -29,7 +28,7 @@ class OngoingsViewModel: ObservableObject {
             state = .loaded(shows)
         }
 
-        self.client = client
+        self.fetchShows = fetchShows
     }
 
     @MainActor
@@ -41,9 +40,9 @@ class OngoingsViewModel: ObservableObject {
         await updateState(.loading)
 
         do {
-            let shows = try await client.getOngoings(
-                offset: currentOffset,
-                limit: SHOWS_PER_PAGE
+            let shows = try await fetchShows(
+                currentOffset,
+                SHOWS_PER_PAGE
             )
 
             if shows.isEmpty {
@@ -64,9 +63,9 @@ class OngoingsViewModel: ObservableObject {
         }
 
         do {
-            let shows = try await client.getOngoings(
-                offset: currentOffset,
-                limit: SHOWS_PER_PAGE
+            let shows = try await fetchShows(
+                currentOffset,
+                SHOWS_PER_PAGE
             )
 
             if shows.count < SHOWS_PER_PAGE {
@@ -83,9 +82,9 @@ class OngoingsViewModel: ObservableObject {
 
     func performPullToRefresh() async {
         do {
-            let shows = try await client.getOngoings(
-                offset: 0,
-                limit: SHOWS_PER_PAGE
+            let shows = try await fetchShows(
+                0,
+                SHOWS_PER_PAGE
             )
 
             if shows.isEmpty {
@@ -103,65 +102,77 @@ class OngoingsViewModel: ObservableObject {
     }
 }
 
-struct OngoingsView: View {
-    @StateObject private var viewModel: OngoingsViewModel = .init()
+struct FilteredShowsView: View {
+    @StateObject public var viewModel: FilteredShowsViewModel
+
+    public let title: String
+    public let description: String?
 
     var body: some View {
         Group {
             switch self.viewModel.state {
             case .idle:
-                OngoingsViewWrapper {
-                    Color.clear.onAppear {
-                        Task {
-                            await self.viewModel.performInitialLoad()
-                        }
+                Color.clear.onAppear {
+                    Task {
+                        await self.viewModel.performInitialLoad()
                     }
                 }
 
             case .loading:
-                OngoingsViewWrapper {
-                    ProgressView()
-                    #if os(tvOS)
-                        .focusable()
-                    #endif
-                }
+                ProgressView()
+                #if os(tvOS)
+                    .focusable()
+                #endif
 
             case let .loadingFailed(error):
-                OngoingsViewWrapper {
-                    ContentUnavailableView {
-                        Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-                    } description: {
-                        Text(error.localizedDescription)
-                    }
-                    #if !os(tvOS)
-                    .textSelection(.enabled)
-                    #endif
+                ContentUnavailableView {
+                    Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+                } description: {
+                    Text(error.localizedDescription)
                 }
+                #if !os(tvOS)
+                .textSelection(.enabled)
+                #endif
 
             case .loadedButEmpty:
-                OngoingsViewWrapper {
-                    ContentUnavailableView {
-                        Label("Ничего не нашлось", systemImage: "list.bullet")
-                    } description: {
-                        Text("Возможно, это баг")
-                    }
+                ContentUnavailableView {
+                    Label("Ничего не нашлось", systemImage: "list.bullet")
+                } description: {
+                    Text("Возможно, это баг")
                 }
 
             case let .loaded(shows):
                 ScrollView([.vertical]) {
-                    OngoingsViewWrapper {
-                        OngoingsGrid(
-                            shows: shows,
-                            loadMore: { await self.viewModel.performLazyLoading() }
-                        )
-                        #if os(macOS)
-                        .padding()
-                        #else
-                        .padding(.top, 8)
-                        .horizontalScreenEdgePadding()
-                        .scenePadding(.bottom)
+                    Group {
+                        #if os(tvOS)
+                            Text(title)
+                                .font(.title2)
                         #endif
+
+                        if let description {
+                            Text(description)
+                            #if os(tvOS)
+                                .font(.title3)
+                            #else
+                                .font(.title3)
+                            #endif
+                                .foregroundStyle(.secondary)
+                                .horizontalScreenEdgePadding()
+                        }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                    FilteredShowsGrid(
+                        shows: shows,
+                        loadMore: { await self.viewModel.performLazyLoading() }
+                    )
+                    #if os(macOS)
+                    .padding()
+                    #else
+                    .padding(.top, 8)
+                    .horizontalScreenEdgePadding()
+                    .scenePadding(.bottom)
+                    #endif
                 }
                 #if os(tvOS)
                 .scrollClipDisabled(true)
@@ -180,43 +191,16 @@ struct OngoingsView: View {
             await self.viewModel.performPullToRefresh()
         }
         #if !os(tvOS)
-        .navigationTitle("Онгоинги")
+        .navigationTitle(title)
         .navigationBarTitleDisplayMode(.large)
-        .toolbar {
-            ProfileButton()
-        }
+        #endif
+        #if os(tvOS)
+        .toolbar(.hidden, for: .tabBar)
         #endif
     }
 }
 
-private struct OngoingsViewWrapper<Content>: View where Content: View {
-    @ViewBuilder let content: Content
-
-    let title = String(localized: "Сериалы, у которых продолжают выходить новые серии")
-    var body: some View {
-        VStack(spacing: 0) {
-            #if os(iOS)
-                Text(title)
-                    .font(.title3)
-                    .horizontalScreenEdgePadding()
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .textSelection(.enabled)
-            #endif
-
-            Spacer()
-
-            self.content
-
-            Spacer()
-        }
-        #if os(macOS)
-        .navigationSubtitle(title)
-        #endif
-    }
-}
-
-private struct OngoingsGrid: View {
+private struct FilteredShowsGrid: View {
     let shows: [Show]
     let loadMore: () async -> Void
 
@@ -229,7 +213,7 @@ private struct OngoingsGrid: View {
             ),
         ], spacing: RawShowCard.RECOMMENDED_SPACING) {
             ForEach(self.shows) { show in
-                ShowCard(show: show)
+                ShowCard(show: show, displaySeason: true)
                     .task {
                         if show == self.shows.last {
                             await self.loadMore()
@@ -240,8 +224,8 @@ private struct OngoingsGrid: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        OngoingsView()
-    }
-}
+// #Preview {
+//    NavigationStack {
+//        FilteredShowsView()
+//    }
+// }

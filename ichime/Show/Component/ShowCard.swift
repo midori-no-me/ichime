@@ -9,13 +9,14 @@ import SwiftUI
 
 struct ShowCard: View {
     let show: Show
+    let displaySeason: Bool
 
     var body: some View {
         NavigationLink(
             destination: ShowView(showId: show.id, preloadedShow: show)
         ) {
             RawShowCard(
-                metadataLineComponents: formatMetadataLine(show),
+                metadataLineComponents: formatMetadataLine(show, displaySeason: displaySeason),
                 cover: show.posterUrl,
                 primaryTitle: show.title.translated.japaneseRomaji ?? show.title.full,
                 secondaryTitle: show.title.translated.russian
@@ -43,14 +44,16 @@ struct ShowCard: View {
     }
 }
 
-private func formatMetadataLine(_ show: Show) -> [String] {
+private func formatMetadataLine(_ show: Show, displaySeason: Bool) -> [String] {
     var metadataLineComponents: [String] = []
 
     if let score = show.score {
         metadataLineComponents.append(score.formatted())
     }
 
-    metadataLineComponents.append(show.calendarSeason)
+    if displaySeason {
+        metadataLineComponents.append(show.calendarSeason)
+    }
 
     if show.broadcastType != .tv {
         metadataLineComponents.append(show.typeTitle)
@@ -161,11 +164,11 @@ private struct ShowCardContextMenuPreview: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        OngoingsView()
-    }
-}
+// #Preview {
+//    NavigationStack {
+//        OngoingsView()
+//    }
+// }
 
 // #Preview("ShowCardContextMenuPreview (vertical image)") {
 //    Text("Long tap to preview")

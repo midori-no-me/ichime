@@ -11,10 +11,10 @@ struct ContentViewWithTabBarTV: View {
     var body: some View {
         TabView {
             NavigationStack {
-                OngoingsView()
+                HomeView()
             }
             .tabItem {
-                Text("Онгоинги")
+                Text("Главная")
             }
 
             NavigationStack {

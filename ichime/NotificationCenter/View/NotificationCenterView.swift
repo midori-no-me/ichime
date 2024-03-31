@@ -135,9 +135,6 @@ struct NotificationCenterView: View {
             await viewModel.performRefresh()
         }
         #if !os(tvOS)
-        .toolbar {
-            ProfileButton()
-        }
         .navigationTitle("Уведомления")
         #endif
     }

@@ -18,10 +18,10 @@ struct ContentViewWithTabBar: View {
     var body: some View {
         TabView {
             NavigationStack {
-                OngoingsView()
+                HomeView()
             }
             .tabItem {
-                Label("Онгоинги", systemImage: "rectangle.grid.3x2.fill")
+                Label("Главная", systemImage: "house.fill")
             }
 
             NavigationStack {

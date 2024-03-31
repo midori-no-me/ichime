@@ -120,9 +120,9 @@ private struct ImagePlaceholder: View {
         #endif
     }
 }
-
-#Preview {
-    NavigationStack {
-        OngoingsView()
-    }
-}
+//
+//#Preview {
+//    NavigationStack {
+//        OngoingsView()
+//    }
+//}

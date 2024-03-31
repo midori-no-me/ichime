@@ -186,9 +186,6 @@ struct SearchShowsView: View {
             }
         }
         .navigationTitle("Поиск")
-        .toolbar {
-            ProfileButton()
-        }
         #if os(iOS) // !is(tvOS)
         .navigationBarTitleDisplayMode(.large)
         .searchable(
@@ -230,7 +227,7 @@ private struct ShowsGrid: View {
             ),
         ], spacing: RawShowCard.RECOMMENDED_SPACING) {
             ForEach(self.shows) { show in
-                ShowCard(show: show)
+                ShowCard(show: show, displaySeason: true)
                     .task {
                         if show == self.shows.last {
                             await self.loadMore()

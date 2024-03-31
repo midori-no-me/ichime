@@ -25,7 +25,6 @@
 		C6698C672BB0D4F4008A9274 /* MetadataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6698C662BB0D4F4008A9274 /* MetadataCollector.swift */; };
 		C6899EB12BA2532E00E63311 /* ContentViewWithSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6899EB02BA2532E00E63311 /* ContentViewWithSideBar.swift */; };
 		C6899EB32BA2535100E63311 /* NotificationCounterWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */; };
-		C6899EB52BA254C900E63311 /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959302B4762690030B23D /* OngoingsView.swift */; };
 		C6899EB62BA254D300E63311 /* ShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7104D2B4B344F001C2008 /* ShowCard.swift */; };
 		C6899EB82BA2583100E63311 /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		C6899EB92BA25DA000E63311 /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
@@ -74,15 +73,18 @@
 		ED5C74812BAC401C002E0E1B /* CorderRadiusForMediumObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */; };
 		ED5C74832BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */; };
 		ED7357BE2BA8871A005C69B4 /* CardWithExpandableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */; };
+		ED7689112BB8A7B100657518 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7689102BB8A7B100657518 /* HomeView.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
 		EDC57C192BAF6448001533E7 /* ContentViewWithTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */; };
 		EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */; };
 		EDC57C1D2BAF6F3F001533E7 /* RawShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1C2BAF6F3F001533E7 /* RawShowCard.swift */; };
 		EDC57C1E2BAF6F3F001533E7 /* RawShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1C2BAF6F3F001533E7 /* RawShowCard.swift */; };
 		EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD353B32B5E82AF00313489 /* ServiceLocator.swift */; };
+		EDE018192BB98CEA00DAE593 /* ShowSeasonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE018182BB98CEA00DAE593 /* ShowSeasonService.swift */; };
+		EDE0181B2BB9AB2500DAE593 /* FilteredShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0181A2BB9AB2500DAE593 /* FilteredShowsView.swift */; };
+		EDE0181C2BB9AB2500DAE593 /* FilteredShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0181A2BB9AB2500DAE593 /* FilteredShowsView.swift */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
-		EDE959312B4762690030B23D /* OngoingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959302B4762690030B23D /* OngoingsView.swift */; };
 		EDE959332B484C8A0030B23D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959322B484C8A0030B23D /* ContentView.swift */; };
 		EDF7104E2B4B344F001C2008 /* ShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7104D2B4B344F001C2008 /* ShowCard.swift */; };
 		EDFF2D112B43471300F27E61 /* IchimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D102B43471300F27E61 /* IchimeApp.swift */; };
@@ -154,6 +156,7 @@
 		ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorderRadiusForMediumObject.swift; sourceTree = "<group>"; };
 		ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusForLargeObject.swift; sourceTree = "<group>"; };
 		ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWithExpandableText.swift; sourceTree = "<group>"; };
+		ED7689102BB8A7B100657518 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -161,10 +164,11 @@
 		EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithTabBarTV.swift; sourceTree = "<group>"; };
 		EDC57C1C2BAF6F3F001533E7 /* RawShowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawShowCard.swift; sourceTree = "<group>"; };
 		EDD353B32B5E82AF00313489 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
+		EDE018182BB98CEA00DAE593 /* ShowSeasonService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSeasonService.swift; sourceTree = "<group>"; };
+		EDE0181A2BB9AB2500DAE593 /* FilteredShowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredShowsView.swift; sourceTree = "<group>"; };
 		EDE9592B2B47167B0030B23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchShowsView.swift; sourceTree = "<group>"; };
 		EDE9592E2B475E590030B23D /* ShowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowView.swift; sourceTree = "<group>"; };
-		EDE959302B4762690030B23D /* OngoingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingsView.swift; sourceTree = "<group>"; };
 		EDE959322B484C8A0030B23D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EDF7104D2B4B344F001C2008 /* ShowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCard.swift; sourceTree = "<group>"; };
 		EDFF2D0D2B43471300F27E61 /* Ichime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ichime.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -443,8 +447,25 @@
 				EDF7104C2B4B3438001C2008 /* Component */,
 				ED8815E32B51DAA100EDBA9C /* Model */,
 				ED8A40822B4C5D150055DAB6 /* View */,
+				EDE018182BB98CEA00DAE593 /* ShowSeasonService.swift */,
 			);
 			path = Show;
+			sourceTree = "<group>";
+		};
+		ED76890E2BB8A79E00657518 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				ED76890F2BB8A7A500657518 /* View */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		ED76890F2BB8A7A500657518 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				ED7689102BB8A7B100657518 /* HomeView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		ED8815E32B51DAA100EDBA9C /* Model */ = {
@@ -458,9 +479,9 @@
 		ED8A40822B4C5D150055DAB6 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				EDE959302B4762690030B23D /* OngoingsView.swift */,
 				EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */,
 				EDE9592E2B475E590030B23D /* ShowView.swift */,
+				EDE0181A2BB9AB2500DAE593 /* FilteredShowsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -519,6 +540,7 @@
 		EDFF2D0F2B43471300F27E61 /* ichime */ = {
 			isa = PBXGroup;
 			children = (
+				ED76890E2BB8A79E00657518 /* Home */,
 				C6213C852BAF601A00E08736 /* VideoPlayer */,
 				ED5C747E2BAC3FF4002E0E1B /* ViewModifier */,
 				ED1D3E132BAA119E005B324A /* Utils */,
@@ -686,6 +708,7 @@
 				C6D0DA6E2B9FBE9A0000255C /* ServiceLocator.swift in Sources */,
 				C6D0DA702B9FBEA80000255C /* UserManager.swift in Sources */,
 				C6D0DA6F2B9FBE9E0000255C /* DI.swift in Sources */,
+				EDE0181C2BB9AB2500DAE593 /* FilteredShowsView.swift in Sources */,
 				C6899EB82BA2583100E63311 /* SearchShowsView.swift in Sources */,
 				C6D414092B9FBAAC006735D9 /* ContentView.swift in Sources */,
 				C6D0DA742B9FBFBA0000255C /* EpisodeModel.swift in Sources */,
@@ -693,7 +716,6 @@
 				C6D0DA722B9FBEC20000255C /* ShowModel.swift in Sources */,
 				C6D0DA732B9FBFB50000255C /* TranslationModel.swift in Sources */,
 				C6D0DA712B9FBEB40000255C /* Anime365Client.swift in Sources */,
-				C6899EB52BA254C900E63311 /* OngoingsView.swift in Sources */,
 				C6D414072B9FBAAC006735D9 /* IchimeMacApp.swift in Sources */,
 				C6899EB92BA25DA000E63311 /* ShowView.swift in Sources */,
 				EDC57C1E2BAF6F3F001533E7 /* RawShowCard.swift in Sources */,
@@ -711,7 +733,6 @@
 				ED1392312BB4C85900C2A9FC /* HeadingSectionWithBackground.swift in Sources */,
 				C68F69FA2BAA616F007A2E84 /* ifCondition.swift in Sources */,
 				C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */,
-				EDE959312B4762690030B23D /* OngoingsView.swift in Sources */,
 				C61BC4002BA3C5CC00AAEC1E /* ProfileButton.swift in Sources */,
 				C6213C8B2BAF607E00E08736 /* VideoModel.swift in Sources */,
 				EDC57C1D2BAF6F3F001533E7 /* RawShowCard.swift in Sources */,
@@ -722,6 +743,7 @@
 				ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */,
 				ED5C74812BAC401C002E0E1B /* CorderRadiusForMediumObject.swift in Sources */,
 				ED36C6282B530535000D0A80 /* EpisodePreviewModel.swift in Sources */,
+				EDE0181B2BB9AB2500DAE593 /* FilteredShowsView.swift in Sources */,
 				EDF7104E2B4B344F001C2008 /* ShowCard.swift in Sources */,
 				ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */,
 				ED3A674B2B56FBBA00FB3975 /* ShowModel.swift in Sources */,
@@ -745,11 +767,13 @@
 				EDE9592F2B475E590030B23D /* ShowView.swift in Sources */,
 				C6213C892BAF605F00E08736 /* WatchChecker.swift in Sources */,
 				EDFF2D112B43471300F27E61 /* IchimeApp.swift in Sources */,
+				ED7689112BB8A7B100657518 /* HomeView.swift in Sources */,
 				C64EB01A2B699C3D00AC7C27 /* DI.swift in Sources */,
 				EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */,
 				C68F69F82BAA5645007A2E84 /* MyListShow.swift in Sources */,
 				C61057002B99271F008012E7 /* NotificationCounterWatcher.swift in Sources */,
 				C6B8331D2B66951700D4A1AC /* WatchCard.swift in Sources */,
+				EDE018192BB98CEA00DAE593 /* ShowSeasonService.swift in Sources */,
 				ED1919772B5F00AD008C6C99 /* OnboardingView.swift in Sources */,
 				ED3D83FD2B5C3E710025BB5D /* MyListsView.swift in Sources */,
 				ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */,

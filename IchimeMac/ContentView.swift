@@ -77,7 +77,7 @@ struct ContentViewWithSideBar: View {
 
             case .ongoings:
                 NavigationStack {
-                    OngoingsView()
+                    SearchShowsView()
                 }
 
             case .currentlyWatching:
