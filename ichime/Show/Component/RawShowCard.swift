@@ -61,6 +61,7 @@ struct RawShowCard: View {
                             #if !os(tvOS)
                                 .cornerRadiusForMediumObject()
                                 .clipped()
+                                .shadow(radius: 0.5)
                             #endif
 
                         case .failure:
