@@ -170,7 +170,7 @@ struct ShowView: View {
                 #endif
 
             case let .loaded(show):
-                ScrollView([.vertical]) {
+                ScrollView(.vertical) {
                     ShowDetails(show: show, viewModel: self.viewModel)
                         .scenePadding(.bottom)
                 }
@@ -215,25 +215,26 @@ private struct ShowDetails: View {
     var viewModel: ShowViewModel
 
     var body: some View {
-        #if !os(tvOS)
-            HeadingSectionWithBackground(imageUrl: show.posterUrl!) {
-                ShowKeyDetailsSection(show: show, viewModel: viewModel)
-                    .padding(.bottom, SPACING_BETWEEN_SECTIONS)
-                    .horizontalScreenEdgePadding()
-            }
-            .padding(.bottom, SPACING_BETWEEN_SECTIONS)
-        #endif
-
         VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-            #if os(tvOS)
-                ShowKeyDetailsSection(show: show, viewModel: viewModel)
+            #if !os(tvOS)
+                HeadingSectionWithBackground(imageUrl: show.posterUrl) {
+                    ShowKeyDetailsSection(show: show, viewModel: viewModel)
+                        .padding(.bottom, SPACING_BETWEEN_SECTIONS)
+                        .horizontalScreenEdgePadding()
+                }
             #endif
 
-            if !show.descriptions.isEmpty {
-                ShowDescriptionCards(descriptions: show.descriptions)
+            Group {
+                #if os(tvOS)
+                    ShowKeyDetailsSection(show: show, viewModel: viewModel)
+                #endif
+
+                if !show.descriptions.isEmpty {
+                    ShowDescriptionCards(descriptions: show.descriptions)
+                }
             }
+            .horizontalScreenEdgePadding()
         }
-        .horizontalScreenEdgePadding()
     }
 }
 
