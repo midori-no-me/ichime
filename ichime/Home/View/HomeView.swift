@@ -215,22 +215,42 @@ private struct ShowsSection: View {
             }
         } else {
             VStack(alignment: .leading, spacing: SPACING_BETWEEN_TITLE_CARD_CARDS) {
-                VStack(alignment: .leading) {
-                    NavigationLink(destination: FilteredShowsView(
-                        viewModel: FilteredShowsViewModel(
-                            preloadedShows: shows,
-                            fetchShows: sectionLoader.getCards
-                        ),
-                        title: sectionLoader.getTitle(),
-                        description: sectionLoader.getSubtitle(),
-                        displaySeason: sectionLoader.displaySeason()
-                    )) {
-                        HStack(alignment: .center) {
-                            #if os(tvOS)
-                                Text(sectionLoader.getTitle())
-                                    .font(.title3)
-                                    .fontWeight(.bold)
-                            #else
+                #if os(tvOS)
+                    HStack(alignment: .firstTextBaseline) {
+                        NavigationLink(destination: FilteredShowsView(
+                            viewModel: FilteredShowsViewModel(
+                                preloadedShows: shows,
+                                fetchShows: sectionLoader.getCards
+                            ),
+                            title: sectionLoader.getTitle(),
+                            description: sectionLoader.getSubtitle(),
+                            displaySeason: sectionLoader.displaySeason()
+                        )) {
+                            Text(sectionLoader.getTitle())
+                                .font(.title3)
+                                .fontWeight(.bold)
+                        }
+                        .buttonStyle(.plain)
+
+                        if let description = sectionLoader.getSubtitle() {
+                            Text(description)
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .focusSection()
+                #else
+                    VStack(alignment: .leading) {
+                        NavigationLink(destination: FilteredShowsView(
+                            viewModel: FilteredShowsViewModel(
+                                preloadedShows: shows,
+                                fetchShows: sectionLoader.getCards
+                            ),
+                            title: sectionLoader.getTitle(),
+                            description: sectionLoader.getSubtitle(),
+                            displaySeason: sectionLoader.displaySeason()
+                        )) {
+                            HStack(alignment: .center) {
                                 Text(sectionLoader.getTitle())
                                     .font(.title)
                                     .fontWeight(.bold)
@@ -239,20 +259,17 @@ private struct ShowsSection: View {
                                     .font(.title3)
                                     .foregroundStyle(.secondary)
                                     .fontWeight(.bold)
-                            #endif
+                            }
+                        }
+                        .buttonStyle(.plain)
+
+                        if let description = sectionLoader.getSubtitle() {
+                            Text(description)
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
-                    .buttonStyle(.plain)
-
-                    if let description = sectionLoader.getSubtitle() {
-                        Text(description)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                }
-                #if os(tvOS)
-                .focusSection()
                 #endif
 
                 ScrollView(.horizontal) {
