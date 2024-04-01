@@ -118,7 +118,7 @@ private class SeasonalSectionLoader: ShowsSectionLoader {
 }
 
 struct HomeView: View {
-    @State private var sectionLoaderQueue: [any ShowsSectionLoader] = []
+    @State private var sectionLoaders: [any ShowsSectionLoader] = []
 
     #if os(tvOS)
         private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
@@ -129,11 +129,11 @@ struct HomeView: View {
     var body: some View {
         ScrollView(.vertical) {
             LazyVStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-                ForEach(sectionLoaderQueue, id: \.id) { sectionLoader in
+                ForEach(sectionLoaders, id: \.id) { sectionLoader in
                     ShowsSection(
                         sectionLoader: sectionLoader,
                         onLoaded: {
-                            sectionLoaderQueue.append(getNextSectionLoader())
+                            sectionLoaders.append(getNextSectionLoader())
                         }
                     )
                 }
@@ -141,7 +141,7 @@ struct HomeView: View {
             .horizontalScreenEdgePadding()
         }
         .onAppear {
-            sectionLoaderQueue.append(getNextSectionLoader())
+            sectionLoaders.append(getNextSectionLoader())
         }
         #if !os(tvOS)
         .navigationTitle("Главная")
@@ -156,7 +156,7 @@ struct HomeView: View {
     }
 
     private func getNextSectionLoader() -> any ShowsSectionLoader {
-        switch sectionLoaderQueue.count {
+        switch sectionLoaders.count {
         case 0:
             OngoingsSectionLoader()
         case 1:
@@ -173,7 +173,7 @@ struct HomeView: View {
             )
         default:
             SeasonalSectionLoader(
-                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: (sectionLoaderQueue.count - 3) * -1),
+                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: (sectionLoaders.count - 3) * -1),
                 description: nil
             )
         }
