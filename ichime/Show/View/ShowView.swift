@@ -432,7 +432,7 @@ private struct ShowActionButtons: View {
                 NavigationLink(
                     destination: EpisodeListView(episodePreviews: self.show.episodePreviews)
                 ) {
-                    Label("Смотреть", systemImage: "play.fill")
+                    Label("Смотреть", systemImage: show.episodePreviews.isEmpty ? "play.slash.fill" : "play.fill")
                     #if os(tvOS)
                         .padding(20)
                     #endif
@@ -442,6 +442,7 @@ private struct ShowActionButtons: View {
                 #else
                 .buttonStyle(.borderedProminent)
                 #endif
+                .disabled(show.episodePreviews.isEmpty)
 
                 if viewModel.statusReady {
                     Button(action: {
@@ -481,16 +482,24 @@ private struct ShowActionButtons: View {
             .focusSection()
             #endif
 
-            if !show.episodePreviews.isEmpty && show.isOngoing,
-               let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: show.episodePreviews)
-            {
-                Text(
-                    "Обычно новые серии выходят по \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1)."
-                )
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.caption)
+            Group {
+                if !show.episodePreviews.isEmpty && show.isOngoing,
+                   let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: show.episodePreviews)
+                {
+                    Text(
+                        "Обычно новые серии выходят по \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1)."
+                    )
+                }
+
+                if show.episodePreviews.isEmpty {
+                    Text(
+                        "У этого тайтла пока что нет загруженных серий."
+                    )
+                }
             }
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .font(.caption)
         }
         .sheet(isPresented: $showEdit, content: {
             MyListEditView(
