@@ -62,10 +62,7 @@ class Anime365Client {
     ) async throws -> [Show] {
         let apiResponse = try await apiClient.sendApiRequest(ListSeriesRequest(
             limit: limit,
-            offset: offset,
-            chips: [
-                "isActive": "1",
-            ]
+            offset: offset
         ))
 
         return apiResponse.map { series in
@@ -83,7 +80,6 @@ class Anime365Client {
             limit: limit,
             offset: offset,
             chips: [
-                "isActive": "1",
                 "yearseason": "\(season.getApiName())_\(year)",
             ]
         ))
