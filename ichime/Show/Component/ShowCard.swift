@@ -48,7 +48,7 @@ private func formatMetadataLine(_ show: Show, displaySeason: Bool) -> [String] {
     var metadataLineComponents: [String] = []
 
     if let score = show.score {
-        metadataLineComponents.append(score.formatted())
+        metadataLineComponents.append("★ \(score.formatted())")
     }
 
     if displaySeason {
