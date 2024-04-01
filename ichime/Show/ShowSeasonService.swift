@@ -41,13 +41,21 @@ enum SeasonName: String {
 }
 
 struct ShowSeasonService {
+    public static let NEXT_SEASON = 1
+    public static let CURRENT_SEASON = 0
+    public static let PREVIOUS_SEASON = -1
+
+    private let currentDate: Date
+
+    init() {
+        self.currentDate = Date()
+    }
+
     /// 1 = next season
     /// 0 = current season
     /// -1 = previous season
     func getRelativeSeason(shift: Int) -> (Int, SeasonName) {
-        let currentDate = Date()
-
-        let shiftedDate = Calendar.current.date(byAdding: .month, value: shift * 3, to: currentDate)!
+        let shiftedDate = Calendar.current.date(byAdding: .month, value: shift * 3, to: self.currentDate)!
         let shiftedYear = Calendar.current.component(.year, from: shiftedDate)
         let shiftedMonthNumber = Calendar.current.component(.month, from: shiftedDate)
 

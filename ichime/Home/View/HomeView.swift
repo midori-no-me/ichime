@@ -96,7 +96,7 @@ private class SeasonalSectionLoader: ShowsSectionLoader {
     }
 
     func getSubtitle() -> String? {
-        self.description
+        description
     }
 
     func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
@@ -156,32 +156,38 @@ struct HomeView: View {
     }
 
     private func getNextSectionLoader() -> any ShowsSectionLoader {
-        switch sectionLoaders.count {
-        case 0:
-            OngoingsSectionLoader()
-        case 1:
-            TopSectionLoader()
-        case 2:
+        let showSeasonService = ShowSeasonService()
+
+        let predefinedLoaders: [any ShowsSectionLoader] = [
+            OngoingsSectionLoader(),
+            TopSectionLoader(),
             SeasonalSectionLoader(
-                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: 1),
+                yearAndSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.NEXT_SEASON),
                 description: "Следующий сезон"
-            )
-        case 3:
+            ),
             SeasonalSectionLoader(
-                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: 0),
+                yearAndSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.CURRENT_SEASON),
                 description: "Текущий сезон"
-            )
-        case 4:
+            ),
             SeasonalSectionLoader(
-                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: -1),
+                yearAndSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.PREVIOUS_SEASON),
                 description: "Прошлый сезон"
-            )
-        default:
-            SeasonalSectionLoader(
-                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: (sectionLoaders.count - 4) * -1),
-                description: nil
-            )
+            ),
+        ]
+
+        if sectionLoaders.count < predefinedLoaders.count {
+            return predefinedLoaders[sectionLoaders.count]
         }
+
+        let lastPredefinedSeasonalSectionShift = ShowSeasonService.PREVIOUS_SEASON
+
+        return SeasonalSectionLoader(
+            yearAndSeason: showSeasonService
+                .getRelativeSeason(
+                    shift: predefinedLoaders.count - sectionLoaders.count + lastPredefinedSeasonalSectionShift - 1
+                ),
+            description: nil
+        )
     }
 }
 
