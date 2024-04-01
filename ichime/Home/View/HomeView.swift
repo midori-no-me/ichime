@@ -238,6 +238,7 @@ private struct ShowsSection: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .focusSection()
                 #else
                     VStack(alignment: .leading) {
