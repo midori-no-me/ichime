@@ -163,17 +163,22 @@ struct HomeView: View {
             TopSectionLoader()
         case 2:
             SeasonalSectionLoader(
-                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: 0),
-                description: "Текущий сезон"
-            )
-        case 3:
-            SeasonalSectionLoader(
                 yearAndSeason: ShowSeasonService().getRelativeSeason(shift: 1),
                 description: "Следующий сезон"
             )
+        case 3:
+            SeasonalSectionLoader(
+                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: 0),
+                description: "Текущий сезон"
+            )
+        case 4:
+            SeasonalSectionLoader(
+                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: -1),
+                description: "Прошлый сезон"
+            )
         default:
             SeasonalSectionLoader(
-                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: (sectionLoaders.count - 3) * -1),
+                yearAndSeason: ShowSeasonService().getRelativeSeason(shift: (sectionLoaders.count - 4) * -1),
                 description: nil
             )
         }
