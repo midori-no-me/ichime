@@ -143,53 +143,73 @@ struct FilteredShowsView: View {
                 }
 
             case let .loaded(shows):
-                ScrollView([.vertical]) {
-                    Group {
-                        #if os(tvOS)
-                            Text(title)
-                                .font(.title2)
-                        #endif
-
-                        if let description {
-                            Text(description)
-                            #if os(tvOS)
-                                .font(.title3)
-                            #else
-                                .font(.title3)
-                            #endif
-                                .foregroundStyle(.secondary)
-                                .horizontalScreenEdgePadding()
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                    LazyVGrid(columns: [
-                        GridItem(
-                            .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-                            spacing: RawShowCard.RECOMMENDED_SPACING,
-                            alignment: .topLeading
-                        ),
-                    ], spacing: RawShowCard.RECOMMENDED_SPACING) {
-                        ForEach(shows) { show in
-                            ShowCard(show: show, displaySeason: self.displaySeason)
-                                .task {
-                                    if show == shows.last {
-                                        await self.viewModel.performLazyLoading()
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    List {
+                        Section {
+                            ForEach(shows) { show in
+                                ShowCard(show: show, displaySeason: self.displaySeason)
+                                    .task {
+                                        if show == shows.last {
+                                            await self.viewModel.performLazyLoading()
+                                        }
                                     }
-                                }
+                            }
+                        } header: {
+                            if let description {
+                                Text(description)
+                            }
                         }
                     }
-                    #if os(macOS)
-                    .padding()
-                    #else
-                    .padding(.top, 8)
-                    .horizontalScreenEdgePadding()
-                    .scenePadding(.bottom)
+                    .listStyle(.plain)
+                } else {
+                    ScrollView([.vertical]) {
+                        Group {
+                            #if os(tvOS)
+                                Text(title)
+                                    .font(.title2)
+                            #endif
+
+                            if let description {
+                                Text(description)
+                                #if os(tvOS)
+                                    .font(.title3)
+                                #else
+                                    .font(.title3)
+                                #endif
+                                    .foregroundStyle(.secondary)
+                                    .horizontalScreenEdgePadding()
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                        LazyVGrid(columns: [
+                            GridItem(
+                                .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+                                spacing: RawShowCard.RECOMMENDED_SPACING,
+                                alignment: .topLeading
+                            ),
+                        ], spacing: RawShowCard.RECOMMENDED_SPACING) {
+                            ForEach(shows) { show in
+                                ShowCard(show: show, displaySeason: self.displaySeason)
+                                    .task {
+                                        if show == shows.last {
+                                            await self.viewModel.performLazyLoading()
+                                        }
+                                    }
+                            }
+                        }
+                        #if os(macOS)
+                        .padding()
+                        #else
+                        .padding(.top, 8)
+                        .horizontalScreenEdgePadding()
+                        .scenePadding(.bottom)
+                        #endif
+                    }
+                    #if os(tvOS)
+                    .scrollClipDisabled(true)
                     #endif
                 }
-                #if os(tvOS)
-                .scrollClipDisabled(true)
-                #endif
             }
         }
         .refreshable {
