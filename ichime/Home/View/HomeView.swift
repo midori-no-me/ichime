@@ -121,9 +121,9 @@ struct HomeView: View {
     @State private var sectionLoaders: [any ShowsSectionLoader] = []
 
     #if os(tvOS)
-        private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
+        private let SPACING_BETWEEN_SECTIONS: CGFloat = 70
     #else
-        private let SPACING_BETWEEN_SECTIONS: CGFloat = 20
+        private let SPACING_BETWEEN_SECTIONS: CGFloat = 30
     #endif
 
     var body: some View {
