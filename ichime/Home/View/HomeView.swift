@@ -25,7 +25,7 @@ private class OngoingsSectionLoader: ShowsSectionLoader {
     }
 
     func getSubtitle() -> String? {
-        "Тайтлы, у которых продолжают выходить новые серии"
+        "Регулярно выходят новые серии"
     }
 
     func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
