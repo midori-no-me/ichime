@@ -57,7 +57,7 @@ private class TopSectionLoader: ShowsSectionLoader {
     }
 
     func getSubtitle() -> String? {
-        "Самые высокооцененные тайтлы"
+        "По версии MyAnimeList"
     }
 
     func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
