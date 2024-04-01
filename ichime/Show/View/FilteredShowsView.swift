@@ -107,6 +107,7 @@ struct FilteredShowsView: View {
 
     public let title: String
     public let description: String?
+    public let displaySeason: Bool
 
     var body: some View {
         Group {
@@ -162,10 +163,22 @@ struct FilteredShowsView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                    FilteredShowsGrid(
-                        shows: shows,
-                        loadMore: { await self.viewModel.performLazyLoading() }
-                    )
+                    LazyVGrid(columns: [
+                        GridItem(
+                            .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+                            spacing: RawShowCard.RECOMMENDED_SPACING,
+                            alignment: .topLeading
+                        ),
+                    ], spacing: RawShowCard.RECOMMENDED_SPACING) {
+                        ForEach(shows) { show in
+                            ShowCard(show: show, displaySeason: self.displaySeason)
+                                .task {
+                                    if show == shows.last {
+                                        await self.viewModel.performLazyLoading()
+                                    }
+                                }
+                        }
+                    }
                     #if os(macOS)
                     .padding()
                     #else
@@ -189,30 +202,6 @@ struct FilteredShowsView: View {
         #if os(tvOS)
         .toolbar(.hidden, for: .tabBar)
         #endif
-    }
-}
-
-private struct FilteredShowsGrid: View {
-    let shows: [Show]
-    let loadMore: () async -> Void
-
-    var body: some View {
-        LazyVGrid(columns: [
-            GridItem(
-                .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-                spacing: RawShowCard.RECOMMENDED_SPACING,
-                alignment: .topLeading
-            ),
-        ], spacing: RawShowCard.RECOMMENDED_SPACING) {
-            ForEach(self.shows) { show in
-                ShowCard(show: show, displaySeason: true)
-                    .task {
-                        if show == self.shows.last {
-                            await self.loadMore()
-                        }
-                    }
-            }
-        }
     }
 }
 

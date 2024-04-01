@@ -222,7 +222,8 @@ private struct ShowsSection: View {
                             fetchShows: sectionLoader.getCards
                         ),
                         title: sectionLoader.getTitle(),
-                        description: sectionLoader.getSubtitle()
+                        description: sectionLoader.getSubtitle(),
+                        displaySeason: sectionLoader.displaySeason()
                     )) {
                         HStack(alignment: .center) {
                             #if os(tvOS)
