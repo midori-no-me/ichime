@@ -34,11 +34,15 @@ public extension ScraperAPI {
         private let baseURL: URL
         private let userAgent: String
         public let session: ScraperAPI.Session
+        private let urlSession: URLSession
 
         public init(baseURL: URL, userAgent: String, session: ScraperAPI.Session) {
             self.baseURL = baseURL
             self.userAgent = userAgent
             self.session = session
+            let config = URLSessionConfiguration.default
+            config.httpCookieStorage = session.cookieStorage
+            urlSession = URLSession(configuration: config)
         }
 
         public func sendAPIRequest<T: ScraperHTMLRequest>(_ request: T) async throws -> T.ResponseType {
@@ -60,7 +64,7 @@ public extension ScraperAPI {
 
             var httpRequest = URLRequest(url: fullURL)
 
-            httpRequest.timeoutInterval = 3
+            httpRequest.timeoutInterval = 10
             httpRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
 
             var formData = request.getFormData()
@@ -89,7 +93,7 @@ public extension ScraperAPI {
             }
 
             do {
-                let (data, httpResponse) = try await URLSession.shared.data(for: httpRequest)
+                let (data, httpResponse) = try await urlSession.data(for: httpRequest)
 
                 guard let httpResponse = httpResponse as? HTTPURLResponse,
                       let requestUrl = httpRequest.url?.absoluteString

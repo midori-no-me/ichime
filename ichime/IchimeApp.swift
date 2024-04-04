@@ -25,7 +25,7 @@ struct IchimeApp: App {
                 scheduleAppRefresh()
             default: break
             }
-        }.backgroundTask(.appRefresh(ServiceLocator.getPermittedScheduleBGTaskName)) {
+        }.backgroundTask(.appRefresh(ServiceLocator.permittedScheduleBGTaskName)) {
             await NotificationCounterWatcher.checkCounter()
         }
     }

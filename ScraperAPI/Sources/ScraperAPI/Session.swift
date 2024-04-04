@@ -9,8 +9,8 @@ import Foundation
 
 public extension ScraperAPI {
     struct Session {
-        let cookieStorage: HTTPCookieStorage
-        let domain: String
+        public let cookieStorage: HTTPCookieStorage
+        public let domain: String
         public init(cookieStorage: HTTPCookieStorage, baseURL domain: URL) {
             self.cookieStorage = cookieStorage
             self.domain = domain.host() ?? "anime365.ru"
