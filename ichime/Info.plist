@@ -6,6 +6,19 @@
 	<array>
 		<string>dev.midorinome.ichime.background-tasks</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLName</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).TopShelfURL</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ichime-top-shelf</string>
+			</array>
+		</dict>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

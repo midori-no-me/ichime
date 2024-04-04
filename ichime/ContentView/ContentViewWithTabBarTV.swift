@@ -60,6 +60,34 @@ struct ContentViewWithTabBarTV: View {
                 Image(systemName: "magnifyingglass")
             }
         }
+        .onOpenURL(perform: { url in
+            guard url.scheme == ServiceLocator.topShellSchema, let components = URLComponents(
+                url: url,
+                resolvingAgainstBaseURL: true
+            ) else {
+                return
+            }
+
+            guard let action = components.host,
+                  let id = components.queryItems?.first(where: { $0.name == "id" })?.value
+            else {
+                return
+            }
+
+            switch action {
+            case URLActions.show.rawValue:
+                print("its show \(id)")
+            case URLActions.episode.rawValue:
+                print("its episode \(id)")
+            default:
+                print("idk")
+            }
+        })
+    }
+
+    enum URLActions: String {
+        case show
+        case episode
     }
 }
 

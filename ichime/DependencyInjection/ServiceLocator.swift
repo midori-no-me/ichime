@@ -10,25 +10,25 @@ import Foundation
 import ScraperAPI
 
 enum ServiceLocator {
-    static var getWebsiteBaseUrl: URL {
+    static var websiteBaseUrl: URL {
         URL(string: "https://anime365.ru")!
     }
 
-    static var getApplicationId: String {
+    static var applicationId: String {
         guard let appId = Bundle.main.bundleIdentifier else {
             fatalError("Cannot get App Id")
         }
         return appId
     }
 
-    static var getApplicationName: String {
+    static var applicationName: String {
         guard let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String else {
             fatalError("Cannot get App Name")
         }
         return appName
     }
 
-    static var getPermittedScheduleBGTaskName: String {
+    static var permittedScheduleBGTaskName: String {
         guard let tasks = Bundle.main.object(forInfoDictionaryKey: "BGTaskSchedulerPermittedIdentifiers") as? [String],
               let task = tasks.first
         else {
@@ -38,14 +38,18 @@ enum ServiceLocator {
         return task
     }
 
-    static var getApplicationVersion: String {
+    static var applicationVersion: String {
         guard let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String else {
             fatalError("Cannot get App Version")
         }
         return version
     }
+    
+    static let appGroup = "group.dev.midorinome.ichime.group"
 
-    static var getUserAgent: String {
-        return "\(getApplicationName) (\(getApplicationVersion) / Contact: petr@flaks.xyz"
+    static var userAgent: String {
+        return "\(applicationName) (\(applicationVersion) / Contact: petr@flaks.xyz"
     }
+    
+    static let topShellSchema = "ichime-top-shelf"
 }

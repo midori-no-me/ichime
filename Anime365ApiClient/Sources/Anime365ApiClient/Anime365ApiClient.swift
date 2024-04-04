@@ -26,13 +26,18 @@ public enum Anime365ApiClientError: Error {
 public final class Anime365ApiClient {
     private let baseURL: URL
     private let userAgent: String
+    private let urlSession: URLSession
 
     public init(
         baseURL: URL,
-        userAgent: String
+        userAgent: String,
+        cookieStorage: HTTPCookieStorage
     ) {
         self.baseURL = baseURL
         self.userAgent = userAgent
+        let config = URLSessionConfiguration.default
+        config.httpCookieStorage = cookieStorage
+        urlSession = URLSession(configuration: config)
     }
 
     public func sendApiRequest<T: Anime365ApiRequest>(_ apiRequest: T) async throws -> T.ResponseType {
@@ -50,7 +55,7 @@ public final class Anime365ApiClient {
         httpRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         httpRequest.timeoutInterval = 3
 
-        let (data, httpResponse) = try await URLSession.shared.data(for: httpRequest)
+        let (data, httpResponse) = try await urlSession.data(for: httpRequest)
 
         if let requestUrl = httpRequest.url?.absoluteString, let httpResponse = httpResponse as? HTTPURLResponse {
             logger.notice("[Anime365ApiClient] API request: GET \(requestUrl) [\(httpResponse.statusCode)]")

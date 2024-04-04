@@ -11,6 +11,12 @@ import SwiftSoup
 public extension ScraperAPI.Types {
     /**
      Тип описывает элементы с блока "Серии к просмотру" на главной странице
+     - Parameters:
+        - id: show id
+        - name: название шоу
+        - imageURL: постер шоу
+        - episode: инфа о эпизоде, внутри есть id эпизода
+
      */
     struct WatchShow {
         public let id: Int

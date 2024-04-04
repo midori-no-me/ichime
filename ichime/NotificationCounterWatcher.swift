@@ -63,7 +63,7 @@ class NotificationCounterWatcher: ObservableObject {
 }
 
 func scheduleAppRefresh() {
-    let request = BGAppRefreshTaskRequest(identifier: ServiceLocator.getPermittedScheduleBGTaskName)
+    let request = BGAppRefreshTaskRequest(identifier: ServiceLocator.permittedScheduleBGTaskName)
     request.earliestBeginDate = .now.addingTimeInterval(1 * 3600)
     try? BGTaskScheduler.shared.submit(request)
 }

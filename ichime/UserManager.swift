@@ -28,6 +28,9 @@ class UserManager {
     init(client: ScraperAPI.APIClient) {
         api = client
         restoreUser()
+        Task {
+            await checkAuth()
+        }
     }
 
     func checkAuth() async {
@@ -86,4 +89,6 @@ class UserManager {
             subscribed = decodedUser.subscribed
         }
     }
+
+    private func syncStorageCookie() {}
 }
