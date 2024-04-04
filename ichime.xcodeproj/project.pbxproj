@@ -75,6 +75,8 @@
 		ED7357BE2BA8871A005C69B4 /* CardWithExpandableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */; };
 		ED7689112BB8A7B100657518 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7689102BB8A7B100657518 /* HomeView.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
+		EDA1C6332BBF5344004D239B /* ShowGenreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA1C6322BBF5344004D239B /* ShowGenreListView.swift */; };
+		EDA1C6342BBF5344004D239B /* ShowGenreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA1C6322BBF5344004D239B /* ShowGenreListView.swift */; };
 		EDC57C192BAF6448001533E7 /* ContentViewWithTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */; };
 		EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */; };
 		EDC57C1D2BAF6F3F001533E7 /* RawShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1C2BAF6F3F001533E7 /* RawShowCard.swift */; };
@@ -158,6 +160,7 @@
 		ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardWithExpandableText.swift; sourceTree = "<group>"; };
 		ED7689102BB8A7B100657518 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
+		EDA1C6322BBF5344004D239B /* ShowGenreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGenreListView.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithTabBar.swift; sourceTree = "<group>"; };
@@ -482,6 +485,7 @@
 				EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */,
 				EDE9592E2B475E590030B23D /* ShowView.swift */,
 				EDE0181A2BB9AB2500DAE593 /* FilteredShowsView.swift */,
+				EDA1C6322BBF5344004D239B /* ShowGenreListView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -721,6 +725,7 @@
 				EDC57C1E2BAF6F3F001533E7 /* RawShowCard.swift in Sources */,
 				C6D0DA762B9FBFC20000255C /* EpisodeStreamingInfo.swift in Sources */,
 				C6D0DA772B9FBFD80000255C /* BaseUrlPreference.swift in Sources */,
+				EDA1C6342BBF5344004D239B /* ShowGenreListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -765,6 +770,7 @@
 				C6656A6E2B631EBE00BF7412 /* AnimeList.swift in Sources */,
 				ED5B39DD2BACB65A00C6D672 /* HorizontalScreenEdgePadding.swift in Sources */,
 				EDE9592F2B475E590030B23D /* ShowView.swift in Sources */,
+				EDA1C6332BBF5344004D239B /* ShowGenreListView.swift in Sources */,
 				C6213C892BAF605F00E08736 /* WatchChecker.swift in Sources */,
 				EDFF2D112B43471300F27E61 /* IchimeApp.swift in Sources */,
 				ED7689112BB8A7B100657518 /* HomeView.swift in Sources */,

@@ -293,10 +293,7 @@ private struct ShowKeyDetailsSection: View {
                         )
 
                         if !self.show.genres.isEmpty {
-                            ShowProperty(
-                                label: "Жанры",
-                                value: self.show.genres.formatted(.list(type: .and, width: .narrow))
-                            )
+                            GenresShowProperty(showTitle: self.show.title, genres: self.show.genres)
                         }
                     }
 
@@ -528,6 +525,26 @@ private struct ShowProperty: View {
             Text(self.value)
                 .font(.caption)
         }
+    }
+}
+
+private struct GenresShowProperty: View {
+    let showTitle: Show.Title
+    let genres: [Show.Genre]
+
+    var body: some View {
+        NavigationLink(destination: ShowGenreListView(
+            showTitle: showTitle,
+            genres: genres
+        )) {
+            ShowProperty(
+                label: "Жанры",
+                value: genres
+                    .map { genre in genre.title }
+                    .formatted(.list(type: .and, width: .narrow))
+            )
+        }
+        .buttonStyle(.plain)
     }
 }
 

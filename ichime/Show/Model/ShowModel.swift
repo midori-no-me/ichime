@@ -32,7 +32,10 @@ struct Show: Hashable, Identifiable {
             typeTitle: series.typeTitle,
             broadcastType: .createFromApiType(apiType: series.type),
             genres: (series.genres ?? []).map { genre in
-                genre.title
+                Show.Genre(
+                    id: genre.id,
+                    title: genre.title
+                )
             },
             isOngoing: series.isAiring == 1,
             episodePreviews: (series.episodes ?? []).map { episode in
@@ -69,7 +72,7 @@ struct Show: Hashable, Identifiable {
     let numberOfEpisodes: Int?
     let typeTitle: String
     let broadcastType: BroadcastType
-    let genres: [String]
+    let genres: [Genre]
     let isOngoing: Bool
     let episodePreviews: [EpisodePreview]
 
@@ -115,6 +118,11 @@ struct Show: Hashable, Identifiable {
 
         case tv
         case other
+    }
+
+    struct Genre: Identifiable {
+        let id: Int
+        let title: String
     }
 }
 

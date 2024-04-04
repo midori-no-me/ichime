@@ -89,6 +89,26 @@ class Anime365Client {
         }
     }
 
+    public func getByGenre(
+        offset: Int,
+        limit: Int,
+        genreIds: [Int]
+    ) async throws -> [Show] {
+        let apiResponse = try await apiClient.sendApiRequest(ListSeriesRequest(
+            limit: limit,
+            offset: offset,
+            chips: [
+                "genre@": genreIds
+                    .map { genreId in String(genreId) }
+                    .joined(separator: ","),
+            ]
+        ))
+
+        return apiResponse.map { series in
+            Show.createFromApiSeries(series: series)
+        }
+    }
+
     public func getEpisodeTranslations(
         episodeId: Int
     ) async throws -> [Translation] {
