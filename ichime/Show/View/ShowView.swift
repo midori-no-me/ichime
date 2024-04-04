@@ -272,24 +272,28 @@ private struct ShowKeyDetailsSection: View {
                     ], spacing: 18) {
                         ShowProperty(
                             label: "Рейтинг",
-                            value: self.show.score != nil ? self.show.score!.formatted() : "???"
+                            value: self.show.score != nil ? self.show.score!.formatted() : "???",
+                            isInteractive: false
                         )
 
                         ShowProperty(
                             label: "Сезон",
-                            value: self.show.calendarSeason
+                            value: self.show.calendarSeason,
+                            isInteractive: false
                         )
 
                         ShowProperty(
                             label: "Количество эпизодов",
                             value: (self.show.numberOfEpisodes != nil ? self.show.numberOfEpisodes!
                                 .formatted() : "???")
-                                + (self.show.isOngoing ? " — онгоинг" : "")
+                                + (self.show.isOngoing ? " — онгоинг" : ""),
+                            isInteractive: false
                         )
 
                         ShowProperty(
                             label: "Тип",
-                            value: self.show.typeTitle
+                            value: self.show.typeTitle,
+                            isInteractive: false
                         )
 
                         if !self.show.genres.isEmpty {
@@ -514,6 +518,7 @@ private struct ShowActionButtons: View {
 private struct ShowProperty: View {
     let label: String
     let value: String
+    let isInteractive: Bool
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -524,6 +529,7 @@ private struct ShowProperty: View {
 
             Text(self.value)
                 .font(.caption)
+                .foregroundStyle(isInteractive ? Color.accentColor : .primary)
         }
     }
 }
@@ -541,7 +547,8 @@ private struct GenresShowProperty: View {
                 label: "Жанры",
                 value: genres
                     .map { genre in genre.title }
-                    .formatted(.list(type: .and, width: .narrow))
+                    .formatted(.list(type: .and, width: .narrow)),
+                isInteractive: true
             )
         }
         .buttonStyle(.plain)
