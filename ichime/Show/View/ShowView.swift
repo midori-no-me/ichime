@@ -522,14 +522,24 @@ private struct ShowProperty: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text(self.label)
-                .foregroundStyle(.secondary)
-                .font(.caption)
-                .fontWeight(.medium)
+            HStack(alignment: .center, spacing: 4) {
+                Text(self.label)
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
+                    .fontWeight(.medium)
+
+                #if !os(tvOS)
+                    if isInteractive {
+                        Image(systemName: "chevron.right")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .fontWeight(.bold)
+                    }
+                #endif
+            }
 
             Text(self.value)
                 .font(.caption)
-                .foregroundStyle(isInteractive ? Color.accentColor : .primary)
         }
     }
 }
