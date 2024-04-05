@@ -4,7 +4,9 @@
 
 ## Скриншоты
 
-Скриншоты с iPhone, iPad и Apple TV можно найти на странице [Wiki → Скриншоты](https://github.com/midori-no-me/ichime/wiki/Скриншоты).
+![Скриншоты с iPhone, iPad и Apple TV](https://github.com/midori-no-me/ichime/assets/12474739/ea171855-ca7f-4e8d-a85f-f4afcbc45810)
+
+Больше скриншотов с iPhone, iPad и Apple TV можно найти на странице [Wiki → Скриншоты](https://github.com/midori-no-me/ichime/wiki/Скриншоты).
 
 ## Возможности приложения
 
