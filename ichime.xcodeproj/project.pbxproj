@@ -64,6 +64,9 @@
 		ED1919772B5F00AD008C6C99 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1919762B5F00AD008C6C99 /* OnboardingView.swift */; };
 		ED1D3E152BAA11AF005B324A /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1D3E142BAA11AF005B324A /* DateUtils.swift */; };
 		ED269F622B6034810083A62F /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED269F612B6034810083A62F /* AuthenticationView.swift */; };
+		ED353E172BC0B4F3008090E5 /* AppMetricaAdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = ED353E162BC0B4F3008090E5 /* AppMetricaAdSupport */; };
+		ED353E192BC0B4F3008090E5 /* AppMetricaCore in Frameworks */ = {isa = PBXBuildFile; productRef = ED353E182BC0B4F3008090E5 /* AppMetricaCore */; };
+		ED353E1B2BC0B4F3008090E5 /* AppMetricaCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = ED353E1A2BC0B4F3008090E5 /* AppMetricaCrashes */; };
 		ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C61F2B52D2AA000D0A80 /* EpisodeTranslationsView.swift */; };
 		ED36C6222B52E945000D0A80 /* EpisodeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6212B52E945000D0A80 /* EpisodeListView.swift */; };
 		ED36C6282B530535000D0A80 /* EpisodePreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6272B530535000D0A80 /* EpisodePreviewModel.swift */; };
@@ -241,9 +244,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED353E1B2BC0B4F3008090E5 /* AppMetricaCrashes in Frameworks */,
 				C651FD092B61745700E68341 /* ScraperAPI in Frameworks */,
 				C64EB0182B68587700AC7C27 /* DITranquillity in Frameworks */,
+				ED353E192BC0B4F3008090E5 /* AppMetricaCore in Frameworks */,
 				ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */,
+				ED353E172BC0B4F3008090E5 /* AppMetricaAdSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -718,6 +724,9 @@
 				ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */,
 				C651FD082B61745700E68341 /* ScraperAPI */,
 				C64EB0172B68587700AC7C27 /* DITranquillity */,
+				ED353E162BC0B4F3008090E5 /* AppMetricaAdSupport */,
+				ED353E182BC0B4F3008090E5 /* AppMetricaCore */,
+				ED353E1A2BC0B4F3008090E5 /* AppMetricaCrashes */,
 			);
 			productName = ichime;
 			productReference = EDFF2D0D2B43471300F27E61 /* Ichime.app */;
@@ -757,6 +766,7 @@
 			packageReferences = (
 				ED49A9AE2B5ED48C0016920B /* XCLocalSwiftPackageReference "Anime365ApiClient" */,
 				C64EB0162B68587700AC7C27 /* XCRemoteSwiftPackageReference "DITranquillity" */,
+				ED353E152BC0B4F3008090E5 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */,
 			);
 			productRefGroup = EDFF2D0E2B43471300F27E61 /* Products */;
 			projectDirPath = "";
@@ -1337,6 +1347,14 @@
 				minimumVersion = 4.5.0;
 			};
 		};
+		ED353E152BC0B4F3008090E5 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/appmetrica/appmetrica-sdk-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1365,6 +1383,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C64EB0162B68587700AC7C27 /* XCRemoteSwiftPackageReference "DITranquillity" */;
 			productName = DITranquillity;
+		};
+		ED353E162BC0B4F3008090E5 /* AppMetricaAdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED353E152BC0B4F3008090E5 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaAdSupport;
+		};
+		ED353E182BC0B4F3008090E5 /* AppMetricaCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED353E152BC0B4F3008090E5 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaCore;
+		};
+		ED353E1A2BC0B4F3008090E5 /* AppMetricaCrashes */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED353E152BC0B4F3008090E5 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaCrashes;
 		};
 		ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */ = {
 			isa = XCSwiftPackageProductDependency;
