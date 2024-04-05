@@ -30,8 +30,9 @@ class ContentProvider: TVTopShelfContentProvider {
                 // Reply with a content object.
                 let items = nextToWatch.map({
                     let item = TVTopShelfSectionedItem(identifier: String($0.id))
-                    item.title = "\($0.episode.displayName) - \($0.name.romaji)"
+                    item.title = "\($0.episode.displayName) — \($0.name.romaji)"
                     item.setImageURL($0.imageURL, for: .screenScale1x)
+                    item.setImageURL($0.imageURL, for: .screenScale2x)
                     item.imageShape = .poster
                     item.playAction = URL(string: "\(schema)://episode?id=\($0.episode.id)").map { TVTopShelfAction(url: $0) }
                     item.displayAction = URL(string: "\(schema)://show?id=\($0.id)").map { TVTopShelfAction(url: $0) }
