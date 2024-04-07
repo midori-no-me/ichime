@@ -13,6 +13,17 @@ struct ProfileSheet: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var baseUrlPreference: BaseUrlPreference = .init()
 
+    private let appName = (Bundle.main.infoDictionary?["CFBundleDisplayName"] ?? Bundle.main
+        .infoDictionary?[kCFBundleNameKey as String]) as? String ?? "???"
+    private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "???"
+    private let buildNumber = Bundle.main.infoDictionary?[kCFBundleVersionKey as String] as? String ?? "???"
+
+    #if DEBUG
+        private let buildConfiguration = "Debug"
+    #else
+        private let buildConfiguration = "Release"
+    #endif
+
     var body: some View {
         NavigationStack {
             if case let .isAuth(user) = userManager.state {
@@ -68,6 +79,12 @@ struct ProfileSheet: View {
                         Button("Выйти из аккаунта", role: .destructive) {
                             userManager.dropAuth()
                         }
+                    }
+
+                    Section {
+                        Text("\(appName) \(appVersion) (\(buildNumber)) \(buildConfiguration)")
+                    } header: {
+                        Text("О приложении")
                     }
                 }
                 #if os(tvOS)
