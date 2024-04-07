@@ -277,8 +277,8 @@ private struct ShowKeyDetailsSection: View {
                         )
 
                         ShowProperty(
-                            label: "Сезон",
-                            value: self.show.calendarSeason,
+                            label: "Тип",
+                            value: self.show.typeTitle,
                             isInteractive: false
                         )
 
@@ -290,11 +290,15 @@ private struct ShowKeyDetailsSection: View {
                             isInteractive: false
                         )
 
-                        ShowProperty(
-                            label: "Тип",
-                            value: self.show.typeTitle,
-                            isInteractive: false
-                        )
+                        if let airingSeason = self.show.airingSeason {
+                            SeasonShowProperty(airingSeason: airingSeason)
+                        } else {
+                            ShowProperty(
+                                label: "Сезон",
+                                value: "???",
+                                isInteractive: false
+                            )
+                        }
 
                         if !self.show.genres.isEmpty {
                             GenresShowProperty(showTitle: self.show.title, genres: self.show.genres)
@@ -541,6 +545,47 @@ private struct ShowProperty: View {
             Text(self.value)
                 .font(.caption)
         }
+    }
+}
+
+private struct SeasonShowProperty: View {
+    let airingSeason: AiringSeason
+    let client: Anime365Client
+
+    init(
+        airingSeason: AiringSeason,
+        client: Anime365Client = ApplicationDependency.container.resolve()
+    ) {
+        self.airingSeason = airingSeason
+        self.client = client
+    }
+
+    var body: some View {
+        NavigationLink(destination: FilteredShowsView(
+            viewModel: .init(fetchShows: getShowsBySeason()),
+            title: airingSeason.getLocalizedTranslation(),
+            description: nil,
+            displaySeason: false
+        )) {
+            ShowProperty(
+                label: "Сезон",
+                value: airingSeason.getLocalizedTranslation(),
+                isInteractive: true
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func getShowsBySeason() -> (_ offset: Int, _ limit: Int) async throws -> [Show] {
+        func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [Show] {
+            return try await client.getSeason(
+                offset: offset,
+                limit: limit,
+                airingSeason: airingSeason
+            )
+        }
+
+        return fetchFunction
     }
 }
 

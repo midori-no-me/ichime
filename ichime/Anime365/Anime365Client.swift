@@ -39,7 +39,7 @@ class Anime365Client {
         offset: Int,
         limit: Int
     ) async throws -> [Show] {
-        let (year, season) = ShowSeasonService().getRelativeSeason(shift: -4)
+        let airingSeason = ShowSeasonService().getRelativeSeason(shift: -4)
 
         let apiResponse = try await apiClient.sendApiRequest(ListSeriesRequest(
             limit: limit,
@@ -47,7 +47,7 @@ class Anime365Client {
             chips: [
                 "isAiring": "1",
                 "isActive": "1",
-                "yearseason": "\(season.getApiName())_\(year)-",
+                "yearseason": "\(airingSeason.calendarSeason.getApiName())_\(airingSeason.year)-",
             ]
         ))
 
@@ -73,14 +73,13 @@ class Anime365Client {
     public func getSeason(
         offset: Int,
         limit: Int,
-        season: SeasonName,
-        year: Int
+        airingSeason: AiringSeason
     ) async throws -> [Show] {
         let apiResponse = try await apiClient.sendApiRequest(ListSeriesRequest(
             limit: limit,
             offset: offset,
             chips: [
-                "yearseason": "\(season.getApiName())_\(year)",
+                "yearseason": "\(airingSeason.calendarSeason.getApiName())_\(airingSeason.year)",
             ]
         ))
 

@@ -75,24 +75,24 @@ private class TopSectionLoader: ShowsSectionLoader {
 
 private class SeasonalSectionLoader: ShowsSectionLoader {
     private let client: Anime365Client
-    private let yearAndSeason: (Int, SeasonName)
+    private let airingSeason: AiringSeason
     private let description: String?
 
     init(
-        yearAndSeason: (Int, SeasonName),
+        airingSeason: AiringSeason,
         description: String?,
         client: Anime365Client = ApplicationDependency.container.resolve()
     ) {
         self.client = client
-        self.yearAndSeason = yearAndSeason
+        self.airingSeason = airingSeason
         self.description = description
-        id = "\(yearAndSeason.0)_\(yearAndSeason.1)"
+        id = "\(airingSeason.year)_\(airingSeason.calendarSeason)"
     }
 
     var id: String
 
     func getTitle() -> String {
-        "\(yearAndSeason.1.getLocalizedTranslation()) \(yearAndSeason.0)"
+        "\(airingSeason.calendarSeason.getLocalizedTranslation()) \(airingSeason.year)"
     }
 
     func getSubtitle() -> String? {
@@ -104,8 +104,7 @@ private class SeasonalSectionLoader: ShowsSectionLoader {
             return try await client.getSeason(
                 offset: offset,
                 limit: limit,
-                season: yearAndSeason.1,
-                year: yearAndSeason.0
+                airingSeason: airingSeason
             )
         } catch {
             return []
@@ -162,15 +161,15 @@ struct HomeView: View {
             OngoingsSectionLoader(),
             TopSectionLoader(),
             SeasonalSectionLoader(
-                yearAndSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.NEXT_SEASON),
+                airingSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.NEXT_SEASON),
                 description: "Следующий сезон"
             ),
             SeasonalSectionLoader(
-                yearAndSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.CURRENT_SEASON),
+                airingSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.CURRENT_SEASON),
                 description: "Текущий сезон"
             ),
             SeasonalSectionLoader(
-                yearAndSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.PREVIOUS_SEASON),
+                airingSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.PREVIOUS_SEASON),
                 description: "Прошлый сезон"
             ),
         ]
@@ -182,7 +181,7 @@ struct HomeView: View {
         let lastPredefinedSeasonalSectionShift = ShowSeasonService.PREVIOUS_SEASON
 
         return SeasonalSectionLoader(
-            yearAndSeason: showSeasonService
+            airingSeason: showSeasonService
                 .getRelativeSeason(
                     shift: predefinedLoaders.count - sectionLoaders.count + lastPredefinedSeasonalSectionShift - 1
                 ),

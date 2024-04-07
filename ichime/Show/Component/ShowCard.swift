@@ -31,7 +31,7 @@ struct ShowCard: View {
             ShowCardContextMenuPreview(
                 posterUrl: show.posterUrl!,
                 title: show.title.compose,
-                calendarSeason: show.calendarSeason,
+                calendarSeason: show.airingSeason?.getLocalizedTranslation(),
                 typeTitle: show.typeTitle
             )
         }
@@ -51,8 +51,8 @@ private func formatMetadataLine(_ show: Show, displaySeason: Bool) -> [String] {
         metadataLineComponents.append("★ \(score.formatted())")
     }
 
-    if displaySeason {
-        metadataLineComponents.append(show.calendarSeason)
+    if let airingSeason = show.airingSeason, displaySeason {
+        metadataLineComponents.append(airingSeason.getLocalizedTranslation())
     }
 
     if show.broadcastType != .tv {
@@ -73,7 +73,7 @@ struct IndependentShowCardContextMenuPreview: View {
                 ShowCardContextMenuPreview(
                     posterUrl: posterUrl,
                     title: show.title.compose,
-                    calendarSeason: show.calendarSeason,
+                    calendarSeason: show.airingSeason?.getLocalizedTranslation(),
                     typeTitle: show.typeTitle
                 )
             } else {

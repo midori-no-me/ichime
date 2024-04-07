@@ -27,7 +27,7 @@ struct Show: Hashable, Identifiable {
             posterUrl: URL(string: series.posterUrl),
             websiteUrl: URL(string: series.url)!,
             score: score <= 0 ? nil : Float(series.myAnimeListScore),
-            calendarSeason: series.season,
+            airingSeason: AiringSeason(fromTranslatedString: series.season),
             numberOfEpisodes: series.numberOfEpisodes <= 0 ? nil : series.numberOfEpisodes,
             typeTitle: series.typeTitle,
             broadcastType: .createFromApiType(apiType: series.type),
@@ -68,7 +68,7 @@ struct Show: Hashable, Identifiable {
     let posterUrl: URL?
     let websiteUrl: URL
     let score: Float?
-    let calendarSeason: String
+    let airingSeason: AiringSeason?
     let numberOfEpisodes: Int?
     let typeTitle: String
     let broadcastType: BroadcastType
