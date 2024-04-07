@@ -18,8 +18,15 @@ class ApplicationDependency: DIFramework {
     }()
 
     static func load(container: DIContainer) {
-        container.register { HTTPCookieStorage.sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup) }
-        
+        #if os(tvOS)
+            container
+                .register { HTTPCookieStorage.sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
+                }
+        #else
+            container
+                .register { HTTPCookieStorage.shared }
+        #endif
+
         container
             .register {
                 ScraperAPI.Session(
