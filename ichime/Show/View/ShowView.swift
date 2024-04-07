@@ -272,7 +272,7 @@ private struct ShowKeyDetailsSection: View {
                     ], spacing: 18) {
                         ShowProperty(
                             label: "Рейтинг",
-                            value: self.show.score != nil ? "★ \(self.show.score!.formatted())" : "???",
+                            value: self.show.score != nil ? "★ \(self.show.score!.formatted(.number.precision(.fractionLength(2))))" : "???",
                             isInteractive: false
                         )
 
