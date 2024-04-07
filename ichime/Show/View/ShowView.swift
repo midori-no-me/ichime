@@ -272,7 +272,10 @@ private struct ShowKeyDetailsSection: View {
                     ], spacing: 18) {
                         ShowProperty(
                             label: "Рейтинг",
-                            value: self.show.score != nil ? "★ \(self.show.score!.formatted(.number.precision(.fractionLength(2))))" : "???",
+                            value: self.show
+                                .score != nil ?
+                                "★ \(self.show.score!.formatted(.number.precision(.fractionLength(2))))" :
+                                "???",
                             isInteractive: false
                         )
 
@@ -282,12 +285,10 @@ private struct ShowKeyDetailsSection: View {
                             isInteractive: false
                         )
 
-                        ShowProperty(
-                            label: "Количество эпизодов",
-                            value: (self.show.numberOfEpisodes != nil ? self.show.numberOfEpisodes!
-                                .formatted() : "???")
-                                + (self.show.isOngoing ? " — онгоинг" : ""),
-                            isInteractive: false
+                        EpisodesShowProperty(
+                            totalEpisodes: self.show.numberOfEpisodes,
+                            episodePreviews: self.show.episodePreviews,
+                            isOngoing: self.show.isOngoing
                         )
 
                         if let airingSeason = self.show.airingSeason {
@@ -607,6 +608,53 @@ private struct GenresShowProperty: View {
             )
         }
         .buttonStyle(.plain)
+    }
+}
+
+private struct EpisodesShowProperty: View {
+    let totalEpisodes: Int?
+    let episodePreviews: [EpisodePreview]
+    let isOngoing: Bool
+
+    var body: some View {
+        ShowProperty(
+            label: "Количество эпизодов",
+            value: formatString(),
+            isInteractive: false
+        )
+    }
+
+    private func formatString() -> String {
+        let latestEpisodeNumber = getLatestEpisodeNumber()
+
+        if isOngoing {
+            return "\(totalEpisodes?.formatted() ?? "???") (вышло: \(latestEpisodeNumber.formatted()))"
+        }
+
+        if let totalEpisodes {
+            return totalEpisodes.formatted()
+        }
+
+        return "???"
+    }
+
+    private func getLatestEpisodeNumber() -> Float {
+        let filteredAndSortedEpisodes = episodePreviews
+            .filter { episodePreview in episodePreview.type != .trailer }
+            .filter { episodePreview in episodePreview.episodeNumber != nil }
+            .filter { episodePreview in episodePreview.episodeNumber! > 0 }
+            .filter { episodePreview in
+                episodePreview.episodeNumber!.truncatingRemainder(dividingBy: 1) == 0
+            } // remove episodes with non-round number like 35.5
+            .sorted(by: { $0.episodeNumber! > $1.episodeNumber! })
+
+        print(filteredAndSortedEpisodes)
+
+        if filteredAndSortedEpisodes.isEmpty {
+            return 0
+        }
+
+        return filteredAndSortedEpisodes[0].episodeNumber ?? 0
     }
 }
 
