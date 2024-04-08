@@ -34,7 +34,7 @@ class ContentProvider: TVTopShelfContentProvider {
                     item.setImageURL($0.imageURL, for: .screenScale1x)
                     item.setImageURL($0.imageURL, for: .screenScale2x)
                     item.imageShape = .poster
-                    item.playAction = URL(string: "\(schema)://episode?id=\($0.episode.id)").map { TVTopShelfAction(url: $0) }
+                    item.playAction = URL(string: "\(schema)://episode?id=\($0.episode.id)&title=\($0.episode.displayName)").map { TVTopShelfAction(url: $0) }
                     item.displayAction = URL(string: "\(schema)://show?id=\($0.id)").map { TVTopShelfAction(url: $0) }
                     return item
                 })
