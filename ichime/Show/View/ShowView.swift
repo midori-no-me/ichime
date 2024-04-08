@@ -648,7 +648,6 @@ private struct EpisodesShowProperty: View {
             } // remove episodes with non-round number like 35.5
             .sorted(by: { $0.episodeNumber! > $1.episodeNumber! })
 
-        print(filteredAndSortedEpisodes)
 
         if filteredAndSortedEpisodes.isEmpty {
             return 0

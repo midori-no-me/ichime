@@ -16,15 +16,16 @@ public extension ScraperAPI {
             self.domain = domain.host() ?? "anime365.ru"
         }
 
-        enum Cookie: String {
+        public enum Cookie: String {
             case csrf
             case phpsessid = "PHPSESSID"
             case token = "aaaa8ed0da05b797653c4bd51877d861"
             case guestId
             case fv
+            case lastTranslationType
         }
 
-        func set(name: Cookie, value: String) {
+        public func set(name: Cookie, value: String) {
             if let cookie = HTTPCookie(properties: [
                 .name: name.rawValue,
                 .value: value,
@@ -42,7 +43,14 @@ public extension ScraperAPI {
         }
 
         public func logout() {
-            let cookies = [Cookie.csrf.rawValue, Cookie.phpsessid.rawValue, Cookie.token.rawValue, Cookie.guestId.rawValue, Cookie.fv.rawValue]
+            let cookies = [
+                Cookie.csrf.rawValue,
+                Cookie.phpsessid.rawValue,
+                Cookie.token.rawValue,
+                Cookie.guestId.rawValue,
+                Cookie.fv.rawValue,
+                Cookie.lastTranslationType.rawValue,
+            ]
             cookieStorage.cookies?.filter { cookie in cookies.contains(where: { cookie.name == $0 }) }.forEach {
                 cookieStorage.deleteCookie($0)
             }

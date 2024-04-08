@@ -55,6 +55,7 @@
 		C6D0DA752B9FBFBE0000255C /* EpisodePreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6272B530535000D0A80 /* EpisodePreviewModel.swift */; };
 		C6D0DA762B9FBFC20000255C /* EpisodeStreamingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D83F82B5BFA890025BB5D /* EpisodeStreamingInfo.swift */; };
 		C6D0DA772B9FBFD80000255C /* BaseUrlPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0D29942B66C84600C5AC9E /* BaseUrlPreference.swift */; };
+		C6D1502A2BC4937D00121A32 /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = C6D150292BC4937D00121A32 /* Anime365ApiClient */; };
 		C6D414072B9FBAAC006735D9 /* IchimeMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D414062B9FBAAC006735D9 /* IchimeMacApp.swift */; };
 		C6D414092B9FBAAC006735D9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D414082B9FBAAC006735D9 /* ContentView.swift */; };
 		C6D4140B2B9FBAAE006735D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D4140A2B9FBAAE006735D9 /* Assets.xcassets */; };
@@ -236,6 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6290D332BBF5913006AF277 /* ScraperAPI in Frameworks */,
+				C6D1502A2BC4937D00121A32 /* Anime365ApiClient in Frameworks */,
 				EDD9F7A12BB73F80004B46E7 /* TVServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -699,6 +701,7 @@
 			name = TopShelf;
 			packageProductDependencies = (
 				C6290D322BBF5913006AF277 /* ScraperAPI */,
+				C6D150292BC4937D00121A32 /* Anime365ApiClient */,
 			);
 			productName = TopShelf;
 			productReference = EDD9F79F2BB73F80004B46E7 /* TopShelf.appex */;
@@ -1385,6 +1388,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C64EB0162B68587700AC7C27 /* XCRemoteSwiftPackageReference "DITranquillity" */;
 			productName = DITranquillity;
+		};
+		C6D150292BC4937D00121A32 /* Anime365ApiClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Anime365ApiClient;
 		};
 		ED353E162BC0B4F3008090E5 /* AppMetricaAdSupport */ = {
 			isa = XCSwiftPackageProductDependency;
