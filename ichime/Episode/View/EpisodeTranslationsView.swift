@@ -1,3 +1,4 @@
+import ScraperAPI
 import SwiftUI
 
 typealias GroupedTranslation = [(key: Translation.CompositeType, value: [Translation])]
@@ -13,13 +14,17 @@ class EpisodeViewModel {
     }
 
     private(set) var state = State.idle
+    private(set) var preselectedTranslation: Translation?
 
     private let client: Anime365Client
+    private let scraper: ScraperAPI.APIClient
 
     init(
-        client: Anime365Client = ApplicationDependency.container.resolve()
+        client: Anime365Client = ApplicationDependency.container.resolve(),
+        scraper: ScraperAPI.APIClient = ApplicationDependency.container.resolve()
     ) {
         self.client = client
+        self.scraper = scraper
     }
 
     @MainActor
@@ -39,10 +44,26 @@ class EpisodeViewModel {
                 await updateState(.loadedButEmpty)
             } else {
                 await updateState(.loaded(getGroupedTranslations(episodeTranslations: episodeTranslations)))
+
+                await getRecommendation(translations: episodeTranslations)
             }
         } catch {
             await updateState(.loadingFailed(error))
         }
+    }
+
+    func getRecommendation(translations: [Translation]) async {
+        guard let translation = translations.first else {
+            return
+        }
+
+        guard let recommendation = try? await scraper
+            .sendAPIRequest(ScraperAPI.Request.GetRecommendTranslation(episodeURL: translation.translationUrl))
+        else {
+            return
+        }
+
+        preselectedTranslation = translations.first(where: { $0.id == recommendation })
     }
 
     private func getGroupedTranslations(
@@ -68,7 +89,6 @@ class EpisodeViewModel {
 struct EpisodeTranslationsView: View {
     let episodeId: Int
     let episodeTitle: String
-    var preselectedTranslation: Int? = nil
 
     @State private var viewModel: EpisodeViewModel = .init()
     @StateObject private var videoPlayerController: VideoPlayerController = .init()
@@ -108,18 +128,23 @@ struct EpisodeTranslationsView: View {
 
             case let .loaded(groupedTranslations):
                 List {
-                    if let preselectedTranslation, let translation = findTranslation(
-                        id: preselectedTranslation,
-                        groupedTranslations: groupedTranslations
-                    ) {
-                        Section {
+                    Section {
+                        if let preselectedTranslation = viewModel.preselectedTranslation {
                             TranslationRow(
                                 episodeId: episodeId,
-                                episodeTranslation: translation,
+                                episodeTranslation: preselectedTranslation,
                                 videoPlayerController: videoPlayerController
                             )
-                        } header: {
-                            Text("Последний раз смотрели")
+                        } else {
+                            ProgressView()
+                        }
+                    } header: {
+                        if let preselectedTranslation = viewModel.preselectedTranslation {
+                            Text(
+                                "Рекомендованный перевод: \(preselectedTranslation.getCompositeType().getLocalizedTranslation())"
+                            )
+                        } else {
+                            Text("Рекомендованный перевод")
                         }
                     }
 
@@ -147,15 +172,6 @@ struct EpisodeTranslationsView: View {
         .navigationBarTitleDisplayMode(.large)
         #endif
     }
-
-    func findTranslation(id: Int, groupedTranslations: GroupedTranslation) -> Translation? {
-        for group in groupedTranslations {
-            if let translation = group.value.first(where: { $0.id == id }) {
-                return translation
-            }
-        }
-        return nil
-    }
 }
 
 private struct TranslationRow: View {
@@ -170,6 +186,7 @@ private struct TranslationRow: View {
     var body: some View {
         Button(action: {
             self.showingSheet.toggle()
+            updateLastSelectedTranslation()
         }) {
             HStack {
                 VStack(alignment: .leading) {
@@ -201,6 +218,12 @@ private struct TranslationRow: View {
             }
             .presentationDetents([.medium])
         }
+    }
+
+    func updateLastSelectedTranslation() {
+        let session: ScraperAPI.Session = ApplicationDependency.container.resolve()
+
+        session.set(name: .lastTranslationType, value: episodeTranslation.getCompositeType().translationTypeForCookie)
     }
 }
 

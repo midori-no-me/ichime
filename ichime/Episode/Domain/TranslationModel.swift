@@ -57,7 +57,8 @@ struct Translation: Hashable, Identifiable {
             translatedToLanguage: translatedToLanguage,
             translationMethod: translationMethod,
             height: translation.height,
-            sourceVideoQuality: sourceVideoQuality
+            sourceVideoQuality: sourceVideoQuality,
+            translationUrl: translation.url
         )
     }
 
@@ -76,6 +77,7 @@ struct Translation: Hashable, Identifiable {
     let translationMethod: TranslationMethod
     let height: Int
     let sourceVideoQuality: SourceVideoQuality
+    let translationUrl: String
 
     enum SourceVideoQuality {
         case tv
@@ -142,6 +144,23 @@ struct Translation: Hashable, Identifiable {
                 String(localized: "Японский")
             case .other:
                 String(localized: "Прочее")
+            }
+        }
+
+        var translationTypeForCookie: String {
+            switch self {
+            case .russianSubtitles:
+                "subRu"
+            case .russianVoiceOver:
+                "voiceRu"
+            case .englishSubtitles:
+                "subEn"
+            case .englishVoiceOver:
+                "voiceEn"
+            case .japanese:
+                "raw"
+            case .other:
+                ""
             }
         }
     }

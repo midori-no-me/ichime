@@ -15,11 +15,7 @@ struct ContentView: View {
         Group {
             switch userManager.state {
             case .idle:
-                Color.clear.onAppear {
-                    Task {
-                        await userManager.checkAuth()
-                    }
-                }
+                Color.clear
             case .loading:
                 ProgressView()
                 #if os(tvOS)
@@ -51,8 +47,7 @@ struct ContentView: View {
 func viewEpisodes(show: WatchCardModel) -> some View {
     EpisodeTranslationsView(
         episodeId: show.data.episode,
-        episodeTitle: show.data.title,
-        preselectedTranslation: show.data.translation
+        episodeTitle: show.data.title
     )
 }
 
