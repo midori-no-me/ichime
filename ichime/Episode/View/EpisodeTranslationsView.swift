@@ -63,7 +63,9 @@ class EpisodeViewModel {
             return
         }
 
-        preselectedTranslation = translations.first(where: { $0.id == recommendation })
+        withAnimation {
+            preselectedTranslation = translations.first(where: { $0.id == recommendation })
+        }
     }
 
     private func getGroupedTranslations(
@@ -133,19 +135,14 @@ struct EpisodeTranslationsView: View {
                             TranslationRow(
                                 episodeId: episodeId,
                                 episodeTranslation: preselectedTranslation,
+                                isRecommendedTranslation: true,
                                 videoPlayerController: videoPlayerController
                             )
                         } else {
                             ProgressView()
                         }
                     } header: {
-                        if let preselectedTranslation = viewModel.preselectedTranslation {
-                            Text(
-                                "Рекомендованный перевод: \(preselectedTranslation.getCompositeType().getLocalizedTranslation())"
-                            )
-                        } else {
-                            Text("Рекомендованный перевод")
-                        }
+                        Text("Рекомендованный перевод")
                     }
 
                     ForEach(groupedTranslations, id: \.key) { translationGroup in
@@ -154,6 +151,7 @@ struct EpisodeTranslationsView: View {
                                 TranslationRow(
                                     episodeId: episodeId,
                                     episodeTranslation: episodeTranslation,
+                                    isRecommendedTranslation: false,
                                     videoPlayerController: videoPlayerController
                                 )
                             }
@@ -177,6 +175,7 @@ struct EpisodeTranslationsView: View {
 private struct TranslationRow: View {
     let episodeId: Int
     let episodeTranslation: Translation
+    let isRecommendedTranslation: Bool
     @ObservedObject var videoPlayerController: VideoPlayerController
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -191,19 +190,31 @@ private struct TranslationRow: View {
             HStack {
                 VStack(alignment: .leading) {
                     if horizontalSizeClass == .compact {
-                        Text(formatTranslationQuality(episodeTranslation, qualityNameFirst: false))
-                            .foregroundStyle(Color.secondary)
-                            .font(.caption)
+                        Text(formatTranslationQuality(
+                            episodeTranslation,
+                            qualityNameFirst: false,
+                            displayTranslationType: isRecommendedTranslation
+                        ))
+                        .foregroundStyle(Color.secondary)
+                        .font(.caption)
                     }
 
                     Text(self.episodeTranslation.translationTeam)
+                        .lineLimit(isRecommendedTranslation ? 1 : nil)
+                        .truncationMode(.tail)
                 }
 
                 if horizontalSizeClass != .compact {
                     Spacer()
 
-                    Text(formatTranslationQuality(episodeTranslation, qualityNameFirst: true))
-                        .foregroundStyle(Color.secondary)
+                    Text(formatTranslationQuality(
+                        episodeTranslation,
+                        qualityNameFirst: true,
+                        displayTranslationType: isRecommendedTranslation
+                    ))
+                    .foregroundStyle(Color.secondary)
+                    .lineLimit(isRecommendedTranslation ? 1 : nil)
+                    .truncationMode(.tail)
                 }
             }
         }
@@ -229,12 +240,17 @@ private struct TranslationRow: View {
 
 private func formatTranslationQuality(
     _ translation: Translation,
-    qualityNameFirst: Bool
+    qualityNameFirst: Bool,
+    displayTranslationType: Bool
 ) -> String {
     var stringComponents = [String(translation.height) + "p"]
 
     if translation.sourceVideoQuality != .tv {
         stringComponents.append(translation.sourceVideoQuality.getLocalizedTranslation())
+    }
+
+    if displayTranslationType {
+        stringComponents.append(translation.getCompositeType().getLocalizedTranslation())
     }
 
     if qualityNameFirst {
