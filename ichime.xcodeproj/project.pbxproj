@@ -198,7 +198,6 @@
 		EDA1C6322BBF5344004D239B /* ShowGenreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGenreListView.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		EDBAE7C22BC5BA7B00D07288 /* dependabot.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = dependabot.yaml; sourceTree = "<group>"; };
 		EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithTabBar.swift; sourceTree = "<group>"; };
 		EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithTabBarTV.swift; sourceTree = "<group>"; };
 		EDC57C1C2BAF6F3F001533E7 /* RawShowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawShowCard.swift; sourceTree = "<group>"; };
@@ -561,14 +560,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		EDBAE7C32BC5BA7B00D07288 /* .github */ = {
-			isa = PBXGroup;
-			children = (
-				EDBAE7C22BC5BA7B00D07288 /* dependabot.yaml */,
-			);
-			path = .github;
-			sourceTree = "<group>";
-		};
 		EDD353B22B5E829B00313489 /* DependencyInjection */ = {
 			isa = PBXGroup;
 			children = (
@@ -600,7 +591,6 @@
 		EDFF2D042B43471300F27E61 = {
 			isa = PBXGroup;
 			children = (
-				EDBAE7C32BC5BA7B00D07288 /* .github */,
 				ED233FE02BB052E4002CCAD9 /* LICENSE */,
 				C6656A712B6325D400BF7412 /* .swiftformat */,
 				EDA277052B457B2E003A97F0 /* README.md */,
