@@ -68,7 +68,6 @@ actor WatchChecker: VideoPlayerObserver {
             }
             Task {
                 await self.performUpdateWatch()
-                await self.removeObserver()
             }
         }
     }
@@ -90,7 +89,12 @@ actor WatchChecker: VideoPlayerObserver {
         }
     }
 
+    var isStarted = false
     func performUpdateWatch() async {
+        if isStarted {
+            return
+        }
+        isStarted = true
         let id = translationId
         do {
             logger.notice("Update watch translationId: \(id)")
@@ -98,6 +102,7 @@ actor WatchChecker: VideoPlayerObserver {
                 ScraperAPI.Request
                     .UpdateCurrentWatch(translationId: translationId)
             )
+            removeObserver()
         } catch {
             logger.error("Cannot update watch \(error)")
         }

@@ -9,6 +9,7 @@ import Foundation
 
 class VideoPlayerHolder {
     private var videoPlayerController: VideoPlayerController = .init()
+    private var player: VideoPlayer = .init()
     private var isBusy = false
     private var hasSubsLastTime: Bool = false
 
@@ -44,7 +45,7 @@ class VideoPlayerHolder {
 
         #endif
 
-        let player = VideoPlayer()
+        player = VideoPlayer()
 
         if let translationId = video.translationId {
             player.addObserver(WatchChecker(translationId: translationId))
