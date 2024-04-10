@@ -19,16 +19,39 @@ struct SceneController {
         scene?.windows.first?.rootViewController
     }
 
+    func isBusy() -> Bool {
+        rootViewController?.presentedViewController != nil
+    }
+
     func isPresent(_ view: UIViewController) -> Bool {
         view === rootViewController?.presentedViewController
     }
 
     func present(_ view: UIViewController, _ onPresent: @escaping () -> Void) {
+        if view.presentingViewController != nil {
+            onPresent()
+            return;
+        }
+        
         // Get the key window scene
         if let rootViewController {
-            // Present the AVPlayerViewController modally
-            rootViewController.present(view, animated: true) {
-                onPresent()
+            if isBusy() {
+                print("is busy")
+                rootViewController.dismiss(animated: false) {
+                    print("dismiss old view and present new")
+                    // Present the AVPlayerViewController modally
+                    rootViewController.present(view, animated: true) {
+                        print("success present new after dismiss")
+                        onPresent()
+                    }
+                }
+            } else {
+                print("present view")
+                // Present the AVPlayerViewController modally
+                rootViewController.present(view, animated: true) {
+                    print("present view success")
+                    onPresent()
+                }
             }
         }
     }

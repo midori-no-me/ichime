@@ -72,7 +72,8 @@ struct EpisodeTranslationQualitySelectorView: View {
     let episodeId: Int
     let translationId: Int
     let translationTeam: String
-    @ObservedObject var videoPlayerController: VideoPlayerController = .init()
+    var videoPlayerController: VideoPlayerController = .init()
+    var videoPlayer: VideoPlayer = .init()
 
     @State private var viewModel: EpisodeTranslationQualitySelectorViewModel = .init()
 
@@ -83,7 +84,8 @@ struct EpisodeTranslationQualitySelectorView: View {
             switch self.viewModel.state {
             case .idle:
                 Color.clear.onAppear {
-                    videoPlayerController.addDelegate(WatchChecker(translationId: translationId))
+                    videoPlayer.addObserver(WatchChecker(translationId: translationId))
+
                     Task {
                         await self.viewModel.performInitialLoad(translationId: translationId)
                     }
@@ -162,23 +164,21 @@ struct EpisodeTranslationQualitySelectorView: View {
         Task {
             let collector = MetadataCollector(episodeId: episodeId, translationId: translationId)
             let metadata = await collector.getMetadata()
-            await self.videoPlayerController.createPlayer(
+
+            await self.videoPlayer.createPlayer(
                 video: .init(
                     videoURL: video,
                     subtitleURL: subtitle,
                     metadata: metadata
                 )
             )
-            closeModal()
+            await showPlayer()
         }
     }
 
     @MainActor
-    func closeModal() {
-        dismiss()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            videoPlayerController.showPlayer()
-        }
+    func showPlayer() {
+        videoPlayerController.player = videoPlayer.player
     }
 }
 

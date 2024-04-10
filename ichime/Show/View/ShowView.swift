@@ -363,6 +363,8 @@ private struct ShowKeyDetailsSection: View {
                     ShowActionButtons(show: show, viewModel: viewModel)
                 }
             #endif
+
+            ShowMomentsCardsView(showId: show.id, showName: show.title.compose)
         }
         #if os(tvOS)
         .focusSection()
