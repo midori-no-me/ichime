@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C60A20CF2BC71A1C001EAC50 /* VideoPlayerHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60A20CE2BC71A1C001EAC50 /* VideoPlayerHolder.swift */; };
 		C61057002B99271F008012E7 /* NotificationCounterWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */; };
 		C61BC3FF2BA3C5CC00AAEC1E /* ProfileSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61BC3FC2BA3C5CC00AAEC1E /* ProfileSheet.swift */; };
 		C61BC4002BA3C5CC00AAEC1E /* ProfileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61BC3FE2BA3C5CC00AAEC1E /* ProfileButton.swift */; };
@@ -150,6 +151,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C60A20CE2BC71A1C001EAC50 /* VideoPlayerHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerHolder.swift; sourceTree = "<group>"; };
 		C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCounterWatcher.swift; sourceTree = "<group>"; };
 		C61BC3FC2BA3C5CC00AAEC1E /* ProfileSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSheet.swift; sourceTree = "<group>"; };
 		C61BC3FE2BA3C5CC00AAEC1E /* ProfileButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileButton.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				C6213C882BAF605F00E08736 /* WatchChecker.swift */,
 				C6213C8A2BAF607E00E08736 /* VideoModel.swift */,
 				C6698C662BB0D4F4008A9274 /* MetadataCollector.swift */,
+				C60A20CE2BC71A1C001EAC50 /* VideoPlayerHolder.swift */,
 			);
 			path = VideoPlayer;
 			sourceTree = "<group>";
@@ -898,6 +901,7 @@
 				C68F69FA2BAA616F007A2E84 /* ifCondition.swift in Sources */,
 				C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */,
 				C6B11DCF2BC7119F00586466 /* MomentCard.swift in Sources */,
+				C60A20CF2BC71A1C001EAC50 /* VideoPlayerHolder.swift in Sources */,
 				C6290D2F2BBF57DF006AF277 /* ScraperAPI.Types.Episode.swift in Sources */,
 				C61BC4002BA3C5CC00AAEC1E /* ProfileButton.swift in Sources */,
 				C6213C8B2BAF607E00E08736 /* VideoModel.swift in Sources */,

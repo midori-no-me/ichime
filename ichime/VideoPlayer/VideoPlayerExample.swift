@@ -17,7 +17,9 @@ struct VideoPlayerExample: View {
         Button("Play video") {
             Task {
                 await videoPlayer.createPlayer(video: video)
-                videoView.player = videoPlayer.player
+                if let player = videoPlayer.player {
+                    videoView.showPlayer(player: player)
+                }
             }
         }
     }
@@ -34,6 +36,7 @@ struct VideoPlayerExample: View {
             genre: nil,
             image: nil,
             year: nil
-        )
+        ),
+        translationId: nil
     ))
 }

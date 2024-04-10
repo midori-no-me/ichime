@@ -16,28 +16,9 @@ final class VideoPlayerController: NSObject {
     private var coordinator: Coordinator?
     private let sceneController = SceneController()
 
-    var player: AVPlayer? {
-        willSet {
-            if let player {
-                player.pause()
-                playerViewController.player = nil
-            }
-        }
-        didSet {
-            showPlayer()
-        }
-    }
+    private(set) var player: AVPlayer?
 
-    var isInPiP = false
-
-    static func enableBackgroundMode() {
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(.playback, mode: .moviePlayback)
-        } catch {
-            print("Setting category to AVAudioSessionCategoryPlayback failed.")
-        }
-    }
+    private(set) var isInPiP = false
 
     override init() {
         super.init()
@@ -48,27 +29,47 @@ final class VideoPlayerController: NSObject {
         playerViewController.delegate = coordinator
     }
 
-    func showPlayer() {
-        if let player {
-            logger.debug("show player")
-            playerViewController.player = player
-            if isInPiP {
-                player.play()
-            } else {
-                sceneController.present(playerViewController) {
-                    player.play()
-                }
-            }
+    func showPlayer(player: AVPlayer) {
+        self.player?.pause()
+        logger.debug("show player")
+        playerViewController.player = player
+        self.player = player
+        sceneController.present(playerViewController) {
+            player.play()
         }
     }
 
-    private func pausePlayer() {
+    func play(player: AVPlayer) {
+        self.player?.pause()
+        logger.debug("play player")
+        playerViewController.player = player
+        self.player = player
+        player.play()
+    }
+
+    func dispose() {
+        pausePlayer()
+        playerViewController.player = nil
+        player = nil
+        sceneController.dismiss()
+    }
+
+    func pausePlayer() {
         logger.info("pause player")
         player?.pause()
     }
 }
 
 extension VideoPlayerController {
+    static func enableBackgroundMode() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.playback, mode: .moviePlayback)
+        } catch {
+            print("Setting category to AVAudioSessionCategoryPlayback failed.")
+        }
+    }
+
     class Coordinator: NSObject, AVPlayerViewControllerDelegate {
         var control: VideoPlayerController
 

@@ -10,6 +10,7 @@ import Foundation
 struct VideoModel {
     let videoURL: URL
     let subtitleURL: URL?
-
+    
     let metadata: MetadataPlayer?
+    let translationId: Int?
 }

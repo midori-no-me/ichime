@@ -21,13 +21,14 @@ class ShowMomentsCardsViewModel {
     private(set) var state = State.idle
 
     private let api: ScraperAPI.APIClient
-    private let playerView: VideoPlayerController = .init()
-    private let videoPlayer: VideoPlayer = .init()
+    private let videoHolder: VideoPlayerHolder
 
     init(
-        scraperClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve()
+        scraperClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
+        videoPlayerHolder: VideoPlayerHolder = ApplicationDependency.container.resolve()
     ) {
         api = scraperClient
+        videoHolder = videoPlayerHolder
     }
 
     func performInitialLoad(showId: Int) async {
@@ -63,7 +64,7 @@ class ShowMomentsCardsViewModel {
                 return
             }
 
-            await videoPlayer.createPlayer(video: .init(
+            await videoHolder.play(video: .init(
                 videoURL: videoURL,
                 subtitleURL: nil,
                 metadata: .init(
@@ -73,12 +74,9 @@ class ShowMomentsCardsViewModel {
                     genre: nil,
                     image: nil,
                     year: nil
-                )
+                ),
+                translationId: nil
             ))
-
-            await MainActor.run {
-                playerView.player = videoPlayer.player
-            }
         } catch {
             print(error)
         }
