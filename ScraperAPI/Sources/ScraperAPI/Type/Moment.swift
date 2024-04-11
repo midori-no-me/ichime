@@ -122,7 +122,7 @@ public extension ScraperAPI.Types {
                 throw ScraperAPI.APIClientError.parseError
             }
 
-            self.init(id: id, title: title, video: sources)
+            self.init(id: id, title: title.replacing(#/\s\(.+\)$/#, with: { _ in "" }), video: sources)
         }
     }
 }
