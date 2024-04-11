@@ -1,6 +1,7 @@
 import SwiftUI
 
-class SearchShowsViewModel: ObservableObject {
+@Observable
+class SearchShowsViewModel {
     enum State {
         case idle([String])
         case loading
@@ -9,9 +10,9 @@ class SearchShowsViewModel: ObservableObject {
         case loaded([Show])
     }
 
-    @Published private(set) var state: State
-    @Published var currentlyTypedSearchQuery = ""
-    @Published var isSearchPresented: Bool = false
+    private(set) var state: State = .idle(UserDefaults.standard.stringArray(forKey: "recentSearches") ?? [])
+    var currentlyTypedSearchQuery = ""
+    var isSearchPresented: Bool = false
 
     private let client: Anime365Client
 
@@ -19,12 +20,11 @@ class SearchShowsViewModel: ObservableObject {
     private var currentOffset: Int = 0
     private var shows: [Show] = []
     private var stopLazyLoading: Bool = false
-    private var recentSearches = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
+    private var recentSearches: [String] = []
 
-    private let SHOWS_PER_PAGE = 20
+        private let SHOWS_PER_PAGE = 20
 
     init(client: Anime365Client = ApplicationDependency.container.resolve()) {
-        state = .idle(recentSearches)
         self.client = client
     }
 
@@ -121,7 +121,7 @@ class SearchShowsViewModel: ObservableObject {
 }
 
 struct SearchShowsView: View {
-    @StateObject private var viewModel: SearchShowsViewModel = .init()
+    @State private var viewModel: SearchShowsViewModel = .init()
 
     var body: some View {
         Group {
@@ -187,13 +187,13 @@ struct SearchShowsView: View {
         }
         .navigationTitle("Поиск")
         #if os(iOS) // !is(tvOS)
-        .navigationBarTitleDisplayMode(.large)
-        .searchable(
-            text: $viewModel.currentlyTypedSearchQuery,
-            isPresented: $viewModel.isSearchPresented,
-            placement: .navigationBarDrawer(displayMode: .always),
-            prompt: "Название тайтла"
-        )
+            .navigationBarTitleDisplayMode(.large)
+            .searchable(
+                text: $viewModel.currentlyTypedSearchQuery,
+                isPresented: $viewModel.isSearchPresented,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: "Название тайтла"
+            )
         #endif
         #if os(macOS)
         .searchable(

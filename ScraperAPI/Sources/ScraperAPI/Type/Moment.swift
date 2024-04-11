@@ -9,7 +9,7 @@ import Foundation
 import SwiftSoup
 
 public extension ScraperAPI.Types {
-    struct Moment {
+    struct Moment: Identifiable {
         public let id: Int
         public let title: String
         public let duration: String
@@ -122,7 +122,7 @@ public extension ScraperAPI.Types {
                 throw ScraperAPI.APIClientError.parseError
             }
 
-            self.init(id: id, title: title, video: sources)
+            self.init(id: id, title: title.replacing(#/\s\(.+\)$/#, with: { _ in "" }), video: sources)
         }
     }
 }

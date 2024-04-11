@@ -15,7 +15,6 @@ import SwiftUI
 struct ContentViewWithSideBar: View {
     @State private var navigationActiveTab: SideBarLinks? = .home
     @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
-    @StateObject private var videoPlayerController: VideoPlayerController = .init()
 
     enum SideBarLinks {
         case searchShows
@@ -98,6 +97,6 @@ struct ContentViewWithSideBar: View {
     }
 }
 
-//#Preview {
+// #Preview {
 //    ContentViewWithSideBar()
-//}
+// }

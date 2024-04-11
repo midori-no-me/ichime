@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C60A20CF2BC71A1C001EAC50 /* VideoPlayerHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60A20CE2BC71A1C001EAC50 /* VideoPlayerHolder.swift */; };
 		C61057002B99271F008012E7 /* NotificationCounterWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */; };
 		C61BC3FF2BA3C5CC00AAEC1E /* ProfileSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61BC3FC2BA3C5CC00AAEC1E /* ProfileSheet.swift */; };
 		C61BC4002BA3C5CC00AAEC1E /* ProfileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61BC3FE2BA3C5CC00AAEC1E /* ProfileButton.swift */; };
@@ -38,6 +39,14 @@
 		C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F22BAA4088007A2E84 /* Logger.swift */; };
 		C68F69F82BAA5645007A2E84 /* MyListShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F72BAA5645007A2E84 /* MyListShow.swift */; };
 		C68F69FA2BAA616F007A2E84 /* ifCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F92BAA616F007A2E84 /* ifCondition.swift */; };
+		C6B11DCA2BC7119000586466 /* ShowMomentsCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DC92BC7119000586466 /* ShowMomentsCardsView.swift */; };
+		C6B11DCB2BC7119000586466 /* ShowMomentsCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DC92BC7119000586466 /* ShowMomentsCardsView.swift */; };
+		C6B11DCF2BC7119F00586466 /* MomentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DCC2BC7119F00586466 /* MomentCard.swift */; };
+		C6B11DD02BC7119F00586466 /* MomentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DCC2BC7119F00586466 /* MomentCard.swift */; };
+		C6B11DD32BC711B300586466 /* VideoPlayerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DD12BC711B300586466 /* VideoPlayerExample.swift */; };
+		C6B11DD42BC711B300586466 /* VideoPlayerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DD12BC711B300586466 /* VideoPlayerExample.swift */; };
+		C6B11DD52BC711B300586466 /* VideoPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DD22BC711B300586466 /* VideoPlayerController.swift */; };
+		C6B11DD62BC711B300586466 /* VideoPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DD22BC711B300586466 /* VideoPlayerController.swift */; };
 		C6B8331D2B66951700D4A1AC /* WatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331C2B66951700D4A1AC /* WatchCard.swift */; };
 		C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */; };
 		C6D0DA642B9FBDF00000255C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1919762B5F00AD008C6C99 /* OnboardingView.swift */; };
@@ -142,6 +151,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C60A20CE2BC71A1C001EAC50 /* VideoPlayerHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerHolder.swift; sourceTree = "<group>"; };
 		C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCounterWatcher.swift; sourceTree = "<group>"; };
 		C61BC3FC2BA3C5CC00AAEC1E /* ProfileSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSheet.swift; sourceTree = "<group>"; };
 		C61BC3FE2BA3C5CC00AAEC1E /* ProfileButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileButton.swift; sourceTree = "<group>"; };
@@ -164,6 +174,10 @@
 		C68F69F22BAA4088007A2E84 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C68F69F72BAA5645007A2E84 /* MyListShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListShow.swift; sourceTree = "<group>"; };
 		C68F69F92BAA616F007A2E84 /* ifCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ifCondition.swift; sourceTree = "<group>"; };
+		C6B11DC92BC7119000586466 /* ShowMomentsCardsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMomentsCardsView.swift; sourceTree = "<group>"; };
+		C6B11DCC2BC7119F00586466 /* MomentCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentCard.swift; sourceTree = "<group>"; };
+		C6B11DD12BC711B300586466 /* VideoPlayerExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerExample.swift; sourceTree = "<group>"; };
+		C6B11DD22BC711B300586466 /* VideoPlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerController.swift; sourceTree = "<group>"; };
 		C6B8331C2B66951700D4A1AC /* WatchCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCard.swift; sourceTree = "<group>"; };
 		C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCardModel.swift; sourceTree = "<group>"; };
 		C6D414042B9FBAAC006735D9 /* IchimeMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IchimeMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -277,11 +291,14 @@
 		C6213C852BAF601A00E08736 /* VideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				C6B11DD22BC711B300586466 /* VideoPlayerController.swift */,
+				C6B11DD12BC711B300586466 /* VideoPlayerExample.swift */,
 				C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */,
 				C6213C862BAF603800E08736 /* SceneController.swift */,
 				C6213C882BAF605F00E08736 /* WatchChecker.swift */,
 				C6213C8A2BAF607E00E08736 /* VideoModel.swift */,
 				C6698C662BB0D4F4008A9274 /* MetadataCollector.swift */,
+				C60A20CE2BC71A1C001EAC50 /* VideoPlayerHolder.swift */,
 			);
 			path = VideoPlayer;
 			sourceTree = "<group>";
@@ -320,6 +337,22 @@
 				C68F69F72BAA5645007A2E84 /* MyListShow.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		C6B11DCD2BC7119F00586466 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				C6B11DCC2BC7119F00586466 /* MomentCard.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		C6B11DCE2BC7119F00586466 /* Moment */ = {
+			isa = PBXGroup;
+			children = (
+				C6B11DCD2BC7119F00586466 /* Component */,
+			);
+			path = Moment;
 			sourceTree = "<group>";
 		};
 		C6B8331B2B6694EC00D4A1AC /* Component */ = {
@@ -542,6 +575,7 @@
 		ED8A40822B4C5D150055DAB6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C6B11DC92BC7119000586466 /* ShowMomentsCardsView.swift */,
 				EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */,
 				EDE9592E2B475E590030B23D /* ShowView.swift */,
 				EDE0181A2BB9AB2500DAE593 /* FilteredShowsView.swift */,
@@ -617,6 +651,7 @@
 		EDFF2D0F2B43471300F27E61 /* ichime */ = {
 			isa = PBXGroup;
 			children = (
+				C6B11DCE2BC7119F00586466 /* Moment */,
 				ED76890E2BB8A79E00657518 /* Home */,
 				C6290D2D2BBF57A4006AF277 /* Extensions */,
 				C6213C852BAF601A00E08736 /* VideoPlayer */,
@@ -822,16 +857,20 @@
 				C6899EB62BA254D300E63311 /* ShowCard.swift in Sources */,
 				C6D0DA642B9FBDF00000255C /* OnboardingView.swift in Sources */,
 				C6D0DA6E2B9FBE9A0000255C /* ServiceLocator.swift in Sources */,
+				C6B11DD02BC7119F00586466 /* MomentCard.swift in Sources */,
 				C6D0DA702B9FBEA80000255C /* UserManager.swift in Sources */,
 				C6D0DA6F2B9FBE9E0000255C /* DI.swift in Sources */,
 				EDE0181C2BB9AB2500DAE593 /* FilteredShowsView.swift in Sources */,
 				C6899EB82BA2583100E63311 /* SearchShowsView.swift in Sources */,
 				C6D414092B9FBAAC006735D9 /* ContentView.swift in Sources */,
 				C6D0DA742B9FBFBA0000255C /* EpisodeModel.swift in Sources */,
+				C6B11DD42BC711B300586466 /* VideoPlayerExample.swift in Sources */,
 				C6D0DA652B9FBE010000255C /* AuthenticationView.swift in Sources */,
 				C6D0DA722B9FBEC20000255C /* ShowModel.swift in Sources */,
 				C6D0DA732B9FBFB50000255C /* TranslationModel.swift in Sources */,
+				C6B11DD62BC711B300586466 /* VideoPlayerController.swift in Sources */,
 				C6D0DA712B9FBEB40000255C /* Anime365Client.swift in Sources */,
+				C6B11DCB2BC7119000586466 /* ShowMomentsCardsView.swift in Sources */,
 				C6290D302BBF57DF006AF277 /* ScraperAPI.Types.Episode.swift in Sources */,
 				C6D414072B9FBAAC006735D9 /* IchimeMacApp.swift in Sources */,
 				C6899EB92BA25DA000E63311 /* ShowView.swift in Sources */,
@@ -861,6 +900,8 @@
 				ED1392312BB4C85900C2A9FC /* HeadingSectionWithBackground.swift in Sources */,
 				C68F69FA2BAA616F007A2E84 /* ifCondition.swift in Sources */,
 				C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */,
+				C6B11DCF2BC7119F00586466 /* MomentCard.swift in Sources */,
+				C60A20CF2BC71A1C001EAC50 /* VideoPlayerHolder.swift in Sources */,
 				C6290D2F2BBF57DF006AF277 /* ScraperAPI.Types.Episode.swift in Sources */,
 				C61BC4002BA3C5CC00AAEC1E /* ProfileButton.swift in Sources */,
 				C6213C8B2BAF607E00E08736 /* VideoModel.swift in Sources */,
@@ -883,11 +924,13 @@
 				C6213C872BAF603800E08736 /* SceneController.swift in Sources */,
 				C6656A6C2B630C7C00BF7412 /* UserRateForm.swift in Sources */,
 				ED3A674D2B5739B600FB3975 /* EpisodeTranslationQualitySelectorView.swift in Sources */,
+				C6B11DD32BC711B300586466 /* VideoPlayerExample.swift in Sources */,
 				C6290D2B2BBF4E99006AF277 /* Anime365Client.swift in Sources */,
 				C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */,
 				EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */,
 				EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */,
 				ED3D83F92B5BFA890025BB5D /* EpisodeStreamingInfo.swift in Sources */,
+				C6B11DD52BC711B300586466 /* VideoPlayerController.swift in Sources */,
 				ED1D3E152BAA11AF005B324A /* DateUtils.swift in Sources */,
 				ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */,
 				C65ACDE82B54466400C27FB3 /* UserManager.swift in Sources */,
@@ -907,6 +950,7 @@
 				ED1919772B5F00AD008C6C99 /* OnboardingView.swift in Sources */,
 				ED3D83FD2B5C3E710025BB5D /* MyListsView.swift in Sources */,
 				ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */,
+				C6B11DCA2BC7119000586466 /* ShowMomentsCardsView.swift in Sources */,
 				ED269F622B6034810083A62F /* AuthenticationView.swift in Sources */,
 				C6899EB12BA2532E00E63311 /* ContentViewWithSideBar.swift in Sources */,
 				C61BC3FF2BA3C5CC00AAEC1E /* ProfileSheet.swift in Sources */,

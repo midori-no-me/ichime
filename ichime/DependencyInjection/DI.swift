@@ -26,6 +26,10 @@ class ApplicationDependency: DIFramework {
             container
                 .register { HTTPCookieStorage.shared }
         #endif
+        
+        container
+            .register { VideoPlayerHolder() }
+            .lifetime(.single)
 
         container
             .register {

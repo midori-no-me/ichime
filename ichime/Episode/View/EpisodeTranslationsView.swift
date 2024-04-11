@@ -93,7 +93,6 @@ struct EpisodeTranslationsView: View {
     let episodeTitle: String
 
     @State private var viewModel: EpisodeViewModel = .init()
-    @StateObject private var videoPlayerController: VideoPlayerController = .init()
 
     var body: some View {
         Group {
@@ -135,8 +134,7 @@ struct EpisodeTranslationsView: View {
                             TranslationRow(
                                 episodeId: episodeId,
                                 episodeTranslation: preselectedTranslation,
-                                isRecommendedTranslation: true,
-                                videoPlayerController: videoPlayerController
+                                isRecommendedTranslation: true
                             )
                         } else {
                             ProgressView()
@@ -151,8 +149,7 @@ struct EpisodeTranslationsView: View {
                                 TranslationRow(
                                     episodeId: episodeId,
                                     episodeTranslation: episodeTranslation,
-                                    isRecommendedTranslation: false,
-                                    videoPlayerController: videoPlayerController
+                                    isRecommendedTranslation: false
                                 )
                             }
                         } header: {
@@ -176,7 +173,6 @@ private struct TranslationRow: View {
     let episodeId: Int
     let episodeTranslation: Translation
     let isRecommendedTranslation: Bool
-    @ObservedObject var videoPlayerController: VideoPlayerController
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
@@ -223,8 +219,7 @@ private struct TranslationRow: View {
                 EpisodeTranslationQualitySelectorView(
                     episodeId: episodeId,
                     translationId: episodeTranslation.id,
-                    translationTeam: episodeTranslation.translationTeam,
-                    videoPlayerController: videoPlayerController
+                    translationTeam: episodeTranslation.translationTeam
                 )
             }
             .presentationDetents([.medium])
