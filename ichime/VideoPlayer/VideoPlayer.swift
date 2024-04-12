@@ -101,7 +101,7 @@ final class VideoPlayer {
         let videoURL = video.videoURL
         let subtitleURL = video.subtitleURL
 
-        let videoAsset = AVAsset(url: videoURL)
+        let videoAsset = AVURLAsset(url: videoURL, options: [AVURLAssetPreferPreciseDurationAndTimingKey: true])
         let subtitleAsset = await createSubtitleAsset(from: subtitleURL)
 
         let playerItem: AVPlayerItem
