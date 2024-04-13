@@ -232,6 +232,8 @@ private struct ShowDetails: View {
                 if !show.descriptions.isEmpty {
                     ShowDescriptionCards(descriptions: show.descriptions)
                 }
+
+                ShowMomentsCardsView(showId: show.id, showName: show.title.compose)
             }
             .horizontalScreenEdgePadding()
         }
@@ -363,8 +365,6 @@ private struct ShowKeyDetailsSection: View {
                     ShowActionButtons(show: show, viewModel: viewModel)
                 }
             #endif
-
-            ShowMomentsCardsView(showId: show.id, showName: show.title.compose)
         }
         #if os(tvOS)
         .focusSection()
@@ -649,7 +649,6 @@ private struct EpisodesShowProperty: View {
                 episodePreview.episodeNumber!.truncatingRemainder(dividingBy: 1) == 0
             } // remove episodes with non-round number like 35.5
             .sorted(by: { $0.episodeNumber! > $1.episodeNumber! })
-
 
         if filteredAndSortedEpisodes.isEmpty {
             return 0

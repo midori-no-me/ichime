@@ -8,6 +8,18 @@
 import SwiftUI
 
 struct MomentCard: View {
+    #if os(tvOS)
+        public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 500
+    #else
+        public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 150
+    #endif
+
+    #if os(tvOS)
+        public static let RECOMMENDED_SPACING: CGFloat = 60
+    #else
+        public static let RECOMMENDED_SPACING: CGFloat = 16
+    #endif
+
     public let title: String
     public let cover: URL
     public let websiteUrl: URL
@@ -76,11 +88,11 @@ private struct MomentCardCommon: View {
 
                 Text(title)
                     .font(.caption)
-                    .lineLimit(1)
+                    .lineLimit(2, reservesSpace: true)
                     .truncationMode(.tail)
             }
         }
-        .frame(width: MomentCardCommon.CARD_WIDTH, height: MomentCardCommon.CARD_HEIGHT, alignment: .bottom)
+        .frame(maxWidth: MomentCardCommon.CARD_WIDTH, maxHeight: MomentCardCommon.CARD_HEIGHT, alignment: .bottom)
         .buttonStyle(.plain)
     }
 }
@@ -124,10 +136,10 @@ private struct MomentCardTv: View {
             }
 
             Text(title)
-                .lineLimit(1)
+                .lineLimit(2, reservesSpace: true)
                 .truncationMode(.tail)
         }
-        .frame(width: MomentCardTv.CARD_WIDTH, height: MomentCardTv.CARD_HEIGHT, alignment: .bottom)
+        .frame(maxWidth: MomentCardTv.CARD_WIDTH, maxHeight: MomentCardTv.CARD_HEIGHT, alignment: .bottom)
         .buttonStyle(.borderless)
     }
 }

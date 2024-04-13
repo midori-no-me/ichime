@@ -9,7 +9,7 @@ import Foundation
 import SwiftSoup
 
 public extension ScraperAPI.Types {
-    struct Moment: Identifiable {
+    struct Moment: Identifiable, Hashable {
         public let id: Int
         public let title: String
         public let duration: String
@@ -91,6 +91,14 @@ public extension ScraperAPI.Types {
             } else {
                 try self.init(from: element, withUser: nil, baseURL: baseURL)
             }
+        }
+
+        public static func == (lhs: Moment, rhs: Moment) -> Bool {
+            return lhs.id == rhs.id
+        }
+
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
         }
     }
 

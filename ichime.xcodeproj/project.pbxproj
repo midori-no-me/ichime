@@ -88,6 +88,8 @@
 		ED3D84012B5C406F0025BB5D /* CurrentlyWatchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */; };
 		ED3D84052B5C427E0025BB5D /* NotificationCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */; };
 		ED49A9B02B5ED48C0016920B /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = ED49A9AF2B5ED48C0016920B /* Anime365ApiClient */; };
+		ED553DC82BCAB5B700FB55F5 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED553DC72BCAB5B700FB55F5 /* SectionHeader.swift */; };
+		ED553DCB2BCABA0700FB55F5 /* MomentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED553DCA2BCABA0700FB55F5 /* MomentsView.swift */; };
 		ED5B39DD2BACB65A00C6D672 /* HorizontalScreenEdgePadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5B39DC2BACB65A00C6D672 /* HorizontalScreenEdgePadding.swift */; };
 		ED5C74812BAC401C002E0E1B /* CorderRadiusForMediumObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */; };
 		ED5C74832BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */; };
@@ -203,6 +205,8 @@
 		ED3D84002B5C406F0025BB5D /* CurrentlyWatchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyWatchingView.swift; sourceTree = "<group>"; };
 		ED3D84042B5C427E0025BB5D /* NotificationCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterView.swift; sourceTree = "<group>"; };
 		ED49A9AD2B5ED3E70016920B /* Anime365ApiClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Anime365ApiClient; sourceTree = "<group>"; };
+		ED553DC72BCAB5B700FB55F5 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		ED553DCA2BCABA0700FB55F5 /* MomentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsView.swift; sourceTree = "<group>"; };
 		ED5B39DC2BACB65A00C6D672 /* HorizontalScreenEdgePadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalScreenEdgePadding.swift; sourceTree = "<group>"; };
 		ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorderRadiusForMediumObject.swift; sourceTree = "<group>"; };
 		ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusForLargeObject.swift; sourceTree = "<group>"; };
@@ -350,6 +354,7 @@
 		C6B11DCE2BC7119F00586466 /* Moment */ = {
 			isa = PBXGroup;
 			children = (
+				ED553DC92BCAB9F700FB55F5 /* View */,
 				C6B11DCD2BC7119F00586466 /* Component */,
 			);
 			path = Moment;
@@ -510,6 +515,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		ED553DC92BCAB9F700FB55F5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				ED553DCA2BCABA0700FB55F5 /* MomentsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		ED5C747E2BAC3FF4002E0E1B /* ViewModifier */ = {
 			isa = PBXGroup;
 			children = (
@@ -525,6 +538,7 @@
 			children = (
 				ED7357BD2BA8871A005C69B4 /* CardWithExpandableText.swift */,
 				ED1392302BB4C85900C2A9FC /* HeadingSectionWithBackground.swift */,
+				ED553DC72BCAB5B700FB55F5 /* SectionHeader.swift */,
 			);
 			path = CommonViewComponents;
 			sourceTree = "<group>";
@@ -927,8 +941,10 @@
 				C6B11DD32BC711B300586466 /* VideoPlayerExample.swift in Sources */,
 				C6290D2B2BBF4E99006AF277 /* Anime365Client.swift in Sources */,
 				C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */,
+				ED553DC82BCAB5B700FB55F5 /* SectionHeader.swift in Sources */,
 				EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */,
 				EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */,
+				ED553DCB2BCABA0700FB55F5 /* MomentsView.swift in Sources */,
 				ED3D83F92B5BFA890025BB5D /* EpisodeStreamingInfo.swift in Sources */,
 				C6B11DD52BC711B300586466 /* VideoPlayerController.swift in Sources */,
 				ED1D3E152BAA11AF005B324A /* DateUtils.swift in Sources */,

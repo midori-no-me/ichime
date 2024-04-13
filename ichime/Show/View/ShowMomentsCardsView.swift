@@ -81,13 +81,23 @@ class ShowMomentsCardsViewModel {
             print(error)
         }
     }
+
+    public func getShowMomentsFetchFunction(showId: Int) -> (_ page: Int) async throws -> [ScraperAPI.Types.Moment] {
+        func fetchFunction(_ page: Int) async throws -> [ScraperAPI.Types.Moment] {
+            return try await api.sendAPIRequest(
+                ScraperAPI.Request.GetMomentsByShow(showId: showId, page: page)
+            )
+        }
+
+        return fetchFunction
+    }
 }
 
 struct ShowMomentsCardsView: View {
     #if os(tvOS)
-        private static let SPACING_BETWEEN_TITLE_AND_CARDS: CGFloat = 40
+        private static let SPACING_BETWEEN_TITLE_AND_CARDS: CGFloat = 50
     #else
-        private static let SPACING_BETWEEN_TITLE_AND_CARDS: CGFloat = 10
+        private static let SPACING_BETWEEN_TITLE_AND_CARDS: CGFloat = 20
     #endif
 
     let showId: Int
@@ -96,9 +106,17 @@ struct ShowMomentsCardsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: ShowMomentsCardsView.SPACING_BETWEEN_TITLE_AND_CARDS) {
-            VStack(alignment: .leading) {
-                Text("Моменты")
-                    .font(.title3)
+            SectionHeader(
+                title: "Моменты",
+                subtitle: nil
+            ) {
+                MomentsView(
+                    viewModel: .init(
+                        fetchMoments: viewModel.getShowMomentsFetchFunction(showId: showId)
+                    ),
+                    title: "Моменты",
+                    description: showName
+                )
             }
 
             Group {
@@ -132,7 +150,7 @@ struct ShowMomentsCardsView: View {
 
                 case let .loaded(moments):
                     ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHGrid(rows: [GridItem(.flexible())]) {
+                        LazyHStack {
                             ForEach(moments) { moment in
                                 MomentCard(
                                     title: moment.title,

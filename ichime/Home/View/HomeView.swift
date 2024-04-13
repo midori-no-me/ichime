@@ -214,63 +214,20 @@ private struct ShowsSection: View {
             }
         } else {
             VStack(alignment: .leading, spacing: SPACING_BETWEEN_TITLE_CARD_CARDS) {
-                #if os(tvOS)
-                    HStack(alignment: .firstTextBaseline) {
-                        NavigationLink(destination: FilteredShowsView(
-                            viewModel: FilteredShowsViewModel(
-                                preloadedShows: shows,
-                                fetchShows: sectionLoader.getCards
-                            ),
-                            title: sectionLoader.getTitle(),
-                            description: sectionLoader.getSubtitle(),
-                            displaySeason: sectionLoader.displaySeason()
-                        )) {
-                            Text(sectionLoader.getTitle())
-                                .font(.title3)
-                                .fontWeight(.bold)
-                        }
-                        .buttonStyle(.plain)
-
-                        if let description = sectionLoader.getSubtitle() {
-                            Text(description)
-                                .font(.headline)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .focusSection()
-                #else
-                    VStack(alignment: .leading) {
-                        NavigationLink(destination: FilteredShowsView(
-                            viewModel: FilteredShowsViewModel(
-                                preloadedShows: shows,
-                                fetchShows: sectionLoader.getCards
-                            ),
-                            title: sectionLoader.getTitle(),
-                            description: sectionLoader.getSubtitle(),
-                            displaySeason: sectionLoader.displaySeason()
-                        )) {
-                            HStack(alignment: .center) {
-                                Text(sectionLoader.getTitle())
-                                    .font(.title)
-                                    .fontWeight(.bold)
-
-                                Image(systemName: "chevron.right")
-                                    .font(.title3)
-                                    .foregroundStyle(.secondary)
-                                    .fontWeight(.bold)
-                            }
-                        }
-                        .buttonStyle(.plain)
-
-                        if let description = sectionLoader.getSubtitle() {
-                            Text(description)
-                                .font(.headline)
-                                .foregroundStyle(.secondary)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                    }
-                #endif
+                SectionHeader(
+                    title: sectionLoader.getTitle(),
+                    subtitle: sectionLoader.getSubtitle()
+                ) {
+                    FilteredShowsView(
+                        viewModel: FilteredShowsViewModel(
+                            preloadedShows: shows,
+                            fetchShows: sectionLoader.getCards
+                        ),
+                        title: sectionLoader.getTitle(),
+                        description: sectionLoader.getSubtitle(),
+                        displaySeason: sectionLoader.displaySeason()
+                    )
+                }
 
                 ScrollView(.horizontal) {
                     LazyHGrid(rows: [
