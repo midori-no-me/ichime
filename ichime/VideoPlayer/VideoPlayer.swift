@@ -30,7 +30,7 @@ final class VideoPlayer {
             observer.create(player: player)
         }
     }
-    
+
     private func downloadFileToTemporaryDirectory(from url: URL) async throws -> URL {
         let session = URLSession(configuration: .default)
         let (data, response) = try await session.data(from: url)
@@ -67,7 +67,7 @@ final class VideoPlayer {
     private func createMutableComposition(
         _ videoAsset: AVAsset,
         _ subtitleAsset: AVAsset
-    ) async throws -> AVMutableComposition {
+    ) async throws -> AVComposition {
         let composition = AVMutableComposition()
 
         let mediaTypes: [AVMediaType: AVAsset] = [.video: videoAsset, .audio: videoAsset, .text: subtitleAsset]
@@ -94,7 +94,12 @@ final class VideoPlayer {
             }
         }
 
-        return composition
+        guard let immutableComposition = composition.copy() as? AVComposition else {
+            logger.error("Could not create an immutable composition copy")
+            throw PlayerError.compositionError("Could not create an immutable composition copy")
+        }
+
+        return immutableComposition
     }
 
     func createPlayer(video: VideoModel) async {
