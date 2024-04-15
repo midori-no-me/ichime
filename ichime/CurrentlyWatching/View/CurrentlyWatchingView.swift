@@ -196,7 +196,7 @@ struct LoadedCurrentlyWatching: View {
                 if UIDevice.current.userInterfaceIdiom == .phone {
                     Section {
                         NavigationLink(value: CurrentlyWatchingView.Navigation.notifications) {
-                            Label("Уведомления", systemImage: "bell")
+                            Label("Уведомления", systemImage: counter == 0 ? "bell" : "bell.badge")
                                 .badge(counter)
                         }
                     }

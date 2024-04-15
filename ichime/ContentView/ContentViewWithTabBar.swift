@@ -21,7 +21,7 @@ struct ContentViewWithTabBar: View {
                 HomeView()
             }
             .tabItem {
-                Label("Главная", systemImage: "house.fill")
+                Label("Главная", systemImage: "play.house")
             }
 
             NavigationStack {
@@ -37,7 +37,7 @@ struct ContentViewWithTabBar: View {
                     )
             }
             .tabItem {
-                Label("Я смотрю", systemImage: "film.stack")
+                Label("Я смотрю", systemImage: "play.square.stack")
             }
             #if !os(tvOS)
             .badge(notificationCounterWatcher.counter)

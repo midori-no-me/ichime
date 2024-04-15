@@ -30,17 +30,17 @@ struct ContentViewWithSideBar: View {
                 Label("Поиск", systemImage: "magnifyingglass")
                     .tag(SideBarLinks.searchShows)
 
-                Label("Главная", systemImage: "house.fill")
+                Label("Главная", systemImage: "play.house")
                     .tag(SideBarLinks.home)
 
                 Section(header: Text("Моя библиотека")) {
-                    Label("Я смотрю", systemImage: "film.stack")
+                    Label("Я смотрю", systemImage: "play.square.stack")
                         .tag(SideBarLinks.currentlyWatching)
 
                     Label("Мой список", systemImage: "list.and.film")
                         .tag(SideBarLinks.myLists)
 
-                    Label("Уведомления", systemImage: "bell")
+                    Label("Уведомления", systemImage: notificationCounterWatcher.counter == 0 ? "bell" : "bell.badge")
                     #if !os(tvOS)
                         .badge(notificationCounterWatcher.counter)
                     #endif
