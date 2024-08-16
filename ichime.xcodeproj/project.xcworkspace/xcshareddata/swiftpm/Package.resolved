@@ -1,6 +1,42 @@
 {
   "pins" : [
     {
+      "identity" : "appmetrica-sdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/appmetrica/appmetrica-sdk-ios",
+      "state" : {
+        "revision" : "766808009096e0e6f0648fbaf1b5460508b6c3ae",
+        "version" : "5.2.0"
+      }
+    },
+    {
+      "identity" : "ditranquillity",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ivlevAstef/DITranquillity.git",
+      "state" : {
+        "revision" : "2ea85e5c157bdda71fd71dfa295e1a33a0da9ea4",
+        "version" : "4.5.2"
+      }
+    },
+    {
+      "identity" : "kscrash",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kstenerud/KSCrash",
+      "state" : {
+        "revision" : "8e29ada12998c47b1ca595bb21d47a27f4e57b22",
+        "version" : "1.17.0"
+      }
+    },
+    {
+      "identity" : "swiftlazy",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ivlevAstef/SwiftLazy.git",
+      "state" : {
+        "revision" : "49a47304bb06643fa22d981b6b8301acc5bcb366",
+        "version" : "1.2.0"
+      }
+    },
+    {
       "identity" : "swiftsoup",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/scinfu/SwiftSoup.git",
