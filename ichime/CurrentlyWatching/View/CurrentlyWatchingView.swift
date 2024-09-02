@@ -167,6 +167,17 @@ struct LoadedCurrentlyWatching: View {
     let counter: Int
     let loadMore: () async -> Void
 
+    @State private var contextShow: Show? = nil
+
+    private func fetchShowForContext(episode: Int) async {
+        let api: Anime365Client = ApplicationDependency.container.resolve()
+        do {
+            contextShow = try await api.getShowByEpisodeId(episodeId: episode)
+        } catch {
+            contextShow = nil
+        }
+    }
+
     var body: some View {
         #if os(tvOS)
             ScrollView(.vertical) {
@@ -181,6 +192,24 @@ struct LoadedCurrentlyWatching: View {
                         NavigationLink(value: show) {
                             WatchCard(data: show)
                         }
+                        .contextMenu(menuItems: {
+                            Group {
+                                if let contextShow {
+                                    #if !os(tvOS)
+                                        ShareLink(item: contextShow.websiteUrl) {
+                                            Label("Поделиться", systemImage: "square.and.arrow.up")
+                                        }
+                                    #endif
+                                    NavigationLink(destination: ShowView(showId: contextShow.id)) {
+                                        Text("Открыть")
+                                    }
+                                } else {
+                                    ProgressView()
+                                }
+                            }.task {
+                                await fetchShowForContext(episode: show.id)
+                            }
+                        })
                         .buttonStyle(.borderless)
                         .task {
                             if show == self.shows.last {

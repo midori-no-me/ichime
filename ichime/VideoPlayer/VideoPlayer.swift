@@ -128,14 +128,12 @@ final class VideoPlayer {
         }
 
         // Буферим 600 секунд видео
-        playerItem.preferredForwardBufferDuration = 600
+        playerItem.preferredForwardBufferDuration = 30
 
         let player = AVPlayer(playerItem: playerItem)
         player.allowsExternalPlayback = subtitleURL == nil
         player.usesExternalPlaybackWhileExternalScreenIsActive = true
         player.preventsDisplaySleepDuringVideoPlayback = true
-        // TODO: кажется всегда true
-        player.automaticallyWaitsToMinimizeStalling = true
 
         self.player = player
     }

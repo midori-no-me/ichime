@@ -1,0 +1,5 @@
+{
+  "lldb.library": "/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Versions/A/LLDB",
+  "lldb.launch.expressions": "native",
+  "swift.SDK": "/Applications/Xcode.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS17.5.sdk"
+}

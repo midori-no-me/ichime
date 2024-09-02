@@ -1063,7 +1063,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.ichime.TopShelf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
@@ -1093,7 +1093,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.ichime.TopShelf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
@@ -1246,7 +1246,7 @@
 				CODE_SIGN_ENTITLEMENTS = ichime/ichime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ichime/Preview Content\"";
 				DEVELOPMENT_TEAM = YBBAN7R28K;
 				ENABLE_PREVIEWS = YES;
@@ -1277,7 +1277,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.ichime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1307,7 +1307,7 @@
 				CODE_SIGN_ENTITLEMENTS = ichime/ichime.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ichime/Preview Content\"";
 				DEVELOPMENT_TEAM = YBBAN7R28K;
 				ENABLE_PREVIEWS = YES;
@@ -1338,7 +1338,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.ichime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

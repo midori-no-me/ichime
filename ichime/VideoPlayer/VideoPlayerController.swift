@@ -18,6 +18,10 @@ final class VideoPlayerController: NSObject {
 
     private(set) var player: AVPlayer?
 
+    private var playerItem: AVPlayerItem?
+    private var playerItemObserver: NSKeyValueObservation?
+    private var loadingIndicator: UIActivityIndicatorView?
+
     private(set) var isInPiP = false
 
     override init() {
@@ -34,9 +38,63 @@ final class VideoPlayerController: NSObject {
         logger.debug("show player")
         playerViewController.player = player
         self.player = player
+        self.playerItem = player.currentItem
+
+        // Start observing the playerItem's buffering status
+        startObservingBuffering()
         sceneController.present(playerViewController) {
             player.play()
+            self.addLoadingIndicator()
         }
+    }
+
+    private func startObservingBuffering() {
+        playerItemObserver = playerItem?.observe(\.isPlaybackLikelyToKeepUp, options: [.new, .old]) { [weak self] playerItem, change in
+            guard let self = self else { return }
+
+            if let isPlaybackLikelyToKeepUp = change.newValue {
+                if isPlaybackLikelyToKeepUp {
+                    // Hide the loading indicator
+                    self.hideLoadingIndicator()
+                } else {
+                    // Show the loading indicator
+                    self.showLoadingIndicator()
+                }
+            }
+
+            if playerItem.isPlaybackBufferEmpty {
+                // Handle buffer empty situation
+                // For example, you could pause the player and show a buffering indicator
+                self.player?.pause()
+            }
+        }
+    }
+
+    private func addLoadingIndicator() {
+        if self.loadingIndicator != nil {
+            return
+        }
+        
+        let loadingIndicator = UIActivityIndicatorView(style: .large)
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        loadingIndicator.hidesWhenStopped = true
+        playerViewController.view.addSubview(loadingIndicator)
+
+        // Center the indicator in the playerViewController's view
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: playerViewController.view.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: playerViewController.view.centerYAnchor)
+        ])
+        
+        self.loadingIndicator = loadingIndicator
+    }
+
+    private func showLoadingIndicator() {
+        loadingIndicator?.startAnimating()
+    }
+
+    private func hideLoadingIndicator() {
+        loadingIndicator?.stopAnimating()
     }
 
     func play(player: AVPlayer) {
