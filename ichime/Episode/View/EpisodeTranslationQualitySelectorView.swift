@@ -116,7 +116,7 @@ struct EpisodeTranslationQualitySelectorView: View {
                         ForEach(episodeStreamingInfo.streamQualityOptions) { streamQualityOption in
                             ForEach(streamQualityOption.urls, id: \.self) { url in
                                 Button(action: {
-                                    handleStartPlay(video: url, subtitle: episodeStreamingInfo.subtitles?.vtt)
+                                    handleStartPlay(video: url, subtitle: episodeStreamingInfo.subtitles?.base)
                                 }) {
                                     HStack {
                                         Text("\(String(streamQualityOption.height))p")
@@ -158,17 +158,35 @@ struct EpisodeTranslationQualitySelectorView: View {
 
     func handleStartPlay(video: URL, subtitle: URL?) {
         selectedUrl = video
-        Task {
-            let collector = MetadataCollector(episodeId: episodeId, translationId: translationId)
-            let metadata = await collector.getMetadata()
+        
+        let allowedCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
 
-            await videoHolder.play(video: .init(
-                videoURL: video,
-                subtitleURL: subtitle,
-                metadata: metadata,
-                translationId: translationId
-            ), onDismiss: { dismiss() })
+        let videoURL = video.absoluteString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
+
+        var urlString = "infuse://x-callback-url/play?url=\(videoURL ?? "")&x-success=ichime-top-shelf://x-callback-url/playbackDidFinish&x-error=ichime-top-shelf://x-callback-url/playbackDidFail&"
+
+        if let subtitleURL = subtitle?.absoluteString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) {
+            urlString += "&sub=\(subtitleURL)"
         }
+
+        if let url = URL(string: urlString) {
+            print(url)
+            UIApplication.shared.open(url)
+        }
+        
+        selectedUrl = nil
+        
+//        Task {
+//            let collector = MetadataCollector(episodeId: episodeId, translationId: translationId)
+//            let metadata = await collector.getMetadata()
+//
+//            await videoHolder.play(video: .init(
+//                videoURL: video,
+//                subtitleURL: subtitle,
+//                metadata: metadata,
+//                translationId: translationId
+//            ), onDismiss: { dismiss() })
+//        }
     }
 }
 

@@ -32,6 +32,8 @@ struct ContentViewWithTabBarTV: View {
                             ShowView(showId: route.id)
                         case .episode:
                             EpisodeTranslationsView(episodeId: route.id, episodeTitle: route.title ?? "No name")
+                        case .xCallbackURL:
+                            Text("get callback")
                         }
                     })
             }
@@ -79,6 +81,8 @@ struct ContentViewWithTabBarTV: View {
             ) else {
                 return
             }
+            
+            print("url: ", url)
 
             guard let action = components.host,
                   let rawId = components.queryItems?.first(where: { $0.name == "id" })?.value,
@@ -90,6 +94,8 @@ struct ContentViewWithTabBarTV: View {
             let episodeTitle = components.queryItems?.first(where: { $0.name == "title" })?.value
 
             switch action {
+            case URLActions.xCallbackURL.rawValue:
+                print("url: ", url)
             case URLActions.show.rawValue:
                 print("its show \(id)")
                 selectedTab = .watch
@@ -107,6 +113,7 @@ struct ContentViewWithTabBarTV: View {
     enum URLActions: String {
         case show
         case episode
+        case xCallbackURL = "x-callback-url"
     }
 
     struct Route: Hashable {
