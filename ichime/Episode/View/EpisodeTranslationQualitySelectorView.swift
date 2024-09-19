@@ -35,8 +35,11 @@ class EpisodeTranslationQualitySelectorViewModel {
     func updateState(_ newState: State) {
         state = newState
     }
+    
+    private var translationId: Int = 0
 
     func performInitialLoad(translationId: Int) async {
+        self.translationId = translationId
         await updateState(.loading)
 
         do {
@@ -64,6 +67,56 @@ class EpisodeTranslationQualitySelectorViewModel {
             print(error.localizedDescription)
         }
     }
+    
+    private(set) var selectedVideoUrl: URL?
+    var shownCompleteAlert = false
+    
+    func handleStartPlay(video: URL, subtitle: URL?) {
+        selectedVideoUrl = video
+        
+        let allowedCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
+
+        let videoURL = video.absoluteString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
+
+        var urlString = "infuse://x-callback-url/play?url=\(videoURL ?? "")"
+
+        if let subtitleURL = subtitle?.absoluteString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) {
+            urlString += "&sub=\(subtitleURL)"
+        }
+
+        
+        if let url = URL(string: urlString) {
+            print(url)
+            UIApplication.shared.open(url)
+        }
+        
+        selectedVideoUrl = nil
+        shownCompleteAlert = true
+        
+//        Task {
+//            let collector = MetadataCollector(episodeId: episodeId, translationId: translationId)
+//            let metadata = await collector.getMetadata()
+//
+//            await videoHolder.play(video: .init(
+//                videoURL: video,
+//                subtitleURL: subtitle,
+//                metadata: metadata,
+//                translationId: translationId
+//            ), onDismiss: { dismiss() })
+//        }
+    }
+    
+    func checkWatch() async {
+        try? await scraperClient.sendAPIRequest(
+            ScraperAPI.Request
+                .UpdateCurrentWatch(translationId: translationId)
+        )
+        self.shownCompleteAlert = false
+    }
+    
+    func hideAlert() {
+        self.shownCompleteAlert = false
+    }
 }
 
 struct EpisodeTranslationQualitySelectorView: View {
@@ -76,7 +129,7 @@ struct EpisodeTranslationQualitySelectorView: View {
 
     @State private var viewModel: EpisodeTranslationQualitySelectorViewModel = .init()
 
-    @State private var selectedUrl: URL?
+
 
     var body: some View {
         Group {
@@ -116,13 +169,23 @@ struct EpisodeTranslationQualitySelectorView: View {
                         ForEach(episodeStreamingInfo.streamQualityOptions) { streamQualityOption in
                             ForEach(streamQualityOption.urls, id: \.self) { url in
                                 Button(action: {
-                                    handleStartPlay(video: url, subtitle: episodeStreamingInfo.subtitles?.base)
+                                    viewModel.handleStartPlay(video: url, subtitle: episodeStreamingInfo.subtitles?.base)
                                 }) {
                                     HStack {
                                         Text("\(String(streamQualityOption.height))p")
-                                        if selectedUrl == url {
+                                        if viewModel.selectedVideoUrl == url {
                                             Spacer()
                                             ProgressView()
+                                        }
+                                    }
+                                }.alert("Отметить как просмотренное?", isPresented: $viewModel.shownCompleteAlert) {
+                                    Button("Нет", role: .cancel) {
+                                        viewModel.hideAlert()
+                                    }
+                                    
+                                    Button("Да") {
+                                        Task {
+                                            await viewModel.checkWatch()
                                         }
                                     }
                                 }
@@ -154,39 +217,6 @@ struct EpisodeTranslationQualitySelectorView: View {
         #if !os(tvOS)
             .navigationBarTitleDisplayMode(.inline)
         #endif
-    }
-
-    func handleStartPlay(video: URL, subtitle: URL?) {
-        selectedUrl = video
-        
-        let allowedCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
-
-        let videoURL = video.absoluteString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
-
-        var urlString = "infuse://x-callback-url/play?url=\(videoURL ?? "")&x-success=ichime-top-shelf://x-callback-url/playbackDidFinish&x-error=ichime-top-shelf://x-callback-url/playbackDidFail&"
-
-        if let subtitleURL = subtitle?.absoluteString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) {
-            urlString += "&sub=\(subtitleURL)"
-        }
-
-        if let url = URL(string: urlString) {
-            print(url)
-            UIApplication.shared.open(url)
-        }
-        
-        selectedUrl = nil
-        
-//        Task {
-//            let collector = MetadataCollector(episodeId: episodeId, translationId: translationId)
-//            let metadata = await collector.getMetadata()
-//
-//            await videoHolder.play(video: .init(
-//                videoURL: video,
-//                subtitleURL: subtitle,
-//                metadata: metadata,
-//                translationId: translationId
-//            ), onDismiss: { dismiss() })
-//        }
     }
 }
 
