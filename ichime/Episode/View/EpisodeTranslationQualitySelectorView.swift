@@ -76,23 +76,20 @@ class EpisodeTranslationQualitySelectorViewModel {
 
     private(set) var selectedVideoUrl: URL?
     var shownCompleteAlert = false
+    var shownChangePlayerAlert = false
     var dismissModal: (() -> Void)?
 
-    func playThroughURL(video: URL, subtitle: URL?) {
-        let allowedCharacterSet =
-            CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
+    var defaultPlayer: PlayerPreference.Player {
+        playerPreference.selectedPlayer
+    }
 
-        let videoURL = video.absoluteString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
-
-        var urlString = "infuse://x-callback-url/play?url=\(videoURL ?? "")"
-
-        if let subtitleURL = subtitle?.absoluteString
-            .addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
-        {
-            urlString += "&sub=\(subtitleURL)"
+    func playThroughURL(video: URL, subtitle: URL?, player: PlayerPreference.Player) {
+        if subtitle != nil, player == .VLC {
+            shownChangePlayerAlert = true;
+            return;
         }
-
-        if let url = URL(string: urlString) {
+        
+        if let url = playerPreference.getLink(type: player, video: video, subtitle: subtitle) {
             print(url)
             UIApplication.shared.open(url)
         }
@@ -116,19 +113,24 @@ class EpisodeTranslationQualitySelectorViewModel {
                     dismissModal()
                 }
             })
-            
+
             self.selectedVideoUrl = nil
         }
     }
 
     func handleStartPlay(video: URL, subtitle: URL?, dismiss: @escaping () -> Void) {
+        handleStartPlay(video: video, subtitle: subtitle, dismiss: dismiss, player: defaultPlayer)
+    }
+
+    func handleStartPlay(video: URL, subtitle: URL?, dismiss: @escaping () -> Void, player: PlayerPreference.Player) {
+        shownChangePlayerAlert = false
         selectedVideoUrl = video
         dismissModal = dismiss
 
-        if playerPreference.selectedPlayer == .iOS {
+        if player == .iOS {
             playThroughInbuildPlayer(video: video, subtitle: subtitle)
         } else {
-            playThroughURL(video: video, subtitle: subtitle)
+            playThroughURL(video: video, subtitle: subtitle, player: player)
         }
     }
 
@@ -138,7 +140,7 @@ class EpisodeTranslationQualitySelectorViewModel {
                 .UpdateCurrentWatch(translationId: translationId)
         )
         shownCompleteAlert = false
-        if let dismissModal = self.dismissModal {
+        if let dismissModal = dismissModal {
             dismissModal()
         }
     }
@@ -211,7 +213,32 @@ struct EpisodeTranslationQualitySelectorView: View {
                                             ProgressView()
                                         }
                                     }
-                                }.alert("Отметить как просмотренное?", isPresented: $viewModel.shownCompleteAlert) {
+                                }
+                                .alert(
+                                    "Выбранный плеер не поддерживает субтитры, запустить в",
+                                    isPresented: $viewModel.shownChangePlayerAlert,
+                                    actions: {
+                                        if let url = viewModel.selectedVideoUrl {
+                                            Button("Встроенный") {
+                                                viewModel.handleStartPlay(
+                                                    video: url,
+                                                    subtitle: episodeStreamingInfo.subtitles?.base,
+                                                    dismiss: { dismiss() },
+                                                    player: .iOS
+                                                )
+                                            }
+                                            Button("Infuse") {
+                                                viewModel.handleStartPlay(
+                                                    video: url,
+                                                    subtitle: episodeStreamingInfo.subtitles?.base,
+                                                    dismiss: { dismiss() },
+                                                    player: .infuse
+                                                )
+                                            }
+                                        }
+                                    }
+                                )
+                                .alert("Отметить как просмотренное?", isPresented: $viewModel.shownCompleteAlert) {
                                     Button("Нет", role: .cancel) {
                                         viewModel.hideAlert()
                                     }
