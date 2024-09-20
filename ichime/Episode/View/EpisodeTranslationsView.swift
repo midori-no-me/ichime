@@ -219,7 +219,8 @@ private struct TranslationRow: View {
                 EpisodeTranslationQualitySelectorView(
                     episodeId: episodeId,
                     translationId: episodeTranslation.id,
-                    translationTeam: episodeTranslation.translationTeam
+                    translationTeam: episodeTranslation.translationTeam,
+                    disableSubs: episodeTranslation.translationMethod == .voiceover
                 )
             }
             .presentationDetents([.medium])

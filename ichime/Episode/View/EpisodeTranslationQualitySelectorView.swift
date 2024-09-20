@@ -156,6 +156,7 @@ struct EpisodeTranslationQualitySelectorView: View {
     let episodeId: Int
     let translationId: Int
     let translationTeam: String
+    let disableSubs: Bool
     var videoHolder: VideoPlayerHolder = ApplicationDependency.container.resolve()
 
     @State private var viewModel: EpisodeTranslationQualitySelectorViewModel = .init()
@@ -200,7 +201,7 @@ struct EpisodeTranslationQualitySelectorView: View {
                                 Button(action: {
                                     viewModel.handleStartPlay(
                                         video: url,
-                                        subtitle: episodeStreamingInfo.subtitles?.base,
+                                        subtitle: !disableSubs ? episodeStreamingInfo.subtitles?.base : nil,
                                         dismiss: {
                                             dismiss()
                                         }
@@ -222,7 +223,7 @@ struct EpisodeTranslationQualitySelectorView: View {
                                             Button("Встроенный") {
                                                 viewModel.handleStartPlay(
                                                     video: url,
-                                                    subtitle: episodeStreamingInfo.subtitles?.base,
+                                                    subtitle: !disableSubs ? episodeStreamingInfo.subtitles?.base : nil,
                                                     dismiss: { dismiss() },
                                                     player: .iOS
                                                 )
@@ -230,7 +231,7 @@ struct EpisodeTranslationQualitySelectorView: View {
                                             Button("Infuse") {
                                                 viewModel.handleStartPlay(
                                                     video: url,
-                                                    subtitle: episodeStreamingInfo.subtitles?.base,
+                                                    subtitle: !disableSubs ? episodeStreamingInfo.subtitles?.base : nil,
                                                     dismiss: { dismiss() },
                                                     player: .infuse
                                                 )
@@ -285,7 +286,8 @@ struct EpisodeTranslationQualitySelectorView: View {
         EpisodeTranslationQualitySelectorView(
             episodeId: 184_037,
             translationId: 3_061_769,
-            translationTeam: "Crunchyroll"
+            translationTeam: "Crunchyroll",
+            disableSubs: false
         )
     }
 }
