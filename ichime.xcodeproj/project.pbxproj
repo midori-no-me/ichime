@@ -116,6 +116,8 @@
 		EDFF2D112B43471300F27E61 /* IchimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D102B43471300F27E61 /* IchimeApp.swift */; };
 		EDFF2D152B43471500F27E61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D142B43471500F27E61 /* Assets.xcassets */; };
 		EDFF2D192B43471500F27E61 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */; };
+		EE93F2E52C9D9187002D207F /* PlayerPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE93F2E42C9D9187002D207F /* PlayerPreference.swift */; };
+		EE93F2E62C9D9187002D207F /* PlayerPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE93F2E42C9D9187002D207F /* PlayerPreference.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -237,6 +239,7 @@
 		EDFF2D162B43471500F27E61 /* ichime.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ichime.entitlements; sourceTree = "<group>"; };
 		EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EDFF2D292B4476D300F27E61 /* Anime365Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anime365Client.swift; sourceTree = "<group>"; };
+		EE93F2E42C9D9187002D207F /* PlayerPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPreference.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -400,6 +403,7 @@
 			isa = PBXGroup;
 			children = (
 				ED0D29942B66C84600C5AC9E /* BaseUrlPreference.swift */,
+				EE93F2E42C9D9187002D207F /* PlayerPreference.swift */,
 			);
 			path = AppPreferences;
 			sourceTree = "<group>";
@@ -870,6 +874,7 @@
 				C6D0DA752B9FBFBE0000255C /* EpisodePreviewModel.swift in Sources */,
 				C6899EB62BA254D300E63311 /* ShowCard.swift in Sources */,
 				C6D0DA642B9FBDF00000255C /* OnboardingView.swift in Sources */,
+				EE93F2E62C9D9187002D207F /* PlayerPreference.swift in Sources */,
 				C6D0DA6E2B9FBE9A0000255C /* ServiceLocator.swift in Sources */,
 				C6B11DD02BC7119F00586466 /* MomentCard.swift in Sources */,
 				C6D0DA702B9FBEA80000255C /* UserManager.swift in Sources */,
@@ -938,6 +943,7 @@
 				C6213C872BAF603800E08736 /* SceneController.swift in Sources */,
 				C6656A6C2B630C7C00BF7412 /* UserRateForm.swift in Sources */,
 				ED3A674D2B5739B600FB3975 /* EpisodeTranslationQualitySelectorView.swift in Sources */,
+				EE93F2E52C9D9187002D207F /* PlayerPreference.swift in Sources */,
 				C6B11DD32BC711B300586466 /* VideoPlayerExample.swift in Sources */,
 				C6290D2B2BBF4E99006AF277 /* Anime365Client.swift in Sources */,
 				C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */,
@@ -1063,7 +1069,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.ichime.TopShelf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
@@ -1093,7 +1099,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.ichime.TopShelf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
@@ -1277,7 +1283,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.ichime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1338,7 +1344,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.ichime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

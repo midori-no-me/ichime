@@ -12,6 +12,7 @@ struct ProfileSheet: View {
     private var userManager: UserManager = ApplicationDependency.container.resolve()
     @Environment(\.dismiss) private var dismiss
     @StateObject var baseUrlPreference: BaseUrlPreference = .init()
+    @StateObject var playerPreference: PlayerPreference = .init()
 
     private let appName = (Bundle.main.infoDictionary?["CFBundleDisplayName"] ?? Bundle.main
         .infoDictionary?[kCFBundleNameKey as String]) as? String ?? "???"
@@ -73,6 +74,16 @@ struct ProfileSheet: View {
                         Text(
                             "Этот адрес используется для работы приложения. Попробуйте выбрать другой адрес, если приложение работает некорректно. Для изменения адреса нужно выйти из аккаунта."
                         )
+                    }
+                    
+                    Section {
+                        Picker("Выбери плеер по умолчанию", selection: $playerPreference.selectedPlayer) {
+                            ForEach(PlayerPreference.Player.allCases, id: \.rawValue) { player in
+                                Text(player.rawValue).tag(player)
+                            }
+                        }
+                    } header: {
+                        Text("Через что запускать просмотр аниме")
                     }
 
                     Section {
