@@ -17,7 +17,6 @@
 		C6290D2B2BBF4E99006AF277 /* Anime365Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D292B4476D300F27E61 /* Anime365Client.swift */; };
 		C6290D2C2BBF4FB4006AF277 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD353B32B5E82AF00313489 /* ServiceLocator.swift */; };
 		C6290D2F2BBF57DF006AF277 /* ScraperAPI.Types.Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6290D2E2BBF57DF006AF277 /* ScraperAPI.Types.Episode.swift */; };
-		C6290D302BBF57DF006AF277 /* ScraperAPI.Types.Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6290D2E2BBF57DF006AF277 /* ScraperAPI.Types.Episode.swift */; };
 		C6290D312BBF57DF006AF277 /* ScraperAPI.Types.Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6290D2E2BBF57DF006AF277 /* ScraperAPI.Types.Episode.swift */; };
 		C6290D332BBF5913006AF277 /* ScraperAPI in Frameworks */ = {isa = PBXBuildFile; productRef = C6290D322BBF5913006AF277 /* ScraperAPI */; };
 		C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63C91852B5DAC8E00B44CC8 /* VideoPlayer.swift */; };
@@ -31,44 +30,17 @@
 		C6656A722B6325D400BF7412 /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = C6656A712B6325D400BF7412 /* .swiftformat */; };
 		C6698C672BB0D4F4008A9274 /* MetadataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6698C662BB0D4F4008A9274 /* MetadataCollector.swift */; };
 		C6899EB12BA2532E00E63311 /* ContentViewWithSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6899EB02BA2532E00E63311 /* ContentViewWithSideBar.swift */; };
-		C6899EB32BA2535100E63311 /* NotificationCounterWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61056FF2B99271F008012E7 /* NotificationCounterWatcher.swift */; };
-		C6899EB62BA254D300E63311 /* ShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF7104D2B4B344F001C2008 /* ShowCard.swift */; };
-		C6899EB82BA2583100E63311 /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
-		C6899EB92BA25DA000E63311 /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
 		C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F22BAA4088007A2E84 /* Logger.swift */; };
 		C68F69F82BAA5645007A2E84 /* MyListShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F72BAA5645007A2E84 /* MyListShow.swift */; };
 		C68F69FA2BAA616F007A2E84 /* ifCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F92BAA616F007A2E84 /* ifCondition.swift */; };
 		C6B11DCA2BC7119000586466 /* ShowMomentsCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DC92BC7119000586466 /* ShowMomentsCardsView.swift */; };
-		C6B11DCB2BC7119000586466 /* ShowMomentsCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DC92BC7119000586466 /* ShowMomentsCardsView.swift */; };
 		C6B11DCF2BC7119F00586466 /* MomentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DCC2BC7119F00586466 /* MomentCard.swift */; };
-		C6B11DD02BC7119F00586466 /* MomentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DCC2BC7119F00586466 /* MomentCard.swift */; };
 		C6B11DD32BC711B300586466 /* VideoPlayerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DD12BC711B300586466 /* VideoPlayerExample.swift */; };
-		C6B11DD42BC711B300586466 /* VideoPlayerExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DD12BC711B300586466 /* VideoPlayerExample.swift */; };
 		C6B11DD52BC711B300586466 /* VideoPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DD22BC711B300586466 /* VideoPlayerController.swift */; };
-		C6B11DD62BC711B300586466 /* VideoPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B11DD22BC711B300586466 /* VideoPlayerController.swift */; };
 		C6B8331D2B66951700D4A1AC /* WatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331C2B66951700D4A1AC /* WatchCard.swift */; };
 		C6B833202B669E2F00D4A1AC /* WatchCardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */; };
-		C6D0DA642B9FBDF00000255C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1919762B5F00AD008C6C99 /* OnboardingView.swift */; };
-		C6D0DA652B9FBE010000255C /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED269F612B6034810083A62F /* AuthenticationView.swift */; };
-		C6D0DA672B9FBE4C0000255C /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = C6D0DA662B9FBE4C0000255C /* Anime365ApiClient */; };
-		C6D0DA692B9FBE4C0000255C /* ScraperAPI in Frameworks */ = {isa = PBXBuildFile; productRef = C6D0DA682B9FBE4C0000255C /* ScraperAPI */; };
-		C6D0DA6D2B9FBE4C0000255C /* DITranquillity in Frameworks */ = {isa = PBXBuildFile; productRef = C6D0DA6C2B9FBE4C0000255C /* DITranquillity */; };
-		C6D0DA6E2B9FBE9A0000255C /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD353B32B5E82AF00313489 /* ServiceLocator.swift */; };
-		C6D0DA6F2B9FBE9E0000255C /* DI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64EB0192B699C3D00AC7C27 /* DI.swift */; };
-		C6D0DA702B9FBEA80000255C /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65ACDE72B54466300C27FB3 /* UserManager.swift */; };
-		C6D0DA712B9FBEB40000255C /* Anime365Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFF2D292B4476D300F27E61 /* Anime365Client.swift */; };
-		C6D0DA722B9FBEC20000255C /* ShowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3A674A2B56FBBA00FB3975 /* ShowModel.swift */; };
-		C6D0DA732B9FBFB50000255C /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
-		C6D0DA742B9FBFBA0000255C /* EpisodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6292B53FB81000D0A80 /* EpisodeModel.swift */; };
-		C6D0DA752B9FBFBE0000255C /* EpisodePreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED36C6272B530535000D0A80 /* EpisodePreviewModel.swift */; };
-		C6D0DA762B9FBFC20000255C /* EpisodeStreamingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3D83F82B5BFA890025BB5D /* EpisodeStreamingInfo.swift */; };
-		C6D0DA772B9FBFD80000255C /* BaseUrlPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0D29942B66C84600C5AC9E /* BaseUrlPreference.swift */; };
 		C6D1502A2BC4937D00121A32 /* Anime365ApiClient in Frameworks */ = {isa = PBXBuildFile; productRef = C6D150292BC4937D00121A32 /* Anime365ApiClient */; };
-		C6D414072B9FBAAC006735D9 /* IchimeMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D414062B9FBAAC006735D9 /* IchimeMacApp.swift */; };
-		C6D414092B9FBAAC006735D9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D414082B9FBAAC006735D9 /* ContentView.swift */; };
-		C6D4140B2B9FBAAE006735D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D4140A2B9FBAAE006735D9 /* Assets.xcassets */; };
-		C6D4140E2B9FBAAE006735D9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6D4140D2B9FBAAE006735D9 /* Preview Assets.xcassets */; };
 		ED0D29952B66C84600C5AC9E /* BaseUrlPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0D29942B66C84600C5AC9E /* BaseUrlPreference.swift */; };
 		ED1392312BB4C85900C2A9FC /* HeadingSectionWithBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1392302BB4C85900C2A9FC /* HeadingSectionWithBackground.swift */; };
 		ED1919772B5F00AD008C6C99 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1919762B5F00AD008C6C99 /* OnboardingView.swift */; };
@@ -97,18 +69,15 @@
 		ED7689112BB8A7B100657518 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7689102BB8A7B100657518 /* HomeView.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
 		EDA1C6332BBF5344004D239B /* ShowGenreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA1C6322BBF5344004D239B /* ShowGenreListView.swift */; };
-		EDA1C6342BBF5344004D239B /* ShowGenreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA1C6322BBF5344004D239B /* ShowGenreListView.swift */; };
 		EDC57C192BAF6448001533E7 /* ContentViewWithTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */; };
 		EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */; };
 		EDC57C1D2BAF6F3F001533E7 /* RawShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1C2BAF6F3F001533E7 /* RawShowCard.swift */; };
-		EDC57C1E2BAF6F3F001533E7 /* RawShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1C2BAF6F3F001533E7 /* RawShowCard.swift */; };
 		EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD353B32B5E82AF00313489 /* ServiceLocator.swift */; };
 		EDD9F7A12BB73F80004B46E7 /* TVServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDD9F7A02BB73F80004B46E7 /* TVServices.framework */; };
 		EDD9F7A42BB73F80004B46E7 /* ContentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD9F7A32BB73F80004B46E7 /* ContentProvider.swift */; };
 		EDD9F7A82BB73F80004B46E7 /* TopShelf.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EDD9F79F2BB73F80004B46E7 /* TopShelf.appex */; platformFilters = (tvos, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EDE018192BB98CEA00DAE593 /* ShowSeasonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE018182BB98CEA00DAE593 /* ShowSeasonService.swift */; };
 		EDE0181B2BB9AB2500DAE593 /* FilteredShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0181A2BB9AB2500DAE593 /* FilteredShowsView.swift */; };
-		EDE0181C2BB9AB2500DAE593 /* FilteredShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE0181A2BB9AB2500DAE593 /* FilteredShowsView.swift */; };
 		EDE9592D2B475A7B0030B23D /* SearchShowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592C2B475A7B0030B23D /* SearchShowsView.swift */; };
 		EDE9592F2B475E590030B23D /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9592E2B475E590030B23D /* ShowView.swift */; };
 		EDE959332B484C8A0030B23D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE959322B484C8A0030B23D /* ContentView.swift */; };
@@ -117,7 +86,6 @@
 		EDFF2D152B43471500F27E61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D142B43471500F27E61 /* Assets.xcassets */; };
 		EDFF2D192B43471500F27E61 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDFF2D182B43471500F27E61 /* Preview Assets.xcassets */; };
 		EE93F2E52C9D9187002D207F /* PlayerPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE93F2E42C9D9187002D207F /* PlayerPreference.swift */; };
-		EE93F2E62C9D9187002D207F /* PlayerPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE93F2E42C9D9187002D207F /* PlayerPreference.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -184,12 +152,6 @@
 		C6B11DD22BC711B300586466 /* VideoPlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerController.swift; sourceTree = "<group>"; };
 		C6B8331C2B66951700D4A1AC /* WatchCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCard.swift; sourceTree = "<group>"; };
 		C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCardModel.swift; sourceTree = "<group>"; };
-		C6D414042B9FBAAC006735D9 /* IchimeMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IchimeMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C6D414062B9FBAAC006735D9 /* IchimeMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IchimeMacApp.swift; sourceTree = "<group>"; };
-		C6D414082B9FBAAC006735D9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		C6D4140A2B9FBAAE006735D9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C6D4140D2B9FBAAE006735D9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C6D4140F2B9FBAAE006735D9 /* IchimeMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IchimeMac.entitlements; sourceTree = "<group>"; };
 		ED0D29942B66C84600C5AC9E /* BaseUrlPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUrlPreference.swift; sourceTree = "<group>"; };
 		ED1392302BB4C85900C2A9FC /* HeadingSectionWithBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingSectionWithBackground.swift; sourceTree = "<group>"; };
 		ED1919762B5F00AD008C6C99 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -243,16 +205,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C6D414012B9FBAAC006735D9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C6D0DA6D2B9FBE4C0000255C /* DITranquillity in Frameworks */,
-				C6D0DA692B9FBE4C0000255C /* ScraperAPI in Frameworks */,
-				C6D0DA672B9FBE4C0000255C /* Anime365ApiClient in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		EDD9F79C2BB73F80004B46E7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -377,26 +329,6 @@
 				C6B8331F2B669E2F00D4A1AC /* WatchCardModel.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		C6D414052B9FBAAC006735D9 /* IchimeMac */ = {
-			isa = PBXGroup;
-			children = (
-				C6D414062B9FBAAC006735D9 /* IchimeMacApp.swift */,
-				C6D414082B9FBAAC006735D9 /* ContentView.swift */,
-				C6D4140A2B9FBAAE006735D9 /* Assets.xcassets */,
-				C6D4140F2B9FBAAE006735D9 /* IchimeMac.entitlements */,
-				C6D4140C2B9FBAAE006735D9 /* Preview Content */,
-			);
-			path = IchimeMac;
-			sourceTree = "<group>";
-		};
-		C6D4140C2B9FBAAE006735D9 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				C6D4140D2B9FBAAE006735D9 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		ED0D29932B66C82D00C5AC9E /* AppPreferences */ = {
@@ -649,7 +581,6 @@
 				C68C6E1D2B4AFDD5008D796D /* .gitignore */,
 				EDB21EA02B4AD268001282FE /* .swiftlint.yml */,
 				EDFF2D0F2B43471300F27E61 /* ichime */,
-				C6D414052B9FBAAC006735D9 /* IchimeMac */,
 				EDD9F7A22BB73F80004B46E7 /* TopShelf */,
 				EDA628FF2B4576BE0093F8E5 /* Frameworks */,
 				EDFF2D0E2B43471300F27E61 /* Products */,
@@ -660,7 +591,6 @@
 			isa = PBXGroup;
 			children = (
 				EDFF2D0D2B43471300F27E61 /* Ichime.app */,
-				C6D414042B9FBAAC006735D9 /* IchimeMac.app */,
 				EDD9F79F2BB73F80004B46E7 /* TopShelf.appex */,
 			);
 			name = Products;
@@ -717,28 +647,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C6D414032B9FBAAC006735D9 /* IchimeMac */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C6D414102B9FBAAE006735D9 /* Build configuration list for PBXNativeTarget "IchimeMac" */;
-			buildPhases = (
-				C6D414002B9FBAAC006735D9 /* Sources */,
-				C6D414012B9FBAAC006735D9 /* Frameworks */,
-				C6D414022B9FBAAC006735D9 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = IchimeMac;
-			packageProductDependencies = (
-				C6D0DA662B9FBE4C0000255C /* Anime365ApiClient */,
-				C6D0DA682B9FBE4C0000255C /* ScraperAPI */,
-				C6D0DA6C2B9FBE4C0000255C /* DITranquillity */,
-			);
-			productName = IchimeMac;
-			productReference = C6D414042B9FBAAC006735D9 /* IchimeMac.app */;
-			productType = "com.apple.product-type.application";
-		};
 		EDD9F79E2BB73F80004B46E7 /* TopShelf */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EDD9F7AC2BB73F80004B46E7 /* Build configuration list for PBXNativeTarget "TopShelf" */;
@@ -798,9 +706,6 @@
 				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
-					C6D414032B9FBAAC006735D9 = {
-						CreatedOnToolsVersion = 15.2;
-					};
 					EDD9F79E2BB73F80004B46E7 = {
 						CreatedOnToolsVersion = 15.3;
 					};
@@ -829,22 +734,12 @@
 			projectRoot = "";
 			targets = (
 				EDFF2D0C2B43471300F27E61 /* Ichime */,
-				C6D414032B9FBAAC006735D9 /* IchimeMac */,
 				EDD9F79E2BB73F80004B46E7 /* TopShelf */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C6D414022B9FBAAC006735D9 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C6D4140E2B9FBAAE006735D9 /* Preview Assets.xcassets in Resources */,
-				C6D4140B2B9FBAAE006735D9 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		EDD9F79D2BB73F80004B46E7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -866,40 +761,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C6D414002B9FBAAC006735D9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C6899EB32BA2535100E63311 /* NotificationCounterWatcher.swift in Sources */,
-				C6D0DA752B9FBFBE0000255C /* EpisodePreviewModel.swift in Sources */,
-				C6899EB62BA254D300E63311 /* ShowCard.swift in Sources */,
-				C6D0DA642B9FBDF00000255C /* OnboardingView.swift in Sources */,
-				EE93F2E62C9D9187002D207F /* PlayerPreference.swift in Sources */,
-				C6D0DA6E2B9FBE9A0000255C /* ServiceLocator.swift in Sources */,
-				C6B11DD02BC7119F00586466 /* MomentCard.swift in Sources */,
-				C6D0DA702B9FBEA80000255C /* UserManager.swift in Sources */,
-				C6D0DA6F2B9FBE9E0000255C /* DI.swift in Sources */,
-				EDE0181C2BB9AB2500DAE593 /* FilteredShowsView.swift in Sources */,
-				C6899EB82BA2583100E63311 /* SearchShowsView.swift in Sources */,
-				C6D414092B9FBAAC006735D9 /* ContentView.swift in Sources */,
-				C6D0DA742B9FBFBA0000255C /* EpisodeModel.swift in Sources */,
-				C6B11DD42BC711B300586466 /* VideoPlayerExample.swift in Sources */,
-				C6D0DA652B9FBE010000255C /* AuthenticationView.swift in Sources */,
-				C6D0DA722B9FBEC20000255C /* ShowModel.swift in Sources */,
-				C6D0DA732B9FBFB50000255C /* TranslationModel.swift in Sources */,
-				C6B11DD62BC711B300586466 /* VideoPlayerController.swift in Sources */,
-				C6D0DA712B9FBEB40000255C /* Anime365Client.swift in Sources */,
-				C6B11DCB2BC7119000586466 /* ShowMomentsCardsView.swift in Sources */,
-				C6290D302BBF57DF006AF277 /* ScraperAPI.Types.Episode.swift in Sources */,
-				C6D414072B9FBAAC006735D9 /* IchimeMacApp.swift in Sources */,
-				C6899EB92BA25DA000E63311 /* ShowView.swift in Sources */,
-				EDC57C1E2BAF6F3F001533E7 /* RawShowCard.swift in Sources */,
-				C6D0DA762B9FBFC20000255C /* EpisodeStreamingInfo.swift in Sources */,
-				C6D0DA772B9FBFD80000255C /* BaseUrlPreference.swift in Sources */,
-				EDA1C6342BBF5344004D239B /* ShowGenreListView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		EDD9F79B2BB73F80004B46E7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -993,64 +854,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		C6D414112B9FBAAE006735D9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = IchimeMac/IchimeMac.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"IchimeMac/Preview Content\"";
-				DEVELOPMENT_TEAM = YBBAN7R28K;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 14.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.IchimeMac;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		C6D414122B9FBAAE006735D9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = IchimeMac/IchimeMac.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"IchimeMac/Preview Content\"";
-				DEVELOPMENT_TEAM = YBBAN7R28K;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 14.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.midorinome.IchimeMac;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 		EDD9F7AA2BB73F80004B46E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1364,15 +1167,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C6D414102B9FBAAE006735D9 /* Build configuration list for PBXNativeTarget "IchimeMac" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C6D414112B9FBAAE006735D9 /* Debug */,
-				C6D414122B9FBAAE006735D9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		EDD9F7AC2BB73F80004B46E7 /* Build configuration list for PBXNativeTarget "TopShelf" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1441,19 +1235,6 @@
 		C651FD082B61745700E68341 /* ScraperAPI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ScraperAPI;
-		};
-		C6D0DA662B9FBE4C0000255C /* Anime365ApiClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Anime365ApiClient;
-		};
-		C6D0DA682B9FBE4C0000255C /* ScraperAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ScraperAPI;
-		};
-		C6D0DA6C2B9FBE4C0000255C /* DITranquillity */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C64EB0162B68587700AC7C27 /* XCRemoteSwiftPackageReference "DITranquillity" */;
-			productName = DITranquillity;
 		};
 		C6D150292BC4937D00121A32 /* Anime365ApiClient */ = {
 			isa = XCSwiftPackageProductDependency;
