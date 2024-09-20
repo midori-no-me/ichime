@@ -29,7 +29,7 @@
 		C6656A6E2B631EBE00BF7412 /* AnimeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6656A6D2B631EBE00BF7412 /* AnimeList.swift */; };
 		C6656A722B6325D400BF7412 /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = C6656A712B6325D400BF7412 /* .swiftformat */; };
 		C6698C672BB0D4F4008A9274 /* MetadataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6698C662BB0D4F4008A9274 /* MetadataCollector.swift */; };
-		C6899EB12BA2532E00E63311 /* ContentViewWithSideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6899EB02BA2532E00E63311 /* ContentViewWithSideBar.swift */; };
+		C6899EB12BA2532E00E63311 /* ContentViewWithTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6899EB02BA2532E00E63311 /* ContentViewWithTabView.swift */; };
 		C68C6E1E2B4AFDD5008D796D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C68C6E1D2B4AFDD5008D796D /* .gitignore */; };
 		C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F22BAA4088007A2E84 /* Logger.swift */; };
 		C68F69F82BAA5645007A2E84 /* MyListShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68F69F72BAA5645007A2E84 /* MyListShow.swift */; };
@@ -69,8 +69,7 @@
 		ED7689112BB8A7B100657518 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7689102BB8A7B100657518 /* HomeView.swift */; };
 		ED89978F2B55A53800D7689B /* TranslationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED89978E2B55A53800D7689B /* TranslationModel.swift */; };
 		EDA1C6332BBF5344004D239B /* ShowGenreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA1C6322BBF5344004D239B /* ShowGenreListView.swift */; };
-		EDC57C192BAF6448001533E7 /* ContentViewWithTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */; };
-		EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */; };
+		EDA831E42C9F14F000CF3566 /* TopEdgePaddingForMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA831E32C9F14E400CF3566 /* TopEdgePaddingForMenu.swift */; };
 		EDC57C1D2BAF6F3F001533E7 /* RawShowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC57C1C2BAF6F3F001533E7 /* RawShowCard.swift */; };
 		EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD353B32B5E82AF00313489 /* ServiceLocator.swift */; };
 		EDD9F7A12BB73F80004B46E7 /* TVServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDD9F7A02BB73F80004B46E7 /* TVServices.framework */; };
@@ -141,7 +140,7 @@
 		C6656A6D2B631EBE00BF7412 /* AnimeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeList.swift; sourceTree = "<group>"; };
 		C6656A712B6325D400BF7412 /* .swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
 		C6698C662BB0D4F4008A9274 /* MetadataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataCollector.swift; sourceTree = "<group>"; };
-		C6899EB02BA2532E00E63311 /* ContentViewWithSideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithSideBar.swift; sourceTree = "<group>"; };
+		C6899EB02BA2532E00E63311 /* ContentViewWithTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithTabView.swift; sourceTree = "<group>"; };
 		C68C6E1D2B4AFDD5008D796D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C68F69F22BAA4088007A2E84 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C68F69F72BAA5645007A2E84 /* MyListShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListShow.swift; sourceTree = "<group>"; };
@@ -179,9 +178,8 @@
 		ED89978E2B55A53800D7689B /* TranslationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationModel.swift; sourceTree = "<group>"; };
 		EDA1C6322BBF5344004D239B /* ShowGenreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGenreListView.swift; sourceTree = "<group>"; };
 		EDA277052B457B2E003A97F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		EDA831E32C9F14E400CF3566 /* TopEdgePaddingForMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopEdgePaddingForMenu.swift; sourceTree = "<group>"; };
 		EDB21EA02B4AD268001282FE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithTabBar.swift; sourceTree = "<group>"; };
-		EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewWithTabBarTV.swift; sourceTree = "<group>"; };
 		EDC57C1C2BAF6F3F001533E7 /* RawShowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawShowCard.swift; sourceTree = "<group>"; };
 		EDD353B32B5E82AF00313489 /* ServiceLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLocator.swift; sourceTree = "<group>"; };
 		EDD9F79F2BB73F80004B46E7 /* TopShelf.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TopShelf.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -283,9 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				EDE959322B484C8A0030B23D /* ContentView.swift */,
-				EDC57C182BAF6448001533E7 /* ContentViewWithTabBar.swift */,
-				EDC57C1A2BAF645C001533E7 /* ContentViewWithTabBarTV.swift */,
-				C6899EB02BA2532E00E63311 /* ContentViewWithSideBar.swift */,
+				C6899EB02BA2532E00E63311 /* ContentViewWithTabView.swift */,
 			);
 			path = ContentView;
 			sourceTree = "<group>";
@@ -462,6 +458,7 @@
 		ED5C747E2BAC3FF4002E0E1B /* ViewModifier */ = {
 			isa = PBXGroup;
 			children = (
+				EDA831E32C9F14E400CF3566 /* TopEdgePaddingForMenu.swift */,
 				ED5C74802BAC401C002E0E1B /* CorderRadiusForMediumObject.swift */,
 				ED5C74822BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift */,
 				ED5B39DC2BACB65A00C6D672 /* HorizontalScreenEdgePadding.swift */,
@@ -799,7 +796,6 @@
 				ED3A674B2B56FBBA00FB3975 /* ShowModel.swift in Sources */,
 				ED5C74832BAC40DB002E0E1B /* CornerRadiusForLargeObject.swift in Sources */,
 				C63C91862B5DAC8E00B44CC8 /* VideoPlayer.swift in Sources */,
-				EDC57C192BAF6448001533E7 /* ContentViewWithTabBar.swift in Sources */,
 				ED36C62A2B53FB81000D0A80 /* EpisodeModel.swift in Sources */,
 				C6213C872BAF603800E08736 /* SceneController.swift in Sources */,
 				C6656A6C2B630C7C00BF7412 /* UserRateForm.swift in Sources */,
@@ -809,9 +805,9 @@
 				C6290D2B2BBF4E99006AF277 /* Anime365Client.swift in Sources */,
 				C68F69F32BAA4088007A2E84 /* Logger.swift in Sources */,
 				ED553DC82BCAB5B700FB55F5 /* SectionHeader.swift in Sources */,
-				EDC57C1B2BAF645C001533E7 /* ContentViewWithTabBarTV.swift in Sources */,
 				EDD353B42B5E82AF00313489 /* ServiceLocator.swift in Sources */,
 				ED553DCB2BCABA0700FB55F5 /* MomentsView.swift in Sources */,
+				EDA831E42C9F14F000CF3566 /* TopEdgePaddingForMenu.swift in Sources */,
 				ED3D83F92B5BFA890025BB5D /* EpisodeStreamingInfo.swift in Sources */,
 				C6B11DD52BC711B300586466 /* VideoPlayerController.swift in Sources */,
 				ED1D3E152BAA11AF005B324A /* DateUtils.swift in Sources */,
@@ -835,7 +831,7 @@
 				ED36C6202B52D2AA000D0A80 /* EpisodeTranslationsView.swift in Sources */,
 				C6B11DCA2BC7119000586466 /* ShowMomentsCardsView.swift in Sources */,
 				ED269F622B6034810083A62F /* AuthenticationView.swift in Sources */,
-				C6899EB12BA2532E00E63311 /* ContentViewWithSideBar.swift in Sources */,
+				C6899EB12BA2532E00E63311 /* ContentViewWithTabView.swift in Sources */,
 				C61BC3FF2BA3C5CC00AAEC1E /* ProfileSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -880,7 +876,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 17.0;
+				TVOS_DEPLOYMENT_TARGET = 18.0;
 			};
 			name = Debug;
 		};
@@ -910,7 +906,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 17.0;
+				TVOS_DEPLOYMENT_TARGET = 18.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1082,7 +1078,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
@@ -1099,7 +1095,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 17.0;
+				TVOS_DEPLOYMENT_TARGET = 18.0;
 			};
 			name = Debug;
 		};
@@ -1143,7 +1139,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
@@ -1160,7 +1156,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
-				TVOS_DEPLOYMENT_TARGET = 17.0;
+				TVOS_DEPLOYMENT_TARGET = 18.0;
 			};
 			name = Release;
 		};

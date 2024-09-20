@@ -118,6 +118,7 @@ private class SeasonalSectionLoader: ShowsSectionLoader {
 
 struct HomeView: View {
     @State private var sectionLoaders: [any ShowsSectionLoader] = []
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     #if os(tvOS)
         private let SPACING_BETWEEN_SECTIONS: CGFloat = 70
@@ -138,15 +139,18 @@ struct HomeView: View {
                 }
             }
             .horizontalScreenEdgePadding()
+            .topEdgePaddingForMenu()
         }
         .onAppear {
             sectionLoaders.append(getNextSectionLoader())
         }
-        #if !os(tvOS)
         .navigationTitle("Главная")
+        #if !os(tvOS)
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
+          if horizontalSizeClass == .compact {
             ProfileButton()
+          }
         }
         #endif
         #if os(tvOS)

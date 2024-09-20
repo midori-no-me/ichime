@@ -12,34 +12,21 @@ struct ContentView: View {
     private var userManager: UserManager = ApplicationDependency.container.resolve()
 
     var body: some View {
-        Group {
-            switch userManager.state {
-            case .idle:
-                Color.clear
-            case .loading:
-                ProgressView()
-                #if os(tvOS)
-                    .focusable()
-                #endif
-            case .isAuth:
-                #if os(iOS)
-                    if UIDevice.current.userInterfaceIdiom == .phone {
-                        ContentViewWithTabBar()
-
-                    } else {
-                        ContentViewWithSideBar()
-                    }
-                #elseif os(tvOS)
-                    ContentViewWithTabBarTV()
-                #else
-                    ContentViewWithSideBar()
-                #endif
-            case .isAnonym:
-                NavigationStack {
-                    OnboardingView()
-                }
-            }
+      switch userManager.state {
+      case .idle:
+        Color.clear
+      case .loading:
+        ProgressView()
+#if os(tvOS)
+          .focusable()
+#endif
+      case .isAuth:
+        ContentViewWithTabView()
+      case .isAnonym:
+        NavigationStack {
+          OnboardingView()
         }
+      }
     }
 }
 

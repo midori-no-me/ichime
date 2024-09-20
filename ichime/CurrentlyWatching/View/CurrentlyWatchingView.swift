@@ -93,7 +93,6 @@ class CurrentlyWatchingViewModel {
 
 struct CurrentlyWatchingView: View {
     @State private var viewModel: CurrentlyWatchingViewModel = .init()
-    @StateObject private var notificationCounter: NotificationCounterWatcher = .init()
 
     var body: some View {
         Group {
@@ -134,7 +133,7 @@ struct CurrentlyWatchingView: View {
                     Text("Вы еще ничего не добавили в свой список")
                 }
             case let .loaded(shows):
-                LoadedCurrentlyWatching(shows: shows, counter: notificationCounter.counter) {
+                LoadedCurrentlyWatching(shows: shows) {
                     await viewModel.performLazyLoad()
                 }
             }
@@ -143,18 +142,14 @@ struct CurrentlyWatchingView: View {
             switch viewModel.state {
             case .loadedButEmpty, .loadingFailed, .loaded, .needSubscribe:
                 await viewModel.performRefresh()
-                await notificationCounter.checkCounter()
             case .idle, .loading:
                 return
             }
         }
         .refreshable {
             await viewModel.performRefresh()
-            await notificationCounter.checkCounter()
         }
-        #if !os(tvOS)
         .navigationTitle("Я смотрю")
-        #endif
     }
 
     enum Navigation: Hashable {
@@ -164,7 +159,6 @@ struct CurrentlyWatchingView: View {
 
 struct LoadedCurrentlyWatching: View {
     let shows: [WatchCardModel]
-    let counter: Int
     let loadMore: () async -> Void
 
     @State private var contextShow: Show? = nil
@@ -218,19 +212,11 @@ struct LoadedCurrentlyWatching: View {
                         }
                     }
                 }
+                .topEdgePaddingForMenu()
             }
             .scrollClipDisabled(true)
         #else
             List {
-                if UIDevice.current.userInterfaceIdiom == .phone {
-                    Section {
-                        NavigationLink(value: CurrentlyWatchingView.Navigation.notifications) {
-                            Label("Уведомления", systemImage: counter == 0 ? "bell" : "bell.badge")
-                                .badge(counter)
-                        }
-                    }
-                }
-
                 Section {
                     ForEach(shows) { show in
                         NavigationLink(value: show) {
