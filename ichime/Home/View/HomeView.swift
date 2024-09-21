@@ -230,13 +230,7 @@ private struct ShowsSection: View {
                 }
 
                 ScrollView(.horizontal) {
-                    LazyHGrid(rows: [
-                        GridItem(
-                            .flexible(),
-                            spacing: RawShowCard.RECOMMENDED_SPACING,
-                            alignment: .topLeading
-                        ),
-                    ], spacing: RawShowCard.RECOMMENDED_SPACING) {
+                    LazyHStack(spacing: RawShowCard.RECOMMENDED_SPACING) {
                         ForEach(self.shows) { show in
                             ShowCard(show: show, displaySeason: sectionLoader.displaySeason())
                                 .frame(width: RawShowCard.RECOMMENDED_MINIMUM_WIDTH)
