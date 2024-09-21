@@ -1,0 +1,90 @@
+name: Ichime
+options:
+  developmentLanguage: ru
+  groupSortPosition: top
+  indentWidth: 2
+packages:
+  Anime365ApiClient:
+    path: ./Anime365ApiClient
+  ScraperAPI:
+    path: ./ScraperAPI
+  DITranquillity:
+    url: https://github.com/ivlevAstef/DITranquillity.git
+    from: "4.5.0"
+targets:
+  Ichime:
+    type: application
+    platform: [iOS, tvOS]
+    deploymentTarget:
+      iOS: "18.0"
+      tvOS: "18.0"
+    sources:
+      - path: Ichime
+    info:
+      path: Ichime/Info.plist
+      properties:
+        BGTaskSchedulerPermittedIdentifiers: [dev.midorinome.ichime.background-tasks]
+        CFBundleShortVersionString: $(APP_VERSION)
+        CFBundleURLTypes:
+          - CFBundleTypeRole: viewer
+            CFBundleURLName: $(PRODUCT_BUNDLE_IDENTIFIER).TopShelfURL
+            CFBundleURLSchemes: [ichime-top-shelf] 
+        CFBundleVersion: $(APP_VERSION)
+        LSApplicationCategoryType: public.app-category.entertainment
+        UILaunchStoryboardName: LaunchScreen # Fixes application window size on iOS
+    entitlements:
+      path: Ichime/Ichime.entitlements
+      properties:
+        com.apple.security.application-groups: [group.dev.midorinome.ichime.group]
+    dependencies:
+      - package: DITranquillity
+      - package: Anime365ApiClient
+      - package: ScraperAPI
+      - target: TopShelf_tvOS
+        destinationFilters: [tvOS]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime
+      configs:
+        Release:
+          DEBUG_MODE: NO
+          PRODUCT_NAME: Ichime
+        Debug:
+          DEBUG_MODE: YES
+          PRODUCT_NAME: Ichime (dev)
+  TopShelf:
+    type: app-extension
+    platform: [tvOS]
+    supportedDestinations: tvOS
+    deploymentTarget:
+      tvOS: "18.0"
+    sources:
+      - path: Ichime/Extensions/ScraperAPI.Types.Episode.swift
+      - path: Ichime/DependencyInjection/ServiceLocator.swift
+      - path: TopShelf
+    info:
+      path: TopShelf/Info.plist
+      properties:
+        CFBundleShortVersionString: $(APP_VERSION)
+        CFBundleVersion: $(APP_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.tv-top-shelf
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ContentProvider
+    entitlements:
+      path: TopShelf/TopShelf.entitlements
+      properties:
+        com.apple.security.application-groups: [group.dev.midorinome.ichime.group]
+    dependencies:
+      - package: Anime365ApiClient
+      - package: ScraperAPI
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime.TopShelf
+      configs:
+        Release:
+          DEBUG_MODE: NO
+        Debug:
+          DEBUG_MODE: YES
+settings:
+  SWIFT_VERSION: "5"
+  APP_VERSION: "1.7.2"
