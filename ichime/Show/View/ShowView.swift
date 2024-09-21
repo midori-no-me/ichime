@@ -630,7 +630,7 @@ private struct EpisodesShowProperty: View {
         let latestEpisodeNumber = getLatestEpisodeNumber()
 
         if isOngoing {
-            return "\(totalEpisodes?.formatted() ?? "???") (вышло: \(latestEpisodeNumber.formatted()))"
+            return "Вышло \(latestEpisodeNumber.formatted()) из \(totalEpisodes?.formatted() ?? "???")"
         }
 
         if let totalEpisodes {
