@@ -93,6 +93,9 @@ targets:
       properties:
         CFBundleShortVersionString: $(APP_VERSION)
         CFBundleVersion: $(APP_VERSION)
+        CFBundleDisplayName: TopShelf
+        UIRequiredDeviceCapabilities:
+          - arm64
         NSExtension:
           NSExtensionPointIdentifier: com.apple.tv-top-shelf
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ContentProvider
