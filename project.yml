@@ -38,7 +38,16 @@ targets:
             CFBundleURLSchemes: [ichime-top-shelf]
         CFBundleVersion: $(APP_VERSION)
         LSApplicationCategoryType: public.app-category.entertainment
-        UILaunchStoryboardName: LaunchScreen # Fixes application window size on iOS
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~iphone:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
     entitlements:
       path: Ichime/Ichime.entitlements
       properties:
