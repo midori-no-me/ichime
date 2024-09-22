@@ -38,6 +38,10 @@ targets:
             CFBundleURLSchemes: [ichime-top-shelf]
         CFBundleVersion: $(APP_VERSION)
         LSApplicationCategoryType: public.app-category.entertainment
+        UIBackgroundModes:
+          - audio
+          - processing
+          - fetch
         UILaunchScreen: {}
         UISupportedInterfaceOrientations~ipad:
           - UIInterfaceOrientationPortrait
@@ -108,12 +112,8 @@ targets:
       configs:
         Release:
           DEBUG_MODE: NO
-          PRODUCT_NAME: $(APP_NAME) Top Shelf
-          INFOPLIST_KEY_CFBundleDisplayName: $(APP_NAME) Top Shelf
         Debug:
           DEBUG_MODE: YES
-          PRODUCT_NAME: $(APP_NAME) Top Shelf (dev)
-          INFOPLIST_KEY_CFBundleDisplayName: $(APP_NAME) Top Shelf (dev)
 
 settings:
   SWIFT_VERSION: "5"
