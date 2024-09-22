@@ -134,9 +134,7 @@ struct NotificationCenterView: View {
         .refreshable {
             await viewModel.performRefresh()
         }
-        #if !os(tvOS)
         .navigationTitle("Уведомления")
-        #endif
     }
 }
 
@@ -166,6 +164,7 @@ struct LoadedNotificationCenter: View {
                         }
                     }
                 }
+                .topEdgePaddingForMenu()
             }
             .scrollClipDisabled(true)
         #else
