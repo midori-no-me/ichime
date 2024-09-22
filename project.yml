@@ -35,7 +35,7 @@ targets:
         CFBundleURLTypes:
           - CFBundleTypeRole: viewer
             CFBundleURLName: $(PRODUCT_BUNDLE_IDENTIFIER).TopShelfURL
-            CFBundleURLSchemes: [ichime-top-shelf] 
+            CFBundleURLSchemes: [ichime-top-shelf]
         CFBundleVersion: $(APP_VERSION)
         LSApplicationCategoryType: public.app-category.entertainment
         UILaunchStoryboardName: LaunchScreen # Fixes application window size on iOS
@@ -52,13 +52,19 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime
+        MARKETING_VERSION: $(APP_VERSION)
+        CURRENT_PROJECT_VERSION: 1
+        DEVELOPMENT_TEAM: YBBAN7R28K
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.entertainment
       configs:
         Release:
           DEBUG_MODE: NO
-          PRODUCT_NAME: Ichime
+          PRODUCT_NAME: $(APP_NAME)
+          INFOPLIST_KEY_CFBundleDisplayName: $(APP_NAME)
         Debug:
           DEBUG_MODE: YES
-          PRODUCT_NAME: Ichime (dev)
+          PRODUCT_NAME: $(APP_NAME) (dev)
+          INFOPLIST_KEY_CFBundleDisplayName: $(APP_NAME) (dev)
   TopShelf:
     type: app-extension
     platform: [tvOS]
@@ -87,11 +93,20 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime.TopShelf
+        MARKETING_VERSION: $(APP_VERSION)
+        CURRENT_PROJECT_VERSION: 1
+        DEVELOPMENT_TEAM: YBBAN7R28K
       configs:
         Release:
           DEBUG_MODE: NO
+          PRODUCT_NAME: $(APP_NAME) Top Shelf
+          INFOPLIST_KEY_CFBundleDisplayName: $(APP_NAME) Top Shelf
         Debug:
           DEBUG_MODE: YES
+          PRODUCT_NAME: $(APP_NAME) Top Shelf (dev)
+          INFOPLIST_KEY_CFBundleDisplayName: $(APP_NAME) Top Shelf (dev)
+
 settings:
   SWIFT_VERSION: "5"
-  APP_VERSION: "1.7.2"
+  APP_VERSION: "1.7.4"
+  APP_NAME: Ichime
