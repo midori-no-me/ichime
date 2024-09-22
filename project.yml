@@ -117,5 +117,5 @@ targets:
 
 settings:
   SWIFT_VERSION: "5"
-  APP_VERSION: "1.7.4"
+  APP_VERSION: "1.7.5"
   APP_NAME: Ichime
