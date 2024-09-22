@@ -61,15 +61,13 @@ class MyListViewModel {
         state = newState
     }
 
-    func performInitialLoad() async {
+    func performLoad(categoryType: ScraperAPI.Types.ListCategoryType?) async {
         if !userManager.subscribed {
             return await updateState(.needSubscribe)
         }
+        
         await updateState(.loading)
-        await performUpdateState()
-    }
-
-    func performUpdateState() async {
+        
         guard case let .isAuth(user) = userManager.state else {
             fatalError("This screen can use only with auth")
         }
@@ -79,40 +77,29 @@ class MyListViewModel {
         }
 
         do {
-            let categories = try await apiClient.sendAPIRequest(ScraperAPI.Request.GetWatchList(userId: user.id))
+            var categories = try await apiClient.sendAPIRequest(ScraperAPI.Request.GetWatchList(userId: user.id))
             if categories.isEmpty {
                 return await updateState(.loadedButEmpty)
             }
 
-            self.categories = categories
+            if let categoryType {
+                categories = categories.filter({ $0.type == categoryType })
+            }
+            
             return await updateState(.loaded(categories))
         } catch {
             await updateState(.loadingFailed(error))
         }
     }
-
-    func performFilter(type: ScraperAPI.Types.ListCategoryType? = nil) async {
-        if !userManager.subscribed {
-            return await updateState(.needSubscribe)
-        }
-
-        guard let type else {
-            return await updateState(.loaded(categories))
-        }
-        let filtered = categories.filter { $0.type == type }
-        return await updateState(.loaded(filtered))
-    }
 }
 
 struct MyListsView: View {
+    let categoryType: ScraperAPI.Types.ListCategoryType?
     @State private var viewModel: MyListViewModel = .init()
-    @State private var categoryType: ScraperAPI.Types.ListCategoryType?
+    @State private var selectedCategory: ScraperAPI.Types.ListCategoryType?
 
     var shareText: String {
-        var categories = viewModel.categories
-        if categoryType != nil {
-            categories = viewModel.categories.filter { $0.type == categoryType }
-        }
+        let categories = viewModel.categories
 
         return categories.map { category in
             let textShows = category.shows
@@ -130,12 +117,12 @@ struct MyListsView: View {
     }
 
     var body: some View {
-        ToolbarWrapper(categoryType: $categoryType, shareText: shareText) {
+        ToolbarWrapper(categoryType: $selectedCategory, shareText: shareText) {
             switch viewModel.state {
             case .idle:
                 Color.clear.onAppear {
                     Task {
-                        await self.viewModel.performInitialLoad()
+                        await self.viewModel.performLoad(categoryType: categoryType)
                     }
                 }
             case .loading:
@@ -170,31 +157,21 @@ struct MyListsView: View {
                 }
             case let .loaded(categories):
                 AnimeList(categories: categories) {
-                    await viewModel.performUpdateState()
+                    await viewModel.performLoad(categoryType: categoryType)
                 }
-            }
-        }
-        .onChange(of: categoryType) {
-            Task {
-                await viewModel.performFilter(type: categoryType)
             }
         }
         .task {
             switch viewModel.state {
             case .loaded, .loadedButEmpty, .loadingFailed, .needSubscribe:
-                await viewModel.performUpdateState()
-                await viewModel.performFilter(type: categoryType)
+                await viewModel.performLoad(categoryType: categoryType)
             case .idle, .loading:
                 return
             }
         }
         .refreshable {
-            await viewModel.performUpdateState()
-            await viewModel.performFilter(type: categoryType)
+            await viewModel.performLoad(categoryType: categoryType)
         }
-        #if !os(tvOS)
-        .navigationTitle("Мой список")
-        #endif
     }
 }
 
@@ -206,44 +183,44 @@ struct ToolbarWrapper<Content: View>: View {
     var body: some View {
         content()
         #if !os(tvOS)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    ShareLink(item: shareText) {
-                        Label("Поделиться", systemImage: "square.and.arrow.up")
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Section {
-                            Picker(selection: self.$categoryType, label: Text("Управление списком")) {
-                                ForEach(ScraperAPI.Types.ListCategoryType.allCases, id: \.rawValue) { category in
-                                    Label(category.rawValue, systemImage: category.imageInDropdown)
-                                        .tag(category as ScraperAPI.Types.ListCategoryType?)
-                                }
-                            }
-                        }
-
-                        if self.categoryType != nil {
-                            Button(role: .destructive) {
-                                self.categoryType = nil
-                            } label: {
-                                Label("Сбросить", systemImage: "delete.forward")
-                            }
-                        }
-                    } label: {
-                        Label(
-                            "Управлять списком",
-                            systemImage: self.categoryType?.imageInToolbar ?? "list.bullet.circle"
-                        )
-                    }
-                }
-            }
+//            .toolbar {
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    ShareLink(item: shareText) {
+//                        Label("Поделиться", systemImage: "square.and.arrow.up")
+//                    }
+//                }
+//                ToolbarItem(placement: .topBarTrailing) {
+//                    Menu {
+//                        Section {
+//                            Picker(selection: self.$categoryType, label: Text("Управление списком")) {
+//                                ForEach(ScraperAPI.Types.ListCategoryType.allCases, id: \.rawValue) { category in
+//                                    Label(category.rawValue, systemImage: category.imageInDropdown)
+//                                        .tag(category as ScraperAPI.Types.ListCategoryType?)
+//                                }
+//                            }
+//                        }
+//
+//                        if self.categoryType != nil {
+//                            Button(role: .destructive) {
+//                                self.categoryType = nil
+//                            } label: {
+//                                Label("Сбросить", systemImage: "delete.forward")
+//                            }
+//                        }
+//                    } label: {
+//                        Label(
+//                            "Управлять списком",
+//                            systemImage: self.categoryType?.imageInToolbar ?? "list.bullet.circle"
+//                        )
+//                    }
+//                }
+//            }
         #endif
     }
 }
 
 #Preview {
     NavigationStack {
-        MyListsView()
+        MyListsView(categoryType: .watching)
     }
 }
