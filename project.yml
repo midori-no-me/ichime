@@ -27,7 +27,6 @@ targets:
       tvOS: "18.0"
     sources:
       - path: Ichime
-        type: folder
     info:
       path: Ichime/Info.plist
       properties:
@@ -70,7 +69,6 @@ targets:
       - path: Ichime/Extensions/ScraperAPI.Types.Episode.swift
       - path: Ichime/DependencyInjection/ServiceLocator.swift
       - path: TopShelf
-        type: folder
     info:
       path: TopShelf/Info.plist
       properties:
