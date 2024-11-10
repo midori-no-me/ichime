@@ -23,8 +23,8 @@ targets:
     type: application
     platform: [iOS, tvOS]
     deploymentTarget:
-      iOS: "18.0"
-      tvOS: "18.0"
+      iOS: "18.1"
+      tvOS: "18.1"
     sources:
       - path: Ichime
     info:
@@ -83,7 +83,7 @@ targets:
     platform: [tvOS]
     supportedDestinations: tvOS
     deploymentTarget:
-      tvOS: "18.0"
+      tvOS: "18.1"
     sources:
       - path: Ichime/Extensions/ScraperAPI.Types.Episode.swift
       - path: Ichime/DependencyInjection/ServiceLocator.swift
@@ -120,5 +120,5 @@ targets:
 
 settings:
   SWIFT_VERSION: "5"
-  APP_VERSION: "1.7.7"
+  APP_VERSION: "1.8.0"
   APP_NAME: Ichime
