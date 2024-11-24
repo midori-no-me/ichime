@@ -31,3 +31,27 @@ public func formatRelativeDate(_ releaseDate: Date?) -> String {
         return formatter.string(from: releaseDate)
     }
 }
+
+public func formatRelativeDateDay(_ releaseDate: Date) -> String {
+  let calendar = Calendar.current
+
+  if calendar.isDateInToday(releaseDate) || calendar.isDateInTomorrow(releaseDate) {
+    let relativeDateFormatter = DateFormatter()
+    relativeDateFormatter.timeStyle = .none
+    relativeDateFormatter.dateStyle = .medium
+    relativeDateFormatter.doesRelativeDateFormatting = true
+
+    return relativeDateFormatter.string(from: releaseDate)
+  }
+
+  return formatRelativeDate(releaseDate)
+}
+
+
+public func formatTime(_ releaseDate: Date) -> String {
+  let relativeDateFormatter = DateFormatter()
+  relativeDateFormatter.timeStyle = .short
+  relativeDateFormatter.dateStyle = .none
+
+  return relativeDateFormatter.string(from: releaseDate)
+}

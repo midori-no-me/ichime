@@ -9,6 +9,7 @@ import Anime365ApiClient
 import DITranquillity
 import Foundation
 import ScraperAPI
+import ShikimoriApiClient
 
 class ApplicationDependency: DIFramework {
     static let container: DIContainer = {
@@ -58,6 +59,11 @@ class ApplicationDependency: DIFramework {
         ) }
 
         container.register { Anime365Client(apiClient: $0) }
+
+        container.register { ShikimoriApiClient(
+          baseUrl: ServiceLocator.shikimoriBaseUrl,
+          userAgent: ServiceLocator.shikimoriUserAgent
+        ) }
 
         if !container.makeGraph().checkIsValid() {
             fatalError("Граф зависимостей не валиден")

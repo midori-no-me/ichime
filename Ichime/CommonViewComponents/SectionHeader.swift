@@ -7,6 +7,42 @@
 
 import SwiftUI
 
+struct SectionHeaderRaw: View {
+  let title: String
+  let subtitle: String?
+
+  var body: some View {
+#if os(tvOS)
+    HStack(alignment: .firstTextBaseline) {
+      Text(title)
+        .font(.title3)
+        .fontWeight(.bold)
+
+      if let subtitle = subtitle {
+        Text(subtitle)
+          .font(.headline)
+          .foregroundStyle(.secondary)
+      }
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .focusSection()
+#else
+    VStack(alignment: .leading) {
+      Text(title)
+        .font(.title)
+        .fontWeight(.bold)
+
+      if let subtitle = subtitle {
+        Text(subtitle)
+          .font(.headline)
+          .foregroundStyle(.secondary)
+      }
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
+#endif
+  }
+}
+
 struct SectionHeader<Content: View>: View {
     let title: String
     let subtitle: String?

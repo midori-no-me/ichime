@@ -52,4 +52,12 @@ enum ServiceLocator {
     }
     
     static let topShellSchema = "ichime-top-shelf"
+
+    static var shikimoriUserAgent: String {
+      return "Ichime"
+    }
+
+    static var shikimoriBaseUrl: URL {
+      return URL(string: "https://shikimori.one")!
+    }
 }

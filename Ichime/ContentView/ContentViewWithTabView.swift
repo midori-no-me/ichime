@@ -50,6 +50,12 @@ struct ContentViewWithTabView: View {
             .badge(notificationCounterWatcher.counter)
             #endif
 
+            Tab("Календарь", systemImage: "calendar") {
+              NavigationStack {
+                CalendarView()
+              }
+            }
+
             #if os(tvOS)
             Tab("Профиль", systemImage: "person.circle") {
                     NavigationStack {
