@@ -9,17 +9,17 @@ import Foundation
 import SwiftUI
 
 class PlayerPreference: ObservableObject {
-  @AppStorage("defaultPlayer") var selectedPlayer: Player = .infuse
+  @AppStorage("defaultPlayer") var selectedPlayer: Player = .Infuse
 
   enum Player: String, CaseIterable {
     case iOS
-    case infuse
+    case Infuse
     case VLC
     case SVPlayer
 
     var supportSubtitle: Bool {
       switch self {
-      case .infuse, .VLC:
+      case .Infuse, .VLC:
         return true
       case .iOS, .SVPlayer:
         return false
@@ -32,7 +32,7 @@ class PlayerPreference: ObservableObject {
 
   func getLink(type: Player, video: URL, subtitle: URL?) -> URL? {
     switch type {
-    case .infuse:
+    case .Infuse:
       return getInfuseLink(video: video, subtitle: subtitle)
     case .VLC:
       return getVLCLink(video: video, subtitle: subtitle)

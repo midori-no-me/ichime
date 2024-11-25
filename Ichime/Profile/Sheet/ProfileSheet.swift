@@ -77,13 +77,13 @@ struct ProfileSheet: View {
                     }
                     
                     Section {
-                        Picker("Выбери плеер по умолчанию", selection: $playerPreference.selectedPlayer) {
+                        Picker("Плеер по умолчанию", selection: $playerPreference.selectedPlayer) {
                             ForEach(PlayerPreference.Player.allCases, id: \.rawValue) { player in
                                 Text(player.rawValue).tag(player)
                             }
                         }
                     } header: {
-                        Text("Через что запускать просмотр аниме")
+                        Text("Настройки плеера")
                     }
 
                     Section {

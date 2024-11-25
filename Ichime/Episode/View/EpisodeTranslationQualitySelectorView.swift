@@ -233,7 +233,7 @@ struct EpisodeTranslationQualitySelectorView: View {
                           video: url,
                           subtitle: !disableSubs ? episodeStreamingInfo.subtitles : nil,
                           dismiss: { dismiss() },
-                          player: .infuse
+                          player: .Infuse
                         )
                       }
                     }
