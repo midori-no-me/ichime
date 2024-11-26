@@ -89,8 +89,8 @@ struct AuthenticationView: View {
 
                 Section {
                     Picker("Адрес сайта", selection: $viewModel.baseUrlPreference.url) {
-                        ForEach(BaseUrlPreference.getAllPossibleWebsiteBaseDomains(), id: \.self) { url in
-                            Text(url.host()!).tag(url)
+                      ForEach(BaseUrlPreference.allPossibleWebsiteBaseDomains, id: \.self) { url in
+                        Text(url.host()!).tag(url)
                         }
                     }
                 } footer: {

@@ -10,9 +10,10 @@ import Foundation
 
 struct EpisodeStreamingInfo: Hashable, Identifiable {
     init(apiResponse: Anime365TranslationEmbed) {
+      let websiteBaseUrl = ServiceLocator.websiteBaseUrl.absoluteString
         var subtitles: EpisodeStreamingInfo.SubtitlesUrls? = nil
 
-        if let vttUrlString = apiResponse.subtitlesVttUrl, let vttUrl = URL(string: vttUrlString), let subsUrlString = apiResponse.subtitlesUrl, let subsUrl = URL(string: "https://smotret-anime.net" + subsUrlString) {
+      if let vttUrlString = apiResponse.subtitlesVttUrl, let vttUrl = URL(string: vttUrlString), let subsUrlString = apiResponse.subtitlesUrl, let subsUrl = URL(string: websiteBaseUrl + subsUrlString) {
             subtitles = EpisodeStreamingInfo.SubtitlesUrls(
                 vtt: vttUrl,
                 base: subsUrl

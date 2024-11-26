@@ -150,6 +150,6 @@ class Anime365Client {
             translationId: translationId
         ))
 
-        return EpisodeStreamingInfo(apiResponse: apiResponse)
+      return EpisodeStreamingInfo(apiResponse: apiResponse)
     }
 }

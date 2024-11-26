@@ -11,7 +11,7 @@ import ScraperAPI
 
 enum ServiceLocator {
     static var websiteBaseUrl: URL {
-        URL(string: "https://anime365.ru")!
+      UserDefaults.standard.url(forKey: "anime365-base-url") ?? URL(string: "https://anime365.ru")!
     }
 
     static var applicationId: String {

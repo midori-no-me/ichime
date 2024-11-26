@@ -9,14 +9,19 @@ import Foundation
 import SwiftUI
 
 class BaseUrlPreference: ObservableObject {
-    @AppStorage("anime365-base-url") var url: URL = URL(string: "https://anime365.ru")!
-
-    static func getAllPossibleWebsiteBaseDomains() -> [URL] {
-        return [
-            URL(string: "https://anime365.ru")!,
-            URL(string: "https://anime-365.ru")!,
-            URL(string: "https://smotret-anime.com")!,
-            URL(string: "https://smotret-anime.online")!,
-        ]
+  @AppStorage("anime365-base-url") var url: URL = .init(string: "https://anime365.ru")! {
+    didSet {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        exit(0)
+      }
     }
+  }
+
+  static let allPossibleWebsiteBaseDomains = [
+    URL(string: "https://anime365.ru")!,
+    URL(string: "https://anime-365.ru")!,
+    URL(string: "https://smotret-anime.com")!,
+    URL(string: "https://smotret-anime.online")!,
+    URL(string: "https://smotret-anime.net")!,
+  ]
 }
