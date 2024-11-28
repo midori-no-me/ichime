@@ -7,9 +7,21 @@
 import DITranquillity
 import ScraperAPI
 import SwiftUI
+import SwiftData
 
 @main
 struct IchimeApp: App {
+    let container: ModelContainer = {
+        let schema = Schema([ShowListStatus.self])
+        let modelConfiguration = ModelConfiguration(schema: schema)
+
+        do {
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
+
     @Environment(\.scenePhase) private var phase
 
     var body: some Scene {
@@ -28,5 +40,6 @@ struct IchimeApp: App {
         }.backgroundTask(.appRefresh(ServiceLocator.permittedScheduleBGTaskName)) {
             await NotificationCounterWatcher.checkCounter()
         }
+        .modelContainer(container)
     }
 }

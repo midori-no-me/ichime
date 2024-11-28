@@ -7,6 +7,7 @@
 
 import ScraperAPI
 import SwiftUI
+import SwiftData
 
 @Observable
 class CurrentlyWatchingViewModel {
