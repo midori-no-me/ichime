@@ -44,26 +44,36 @@ class PlayerPreference: ObservableObject {
   }
 
   private func getSVPlayerLink(video: URL, subtitle: URL?) -> URL? {
-    let videoURL = video.absoluteString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
+    let videoURL = video.absoluteString.addingPercentEncoding(
+      withAllowedCharacters: allowedCharacterSet
+    )
     var url = "svplayer://x-callback-url/stream?url=\(videoURL ?? "")"
-    if let subtitleURL = subtitle?.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+    if let subtitleURL = subtitle?.absoluteString.addingPercentEncoding(
+      withAllowedCharacters: .urlQueryAllowed
+    ) {
       url += "&sub=\(subtitleURL)"
     }
     return URL(string: url)
   }
 
   private func getVLCLink(video: URL, subtitle: URL?) -> URL? {
-    let videoURL = video.absoluteString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
+    let videoURL = video.absoluteString.addingPercentEncoding(
+      withAllowedCharacters: allowedCharacterSet
+    )
 
     var url = "vlc-x-callback://x-callback-url/stream?url=\(videoURL ?? "")"
-    if let subtitleURL = subtitle?.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+    if let subtitleURL = subtitle?.absoluteString.addingPercentEncoding(
+      withAllowedCharacters: .urlQueryAllowed
+    ) {
       url += "&sub=\(subtitleURL)"
     }
     return URL(string: url)
   }
 
   private func getInfuseLink(video: URL, subtitle: URL?) -> URL? {
-    let videoURL = video.absoluteString.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
+    let videoURL = video.absoluteString.addingPercentEncoding(
+      withAllowedCharacters: allowedCharacterSet
+    )
 
     var urlString = "infuse://x-callback-url/play?url=\(videoURL ?? "")"
 

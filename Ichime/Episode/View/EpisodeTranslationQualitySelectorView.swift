@@ -55,10 +55,12 @@ class EpisodeTranslationQualitySelectorViewModel {
 
       if episodeStreamingInfo.streamQualityOptions.isEmpty {
         await updateState(.loadedButEmpty)
-      } else {
+      }
+      else {
         await updateState(.loaded(episodeStreamingInfo))
       }
-    } catch {
+    }
+    catch {
       await updateState(.loadingFailed(error))
     }
   }
@@ -69,7 +71,8 @@ class EpisodeTranslationQualitySelectorViewModel {
         ScraperAPI.Request
           .UpdateCurrentWatch(translationId: translationId)
       )
-    } catch {
+    }
+    catch {
       print(error.localizedDescription)
     }
   }
@@ -100,36 +103,52 @@ class EpisodeTranslationQualitySelectorViewModel {
 
   func playThroughInbuildPlayer(video: URL, subtitle: URL?) {
     Task {
-      let collector = MetadataCollector(episodeId: self.episodeId, translationId: self.translationId)
+      let collector = MetadataCollector(
+        episodeId: self.episodeId,
+        translationId: self.translationId
+      )
       let metadata = await collector.getMetadata()
 
-      await self.videoHolder.play(video: .init(
-        videoURL: video,
-        subtitleURL: subtitle,
-        metadata: metadata,
-        translationId: translationId
-      ), onDismiss: {
-        if let dismissModal = self.dismissModal {
-          dismissModal()
+      await self.videoHolder.play(
+        video: .init(
+          videoURL: video,
+          subtitleURL: subtitle,
+          metadata: metadata,
+          translationId: translationId
+        ),
+        onDismiss: {
+          if let dismissModal = self.dismissModal {
+            dismissModal()
+          }
         }
-      })
+      )
 
       self.selectedVideoUrl = nil
     }
   }
 
-  func handleStartPlay(video: URL, subtitle: EpisodeStreamingInfo.SubtitlesUrls?, dismiss: @escaping () -> Void) {
+  func handleStartPlay(
+    video: URL,
+    subtitle: EpisodeStreamingInfo.SubtitlesUrls?,
+    dismiss: @escaping () -> Void
+  ) {
     handleStartPlay(video: video, subtitle: subtitle, dismiss: dismiss, player: defaultPlayer)
   }
 
-  func handleStartPlay(video: URL, subtitle: EpisodeStreamingInfo.SubtitlesUrls?, dismiss: @escaping () -> Void, player: PlayerPreference.Player) {
+  func handleStartPlay(
+    video: URL,
+    subtitle: EpisodeStreamingInfo.SubtitlesUrls?,
+    dismiss: @escaping () -> Void,
+    player: PlayerPreference.Player
+  ) {
     shownChangePlayerAlert = false
     selectedVideoUrl = video
     dismissModal = dismiss
 
     if player == .iOS {
       playThroughInbuildPlayer(video: video, subtitle: subtitle?.vtt)
-    } else {
+    }
+    else {
       playThroughURL(video: video, subtitle: subtitle?.base, player: player)
     }
   }
@@ -167,15 +186,18 @@ struct EpisodeTranslationQualitySelectorView: View {
       case .idle:
         Color.clear.onAppear {
           Task {
-            await self.viewModel.performInitialLoad(episodeId: episodeId, translationId: translationId)
+            await self.viewModel.performInitialLoad(
+              episodeId: episodeId,
+              translationId: translationId
+            )
           }
         }
 
       case .loading:
         ProgressView()
-        #if os(tvOS)
-          .focusable()
-        #endif
+          #if os(tvOS)
+            .focusable()
+          #endif
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -184,7 +206,7 @@ struct EpisodeTranslationQualitySelectorView: View {
           Text(error.localizedDescription)
         }
         #if !os(tvOS)
-        .textSelection(.enabled)
+          .textSelection(.enabled)
         #endif
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -263,7 +285,7 @@ struct EpisodeTranslationQualitySelectorView: View {
           }
         }
         #if os(tvOS)
-        .listStyle(.grouped)
+          .listStyle(.grouped)
         #endif
       }
     }

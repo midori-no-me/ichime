@@ -6,40 +6,41 @@
 //
 import DITranquillity
 import ScraperAPI
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct IchimeApp: App {
-    let container: ModelContainer = {
-        let schema = Schema([ShowListStatus.self])
-        let modelConfiguration = ModelConfiguration(schema: schema)
+  let container: ModelContainer = {
+    let schema = Schema([ShowListStatus.self])
+    let modelConfiguration = ModelConfiguration(schema: schema)
 
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
-    @Environment(\.scenePhase) private var phase
-
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .onAppear {
-                    VideoPlayerController.enableBackgroundMode()
-                    NotificationCounterWatcher.askBadgePermission()
-                }
-        }.onChange(of: phase) {
-            switch phase {
-            case .background:
-                scheduleAppRefresh()
-            default: break
-            }
-        }.backgroundTask(.appRefresh(ServiceLocator.permittedScheduleBGTaskName)) {
-            await NotificationCounterWatcher.checkCounter()
-        }
-        .modelContainer(container)
+    do {
+      return try ModelContainer(for: schema, configurations: [modelConfiguration])
     }
+    catch {
+      fatalError("Could not create ModelContainer: \(error)")
+    }
+  }()
+
+  @Environment(\.scenePhase) private var phase
+
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+        .onAppear {
+          VideoPlayerController.enableBackgroundMode()
+          NotificationCounterWatcher.askBadgePermission()
+        }
+    }.onChange(of: phase) {
+      switch phase {
+      case .background:
+        scheduleAppRefresh()
+      default: break
+      }
+    }.backgroundTask(.appRefresh(ServiceLocator.permittedScheduleBGTaskName)) {
+      await NotificationCounterWatcher.checkCounter()
+    }
+    .modelContainer(container)
+  }
 }

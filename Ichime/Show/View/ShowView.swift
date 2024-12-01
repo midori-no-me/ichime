@@ -48,7 +48,8 @@ class ShowViewModel {
   var showRateStatus: UserRateStatus {
     if let userRate {
       return userRate.status
-    } else {
+    }
+    else {
       return .deleted
     }
   }
@@ -81,7 +82,8 @@ class ShowViewModel {
     do {
       if let preloadedShow {
         state = .loaded(preloadedShow)
-      } else {
+      }
+      else {
         let show = try await client.getShow(
           seriesId: showId
         )
@@ -90,7 +92,8 @@ class ShowViewModel {
       }
 
       await getUserRate(showId: showId)
-    } catch {
+    }
+    catch {
       state = .loadingFailed(error)
     }
   }
@@ -104,7 +107,8 @@ class ShowViewModel {
       await getUserRate(showId: showId)
 
       state = .loaded(show)
-    } catch {
+    }
+    catch {
       state = .loadingFailed(error)
     }
   }
@@ -114,7 +118,8 @@ class ShowViewModel {
       userRate = try await scraperClient.sendAPIRequest(
         ScraperAPI.Request.GetUserRate(showId: showId, fullCheck: true)
       )
-    } catch {
+    }
+    catch {
       print("\(error.localizedDescription)")
     }
   }
@@ -132,7 +137,8 @@ class ShowViewModel {
 
     do {
       userRate = try await scraperClient.sendAPIRequest(request)
-    } catch {
+    }
+    catch {
       print("\(error.localizedDescription)")
     }
   }
@@ -158,15 +164,18 @@ struct ShowView: View {
       case .idle:
         Color.clear.onAppear {
           Task {
-            await self.viewModel.performInitialLoad(showId: self.showId, preloadedShow: self.preloadedShow)
+            await self.viewModel.performInitialLoad(
+              showId: self.showId,
+              preloadedShow: self.preloadedShow
+            )
           }
         }
 
       case .loading:
         ProgressView()
-        #if os(tvOS)
-          .focusable()
-        #endif
+          #if os(tvOS)
+            .focusable()
+          #endif
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -175,7 +184,7 @@ struct ShowView: View {
           Text(error.localizedDescription)
         }
         #if !os(tvOS)
-        .textSelection(.enabled)
+          .textSelection(.enabled)
         #endif
 
       case let .loaded(show):
@@ -185,28 +194,28 @@ struct ShowView: View {
             .scenePadding(.bottom)
         }
         #if os(tvOS)
-        .scrollClipDisabled(true)
+          .scrollClipDisabled(true)
         #endif
         #if !os(tvOS)
-        .navigationTitle(show.title.translated.japaneseRomaji ?? show.title.full)
+          .navigationTitle(show.title.translated.japaneseRomaji ?? show.title.full)
         #endif
         #if os(macOS)
-        .navigationSubtitle(show.title.translated.russian ?? "")
+          .navigationSubtitle(show.title.translated.russian ?? "")
         #endif
       }
     }
     #if !os(tvOS)
-    .toolbar {
-      ToolbarItem(placement: .navigationBarTrailing) {
-        ShareLink(item: self.viewModel.shareUrl) {
-          Label("Поделиться", systemImage: "square.and.arrow.up")
+      .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          ShareLink(item: self.viewModel.shareUrl) {
+            Label("Поделиться", systemImage: "square.and.arrow.up")
+          }
         }
       }
-    }
-    .navigationBarTitleDisplayMode(.large)
+      .navigationBarTitleDisplayMode(.large)
     #endif
     #if os(tvOS)
-    .toolbar(.hidden, for: .tabBar)
+      .toolbar(.hidden, for: .tabBar)
     #endif
     .refreshable {
       await self.viewModel.performPullToRefresh()
@@ -279,15 +288,17 @@ private struct ShowKeyDetailsSection: View {
             ShowActionButtons(show: show, viewModel: viewModel)
           #endif
 
-          LazyVGrid(columns: [
-            GridItem(.flexible(), spacing: 18, alignment: .topLeading),
-          ], spacing: 18) {
+          LazyVGrid(
+            columns: [
+              GridItem(.flexible(), spacing: 18, alignment: .topLeading)
+            ],
+            spacing: 18
+          ) {
             ShowProperty(
               label: "Рейтинг",
               value: self.show
-                .score != nil ?
-                "★ \(self.show.score!.formatted(.number.precision(.fractionLength(2))))" :
-                "???",
+                .score != nil
+                ? "★ \(self.show.score!.formatted(.number.precision(.fractionLength(2))))" : "???",
               isInteractive: false
             )
 
@@ -305,7 +316,8 @@ private struct ShowKeyDetailsSection: View {
 
             if let airingSeason = self.show.airingSeason {
               SeasonShowProperty(airingSeason: airingSeason)
-            } else {
+            }
+            else {
               ShowProperty(
                 label: "Сезон",
                 value: "???",
@@ -353,19 +365,22 @@ private struct ShowKeyDetailsSection: View {
             )
             .frame(width: geometry.size.width, height: geometry.size.height, alignment: .trailing)
           }
-          .fullScreenCover(isPresented: $showImage, content: {
-            NavigationStack {
-              AsyncImage(url: self.show.posterUrl)
-                .toolbar {
-                  ToolbarItem(placement: .cancellationAction) {
-                    Button("Закрыть") {
-                      showImage = false
+          .fullScreenCover(
+            isPresented: $showImage,
+            content: {
+              NavigationStack {
+                AsyncImage(url: self.show.posterUrl)
+                  .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                      Button("Закрыть") {
+                        showImage = false
+                      }
                     }
                   }
-                }
+              }
+              .preferredColorScheme(.dark)
             }
-            .preferredColorScheme(.dark)
-          })
+          )
         }
       }
 
@@ -376,7 +391,7 @@ private struct ShowKeyDetailsSection: View {
       #endif
     }
     #if os(tvOS)
-    .focusSection()
+      .focusSection()
     #endif
   }
 }
@@ -449,15 +464,18 @@ private struct ShowActionButtons: View {
         NavigationLink(
           destination: EpisodeListView(episodePreviews: self.show.episodePreviews)
         ) {
-          Label("Смотреть", systemImage: show.episodePreviews.isEmpty ? "play.slash.fill" : "play.fill")
+          Label(
+            "Смотреть",
+            systemImage: show.episodePreviews.isEmpty ? "play.slash.fill" : "play.fill"
+          )
           #if os(tvOS)
             .padding(20)
           #endif
         }
         #if os(tvOS)
-        .buttonStyle(.card)
+          .buttonStyle(.card)
         #else
-        .buttonStyle(.borderedProminent)
+          .buttonStyle(.borderedProminent)
         #endif
         .disabled(show.episodePreviews.isEmpty)
 
@@ -465,7 +483,8 @@ private struct ShowActionButtons: View {
           Button(action: {
             if isInMyList {
               showEdit = true
-            } else {
+            }
+            else {
               Task {
                 await viewModel.addToList()
               }
@@ -477,7 +496,8 @@ private struct ShowActionButtons: View {
                   self.viewModel.showRateStatus.statusDisplayName,
                   systemImage: self.viewModel.showRateStatus.imageInToolbar
                 )
-              } else {
+              }
+              else {
                 Label(
                   UserRateStatus.deleted.statusDisplayName,
                   systemImage: UserRateStatus.deleted.imageInToolbar
@@ -485,23 +505,23 @@ private struct ShowActionButtons: View {
               }
             }
             #if os(tvOS)
-            .padding(20)
+              .padding(20)
             #endif
           }
           #if os(tvOS)
-          .buttonStyle(.card)
+            .buttonStyle(.card)
           #else
-          .buttonStyle(.bordered)
+            .buttonStyle(.bordered)
           #endif
         }
       }
       #if os(tvOS)
-      .focusSection()
+        .focusSection()
       #endif
 
       Group {
         if !show.episodePreviews.isEmpty && show.isOngoing,
-           let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: show.episodePreviews)
+          let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: show.episodePreviews)
         {
           Text(
             "Обычно новые серии выходят по \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1)."
@@ -518,16 +538,23 @@ private struct ShowActionButtons: View {
       .frame(maxWidth: .infinity, alignment: .leading)
       .font(.caption)
     }
-    .sheet(isPresented: $showEdit, content: {
-      MyListEditView(
-        show: .init(id: show.id, name: show.title.compose, totalEpisodes: show.numberOfEpisodes ?? Int.max),
-        onUpdate: {
-          Task {
-            await self.viewModel.performPullToRefresh()
+    .sheet(
+      isPresented: $showEdit,
+      content: {
+        MyListEditView(
+          show: .init(
+            id: show.id,
+            name: show.title.compose,
+            totalEpisodes: show.numberOfEpisodes ?? Int.max
+          ),
+          onUpdate: {
+            Task {
+              await self.viewModel.performPullToRefresh()
+            }
           }
-        }
-      )
-    })
+        )
+      }
+    )
   }
 }
 
@@ -573,12 +600,14 @@ private struct SeasonShowProperty: View {
   }
 
   var body: some View {
-    NavigationLink(destination: FilteredShowsView(
-      viewModel: .init(fetchShows: getShowsBySeason()),
-      title: airingSeason.getLocalizedTranslation(),
-      description: nil,
-      displaySeason: false
-    )) {
+    NavigationLink(
+      destination: FilteredShowsView(
+        viewModel: .init(fetchShows: getShowsBySeason()),
+        title: airingSeason.getLocalizedTranslation(),
+        description: nil,
+        displaySeason: false
+      )
+    ) {
       ShowProperty(
         label: "Сезон",
         value: airingSeason.getLocalizedTranslation(),
@@ -606,13 +635,16 @@ private struct GenresShowProperty: View {
   let genres: [Show.Genre]
 
   var body: some View {
-    NavigationLink(destination: ShowGenreListView(
-      showTitle: showTitle,
-      genres: genres
-    )) {
+    NavigationLink(
+      destination: ShowGenreListView(
+        showTitle: showTitle,
+        genres: genres
+      )
+    ) {
       ShowProperty(
         label: "Жанры",
-        value: genres
+        value:
+          genres
           .map { genre in genre.title }
           .formatted(.list(type: .and, width: .narrow)),
         isInteractive: true
@@ -650,13 +682,14 @@ private struct EpisodesShowProperty: View {
   }
 
   private func getLatestEpisodeNumber() -> Float {
-    let filteredAndSortedEpisodes = episodePreviews
+    let filteredAndSortedEpisodes =
+      episodePreviews
       .filter { episodePreview in episodePreview.type != .trailer }
       .filter { episodePreview in episodePreview.episodeNumber != nil }
       .filter { episodePreview in episodePreview.episodeNumber! > 0 }
       .filter { episodePreview in
         episodePreview.episodeNumber!.truncatingRemainder(dividingBy: 1) == 0
-      } // remove episodes with non-round number like 35.5
+      }  // remove episodes with non-round number like 35.5
       .sorted(by: { $0.episodeNumber! > $1.episodeNumber! })
 
     if filteredAndSortedEpisodes.isEmpty {
@@ -671,12 +704,15 @@ private struct ShowDescriptionCards: View {
   let descriptions: [Show.Description]
 
   var body: some View {
-    LazyVGrid(columns: [
-      GridItem(
-        .adaptive(minimum: CardWithExpandableText.RECOMMENDED_MINIMUM_WIDTH),
-        spacing: CardWithExpandableText.RECOMMENDED_SPACING
-      ),
-    ], spacing: CardWithExpandableText.RECOMMENDED_SPACING) {
+    LazyVGrid(
+      columns: [
+        GridItem(
+          .adaptive(minimum: CardWithExpandableText.RECOMMENDED_MINIMUM_WIDTH),
+          spacing: CardWithExpandableText.RECOMMENDED_SPACING
+        )
+      ],
+      spacing: CardWithExpandableText.RECOMMENDED_SPACING
+    ) {
       ForEach(descriptions, id: \.self) { description in
         CardWithExpandableText(
           title: "Описание от \(description.source)",
@@ -685,7 +721,7 @@ private struct ShowDescriptionCards: View {
       }
     }
     #if os(tvOS)
-    .focusSection()
+      .focusSection()
     #endif
   }
 }

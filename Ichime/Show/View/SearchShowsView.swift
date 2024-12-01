@@ -10,7 +10,9 @@ class SearchShowsViewModel {
     case loaded([Show])
   }
 
-  private(set) var state: State = .idle(UserDefaults.standard.stringArray(forKey: "recentSearches") ?? [])
+  private(set) var state: State = .idle(
+    UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
+  )
   var currentlyTypedSearchQuery = ""
   var isSearchPresented: Bool = false
 
@@ -47,13 +49,15 @@ class SearchShowsViewModel {
 
       if shows.isEmpty {
         state = .loadedButEmpty
-      } else {
+      }
+      else {
         stopLazyLoading = false
         currentOffset = SHOWS_PER_PAGE
         self.shows = shows
         state = .loaded(self.shows)
       }
-    } catch {
+    }
+    catch {
       state = .loadingFailed(error)
     }
   }
@@ -85,7 +89,8 @@ class SearchShowsViewModel {
       currentOffset = currentOffset + SHOWS_PER_PAGE
       self.shows += shows
       state = .loaded(self.shows)
-    } catch {
+    }
+    catch {
       stopLazyLoading = true
     }
   }
@@ -133,7 +138,8 @@ struct SearchShowsView: View {
           } description: {
             Text("Предыдущие запросы поиска будут сохраняться на этом экране")
           }
-        } else {
+        }
+        else {
           List {
             Section(header: Text("Ранее вы искали")) {
               ForEach(recentSearches, id: \.self) { searchQuery in
@@ -156,9 +162,9 @@ struct SearchShowsView: View {
 
       case .loading:
         ProgressView()
-        #if os(tvOS)
-          .focusable()
-        #endif
+          #if os(tvOS)
+            .focusable()
+          #endif
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -167,7 +173,7 @@ struct SearchShowsView: View {
           Text(error.localizedDescription)
         }
         #if !os(tvOS)
-        .textSelection(.enabled)
+          .textSelection(.enabled)
         #endif
 
       case .loadedButEmpty:
@@ -194,21 +200,21 @@ struct SearchShowsView: View {
       )
     #else
       .navigationBarTitleDisplayMode(.large)
-        .searchable(
-          text: $viewModel.currentlyTypedSearchQuery,
-          isPresented: $viewModel.isSearchPresented,
-          placement: .navigationBarDrawer(displayMode: .always),
-          prompt: "Название тайтла"
-        )
+      .searchable(
+        text: $viewModel.currentlyTypedSearchQuery,
+        isPresented: $viewModel.isSearchPresented,
+        placement: .navigationBarDrawer(displayMode: .always),
+        prompt: "Название тайтла"
+      )
     #endif
-        .onChange(of: viewModel.currentlyTypedSearchQuery) {
-          self.viewModel.currentlyTypedSearchQueryChanged()
-        }
-        .onSubmit(of: .search) {
-          Task {
-            await self.viewModel.performInitialSearch()
-          }
-        }
+    .onChange(of: viewModel.currentlyTypedSearchQuery) {
+      self.viewModel.currentlyTypedSearchQueryChanged()
+    }
+    .onSubmit(of: .search) {
+      Task {
+        await self.viewModel.performInitialSearch()
+      }
+    }
   }
 }
 
@@ -217,13 +223,16 @@ private struct ShowsGrid: View {
   let loadMore: () async -> Void
 
   var body: some View {
-    LazyVGrid(columns: [
-      GridItem(
-        .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-        spacing: RawShowCard.RECOMMENDED_SPACING,
-        alignment: .topLeading
-      ),
-    ], spacing: RawShowCard.RECOMMENDED_SPACING) {
+    LazyVGrid(
+      columns: [
+        GridItem(
+          .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+          spacing: RawShowCard.RECOMMENDED_SPACING,
+          alignment: .topLeading
+        )
+      ],
+      spacing: RawShowCard.RECOMMENDED_SPACING
+    ) {
       ForEach(self.shows) { show in
         ShowCard(show: show, displaySeason: true)
           .task {

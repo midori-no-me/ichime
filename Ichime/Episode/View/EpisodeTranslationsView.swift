@@ -5,262 +5,276 @@ typealias GroupedTranslation = [(key: Translation.CompositeType, value: [Transla
 
 @Observable
 class EpisodeViewModel {
-    enum State {
-        case idle
-        case loading
-        case loadingFailed(Error)
-        case loadedButEmpty
-        case loaded(GroupedTranslation)
+  enum State {
+    case idle
+    case loading
+    case loadingFailed(Error)
+    case loadedButEmpty
+    case loaded(GroupedTranslation)
+  }
+
+  private(set) var state = State.idle
+  private(set) var preselectedTranslation: Translation?
+
+  private let client: Anime365Client
+  private let scraper: ScraperAPI.APIClient
+
+  init(
+    client: Anime365Client = ApplicationDependency.container.resolve(),
+    scraper: ScraperAPI.APIClient = ApplicationDependency.container.resolve()
+  ) {
+    self.client = client
+    self.scraper = scraper
+  }
+
+  @MainActor
+  func updateState(_ newState: State) {
+    state = newState
+  }
+
+  func performInitialLoad(episodeId: Int) async {
+    await updateState(.loading)
+
+    do {
+      let episodeTranslations = try await client.getEpisodeTranslations(
+        episodeId: episodeId
+      )
+
+      if episodeTranslations.isEmpty {
+        await updateState(.loadedButEmpty)
+      }
+      else {
+        await updateState(.loaded(getGroupedTranslations(episodeTranslations: episodeTranslations)))
+
+        await getRecommendation(translations: episodeTranslations)
+      }
+    }
+    catch {
+      await updateState(.loadingFailed(error))
+    }
+  }
+
+  func getRecommendation(translations: [Translation]) async {
+    guard let translation = translations.first else {
+      return
     }
 
-    private(set) var state = State.idle
-    private(set) var preselectedTranslation: Translation?
-
-    private let client: Anime365Client
-    private let scraper: ScraperAPI.APIClient
-
-    init(
-        client: Anime365Client = ApplicationDependency.container.resolve(),
-        scraper: ScraperAPI.APIClient = ApplicationDependency.container.resolve()
-    ) {
-        self.client = client
-        self.scraper = scraper
+    guard
+      let recommendation =
+        try? await scraper
+        .sendAPIRequest(
+          ScraperAPI.Request.GetRecommendTranslation(episodeURL: translation.translationUrl)
+        )
+    else {
+      return
     }
 
-    @MainActor
-    func updateState(_ newState: State) {
-        state = newState
+    withAnimation {
+      preselectedTranslation = translations.first(where: { $0.id == recommendation })
+    }
+  }
+
+  private func getGroupedTranslations(
+    episodeTranslations: [Translation]
+  ) -> GroupedTranslation {
+    var translationsGroupedByLocalizedSection: [Translation.CompositeType: [Translation]] = [:]
+
+    for episodeTranslation in episodeTranslations {
+      translationsGroupedByLocalizedSection[episodeTranslation.getCompositeType(), default: []]
+        .append(episodeTranslation)
     }
 
-    func performInitialLoad(episodeId: Int) async {
-        await updateState(.loading)
-
-        do {
-            let episodeTranslations = try await client.getEpisodeTranslations(
-                episodeId: episodeId
-            )
-
-            if episodeTranslations.isEmpty {
-                await updateState(.loadedButEmpty)
-            } else {
-                await updateState(.loaded(getGroupedTranslations(episodeTranslations: episodeTranslations)))
-
-                await getRecommendation(translations: episodeTranslations)
-            }
-        } catch {
-            await updateState(.loadingFailed(error))
-        }
+    for (sectionType, translations) in translationsGroupedByLocalizedSection {
+      translationsGroupedByLocalizedSection[sectionType] = translations.sorted(
+        by: { $0.translationTeam < $1.translationTeam }
+      )
     }
 
-    func getRecommendation(translations: [Translation]) async {
-        guard let translation = translations.first else {
-            return
-        }
-
-        guard let recommendation = try? await scraper
-            .sendAPIRequest(ScraperAPI.Request.GetRecommendTranslation(episodeURL: translation.translationUrl))
-        else {
-            return
-        }
-
-        withAnimation {
-            preselectedTranslation = translations.first(where: { $0.id == recommendation })
-        }
-    }
-
-    private func getGroupedTranslations(
-        episodeTranslations: [Translation]
-    ) -> GroupedTranslation {
-        var translationsGroupedByLocalizedSection: [Translation.CompositeType: [Translation]] = [:]
-
-        for episodeTranslation in episodeTranslations {
-            translationsGroupedByLocalizedSection[episodeTranslation.getCompositeType(), default: []]
-                .append(episodeTranslation)
-        }
-
-        for (sectionType, translations) in translationsGroupedByLocalizedSection {
-            translationsGroupedByLocalizedSection[sectionType] = translations.sorted(
-                by: { $0.translationTeam < $1.translationTeam }
-            )
-        }
-
-        return translationsGroupedByLocalizedSection.sorted(by: { $0.0 < $1.0 })
-    }
+    return translationsGroupedByLocalizedSection.sorted(by: { $0.0 < $1.0 })
+  }
 }
 
 struct EpisodeTranslationsView: View {
-    let episodeId: Int
-    let episodeTitle: String
+  let episodeId: Int
+  let episodeTitle: String
 
-    @State private var viewModel: EpisodeViewModel = .init()
+  @State private var viewModel: EpisodeViewModel = .init()
 
-    var body: some View {
-        Group {
-            switch self.viewModel.state {
-            case .idle:
-                Color.clear.onAppear {
-                    Task {
-                        await self.viewModel.performInitialLoad(episodeId: episodeId)
-                    }
-                }
-
-            case .loading:
-                ProgressView()
-                #if os(tvOS)
-                    .focusable()
-                #endif
-
-            case let .loadingFailed(error):
-                ContentUnavailableView {
-                    Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-                } description: {
-                    Text(error.localizedDescription)
-                }
-                #if !os(tvOS)
-                .textSelection(.enabled)
-                #endif
-
-            case .loadedButEmpty:
-                ContentUnavailableView {
-                    Label("Ничего не нашлось", systemImage: "list.bullet")
-                } description: {
-                    Text("Скорее всего, у этой серии ещё нет переводов, либо они находятся в обработке")
-                }
-
-            case let .loaded(groupedTranslations):
-                List {
-                    Section {
-                        if let preselectedTranslation = viewModel.preselectedTranslation {
-                            TranslationRow(
-                                episodeId: episodeId,
-                                episodeTranslation: preselectedTranslation,
-                                isRecommendedTranslation: true
-                            )
-                        } else {
-                            ProgressView()
-                        }
-                    } header: {
-                        Text("Рекомендованный перевод")
-                    }
-
-                    ForEach(groupedTranslations, id: \.key) { translationGroup in
-                        Section {
-                            ForEach(translationGroup.value, id: \.id) { episodeTranslation in
-                                TranslationRow(
-                                    episodeId: episodeId,
-                                    episodeTranslation: episodeTranslation,
-                                    isRecommendedTranslation: false
-                                )
-                            }
-                        } header: {
-                            Text(translationGroup.key.getLocalizedTranslation())
-                        }
-                    }
-                }
-            }
+  var body: some View {
+    Group {
+      switch self.viewModel.state {
+      case .idle:
+        Color.clear.onAppear {
+          Task {
+            await self.viewModel.performInitialLoad(episodeId: episodeId)
+          }
         }
-        #if os(tvOS)
-        .listStyle(.grouped)
-        #endif
+
+      case .loading:
+        ProgressView()
+          #if os(tvOS)
+            .focusable()
+          #endif
+
+      case let .loadingFailed(error):
+        ContentUnavailableView {
+          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+        } description: {
+          Text(error.localizedDescription)
+        }
         #if !os(tvOS)
-        .navigationTitle(episodeTitle)
-        .navigationBarTitleDisplayMode(.large)
+          .textSelection(.enabled)
         #endif
+
+      case .loadedButEmpty:
+        ContentUnavailableView {
+          Label("Ничего не нашлось", systemImage: "list.bullet")
+        } description: {
+          Text("Скорее всего, у этой серии ещё нет переводов, либо они находятся в обработке")
+        }
+
+      case let .loaded(groupedTranslations):
+        List {
+          Section {
+            if let preselectedTranslation = viewModel.preselectedTranslation {
+              TranslationRow(
+                episodeId: episodeId,
+                episodeTranslation: preselectedTranslation,
+                isRecommendedTranslation: true
+              )
+            }
+            else {
+              ProgressView()
+            }
+          } header: {
+            Text("Рекомендованный перевод")
+          }
+
+          ForEach(groupedTranslations, id: \.key) { translationGroup in
+            Section {
+              ForEach(translationGroup.value, id: \.id) { episodeTranslation in
+                TranslationRow(
+                  episodeId: episodeId,
+                  episodeTranslation: episodeTranslation,
+                  isRecommendedTranslation: false
+                )
+              }
+            } header: {
+              Text(translationGroup.key.getLocalizedTranslation())
+            }
+          }
+        }
+      }
     }
+    #if os(tvOS)
+      .listStyle(.grouped)
+    #endif
+    #if !os(tvOS)
+      .navigationTitle(episodeTitle)
+      .navigationBarTitleDisplayMode(.large)
+    #endif
+  }
 }
 
 private struct TranslationRow: View {
-    let episodeId: Int
-    let episodeTranslation: Translation
-    let isRecommendedTranslation: Bool
+  let episodeId: Int
+  let episodeTranslation: Translation
+  let isRecommendedTranslation: Bool
 
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+  @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
-    @State private var showingSheet = false
+  @State private var showingSheet = false
 
-    var body: some View {
-        Button(action: {
-            self.showingSheet.toggle()
-            updateLastSelectedTranslation()
-        }) {
-            HStack {
-                VStack(alignment: .leading) {
-                    if horizontalSizeClass == .compact {
-                        Text(formatTranslationQuality(
-                            episodeTranslation,
-                            qualityNameFirst: false,
-                            displayTranslationType: isRecommendedTranslation
-                        ))
-                        .foregroundStyle(Color.secondary)
-                        .font(.caption)
-                    }
+  var body: some View {
+    Button(action: {
+      self.showingSheet.toggle()
+      updateLastSelectedTranslation()
+    }) {
+      HStack {
+        VStack(alignment: .leading) {
+          if horizontalSizeClass == .compact {
+            Text(
+              formatTranslationQuality(
+                episodeTranslation,
+                qualityNameFirst: false,
+                displayTranslationType: isRecommendedTranslation
+              )
+            )
+            .foregroundStyle(Color.secondary)
+            .font(.caption)
+          }
 
-                    Text(self.episodeTranslation.translationTeam)
-                        .lineLimit(isRecommendedTranslation ? 1 : nil)
-                        .truncationMode(.tail)
-                }
-
-                if horizontalSizeClass != .compact {
-                    Spacer()
-
-                    Text(formatTranslationQuality(
-                        episodeTranslation,
-                        qualityNameFirst: true,
-                        displayTranslationType: isRecommendedTranslation
-                    ))
-                    .foregroundStyle(Color.secondary)
-                    .lineLimit(isRecommendedTranslation ? 1 : nil)
-                    .truncationMode(.tail)
-                }
-            }
+          Text(self.episodeTranslation.translationTeam)
+            .lineLimit(isRecommendedTranslation ? 1 : nil)
+            .truncationMode(.tail)
         }
-        .sheet(isPresented: $showingSheet) {
-            NavigationStack {
-                EpisodeTranslationQualitySelectorView(
-                    episodeId: episodeId,
-                    translationId: episodeTranslation.id,
-                    translationTeam: episodeTranslation.translationTeam,
-                    disableSubs: episodeTranslation.translationMethod == .voiceover
-                )
-            }
-            .presentationDetents([.medium])
+
+        if horizontalSizeClass != .compact {
+          Spacer()
+
+          Text(
+            formatTranslationQuality(
+              episodeTranslation,
+              qualityNameFirst: true,
+              displayTranslationType: isRecommendedTranslation
+            )
+          )
+          .foregroundStyle(Color.secondary)
+          .lineLimit(isRecommendedTranslation ? 1 : nil)
+          .truncationMode(.tail)
         }
+      }
     }
-
-    func updateLastSelectedTranslation() {
-        let session: ScraperAPI.Session = ApplicationDependency.container.resolve()
-
-        session.set(name: .lastTranslationType, value: episodeTranslation.getCompositeType().translationTypeForCookie)
+    .sheet(isPresented: $showingSheet) {
+      NavigationStack {
+        EpisodeTranslationQualitySelectorView(
+          episodeId: episodeId,
+          translationId: episodeTranslation.id,
+          translationTeam: episodeTranslation.translationTeam,
+          disableSubs: episodeTranslation.translationMethod == .voiceover
+        )
+      }
+      .presentationDetents([.medium])
     }
+  }
+
+  func updateLastSelectedTranslation() {
+    let session: ScraperAPI.Session = ApplicationDependency.container.resolve()
+
+    session.set(
+      name: .lastTranslationType,
+      value: episodeTranslation.getCompositeType().translationTypeForCookie
+    )
+  }
 }
 
 private func formatTranslationQuality(
-    _ translation: Translation,
-    qualityNameFirst: Bool,
-    displayTranslationType: Bool
+  _ translation: Translation,
+  qualityNameFirst: Bool,
+  displayTranslationType: Bool
 ) -> String {
-    var stringComponents = [String(translation.height) + "p"]
+  var stringComponents = [String(translation.height) + "p"]
 
-    if translation.sourceVideoQuality != .tv {
-        stringComponents.append(translation.sourceVideoQuality.getLocalizedTranslation())
-    }
+  if translation.sourceVideoQuality != .tv {
+    stringComponents.append(translation.sourceVideoQuality.getLocalizedTranslation())
+  }
 
-    if displayTranslationType {
-        stringComponents.append(translation.getCompositeType().getLocalizedTranslation())
-    }
+  if displayTranslationType {
+    stringComponents.append(translation.getCompositeType().getLocalizedTranslation())
+  }
 
-    if qualityNameFirst {
-        stringComponents.reverse()
-    }
+  if qualityNameFirst {
+    stringComponents.reverse()
+  }
 
-    return stringComponents.joined(separator: " • ")
+  return stringComponents.joined(separator: " • ")
 }
 
 #Preview {
-    NavigationStack {
-        EpisodeTranslationsView(
-            episodeId: 291_395,
-            episodeTitle: "69 серия"
-        )
-    }
+  NavigationStack {
+    EpisodeTranslationsView(
+      episodeId: 291_395,
+      episodeTitle: "69 серия"
+    )
+  }
 }

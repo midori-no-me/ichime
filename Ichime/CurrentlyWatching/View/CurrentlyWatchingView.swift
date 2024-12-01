@@ -6,252 +6,260 @@
 //
 
 import ScraperAPI
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @Observable
 class CurrentlyWatchingViewModel {
-    private let client: ScraperAPI.APIClient
-    private let userManager: UserManager
-    init(
-        apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
-        userManager: UserManager = ApplicationDependency.container.resolve()
-    ) {
-        client = apiClient
-        self.userManager = userManager
+  private let client: ScraperAPI.APIClient
+  private let userManager: UserManager
+  init(
+    apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
+    userManager: UserManager = ApplicationDependency.container.resolve()
+  ) {
+    client = apiClient
+    self.userManager = userManager
+  }
+
+  enum State {
+    case idle
+    case loading
+    case loadingFailed(Error)
+    case loadedButEmpty
+    case loaded([WatchCardModel])
+    case needSubscribe
+  }
+
+  private(set) var state = State.idle
+  private var page = 1
+  private var shows: [WatchCardModel] = []
+  private var stopLazyLoading = false
+
+  @MainActor
+  private func updateState(_ newState: State) {
+    state = newState
+  }
+
+  func performInitialLoading() async {
+    if !userManager.subscribed {
+      return await updateState(.needSubscribe)
+    }
+    await updateState(.loading)
+    await performRefresh()
+  }
+
+  func performRefresh() async {
+    page = 1
+    shows = []
+    stopLazyLoading = false
+
+    do {
+      let shows = try await client.sendAPIRequest(ScraperAPI.Request.GetNextToWatch(page: page))
+        .map { WatchCardModel(from: $0) }
+
+      if shows.isEmpty {
+        return await updateState(.loadedButEmpty)
+      }
+      else {
+        self.shows = shows
+        return await updateState(.loaded(shows))
+      }
+    }
+    catch {
+      await updateState(.loadingFailed(error))
+    }
+  }
+
+  func performLazyLoad() async {
+    if stopLazyLoading {
+      return
     }
 
-    enum State {
-        case idle
-        case loading
-        case loadingFailed(Error)
-        case loadedButEmpty
-        case loaded([WatchCardModel])
-        case needSubscribe
+    do {
+      page += 1
+      let newShows = try await client.sendAPIRequest(ScraperAPI.Request.GetNextToWatch(page: page))
+
+      let newWatchCards = newShows.map { WatchCardModel(from: $0) }
+
+      if newWatchCards.last == shows.last {
+        stopLazyLoading = true
+        return
+      }
+
+      shows += newWatchCards
+      await updateState(.loaded(shows))
     }
-
-    private(set) var state = State.idle
-    private var page = 1
-    private var shows: [WatchCardModel] = []
-    private var stopLazyLoading = false
-
-    @MainActor
-    private func updateState(_ newState: State) {
-        state = newState
+    catch {
+      stopLazyLoading = true
     }
-
-    func performInitialLoading() async {
-        if !userManager.subscribed {
-            return await updateState(.needSubscribe)
-        }
-        await updateState(.loading)
-        await performRefresh()
-    }
-
-    func performRefresh() async {
-        page = 1
-        shows = []
-        stopLazyLoading = false
-
-        do {
-            let shows = try await client.sendAPIRequest(ScraperAPI.Request.GetNextToWatch(page: page))
-                .map { WatchCardModel(from: $0) }
-
-            if shows.isEmpty {
-                return await updateState(.loadedButEmpty)
-            } else {
-                self.shows = shows
-                return await updateState(.loaded(shows))
-            }
-        } catch {
-            await updateState(.loadingFailed(error))
-        }
-    }
-
-    func performLazyLoad() async {
-        if stopLazyLoading {
-            return
-        }
-
-        do {
-            page += 1
-            let newShows = try await client.sendAPIRequest(ScraperAPI.Request.GetNextToWatch(page: page))
-
-            let newWatchCards = newShows.map { WatchCardModel(from: $0) }
-
-            if newWatchCards.last == shows.last {
-                stopLazyLoading = true
-                return
-            }
-
-            shows += newWatchCards
-            await updateState(.loaded(shows))
-        } catch {
-            stopLazyLoading = true
-        }
-    }
+  }
 }
 
 struct CurrentlyWatchingView: View {
-    @State private var viewModel: CurrentlyWatchingViewModel = .init()
+  @State private var viewModel: CurrentlyWatchingViewModel = .init()
 
-    var body: some View {
-        Group {
-            switch viewModel.state {
-            case .idle:
-                Color.clear.onAppear {
-                    Task {
-                        await viewModel.performInitialLoading()
-                    }
-                }
-            case .loading:
-                ProgressView()
-                #if os(tvOS)
-                    .focusable()
-                #endif
-            case .needSubscribe:
-                ContentUnavailableView {
-                    Label("Нужна подписка", systemImage: "person.fill.badge.plus")
-                } description: {
-                    Text("Подпишись чтоб получить все возможности приложения")
-                }
-                #if !os(tvOS)
-                .textSelection(.enabled)
-                #endif
-            case let .loadingFailed(error):
-                ContentUnavailableView {
-                    Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-                } description: {
-                    Text(error.localizedDescription)
-                }
-                #if !os(tvOS)
-                .textSelection(.enabled)
-                #endif
-            case .loadedButEmpty:
-                ContentUnavailableView {
-                    Label("Ничего не нашлось", systemImage: "list.bullet")
-                } description: {
-                    Text("Вы еще ничего не добавили в свой список")
-                }
-            case let .loaded(shows):
-                LoadedCurrentlyWatching(shows: shows) {
-                    await viewModel.performLazyLoad()
-                }
-            }
+  var body: some View {
+    Group {
+      switch viewModel.state {
+      case .idle:
+        Color.clear.onAppear {
+          Task {
+            await viewModel.performInitialLoading()
+          }
         }
-        .task {
-            switch viewModel.state {
-            case .loadedButEmpty, .loadingFailed, .loaded, .needSubscribe:
-                await viewModel.performRefresh()
-            case .idle, .loading:
-                return
-            }
+      case .loading:
+        ProgressView()
+          #if os(tvOS)
+            .focusable()
+          #endif
+      case .needSubscribe:
+        ContentUnavailableView {
+          Label("Нужна подписка", systemImage: "person.fill.badge.plus")
+        } description: {
+          Text("Подпишись чтоб получить все возможности приложения")
         }
-        .refreshable {
-            await viewModel.performRefresh()
+        #if !os(tvOS)
+          .textSelection(.enabled)
+        #endif
+      case let .loadingFailed(error):
+        ContentUnavailableView {
+          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+        } description: {
+          Text(error.localizedDescription)
         }
-        .navigationTitle("Я смотрю")
+        #if !os(tvOS)
+          .textSelection(.enabled)
+        #endif
+      case .loadedButEmpty:
+        ContentUnavailableView {
+          Label("Ничего не нашлось", systemImage: "list.bullet")
+        } description: {
+          Text("Вы еще ничего не добавили в свой список")
+        }
+      case let .loaded(shows):
+        LoadedCurrentlyWatching(shows: shows) {
+          await viewModel.performLazyLoad()
+        }
+      }
     }
+    .task {
+      switch viewModel.state {
+      case .loadedButEmpty, .loadingFailed, .loaded, .needSubscribe:
+        await viewModel.performRefresh()
+      case .idle, .loading:
+        return
+      }
+    }
+    .refreshable {
+      await viewModel.performRefresh()
+    }
+    .navigationTitle("Я смотрю")
+  }
 
-    enum Navigation: Hashable {
-        case notifications
-    }
+  enum Navigation: Hashable {
+    case notifications
+  }
 }
 
 struct LoadedCurrentlyWatching: View {
-    let shows: [WatchCardModel]
-    let loadMore: () async -> Void
+  let shows: [WatchCardModel]
+  let loadMore: () async -> Void
 
-    @State private var contextShow: Show? = nil
+  @State private var contextShow: Show? = nil
 
-    private func fetchShowForContext(episode: Int) async {
-        let api: Anime365Client = ApplicationDependency.container.resolve()
-        do {
-            contextShow = try await api.getShowByEpisodeId(episodeId: episode)
-        } catch {
-            contextShow = nil
+  private func fetchShowForContext(episode: Int) async {
+    let api: Anime365Client = ApplicationDependency.container.resolve()
+    do {
+      contextShow = try await api.getShowByEpisodeId(episodeId: episode)
+    }
+    catch {
+      contextShow = nil
+    }
+  }
+
+  var body: some View {
+    #if os(tvOS)
+      ScrollView(.vertical) {
+        LazyVGrid(
+          columns: [
+            GridItem(
+              .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+              spacing: RawShowCard.RECOMMENDED_SPACING,
+              alignment: .topLeading
+            )
+          ],
+          spacing: RawShowCard.RECOMMENDED_SPACING
+        ) {
+          ForEach(self.shows) { show in
+            NavigationLink(value: show) {
+              WatchCard(data: show)
+            }
+            .contextMenu(menuItems: {
+              Group {
+                if let contextShow {
+                  #if !os(tvOS)
+                    ShareLink(item: contextShow.websiteUrl) {
+                      Label("Поделиться", systemImage: "square.and.arrow.up")
+                    }
+                  #endif
+                  NavigationLink(destination: ShowView(showId: contextShow.id)) {
+                    Text("Открыть")
+                  }
+                }
+                else {
+                  ProgressView()
+                }
+              }.task {
+                await fetchShowForContext(episode: show.id)
+              }
+            })
+            .buttonStyle(.borderless)
+            .task {
+              if show == self.shows.last {
+                await self.loadMore()
+              }
+            }
+          }
         }
-    }
-
-    var body: some View {
-        #if os(tvOS)
-            ScrollView(.vertical) {
-                LazyVGrid(columns: [
-                    GridItem(
-                        .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-                        spacing: RawShowCard.RECOMMENDED_SPACING,
-                        alignment: .topLeading
-                    ),
-                ], spacing: RawShowCard.RECOMMENDED_SPACING) {
-                    ForEach(self.shows) { show in
-                        NavigationLink(value: show) {
-                            WatchCard(data: show)
-                        }
-                        .contextMenu(menuItems: {
-                            Group {
-                                if let contextShow {
-                                    #if !os(tvOS)
-                                        ShareLink(item: contextShow.websiteUrl) {
-                                            Label("Поделиться", systemImage: "square.and.arrow.up")
-                                        }
-                                    #endif
-                                    NavigationLink(destination: ShowView(showId: contextShow.id)) {
-                                        Text("Открыть")
-                                    }
-                                } else {
-                                    ProgressView()
-                                }
-                            }.task {
-                                await fetchShowForContext(episode: show.id)
-                            }
-                        })
-                        .buttonStyle(.borderless)
-                        .task {
-                            if show == self.shows.last {
-                                await self.loadMore()
-                            }
-                        }
-                    }
-                }
-                .topEdgePaddingForMenu()
+        .topEdgePaddingForMenu()
+      }
+      .scrollClipDisabled(true)
+    #else
+      List {
+        Section {
+          ForEach(shows) { show in
+            NavigationLink(value: show) {
+              WatchCard(data: show)
             }
-            .scrollClipDisabled(true)
-        #else
-            List {
-                Section {
-                    ForEach(shows) { show in
-                        NavigationLink(value: show) {
-                            WatchCard(data: show)
-                        }
-                        .task {
-                            if show == self.shows.last {
-                                await self.loadMore()
-                            }
-                        }
-                    }
-                } header: {
-                    Text("Серии к просмотру")
-                }
+            .task {
+              if show == self.shows.last {
+                await self.loadMore()
+              }
             }
-            .listStyle(.plain)
-        #endif
-    }
+          }
+        } header: {
+          Text("Серии к просмотру")
+        }
+      }
+      .listStyle(.plain)
+    #endif
+  }
 }
 
 #Preview {
-    NavigationStack {
-        CurrentlyWatchingView()
-            .navigationDestination(for: CurrentlyWatchingView.Navigation.self) { route in
-                if route == .notifications {
-                    NotificationCenterView()
-                }
-            }
-            .navigationDestination(for: WatchCardModel.self) {
-                viewEpisodes(show: $0)
-            }
-    }
+  NavigationStack {
+    CurrentlyWatchingView()
+      .navigationDestination(for: CurrentlyWatchingView.Navigation.self) { route in
+        if route == .notifications {
+          NotificationCenterView()
+        }
+      }
+      .navigationDestination(for: WatchCardModel.self) {
+        viewEpisodes(show: $0)
+      }
+  }
 }
 
 #Preview("No navigation") {
-    CurrentlyWatchingView()
+  CurrentlyWatchingView()
 }

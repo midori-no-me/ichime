@@ -7,6 +7,6 @@
 
 import Foundation
 
-public extension ScraperAPI {
-    enum Types {}
+extension ScraperAPI {
+  public enum Types {}
 }

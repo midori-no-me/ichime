@@ -52,15 +52,20 @@ public class ShikimoriApiClient {
         let requestBodyJson = try JSONEncoder().encode(requestBody)
 
         httpRequest.httpBody = requestBodyJson
-      } catch {
+      }
+      catch {
         throw ShikimoriApiClientError.canNotEncodeRequestJson
       }
     }
 
     let (data, httpResponse) = try await URLSession.shared.data(for: httpRequest)
 
-    if let requestUrl = httpRequest.url?.absoluteString, let httpResponse = httpResponse as? HTTPURLResponse {
-      print("[ShikimoriAPIV1Client] API request: \(httpMethod) \(requestUrl) [\(httpResponse.statusCode)]")
+    if let requestUrl = httpRequest.url?.absoluteString,
+      let httpResponse = httpResponse as? HTTPURLResponse
+    {
+      print(
+        "[ShikimoriAPIV1Client] API request: \(httpMethod) \(requestUrl) [\(httpResponse.statusCode)]"
+      )
     }
 
     do {
@@ -68,7 +73,8 @@ public class ShikimoriApiClient {
         .decode(T.self, from: data)
 
       return apiResponse
-    } catch {
+    }
+    catch {
       print("[ShikimoriAPIV1Client] Decoding JSON error: \(error.localizedDescription)")
       print("[ShikimoriAPIV1Client] JSON Decoder detailed error:")
       print(error)
@@ -76,7 +82,8 @@ public class ShikimoriApiClient {
 
       if let responseBodyString = String(data: data, encoding: .utf8) {
         print(responseBodyString)
-      } else {
+      }
+      else {
         print("[ShikimoriAPIV1Client] Unable to convert response body to a string")
       }
 

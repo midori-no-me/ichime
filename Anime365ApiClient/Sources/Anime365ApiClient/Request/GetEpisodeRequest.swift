@@ -8,21 +8,21 @@
 import Foundation
 
 public struct GetEpisodeRequest: Anime365ApiRequest {
-    public typealias ResponseType = Anime365ApiEpisode
+  public typealias ResponseType = Anime365ApiEpisode
 
-    private let episodeId: Int
+  private let episodeId: Int
 
-    public init(
-        episodeId: Int
-    ) {
-        self.episodeId = episodeId
-    }
+  public init(
+    episodeId: Int
+  ) {
+    self.episodeId = episodeId
+  }
 
-    public func getEndpoint() -> String {
-        return "/episodes/\(episodeId)"
-    }
+  public func getEndpoint() -> String {
+    return "/episodes/\(episodeId)"
+  }
 
-    public func getQueryItems() -> [URLQueryItem] {
-        return []
-    }
+  public func getQueryItems() -> [URLQueryItem] {
+    return []
+  }
 }

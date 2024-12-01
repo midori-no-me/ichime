@@ -8,160 +8,161 @@
 import SwiftUI
 
 struct ShowCard: View {
-    let show: Show
-    let displaySeason: Bool
+  let show: Show
+  let displaySeason: Bool
 
-    var body: some View {
-        NavigationLink(
-            destination: ShowView(showId: show.id, preloadedShow: show)
-        ) {
-            RawShowCard(
-                metadataLineComponents: formatMetadataLine(show, displaySeason: displaySeason),
-                cover: show.posterUrl,
-                primaryTitle: show.title.translated.japaneseRomaji ?? show.title.full,
-                secondaryTitle: show.title.translated.russian
-            )
-        }
-        #if !os(tvOS)
-        .contextMenu {
-            ShareLink(item: show.websiteUrl) {
-                Label("Поделиться", systemImage: "square.and.arrow.up")
-            }
-        } preview: {
-            ShowCardContextMenuPreview(
-                posterUrl: show.posterUrl!,
-                title: show.title.compose,
-                calendarSeason: show.airingSeason?.getLocalizedTranslation(),
-                typeTitle: show.typeTitle
-            )
-        }
-        #endif
-        #if os(tvOS)
-        .buttonStyle(.borderless)
-        #else
-        .buttonStyle(.plain)
-        #endif
+  var body: some View {
+    NavigationLink(
+      destination: ShowView(showId: show.id, preloadedShow: show)
+    ) {
+      RawShowCard(
+        metadataLineComponents: formatMetadataLine(show, displaySeason: displaySeason),
+        cover: show.posterUrl,
+        primaryTitle: show.title.translated.japaneseRomaji ?? show.title.full,
+        secondaryTitle: show.title.translated.russian
+      )
     }
+    #if !os(tvOS)
+      .contextMenu {
+        ShareLink(item: show.websiteUrl) {
+          Label("Поделиться", systemImage: "square.and.arrow.up")
+        }
+      } preview: {
+        ShowCardContextMenuPreview(
+          posterUrl: show.posterUrl!,
+          title: show.title.compose,
+          calendarSeason: show.airingSeason?.getLocalizedTranslation(),
+          typeTitle: show.typeTitle
+        )
+      }
+    #endif
+    #if os(tvOS)
+      .buttonStyle(.borderless)
+    #else
+      .buttonStyle(.plain)
+    #endif
+  }
 }
 
 private func formatMetadataLine(_ show: Show, displaySeason: Bool) -> [String] {
-    var metadataLineComponents: [String] = []
+  var metadataLineComponents: [String] = []
 
-    if let score = show.score {
-        metadataLineComponents.append("★ \(score.formatted(.number.precision(.fractionLength(2))))")
-    }
+  if let score = show.score {
+    metadataLineComponents.append("★ \(score.formatted(.number.precision(.fractionLength(2))))")
+  }
 
-    if let airingSeason = show.airingSeason, displaySeason {
-        metadataLineComponents.append(airingSeason.getLocalizedTranslation())
-    }
+  if let airingSeason = show.airingSeason, displaySeason {
+    metadataLineComponents.append(airingSeason.getLocalizedTranslation())
+  }
 
-    if show.broadcastType != .tv {
-        metadataLineComponents.append(show.typeTitle)
-    }
+  if show.broadcastType != .tv {
+    metadataLineComponents.append(show.typeTitle)
+  }
 
-    return metadataLineComponents
+  return metadataLineComponents
 }
 
 struct IndependentShowCardContextMenuPreview: View {
-    let showId: Int
-    @State var show: Show? = nil
-    var client: Anime365Client = ApplicationDependency.container.resolve()
+  let showId: Int
+  @State var show: Show? = nil
+  var client: Anime365Client = ApplicationDependency.container.resolve()
 
-    var body: some View {
-        Group {
-            if let show, let posterUrl = show.posterUrl {
-                ShowCardContextMenuPreview(
-                    posterUrl: posterUrl,
-                    title: show.title.compose,
-                    calendarSeason: show.airingSeason?.getLocalizedTranslation(),
-                    typeTitle: show.typeTitle
-                )
-            } else {
-                ProgressView()
-            }
-        }.task {
-            show = try? await client.getShow(
-                seriesId: showId
-            )
-        }
+  var body: some View {
+    Group {
+      if let show, let posterUrl = show.posterUrl {
+        ShowCardContextMenuPreview(
+          posterUrl: posterUrl,
+          title: show.title.compose,
+          calendarSeason: show.airingSeason?.getLocalizedTranslation(),
+          typeTitle: show.typeTitle
+        )
+      }
+      else {
+        ProgressView()
+      }
+    }.task {
+      show = try? await client.getShow(
+        seriesId: showId
+      )
     }
+  }
 }
 
 private struct ShowCardContextMenuPreview: View {
-    let posterUrl: URL
-    let title: String
-    let calendarSeason: String?
-    let typeTitle: String?
+  let posterUrl: URL
+  let title: String
+  let calendarSeason: String?
+  let typeTitle: String?
 
-    var body: some View {
-        VStack(alignment: .center) {
-            AsyncImage(
-                url: posterUrl,
-                transaction: .init(animation: .easeInOut),
-                content: { phase in
-                    switch phase {
-                    case .empty:
-                        VStack {
-                            ProgressView()
-                        }
-                    case let .success(image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .clipped()
-
-                    case .failure:
-                        VStack {
-                            Image(systemName: "wifi.slash")
-                        }
-                    @unknown default:
-                        EmptyView()
-                    }
-                }
-            )
-            #if os(macOS)
-            .background(Color(nsColor: .windowBackgroundColor))
-            #endif
-            #if os(iOS) // !os(tvOS)
-            .background(Color(UIColor.secondarySystemBackground))
-            #endif
-            .cornerRadius(10)
-
-            if let metaInformationLine = self.getMetaInformationLine(
-                calendarSeason: calendarSeason,
-                typeTitle: typeTitle
-            ) {
-                Text(metaInformationLine)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
+  var body: some View {
+    VStack(alignment: .center) {
+      AsyncImage(
+        url: posterUrl,
+        transaction: .init(animation: .easeInOut),
+        content: { phase in
+          switch phase {
+          case .empty:
+            VStack {
+              ProgressView()
             }
+          case let .success(image):
+            image
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .clipped()
 
-            Text(title)
-                .font(.subheadline)
-                .frame(maxWidth: .infinity, alignment: .topLeading)
+          case .failure:
+            VStack {
+              Image(systemName: "wifi.slash")
+            }
+          @unknown default:
+            EmptyView()
+          }
         }
-        .padding()
+      )
+      #if os(macOS)
+        .background(Color(nsColor: .windowBackgroundColor))
+      #endif
+      #if os(iOS)  // !os(tvOS)
+        .background(Color(UIColor.secondarySystemBackground))
+      #endif
+      .cornerRadius(10)
+
+      if let metaInformationLine = self.getMetaInformationLine(
+        calendarSeason: calendarSeason,
+        typeTitle: typeTitle
+      ) {
+        Text(metaInformationLine)
+          .font(.subheadline)
+          .foregroundStyle(.secondary)
+          .frame(maxWidth: .infinity, alignment: .topLeading)
+      }
+
+      Text(title)
+        .font(.subheadline)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+    }
+    .padding()
+  }
+
+  private func getMetaInformationLine(
+    calendarSeason: String?,
+    typeTitle: String?
+  ) -> String? {
+    var parts: [String] = []
+
+    if let typeTitle {
+      parts.append(typeTitle)
     }
 
-    private func getMetaInformationLine(
-        calendarSeason: String?,
-        typeTitle: String?
-    ) -> String? {
-        var parts: [String] = []
-
-        if let typeTitle {
-            parts.append(typeTitle)
-        }
-
-        if let calendarSeason {
-            parts.append(calendarSeason)
-        }
-
-        return parts.isEmpty
-            ? nil
-            : parts.formatted(.list(type: .and, width: .narrow))
+    if let calendarSeason {
+      parts.append(calendarSeason)
     }
+
+    return parts.isEmpty
+      ? nil
+      : parts.formatted(.list(type: .and, width: .narrow))
+  }
 }
 
 // #Preview {

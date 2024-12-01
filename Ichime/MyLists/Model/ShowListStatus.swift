@@ -39,7 +39,7 @@ enum CategoryType: Int, Codable, CaseIterable, ShowStatusProtocol {
 @Model
 final class ShowListStatus {
   @Attribute(.unique) var id: Int
-  @Attribute var statusRaw: String // Используем String для универсального хранения
+  @Attribute var statusRaw: String  // Используем String для универсального хранения
 
   // Свойство для работы с `CategoryType`
   var status: CategoryType {

@@ -34,11 +34,13 @@ class CalendarViewModel: ObservableObject {
 
       if shows.isEmpty {
         await updateState(.loadedButEmpty)
-      } else {
+      }
+      else {
         self.shows = shows
         await updateState(.loaded(self.shows))
       }
-    } catch {
+    }
+    catch {
       await updateState(.loadingFailed(error))
     }
   }
@@ -49,19 +51,22 @@ class CalendarViewModel: ObservableObject {
 
       if shows.isEmpty {
         await updateState(.loadedButEmpty)
-      } else {
+      }
+      else {
         self.shows = shows
         await updateState(.loaded(self.shows))
       }
-    } catch {
+    }
+    catch {
       await updateState(.loadingFailed(error))
     }
   }
 }
 
-
 struct CalendarView: View {
-  @StateObject public var viewModel: CalendarViewModel = CalendarViewModel(schedule: ShowReleaseSchedule())
+  @StateObject public var viewModel: CalendarViewModel = CalendarViewModel(
+    schedule: ShowReleaseSchedule()
+  )
 
   var body: some View {
     Group {
@@ -75,9 +80,9 @@ struct CalendarView: View {
 
       case .loading:
         ProgressView()
-#if os(tvOS)
-          .focusable()
-#endif
+          #if os(tvOS)
+            .focusable()
+          #endif
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -85,9 +90,9 @@ struct CalendarView: View {
         } description: {
           Text(error.localizedDescription)
         }
-#if !os(tvOS)
-        .textSelection(.enabled)
-#endif
+        #if !os(tvOS)
+          .textSelection(.enabled)
+        #endif
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -110,7 +115,8 @@ struct CalendarView: View {
             }
           }
           .listStyle(.plain)
-        } else {
+        }
+        else {
           ScrollView([.vertical]) {
             VStack(alignment: .leading, spacing: 70) {
               ForEach(groupsOfShows, id: \.self) { groupOfShows in
@@ -120,13 +126,16 @@ struct CalendarView: View {
                     subtitle: nil
                   )
 
-                  LazyVGrid(columns: [
-                    GridItem(
-                      .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-                      spacing: RawShowCard.RECOMMENDED_SPACING,
-                      alignment: .topLeading
-                    ),
-                  ], spacing: RawShowCard.RECOMMENDED_SPACING) {
+                  LazyVGrid(
+                    columns: [
+                      GridItem(
+                        .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+                        spacing: RawShowCard.RECOMMENDED_SPACING,
+                        alignment: .topLeading
+                      )
+                    ],
+                    spacing: RawShowCard.RECOMMENDED_SPACING
+                  ) {
                     ForEach(groupOfShows.shows) { show in
                       ShowFromCalendarCard(show: show)
                     }
@@ -140,15 +149,15 @@ struct CalendarView: View {
         }
       }
     }
-#if !os(tvOS)
-    .navigationTitle("Календарь")
-    .navigationBarTitleDisplayMode(.large)
-#endif
+    #if !os(tvOS)
+      .navigationTitle("Календарь")
+      .navigationBarTitleDisplayMode(.large)
+    #endif
     .refreshable {
       await self.viewModel.performPullToRefresh()
     }
-#if os(tvOS)
-    .toolbar(.hidden, for: .tabBar)
-#endif
+    #if os(tvOS)
+      .toolbar(.hidden, for: .tabBar)
+    #endif
   }
 }

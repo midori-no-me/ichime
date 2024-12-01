@@ -8,7 +8,7 @@
 import Foundation
 
 struct MyListShow {
-    let id: Int
-    let name: String
-    let totalEpisodes: Int?
+  let id: Int
+  let name: String
+  let totalEpisodes: Int?
 }

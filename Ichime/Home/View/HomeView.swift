@@ -1,255 +1,261 @@
 import SwiftUI
 
 private protocol ShowsSectionLoader: Identifiable {
-    var id: String { get }
+  var id: String { get }
 
-    func getTitle() -> String
-    func getSubtitle() -> String?
-    func getCards(_ offset: Int, _ limit: Int) async -> [Show]
-    func displaySeason() -> Bool
+  func getTitle() -> String
+  func getSubtitle() -> String?
+  func getCards(_ offset: Int, _ limit: Int) async -> [Show]
+  func displaySeason() -> Bool
 }
 
 private class OngoingsSectionLoader: ShowsSectionLoader {
-    private let client: Anime365Client
+  private let client: Anime365Client
 
-    init(
-        client: Anime365Client = ApplicationDependency.container.resolve()
-    ) {
-        self.client = client
+  init(
+    client: Anime365Client = ApplicationDependency.container.resolve()
+  ) {
+    self.client = client
+  }
+
+  var id: String = "ongoing"
+
+  func getTitle() -> String {
+    "Онгоинги"
+  }
+
+  func getSubtitle() -> String? {
+    "Регулярно выходят новые серии"
+  }
+
+  func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
+    do {
+      return try await client.getOngoings(offset: offset, limit: limit)
     }
-
-    var id: String = "ongoing"
-
-    func getTitle() -> String {
-        "Онгоинги"
+    catch {
+      return []
     }
+  }
 
-    func getSubtitle() -> String? {
-        "Регулярно выходят новые серии"
-    }
-
-    func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
-        do {
-            return try await client.getOngoings(offset: offset, limit: limit)
-        } catch {
-            return []
-        }
-    }
-
-    func displaySeason() -> Bool {
-        true
-    }
+  func displaySeason() -> Bool {
+    true
+  }
 }
 
 private class TopSectionLoader: ShowsSectionLoader {
-    private let client: Anime365Client
+  private let client: Anime365Client
 
-    init(
-        client: Anime365Client = ApplicationDependency.container.resolve()
-    ) {
-        self.client = client
+  init(
+    client: Anime365Client = ApplicationDependency.container.resolve()
+  ) {
+    self.client = client
+  }
+
+  var id: String = "top"
+
+  func getTitle() -> String {
+    "Топ по оценке"
+  }
+
+  func getSubtitle() -> String? {
+    "По версии MyAnimeList"
+  }
+
+  func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
+    do {
+      return try await client.getTop(offset: offset, limit: limit)
     }
-
-    var id: String = "top"
-
-    func getTitle() -> String {
-        "Топ по оценке"
+    catch {
+      return []
     }
+  }
 
-    func getSubtitle() -> String? {
-        "По версии MyAnimeList"
-    }
-
-    func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
-        do {
-            return try await client.getTop(offset: offset, limit: limit)
-        } catch {
-            return []
-        }
-    }
-
-    func displaySeason() -> Bool {
-        true
-    }
+  func displaySeason() -> Bool {
+    true
+  }
 }
 
 private class SeasonalSectionLoader: ShowsSectionLoader {
-    private let client: Anime365Client
-    private let airingSeason: AiringSeason
-    private let description: String?
+  private let client: Anime365Client
+  private let airingSeason: AiringSeason
+  private let description: String?
 
-    init(
-        airingSeason: AiringSeason,
-        description: String?,
-        client: Anime365Client = ApplicationDependency.container.resolve()
-    ) {
-        self.client = client
-        self.airingSeason = airingSeason
-        self.description = description
-        id = "\(airingSeason.year)_\(airingSeason.calendarSeason)"
+  init(
+    airingSeason: AiringSeason,
+    description: String?,
+    client: Anime365Client = ApplicationDependency.container.resolve()
+  ) {
+    self.client = client
+    self.airingSeason = airingSeason
+    self.description = description
+    id = "\(airingSeason.year)_\(airingSeason.calendarSeason)"
+  }
+
+  var id: String
+
+  func getTitle() -> String {
+    "\(airingSeason.calendarSeason.getLocalizedTranslation()) \(airingSeason.year)"
+  }
+
+  func getSubtitle() -> String? {
+    description
+  }
+
+  func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
+    do {
+      return try await client.getSeason(
+        offset: offset,
+        limit: limit,
+        airingSeason: airingSeason
+      )
     }
-
-    var id: String
-
-    func getTitle() -> String {
-        "\(airingSeason.calendarSeason.getLocalizedTranslation()) \(airingSeason.year)"
+    catch {
+      return []
     }
+  }
 
-    func getSubtitle() -> String? {
-        description
-    }
-
-    func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
-        do {
-            return try await client.getSeason(
-                offset: offset,
-                limit: limit,
-                airingSeason: airingSeason
-            )
-        } catch {
-            return []
-        }
-    }
-
-    func displaySeason() -> Bool {
-        false
-    }
+  func displaySeason() -> Bool {
+    false
+  }
 }
 
 struct HomeView: View {
-    @State private var sectionLoaders: [any ShowsSectionLoader] = []
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+  @State private var sectionLoaders: [any ShowsSectionLoader] = []
+  @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
-    #if os(tvOS)
-        private let SPACING_BETWEEN_SECTIONS: CGFloat = 70
-    #else
-        private let SPACING_BETWEEN_SECTIONS: CGFloat = 30
-    #endif
+  #if os(tvOS)
+    private let SPACING_BETWEEN_SECTIONS: CGFloat = 70
+  #else
+    private let SPACING_BETWEEN_SECTIONS: CGFloat = 30
+  #endif
 
-    var body: some View {
-        ScrollView(.vertical) {
-            LazyVStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-                ForEach(sectionLoaders, id: \.id) { sectionLoader in
-                    ShowsSection(
-                        sectionLoader: sectionLoader,
-                        onLoaded: {
-                            sectionLoaders.append(getNextSectionLoader())
-                        }
-                    )
-                }
+  var body: some View {
+    ScrollView(.vertical) {
+      LazyVStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
+        ForEach(sectionLoaders, id: \.id) { sectionLoader in
+          ShowsSection(
+            sectionLoader: sectionLoader,
+            onLoaded: {
+              sectionLoaders.append(getNextSectionLoader())
             }
-            .horizontalScreenEdgePadding()
-            .topEdgePaddingForMenu()
+          )
         }
-        .onAppear {
-            sectionLoaders.append(getNextSectionLoader())
+      }
+      .horizontalScreenEdgePadding()
+      .topEdgePaddingForMenu()
+    }
+    .onAppear {
+      sectionLoaders.append(getNextSectionLoader())
+    }
+    .navigationTitle("Главная")
+    #if !os(tvOS)
+      .navigationBarTitleDisplayMode(.large)
+      .toolbar {
+        if horizontalSizeClass == .compact {
+          ProfileButton()
         }
-        .navigationTitle("Главная")
-        #if !os(tvOS)
-        .navigationBarTitleDisplayMode(.large)
-        .toolbar {
-          if horizontalSizeClass == .compact {
-            ProfileButton()
-          }
-        }
-        #endif
-        #if os(tvOS)
-        .scrollClipDisabled(true)
-        #endif
+      }
+    #endif
+    #if os(tvOS)
+      .scrollClipDisabled(true)
+    #endif
+  }
+
+  private func getNextSectionLoader() -> any ShowsSectionLoader {
+    let showSeasonService = ShowSeasonService()
+
+    let predefinedLoaders: [any ShowsSectionLoader] = [
+      OngoingsSectionLoader(),
+      TopSectionLoader(),
+      SeasonalSectionLoader(
+        airingSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.NEXT_SEASON),
+        description: "Следующий сезон"
+      ),
+      SeasonalSectionLoader(
+        airingSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.CURRENT_SEASON),
+        description: "Текущий сезон"
+      ),
+      SeasonalSectionLoader(
+        airingSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.PREVIOUS_SEASON),
+        description: "Прошлый сезон"
+      ),
+    ]
+
+    if sectionLoaders.count < predefinedLoaders.count {
+      return predefinedLoaders[sectionLoaders.count]
     }
 
-    private func getNextSectionLoader() -> any ShowsSectionLoader {
-        let showSeasonService = ShowSeasonService()
+    let lastPredefinedSeasonalSectionShift = ShowSeasonService.PREVIOUS_SEASON
 
-        let predefinedLoaders: [any ShowsSectionLoader] = [
-            OngoingsSectionLoader(),
-            TopSectionLoader(),
-            SeasonalSectionLoader(
-                airingSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.NEXT_SEASON),
-                description: "Следующий сезон"
-            ),
-            SeasonalSectionLoader(
-                airingSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.CURRENT_SEASON),
-                description: "Текущий сезон"
-            ),
-            SeasonalSectionLoader(
-                airingSeason: showSeasonService.getRelativeSeason(shift: ShowSeasonService.PREVIOUS_SEASON),
-                description: "Прошлый сезон"
-            ),
-        ]
-
-        if sectionLoaders.count < predefinedLoaders.count {
-            return predefinedLoaders[sectionLoaders.count]
-        }
-
-        let lastPredefinedSeasonalSectionShift = ShowSeasonService.PREVIOUS_SEASON
-
-        return SeasonalSectionLoader(
-            airingSeason: showSeasonService
-                .getRelativeSeason(
-                    shift: predefinedLoaders.count - sectionLoaders.count + lastPredefinedSeasonalSectionShift - 1
-                ),
-            description: nil
-        )
-    }
+    return SeasonalSectionLoader(
+      airingSeason:
+        showSeasonService
+        .getRelativeSeason(
+          shift: predefinedLoaders.count - sectionLoaders.count + lastPredefinedSeasonalSectionShift
+            - 1
+        ),
+      description: nil
+    )
+  }
 }
 
 private struct ShowsSection: View {
-    public let sectionLoader: any ShowsSectionLoader
-    public let onLoaded: () -> Void
+  public let sectionLoader: any ShowsSectionLoader
+  public let onLoaded: () -> Void
 
-    @State var isLoading: Bool = true
-    @State var shows: [Show] = []
+  @State var isLoading: Bool = true
+  @State var shows: [Show] = []
 
-    #if os(tvOS)
-        private let SPACING_BETWEEN_TITLE_CARD_CARDS: CGFloat = 50
-    #else
-        private let SPACING_BETWEEN_TITLE_CARD_CARDS: CGFloat = 20
-    #endif
+  #if os(tvOS)
+    private let SPACING_BETWEEN_TITLE_CARD_CARDS: CGFloat = 50
+  #else
+    private let SPACING_BETWEEN_TITLE_CARD_CARDS: CGFloat = 20
+  #endif
 
-    var body: some View {
-        if isLoading {
-            Color.clear.onAppear {
-                Task {
-                    self.shows = await sectionLoader.getCards(0, 10)
-                    self.isLoading = false
-                    self.onLoaded()
-                }
-            }
-        } else {
-            VStack(alignment: .leading, spacing: SPACING_BETWEEN_TITLE_CARD_CARDS) {
-                SectionHeader(
-                    title: sectionLoader.getTitle(),
-                    subtitle: sectionLoader.getSubtitle()
-                ) {
-                    FilteredShowsView(
-                        viewModel: FilteredShowsViewModel(
-                            preloadedShows: shows,
-                            fetchShows: sectionLoader.getCards
-                        ),
-                        title: sectionLoader.getTitle(),
-                        description: sectionLoader.getSubtitle(),
-                        displaySeason: sectionLoader.displaySeason()
-                    )
-                }
-
-                ScrollView(.horizontal) {
-                    LazyHStack(spacing: RawShowCard.RECOMMENDED_SPACING) {
-                        ForEach(self.shows) { show in
-                            ShowCard(show: show, displaySeason: sectionLoader.displaySeason())
-                                .frame(width: RawShowCard.RECOMMENDED_MINIMUM_WIDTH)
-                        }
-                    }
-                }
-                .scrollIndicators(.hidden)
-                .scrollClipDisabled()
-            }
+  var body: some View {
+    if isLoading {
+      Color.clear.onAppear {
+        Task {
+          self.shows = await sectionLoader.getCards(0, 10)
+          self.isLoading = false
+          self.onLoaded()
         }
+      }
     }
+    else {
+      VStack(alignment: .leading, spacing: SPACING_BETWEEN_TITLE_CARD_CARDS) {
+        SectionHeader(
+          title: sectionLoader.getTitle(),
+          subtitle: sectionLoader.getSubtitle()
+        ) {
+          FilteredShowsView(
+            viewModel: FilteredShowsViewModel(
+              preloadedShows: shows,
+              fetchShows: sectionLoader.getCards
+            ),
+            title: sectionLoader.getTitle(),
+            description: sectionLoader.getSubtitle(),
+            displaySeason: sectionLoader.displaySeason()
+          )
+        }
+
+        ScrollView(.horizontal) {
+          LazyHStack(spacing: RawShowCard.RECOMMENDED_SPACING) {
+            ForEach(self.shows) { show in
+              ShowCard(show: show, displaySeason: sectionLoader.displaySeason())
+                .frame(width: RawShowCard.RECOMMENDED_MINIMUM_WIDTH)
+            }
+          }
+        }
+        .scrollIndicators(.hidden)
+        .scrollClipDisabled()
+      }
+    }
+  }
 }
 
 #Preview {
-    NavigationStack {
-        HomeView()
-    }
+  NavigationStack {
+    HomeView()
+  }
 }

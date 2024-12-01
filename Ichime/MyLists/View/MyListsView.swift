@@ -48,10 +48,11 @@ class MyListViewModel {
   private let userManager: UserManager
   private let modelContext: ModelContext?
 
-  init(apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
-       userManager: UserManager = ApplicationDependency.container.resolve(),
-       modelContext: ModelContext?)
-  {
+  init(
+    apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
+    userManager: UserManager = ApplicationDependency.container.resolve(),
+    modelContext: ModelContext?
+  ) {
     self.apiClient = apiClient
     self.userManager = userManager
     self.modelContext = modelContext
@@ -92,7 +93,9 @@ class MyListViewModel {
     }
 
     do {
-      var categories = try await apiClient.sendAPIRequest(ScraperAPI.Request.GetWatchList(userId: user.id))
+      var categories = try await apiClient.sendAPIRequest(
+        ScraperAPI.Request.GetWatchList(userId: user.id)
+      )
       if categories.isEmpty {
         return await updateState(.loadedButEmpty)
       }
@@ -113,7 +116,8 @@ class MyListViewModel {
       }
 
       return await updateState(.loaded(categories))
-    } catch {
+    }
+    catch {
       await updateState(.loadingFailed(error))
     }
   }
@@ -153,7 +157,8 @@ struct MyListsView: View {
         .map {
           if let total = $0.episodes.total {
             "- \($0.name.ru): \($0.episodes.watched) из \(total)"
-          } else {
+          }
+          else {
             "- \($0.name.ru): \($0.episodes.watched) из ??"
           }
         }
@@ -174,9 +179,9 @@ struct MyListsView: View {
         }
       case .loading:
         ProgressView()
-        #if os(tvOS)
-          .focusable()
-        #endif
+          #if os(tvOS)
+            .focusable()
+          #endif
       case .needSubscribe:
         ContentUnavailableView {
           Label("Нужна подписка", systemImage: "person.fill.badge.plus")
@@ -184,7 +189,7 @@ struct MyListsView: View {
           Text("Подпишись чтоб получить все возможности приложения")
         }
         #if !os(tvOS)
-        .textSelection(.enabled)
+          .textSelection(.enabled)
         #endif
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -193,7 +198,7 @@ struct MyListsView: View {
           Text(error.localizedDescription)
         }
         #if !os(tvOS)
-        .textSelection(.enabled)
+          .textSelection(.enabled)
         #endif
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -229,38 +234,38 @@ struct ToolbarWrapper<Content: View>: View {
   var body: some View {
     content()
     #if !os(tvOS)
-//            .toolbar {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    ShareLink(item: shareText) {
-//                        Label("Поделиться", systemImage: "square.and.arrow.up")
-//                    }
-//                }
-//                ToolbarItem(placement: .topBarTrailing) {
-//                    Menu {
-//                        Section {
-//                            Picker(selection: self.$categoryType, label: Text("Управление списком")) {
-//                                ForEach(ScraperAPI.Types.ListCategoryType.allCases, id: \.rawValue) { category in
-//                                    Label(category.rawValue, systemImage: category.imageInDropdown)
-//                                        .tag(category as ScraperAPI.Types.ListCategoryType?)
-//                                }
-//                            }
-//                        }
-//
-//                        if self.categoryType != nil {
-//                            Button(role: .destructive) {
-//                                self.categoryType = nil
-//                            } label: {
-//                                Label("Сбросить", systemImage: "delete.forward")
-//                            }
-//                        }
-//                    } label: {
-//                        Label(
-//                            "Управлять списком",
-//                            systemImage: self.categoryType?.imageInToolbar ?? "list.bullet.circle"
-//                        )
-//                    }
-//                }
-//            }
+      //            .toolbar {
+      //                ToolbarItem(placement: .navigationBarTrailing) {
+      //                    ShareLink(item: shareText) {
+      //                        Label("Поделиться", systemImage: "square.and.arrow.up")
+      //                    }
+      //                }
+      //                ToolbarItem(placement: .topBarTrailing) {
+      //                    Menu {
+      //                        Section {
+      //                            Picker(selection: self.$categoryType, label: Text("Управление списком")) {
+      //                                ForEach(ScraperAPI.Types.ListCategoryType.allCases, id: \.rawValue) { category in
+      //                                    Label(category.rawValue, systemImage: category.imageInDropdown)
+      //                                        .tag(category as ScraperAPI.Types.ListCategoryType?)
+      //                                }
+      //                            }
+      //                        }
+      //
+      //                        if self.categoryType != nil {
+      //                            Button(role: .destructive) {
+      //                                self.categoryType = nil
+      //                            } label: {
+      //                                Label("Сбросить", systemImage: "delete.forward")
+      //                            }
+      //                        }
+      //                    } label: {
+      //                        Label(
+      //                            "Управлять списком",
+      //                            systemImage: self.categoryType?.imageInToolbar ?? "list.bullet.circle"
+      //                        )
+      //                    }
+      //                }
+      //            }
     #endif
   }
 }

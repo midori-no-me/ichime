@@ -2,8 +2,8 @@ name: Ichime
 fileGroups:
 - .editorconfig
 - .gitignore
-- .swiftformat
-- .swiftlint.yml
+- .swift-format
+- Makefile
 - project.yml
 - README.md
 options:

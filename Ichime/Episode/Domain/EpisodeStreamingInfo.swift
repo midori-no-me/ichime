@@ -14,12 +14,15 @@ struct EpisodeStreamingInfo: Hashable, Identifiable {
     let websiteBaseUrl = ServiceLocator.websiteBaseUrl.absoluteString
     let cookies: HTTPCookieStorage = ApplicationDependency.container.resolve()
 
-    let subtitleUrlGenerator = SubtitleUrlGenerator(websiteBaseUrl: websiteBaseUrl, cookies: cookies)
+    let subtitleUrlGenerator = SubtitleUrlGenerator(
+      websiteBaseUrl: websiteBaseUrl,
+      cookies: cookies
+    )
     var subtitles: EpisodeStreamingInfo.SubtitlesUrls? = nil
 
     if let vttUrlString = apiResponse.subtitlesVttUrl, let vttUrl = URL(string: vttUrlString),
-       let subtitleUrl = subtitleUrlGenerator.generateSubtitleUrl(for: apiResponse.subtitlesUrl),
-       let subsUrl = URL(string: subtitleUrl)
+      let subtitleUrl = subtitleUrlGenerator.generateSubtitleUrl(for: apiResponse.subtitlesUrl),
+      let subsUrl = URL(string: subtitleUrl)
     {
       subtitles = EpisodeStreamingInfo.SubtitlesUrls(
         vtt: vttUrl,
@@ -105,7 +108,7 @@ struct SubtitleUrlGenerator {
     // Регулярное выражение для извлечения числа из строки
     let pattern = "(\\d+)"
     let regex = try? NSRegularExpression(pattern: pattern, options: [])
-    let range = NSRange(urlString.startIndex ..< urlString.endIndex, in: urlString)
+    let range = NSRange(urlString.startIndex..<urlString.endIndex, in: urlString)
 
     if let match = regex?.firstMatch(in: urlString, options: [], range: range) {
       if let range = Range(match.range(at: 1), in: urlString) {

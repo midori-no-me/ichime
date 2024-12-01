@@ -1,228 +1,237 @@
 import SwiftUI
 
 class FilteredShowsViewModel: ObservableObject {
-    enum State {
-        case idle
-        case loading
-        case loadingFailed(Error)
-        case loadedButEmpty
-        case loaded([Show])
+  enum State {
+    case idle
+    case loading
+    case loadingFailed(Error)
+    case loadedButEmpty
+    case loaded([Show])
+  }
+
+  @Published private(set) var state = State.idle
+
+  private var currentOffset: Int = 0
+  private var shows: [Show] = []
+  private var stopLazyLoading: Bool = false
+  private let fetchShows: (_ offset: Int, _ limit: Int) async throws -> [Show]
+
+  private let SHOWS_PER_PAGE = 20
+
+  init(
+    preloadedShows: [Show]? = nil,
+    fetchShows: @escaping (_ offset: Int, _ limit: Int) async throws -> [Show]
+  ) {
+    if let preloadedShows = preloadedShows, !preloadedShows.isEmpty {
+      currentOffset = preloadedShows.count
+      shows = preloadedShows
+      state = .loaded(shows)
     }
 
-    @Published private(set) var state = State.idle
+    self.fetchShows = fetchShows
+  }
 
-    private var currentOffset: Int = 0
-    private var shows: [Show] = []
-    private var stopLazyLoading: Bool = false
-    private let fetchShows: (_ offset: Int, _ limit: Int) async throws -> [Show]
+  @MainActor
+  func updateState(_ newState: State) {
+    state = newState
+  }
 
-    private let SHOWS_PER_PAGE = 20
+  func performInitialLoad() async {
+    await updateState(.loading)
 
-    init(
-        preloadedShows: [Show]? = nil,
-        fetchShows: @escaping (_ offset: Int, _ limit: Int) async throws -> [Show]
-    ) {
-        if let preloadedShows = preloadedShows, !preloadedShows.isEmpty {
-            currentOffset = preloadedShows.count
-            shows = preloadedShows
-            state = .loaded(shows)
-        }
+    do {
+      let shows = try await fetchShows(
+        currentOffset,
+        SHOWS_PER_PAGE
+      )
 
-        self.fetchShows = fetchShows
+      if shows.isEmpty {
+        await updateState(.loadedButEmpty)
+      }
+      else {
+        currentOffset = SHOWS_PER_PAGE
+        self.shows = shows
+        await updateState(.loaded(self.shows))
+      }
+    }
+    catch {
+      await updateState(.loadingFailed(error))
+    }
+  }
+
+  func performLazyLoading() async {
+    if stopLazyLoading {
+      return
     }
 
-    @MainActor
-    func updateState(_ newState: State) {
-        state = newState
+    do {
+      let shows = try await fetchShows(
+        currentOffset,
+        SHOWS_PER_PAGE
+      )
+
+      if shows.count < SHOWS_PER_PAGE {
+        stopLazyLoading = true
+      }
+
+      currentOffset = currentOffset + SHOWS_PER_PAGE
+      self.shows += shows
+      await updateState(.loaded(self.shows))
+    }
+    catch {
+      stopLazyLoading = true
+    }
+  }
+
+  func performPullToRefresh() async {
+    do {
+      let shows = try await fetchShows(
+        0,
+        SHOWS_PER_PAGE
+      )
+
+      if shows.isEmpty {
+        await updateState(.loadedButEmpty)
+      }
+      else {
+        currentOffset = SHOWS_PER_PAGE
+        self.shows = shows
+        await updateState(.loaded(self.shows))
+      }
+    }
+    catch {
+      await updateState(.loadingFailed(error))
     }
 
-    func performInitialLoad() async {
-        await updateState(.loading)
-
-        do {
-            let shows = try await fetchShows(
-                currentOffset,
-                SHOWS_PER_PAGE
-            )
-
-            if shows.isEmpty {
-                await updateState(.loadedButEmpty)
-            } else {
-                currentOffset = SHOWS_PER_PAGE
-                self.shows = shows
-                await updateState(.loaded(self.shows))
-            }
-        } catch {
-            await updateState(.loadingFailed(error))
-        }
-    }
-
-    func performLazyLoading() async {
-        if stopLazyLoading {
-            return
-        }
-
-        do {
-            let shows = try await fetchShows(
-                currentOffset,
-                SHOWS_PER_PAGE
-            )
-
-            if shows.count < SHOWS_PER_PAGE {
-                stopLazyLoading = true
-            }
-
-            currentOffset = currentOffset + SHOWS_PER_PAGE
-            self.shows += shows
-            await updateState(.loaded(self.shows))
-        } catch {
-            stopLazyLoading = true
-        }
-    }
-
-    func performPullToRefresh() async {
-        do {
-            let shows = try await fetchShows(
-                0,
-                SHOWS_PER_PAGE
-            )
-
-            if shows.isEmpty {
-                await updateState(.loadedButEmpty)
-            } else {
-                currentOffset = SHOWS_PER_PAGE
-                self.shows = shows
-                await updateState(.loaded(self.shows))
-            }
-        } catch {
-            await updateState(.loadingFailed(error))
-        }
-
-        stopLazyLoading = false
-    }
+    stopLazyLoading = false
+  }
 }
 
 struct FilteredShowsView: View {
-    @StateObject public var viewModel: FilteredShowsViewModel
+  @StateObject public var viewModel: FilteredShowsViewModel
 
-    public let title: String
-    public let description: String?
-    public let displaySeason: Bool
+  public let title: String
+  public let description: String?
+  public let displaySeason: Bool
 
-    var body: some View {
-        Group {
-            switch self.viewModel.state {
-            case .idle:
-                Color.clear.onAppear {
-                    Task {
-                        await self.viewModel.performInitialLoad()
-                    }
-                }
-
-            case .loading:
-                ProgressView()
-                #if os(tvOS)
-                    .focusable()
-                #endif
-
-            case let .loadingFailed(error):
-                ContentUnavailableView {
-                    Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-                } description: {
-                    Text(error.localizedDescription)
-                }
-                #if !os(tvOS)
-                .textSelection(.enabled)
-                #endif
-
-            case .loadedButEmpty:
-                ContentUnavailableView {
-                    Label("Ничего не нашлось", systemImage: "list.bullet")
-                } description: {
-                    Text("Возможно, это баг")
-                }
-
-            case let .loaded(shows):
-                if UIDevice.current.userInterfaceIdiom == .phone {
-                    List {
-                        Section {
-                            ForEach(shows) { show in
-                                ShowCard(show: show, displaySeason: self.displaySeason)
-                                    .task {
-                                        if show == shows.last {
-                                            await self.viewModel.performLazyLoading()
-                                        }
-                                    }
-                            }
-                        } header: {
-                            if let description {
-                                Text(description)
-                            }
-                        }
-                    }
-                    .listStyle(.plain)
-                } else {
-                    ScrollView([.vertical]) {
-                        Group {
-                            #if os(tvOS)
-                                Text(title)
-                                    .font(.title2)
-                            #endif
-
-                            if let description {
-                                Text(description)
-                                #if os(tvOS)
-                                    .font(.title3)
-                                #else
-                                    .font(.title3)
-                                #endif
-                                    .foregroundStyle(.secondary)
-                                    .horizontalScreenEdgePadding()
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
-                        LazyVGrid(columns: [
-                            GridItem(
-                                .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-                                spacing: RawShowCard.RECOMMENDED_SPACING,
-                                alignment: .topLeading
-                            ),
-                        ], spacing: RawShowCard.RECOMMENDED_SPACING) {
-                            ForEach(shows) { show in
-                                ShowCard(show: show, displaySeason: self.displaySeason)
-                                    .task {
-                                        if show == shows.last {
-                                            await self.viewModel.performLazyLoading()
-                                        }
-                                    }
-                            }
-                        }
-                        #if os(macOS)
-                        .padding()
-                        #else
-                        .padding(.top, 8)
-                        .horizontalScreenEdgePadding()
-                        .scenePadding(.bottom)
-                        #endif
-                    }
-                    #if os(tvOS)
-                    .scrollClipDisabled(true)
-                    #endif
-                }
-            }
+  var body: some View {
+    Group {
+      switch self.viewModel.state {
+      case .idle:
+        Color.clear.onAppear {
+          Task {
+            await self.viewModel.performInitialLoad()
+          }
         }
-        .refreshable {
-            await self.viewModel.performPullToRefresh()
+
+      case .loading:
+        ProgressView()
+          #if os(tvOS)
+            .focusable()
+          #endif
+
+      case let .loadingFailed(error):
+        ContentUnavailableView {
+          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+        } description: {
+          Text(error.localizedDescription)
         }
         #if !os(tvOS)
-        .navigationTitle(title)
-        .navigationBarTitleDisplayMode(.large)
+          .textSelection(.enabled)
         #endif
-        #if os(tvOS)
-        .toolbar(.hidden, for: .tabBar)
-        #endif
+
+      case .loadedButEmpty:
+        ContentUnavailableView {
+          Label("Ничего не нашлось", systemImage: "list.bullet")
+        } description: {
+          Text("Возможно, это баг")
+        }
+
+      case let .loaded(shows):
+        if UIDevice.current.userInterfaceIdiom == .phone {
+          List {
+            Section {
+              ForEach(shows) { show in
+                ShowCard(show: show, displaySeason: self.displaySeason)
+                  .task {
+                    if show == shows.last {
+                      await self.viewModel.performLazyLoading()
+                    }
+                  }
+              }
+            } header: {
+              if let description {
+                Text(description)
+              }
+            }
+          }
+          .listStyle(.plain)
+        }
+        else {
+          ScrollView([.vertical]) {
+            Group {
+              #if os(tvOS)
+                Text(title)
+                  .font(.title2)
+              #endif
+
+              if let description {
+                Text(description)
+                  #if os(tvOS)
+                    .font(.title3)
+                  #else
+                    .font(.title3)
+                  #endif
+                  .foregroundStyle(.secondary)
+                  .horizontalScreenEdgePadding()
+              }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            LazyVGrid(
+              columns: [
+                GridItem(
+                  .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+                  spacing: RawShowCard.RECOMMENDED_SPACING,
+                  alignment: .topLeading
+                )
+              ],
+              spacing: RawShowCard.RECOMMENDED_SPACING
+            ) {
+              ForEach(shows) { show in
+                ShowCard(show: show, displaySeason: self.displaySeason)
+                  .task {
+                    if show == shows.last {
+                      await self.viewModel.performLazyLoading()
+                    }
+                  }
+              }
+            }
+            #if os(macOS)
+              .padding()
+            #else
+              .padding(.top, 8)
+              .horizontalScreenEdgePadding()
+              .scenePadding(.bottom)
+            #endif
+          }
+          #if os(tvOS)
+            .scrollClipDisabled(true)
+          #endif
+        }
+      }
     }
+    .refreshable {
+      await self.viewModel.performPullToRefresh()
+    }
+    #if !os(tvOS)
+      .navigationTitle(title)
+      .navigationBarTitleDisplayMode(.large)
+    #endif
+    #if os(tvOS)
+      .toolbar(.hidden, for: .tabBar)
+    #endif
+  }
 }
 
 // #Preview {

@@ -15,10 +15,11 @@ class ContentViewModel {
   private let userManager: UserManager
   private let modelContext: ModelContext?
 
-  init(apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
-       userManager: UserManager = ApplicationDependency.container.resolve(),
-       modelContext: ModelContext?)
-  {
+  init(
+    apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
+    userManager: UserManager = ApplicationDependency.container.resolve(),
+    modelContext: ModelContext?
+  ) {
     self.apiClient = apiClient
     self.userManager = userManager
     self.modelContext = modelContext
@@ -33,13 +34,15 @@ class ContentViewModel {
     try? modelContext?.save()
     print("saved list statuses")
   }
-  
+
   func cacheCategories() async {
     guard case let .isAuth(user) = userManager.state else {
       return
     }
 
-    let categories = try? await apiClient.sendAPIRequest(ScraperAPI.Request.GetWatchList(userId: user.id))
+    let categories = try? await apiClient.sendAPIRequest(
+      ScraperAPI.Request.GetWatchList(userId: user.id)
+    )
 
     guard let categories = categories else {
       return
@@ -50,7 +53,7 @@ class ContentViewModel {
     }
 
     var shows: [ShowListStatus] = []
-    
+
     // Сохраняем все шоу в SwiftData
     for category in categories {
       for show in category.shows {
@@ -66,7 +69,7 @@ class ContentViewModel {
 struct ContentViewWithTabView: View {
   @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
   @Environment(\.modelContext) private var modelContext
-  
+
   @State var viewModel: ContentViewModel?
 
   var body: some View {
@@ -95,7 +98,10 @@ struct ContentViewWithTabView: View {
         }
       }
 
-      Tab("Уведомления", systemImage: notificationCounterWatcher.counter == 0 ? "bell" : "bell.badge") {
+      Tab(
+        "Уведомления",
+        systemImage: notificationCounterWatcher.counter == 0 ? "bell" : "bell.badge"
+      ) {
         NavigationStack {
           NotificationCenterView()
             .navigationDestination(
@@ -105,7 +111,7 @@ struct ContentViewWithTabView: View {
         }
       }
       #if !os(tvOS)
-      .badge(notificationCounterWatcher.counter)
+        .badge(notificationCounterWatcher.counter)
       #endif
 
       Tab("Календарь", systemImage: "calendar") {
@@ -139,7 +145,7 @@ struct ContentViewWithTabView: View {
           }
         }
         #if !os(tvOS)
-        .defaultVisibility(.hidden, for: .tabBar)
+          .defaultVisibility(.hidden, for: .tabBar)
         #endif
       }
     }
@@ -151,8 +157,8 @@ struct ContentViewWithTabView: View {
     #if !os(tvOS)
       .tabViewSidebarBottomBar {
         SidebarProfileButton()
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
       }
     #endif
   }
@@ -164,48 +170,55 @@ private struct SidebarProfileButton: View {
   @State var profileSheetPresented = false
 
   var body: some View {
-    Button(action: {
-      profileSheetPresented.toggle()
-    }, label: {
-      if case let .isAuth(user) = userManager.state {
-        HStack {
-          AsyncImage(
-            url: user.avatarURL,
-            transaction: .init(animation: .easeInOut),
-            content: { phase in
-              switch phase {
-              case .empty:
-                Image(systemName: "person.circle")
-              case let .success(image):
-                image
-                  .resizable()
-                  .frame(width: 26, height: 26)
-                  .clipShape(.circle)
-                  .clipped()
-              case .failure:
-                Image(systemName: "person.circle")
-              @unknown default:
-                Image(systemName: "person.circle")
+    Button(
+      action: {
+        profileSheetPresented.toggle()
+      },
+      label: {
+        if case let .isAuth(user) = userManager.state {
+          HStack {
+            AsyncImage(
+              url: user.avatarURL,
+              transaction: .init(animation: .easeInOut),
+              content: { phase in
+                switch phase {
+                case .empty:
+                  Image(systemName: "person.circle")
+                case let .success(image):
+                  image
+                    .resizable()
+                    .frame(width: 26, height: 26)
+                    .clipShape(.circle)
+                    .clipped()
+                case .failure:
+                  Image(systemName: "person.circle")
+                @unknown default:
+                  Image(systemName: "person.circle")
+                }
               }
-            }
-          )
+            )
 
-          Text(user.username)
-            .fontWeight(.semibold)
+            Text(user.username)
+              .fontWeight(.semibold)
+          }
         }
-      } else {
-        HStack {
-          Image(systemName: "person.circle")
+        else {
+          HStack {
+            Image(systemName: "person.circle")
 
-          Text("Профиль")
-            .fontWeight(.semibold)
+            Text("Профиль")
+              .fontWeight(.semibold)
+          }
         }
       }
-    })
+    )
     .buttonStyle(.plain)
-    .sheet(isPresented: $profileSheetPresented, content: {
-      ProfileSheet()
-    })
+    .sheet(
+      isPresented: $profileSheetPresented,
+      content: {
+        ProfileSheet()
+      }
+    )
   }
 }
 
