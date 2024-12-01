@@ -37,7 +37,7 @@ enum CategoryType: Int, Codable, CaseIterable, ShowStatusProtocol {
 }
 
 @Model
-final class ShowListStatus {
+final class ShowListStatusEntity {
   @Attribute(.unique) var id: Int
   @Attribute var statusRaw: String  // Используем String для универсального хранения
 
@@ -56,5 +56,70 @@ final class ShowListStatus {
   init(id: Int, status: ShowStatusProtocol) {
     self.id = id
     statusRaw = status.key
+  }
+}
+
+@Observable
+class ShowListStatusModel {
+  private let apiClient: ScraperAPI.APIClient
+  private let userManager: UserManager
+  private let modelContext: ModelContext
+
+  init(apiClient: ScraperAPI.APIClient,
+       userManager: UserManager,
+       modelContext: ModelContext)
+  {
+    self.apiClient = apiClient
+    self.userManager = userManager
+    self.modelContext = modelContext
+  }
+
+  func getById(id: Int) -> ShowListStatusEntity? {
+    do {
+      let descriptor =
+        FetchDescriptor<ShowListStatusEntity>(predicate: #Predicate<ShowListStatusEntity> { $0.id == id })
+      let result = try modelContext.fetch(descriptor)
+      return result.first
+    } catch {
+      return nil
+    }
+  }
+
+  @MainActor
+  func saveData(listShows: [ShowListStatusEntity]) {
+    for show in listShows {
+      let status = ShowListStatusEntity(id: show.id, status: show.status)
+      modelContext.insert(status)
+    }
+    try? modelContext.save()
+    print("saved list statuses")
+  }
+
+  func cacheCategories() async {
+    guard case let .isAuth(user) = userManager.state else {
+      return
+    }
+
+    let categories = try? await apiClient.sendAPIRequest(ScraperAPI.Request.GetWatchList(userId: user.id))
+
+    guard let categories = categories else {
+      return
+    }
+
+    if categories.isEmpty {
+      return
+    }
+
+    var shows: [ShowListStatusEntity] = []
+
+    // Сохраняем все шоу в SwiftData
+    for category in categories {
+      for show in category.shows {
+        let status = ShowListStatusEntity(id: show.id, status: category.type)
+        shows.append(status)
+      }
+    }
+
+    await saveData(listShows: shows)
   }
 }

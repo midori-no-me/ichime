@@ -103,7 +103,7 @@ class MyListViewModel {
       // Сохраняем все шоу в SwiftData
       for category in categories {
         for show in category.shows {
-          let status = ShowListStatus(id: show.id, status: category.type)
+          let status = ShowListStatusEntity(id: show.id, status: category.type)
           modelContext?.insert(status)
         }
       }

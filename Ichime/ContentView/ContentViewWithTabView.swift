@@ -9,68 +9,12 @@ import ScraperAPI
 import SwiftData
 import SwiftUI
 
-@Observable
-class ContentViewModel {
-  private let apiClient: ScraperAPI.APIClient
-  private let userManager: UserManager
-  private let modelContext: ModelContext?
-
-  init(
-    apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
-    userManager: UserManager = ApplicationDependency.container.resolve(),
-    modelContext: ModelContext?
-  ) {
-    self.apiClient = apiClient
-    self.userManager = userManager
-    self.modelContext = modelContext
-  }
-
-  @MainActor
-  func saveData(listShows: [ShowListStatus]) {
-    for show in listShows {
-      let status = ShowListStatus(id: show.id, status: show.status)
-      modelContext?.insert(status)
-    }
-    try? modelContext?.save()
-    print("saved list statuses")
-  }
-
-  func cacheCategories() async {
-    guard case let .isAuth(user) = userManager.state else {
-      return
-    }
-
-    let categories = try? await apiClient.sendAPIRequest(
-      ScraperAPI.Request.GetWatchList(userId: user.id)
-    )
-
-    guard let categories = categories else {
-      return
-    }
-
-    if categories.isEmpty {
-      return
-    }
-
-    var shows: [ShowListStatus] = []
-
-    // Сохраняем все шоу в SwiftData
-    for category in categories {
-      for show in category.shows {
-        let status = ShowListStatus(id: show.id, status: category.type)
-        shows.append(status)
-      }
-    }
-
-    await saveData(listShows: shows)
-  }
-}
 
 struct ContentViewWithTabView: View {
   @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
   @Environment(\.modelContext) private var modelContext
 
-  @State var viewModel: ContentViewModel?
+  @State var viewModel: ShowListStatusModel = ApplicationDependency.container.resolve()
 
   var body: some View {
     TabView {
@@ -150,8 +94,7 @@ struct ContentViewWithTabView: View {
       }
     }
     .task {
-      self.viewModel = ContentViewModel(modelContext: modelContext)
-      await viewModel?.cacheCategories()
+      await viewModel.cacheCategories()
     }
     .tabViewStyle(.sidebarAdaptable)
     #if !os(tvOS)

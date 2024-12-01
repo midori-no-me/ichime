@@ -149,13 +149,14 @@ struct ShowView: View {
   var preloadedShow: Show?
 
   @State private var viewModel: ShowViewModel
-  @Query var showStatus: [ShowListStatus]
+  @Query var showStatus: [ShowListStatusEntity]
 
   init(showId: Int, preloadedShow: Show? = nil) {
     self.showId = showId
     self.preloadedShow = preloadedShow
     _viewModel = State(initialValue: .init())
-    _showStatus = Query(filter: #Predicate<ShowListStatus> { $0.id == showId })
+    _showStatus = Query(filter: #Predicate<ShowListStatusEntity> { $0.id == showId })
+    print(_showStatus)
   }
 
   var body: some View {
