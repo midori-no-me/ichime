@@ -39,8 +39,7 @@ public final class Anime365ApiClient {
     urlSession = URLSession(configuration: config)
   }
 
-  public func sendApiRequest<T: Anime365ApiRequest>(_ apiRequest: T) async throws -> T.ResponseType
-  {
+  public func sendApiRequest<T: Anime365ApiRequest>(_ apiRequest: T) async throws -> T.ResponseType {
     // Составляем URL запроса
     var fullURL = baseURL.appendingPathComponent("/api" + apiRequest.getEndpoint())
     let queryItems = apiRequest.getQueryItems()

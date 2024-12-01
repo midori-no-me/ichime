@@ -29,14 +29,16 @@ class ApplicationDependency: DIFramework {
 
       do {
         return try ModelContainer(for: schema, configurations: [modelConfiguration])
-      } catch {
+      }
+      catch {
         fatalError("Could not create ModelContainer: \(error)")
       }
     }.lifetime(.single)
 
     #if os(tvOS)
       container
-        .register { HTTPCookieStorage.sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
+        .register {
+          HTTPCookieStorage.sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
         }
     #else
       container
@@ -67,11 +69,13 @@ class ApplicationDependency: DIFramework {
     container.register { UserManager(client: $0) }
       .lifetime(.single)
 
-    container.register { Anime365ApiClient(
-      baseURL: ServiceLocator.websiteBaseUrl,
-      userAgent: ServiceLocator.userAgent,
-      cookieStorage: $0
-    ) }
+    container.register {
+      Anime365ApiClient(
+        baseURL: ServiceLocator.websiteBaseUrl,
+        userAgent: ServiceLocator.userAgent,
+        cookieStorage: $0
+      )
+    }
 
     container.register {
       ShowListStatusModel(apiClient: $0, userManager: $1, modelContext: $2)

@@ -9,7 +9,6 @@ import ScraperAPI
 import SwiftData
 import SwiftUI
 
-
 struct ContentViewWithTabView: View {
   @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
   @Environment(\.modelContext) private var modelContext

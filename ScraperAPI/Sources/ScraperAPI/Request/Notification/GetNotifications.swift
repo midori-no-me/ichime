@@ -33,8 +33,7 @@ extension ScraperAPI.Request {
       []
     }
 
-    public func parseResponse(html: String, baseURL: URL) throws -> [ScraperAPI.Types.Notification]
-    {
+    public func parseResponse(html: String, baseURL: URL) throws -> [ScraperAPI.Types.Notification] {
       do {
         let doc: Document = try SwiftSoup.parse(html)
         let notificationsElements = try doc.select("#yw0 .notifications-item")

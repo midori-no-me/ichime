@@ -57,8 +57,7 @@ func guessEpisodeReleaseWeekdayAndTime(in episodePreviews: [EpisodePreview]) -> 
     let components = calendar.dateComponents([.hour, .minute, .second], from: uploadDate)
 
     // Calculate total seconds
-    if let hours = components.hour, let minutes = components.minute, let seconds = components.second
-    {
+    if let hours = components.hour, let minutes = components.minute, let seconds = components.second {
       totalSeconds += hours * 3600 + minutes * 60 + seconds
       totalCount += 1
     }

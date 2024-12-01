@@ -65,10 +65,11 @@ class ShowListStatusModel {
   private let userManager: UserManager
   private let modelContext: ModelContext
 
-  init(apiClient: ScraperAPI.APIClient,
-       userManager: UserManager,
-       modelContext: ModelContext)
-  {
+  init(
+    apiClient: ScraperAPI.APIClient,
+    userManager: UserManager,
+    modelContext: ModelContext
+  ) {
     self.apiClient = apiClient
     self.userManager = userManager
     self.modelContext = modelContext
@@ -80,7 +81,8 @@ class ShowListStatusModel {
         FetchDescriptor<ShowListStatusEntity>(predicate: #Predicate<ShowListStatusEntity> { $0.id == id })
       let result = try modelContext.fetch(descriptor)
       return result.first
-    } catch {
+    }
+    catch {
       return nil
     }
   }
