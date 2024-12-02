@@ -30,65 +30,6 @@ struct MomentCard: View {
   }
 }
 
-@available(tvOS, unavailable)
-private struct MomentCardCommon: View {
-  public let title: String
-  public let cover: URL
-  public let websiteUrl: URL
-  public let id: Int
-  public let action: () -> Void
-
-  private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 8
-
-  private static let CARD_WIDTH: CGFloat = 270
-  private static let CARD_HEIGHT: CGFloat = 172
-
-  var body: some View {
-    Button(action: action) {
-      VStack(spacing: MomentCardCommon.SPACING_BETWEEN_IMAGE_AND_CONTENT) {
-        AsyncImage(
-          url: cover,
-          transaction: .init(animation: .easeInOut(duration: 0.5))
-        ) { phase in
-          switch phase {
-          case .empty:
-            EmptyView()
-
-          case let .success(image):
-            image
-              .resizable()
-              .scaledToFit()
-              .cornerRadiusForMediumObject()
-              .clipped()
-
-          case .failure:
-            ImagePlaceholder()
-
-          @unknown default:
-            EmptyView()
-          }
-        }
-
-        Text(title)
-          .font(.caption)
-          .lineLimit(2, reservesSpace: true)
-          .truncationMode(.tail)
-      }
-    }
-    .frame(
-      maxWidth: MomentCardCommon.CARD_WIDTH,
-      maxHeight: MomentCardCommon.CARD_HEIGHT,
-      alignment: .bottom
-    )
-    .buttonStyle(.plain)
-  }
-}
-
-@available(tvOS 17.0, *)
-@available(iOS, unavailable)
-@available(macOS, unavailable)
-@available(watchOS, unavailable)
-@available(visionOS, unavailable)
 private struct MomentCardTv: View {
   public let title: String
   public let cover: URL

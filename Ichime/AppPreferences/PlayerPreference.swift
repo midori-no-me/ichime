@@ -12,7 +12,6 @@ class PlayerPreference: ObservableObject {
   @AppStorage("defaultPlayer") var selectedPlayer: Player = .Infuse
 
   enum Player: String, CaseIterable {
-    case iOS
     case Infuse
     case VLC
     case SVPlayer
@@ -21,7 +20,7 @@ class PlayerPreference: ObservableObject {
       switch self {
       case .Infuse, .VLC:
         return true
-      case .iOS, .SVPlayer:
+      case .SVPlayer:
         return false
       }
     }
@@ -38,8 +37,6 @@ class PlayerPreference: ObservableObject {
       return getVLCLink(video: video, subtitle: subtitle)
     case .SVPlayer:
       return getSVPlayerLink(video: video, subtitle: subtitle)
-    case .iOS:
-      return nil
     }
   }
 

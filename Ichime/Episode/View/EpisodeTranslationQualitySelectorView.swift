@@ -101,32 +101,6 @@ class EpisodeTranslationQualitySelectorViewModel {
     shownCompleteAlert = true
   }
 
-  func playThroughInbuildPlayer(video: URL, subtitle: URL?) {
-    Task {
-      let collector = MetadataCollector(
-        episodeId: self.episodeId,
-        translationId: self.translationId
-      )
-      let metadata = await collector.getMetadata()
-
-      await self.videoHolder.play(
-        video: .init(
-          videoURL: video,
-          subtitleURL: subtitle,
-          metadata: metadata,
-          translationId: translationId
-        ),
-        onDismiss: {
-          if let dismissModal = self.dismissModal {
-            dismissModal()
-          }
-        }
-      )
-
-      self.selectedVideoUrl = nil
-    }
-  }
-
   func handleStartPlay(
     video: URL,
     subtitle: EpisodeStreamingInfo.SubtitlesUrls?,
@@ -145,12 +119,7 @@ class EpisodeTranslationQualitySelectorViewModel {
     selectedVideoUrl = video
     dismissModal = dismiss
 
-    if player == .iOS {
-      playThroughInbuildPlayer(video: video, subtitle: subtitle?.vtt)
-    }
-    else {
-      playThroughURL(video: video, subtitle: subtitle?.base, player: player)
-    }
+    playThroughURL(video: video, subtitle: subtitle?.base, player: player)
   }
 
   func checkWatch() async {
@@ -238,14 +207,6 @@ struct EpisodeTranslationQualitySelectorView: View {
                   isPresented: $viewModel.shownChangePlayerAlert,
                   actions: {
                     if let url = viewModel.selectedVideoUrl {
-                      Button("Встроенный") {
-                        viewModel.handleStartPlay(
-                          video: url,
-                          subtitle: !disableSubs ? episodeStreamingInfo.subtitles : nil,
-                          dismiss: { dismiss() },
-                          player: .iOS
-                        )
-                      }
                       Button("Infuse") {
                         viewModel.handleStartPlay(
                           video: url,

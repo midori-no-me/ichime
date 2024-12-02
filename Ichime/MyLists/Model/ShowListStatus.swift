@@ -88,8 +88,14 @@ class ShowListStatusModel {
   }
 
   @MainActor
-  func saveData(listShows: [ShowListStatusEntity]) {
+  func saveData(listShows: [(id: Int, status: ShowStatusProtocol)]) {
+    let allData = try? modelContainer.mainContext.fetch(FetchDescriptor<ShowListStatusEntity>())
+
     for show in listShows {
+      if let status = allData?.first(where: { $0.id == show.id }) {
+        status.statusRaw = show.status.key
+        continue
+      }
       let status = ShowListStatusEntity(id: show.id, status: show.status)
       modelContainer.mainContext.insert(status)
     }
@@ -112,13 +118,12 @@ class ShowListStatusModel {
       return
     }
 
-    var shows: [ShowListStatusEntity] = []
+    var shows = [(id: Int, status: ShowStatusProtocol)]()
 
     // Сохраняем все шоу в SwiftData
     for category in categories {
       for show in category.shows {
-        let status = ShowListStatusEntity(id: show.id, status: category.type)
-        shows.append(status)
+        shows.append((id: show.id, status: category.type))
       }
     }
 

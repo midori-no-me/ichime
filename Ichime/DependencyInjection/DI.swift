@@ -34,7 +34,7 @@ class ApplicationDependency: DIFramework {
         fatalError("Could not create ModelContainer: \(error)")
       }
     }.lifetime(.single)
-    
+
     container
       .register {
         HTTPCookieStorage.sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)

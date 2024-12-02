@@ -60,6 +60,7 @@ class ShowViewModel {
 
   private let client: Anime365Client
   private let scraperClient: ScraperAPI.APIClient
+  private let showListStatusModel: ShowListStatusModel
   private var showId: Int = 0
 
   var shareUrl: URL {
@@ -68,10 +69,12 @@ class ShowViewModel {
 
   init(
     client: Anime365Client = ApplicationDependency.container.resolve(),
-    scraperClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve()
+    scraperClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
+    showListStatusModel: ShowListStatusModel = ApplicationDependency.container.resolve()
   ) {
     self.client = client
     self.scraperClient = scraperClient
+    self.showListStatusModel = showListStatusModel
   }
 
   func performInitialLoad(showId: Int, preloadedShow: Show?) async {
@@ -148,16 +151,7 @@ struct ShowView: View {
   var showId: Int
   var preloadedShow: Show?
 
-  @State private var viewModel: ShowViewModel
-  @Query var showStatus: [ShowListStatusEntity]
-
-  init(showId: Int, preloadedShow: Show? = nil) {
-    self.showId = showId
-    self.preloadedShow = preloadedShow
-    _viewModel = State(initialValue: .init())
-    _showStatus = Query(filter: #Predicate<ShowListStatusEntity> { $0.id == showId })
-    print(_showStatus)
-  }
+  @State private var viewModel: ShowViewModel = .init()
 
   var body: some View {
     Group {
@@ -185,7 +179,6 @@ struct ShowView: View {
 
       case let .loaded(show):
         ScrollView(.vertical) {
-          Text(showStatus.first?.statusRaw ?? "Ничего нет")
           ShowDetails(show: show, viewModel: self.viewModel)
             .scenePadding(.bottom)
         }
@@ -334,11 +327,6 @@ private struct ShowKeyDetailsSection: View {
   }
 }
 
-@available(tvOS 17.0, *)
-@available(iOS, unavailable)
-@available(macOS, unavailable)
-@available(watchOS, unavailable)
-@available(visionOS, unavailable)
 private struct ShowPrimaryAndSecondaryTitles: View {
   let title: Show.Title
 
@@ -368,18 +356,6 @@ private struct ShowPrimaryAndSecondaryTitles: View {
   }
 }
 
-@available(tvOS, unavailable)
-private struct ShowSecondaryTitle: View {
-  let title: String
-
-  var body: some View {
-    Text(title)
-      .font(.title2)
-      .foregroundStyle(.secondary)
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .textSelection(.enabled)
-  }
-}
 
 private struct ShowActionButtons: View {
   let show: Show
@@ -468,7 +444,7 @@ private struct ShowActionButtons: View {
           show: .init(
             id: show.id,
             name: show.title.compose,
-            totalEpisodes: show.numberOfEpisodes ?? Int.max
+            totalEpisodes: show.numberOfEpisodes ?? nil
           ),
           onUpdate: {
             Task {

@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 private protocol ShowsSectionLoader: Identifiable {

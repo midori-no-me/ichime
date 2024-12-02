@@ -7,6 +7,7 @@ struct Show: Hashable, Identifiable {
   ) -> Show {
     let score = Float(series.myAnimeListScore) ?? 0
 
+    print(series.numberOfEpisodes)
     return Show(
       id: series.id,
       title: Show.Title(
