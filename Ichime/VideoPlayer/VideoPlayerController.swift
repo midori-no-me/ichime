@@ -138,25 +138,6 @@ extension VideoPlayerController {
       self.control = control
     }
 
-    #if !os(tvOS)
-      func playerViewController(
-        _: AVPlayerViewController,
-        willBeginFullScreenPresentationWithAnimationCoordinator _:
-          UIViewControllerTransitionCoordinator
-      ) {
-        // Called when the player enters fullscreen mode
-      }
-
-      func playerViewController(
-        _: AVPlayerViewController,
-        willEndFullScreenPresentationWithAnimationCoordinator _:
-          UIViewControllerTransitionCoordinator
-      ) {
-        // Called when the player exits fullscreen mode
-        control.pausePlayer()
-      }
-    #endif
-
     func playerViewControllerDidStartPictureInPicture(_: AVPlayerViewController) {
       control.isInPiP = true
     }

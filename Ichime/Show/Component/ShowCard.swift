@@ -22,25 +22,8 @@ struct ShowCard: View {
         secondaryTitle: show.title.translated.russian
       )
     }
-    #if !os(tvOS)
-      .contextMenu {
-        ShareLink(item: show.websiteUrl) {
-          Label("Поделиться", systemImage: "square.and.arrow.up")
-        }
-      } preview: {
-        ShowCardContextMenuPreview(
-          posterUrl: show.posterUrl!,
-          title: show.title.compose,
-          calendarSeason: show.airingSeason?.getLocalizedTranslation(),
-          typeTitle: show.typeTitle
-        )
-      }
-    #endif
-    #if os(tvOS)
-      .buttonStyle(.borderless)
-    #else
-      .buttonStyle(.plain)
-    #endif
+    .buttonStyle(.borderless)
+
   }
 }
 
@@ -120,9 +103,7 @@ private struct ShowCardContextMenuPreview: View {
           }
         }
       )
-      #if os(macOS)
-        .background(Color(nsColor: .windowBackgroundColor))
-      #endif
+
       #if os(iOS)  // !os(tvOS)
         .background(Color(UIColor.secondarySystemBackground))
       #endif

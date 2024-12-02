@@ -17,9 +17,8 @@ struct ContentView: View {
       Color.clear
     case .loading:
       ProgressView()
-        #if os(tvOS)
-          .focusable()
-        #endif
+        .focusable()
+
     case .isAuth:
       ContentViewWithTabView()
     case .isAnonym:

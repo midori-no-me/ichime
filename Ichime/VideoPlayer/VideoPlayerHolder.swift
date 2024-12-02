@@ -35,16 +35,6 @@ class VideoPlayerHolder {
       await pause()
     }
 
-    #if os(iOS)
-
-      //            if hasSubsLastTime, videoPlayerController.player != nil {
-      //                await recreate()
-      //            }
-      //
-      //            hasSubsLastTime = video.subtitleURL != nil
-
-    #endif
-
     player = VideoPlayer()
 
     if let translationId = video.translationId {

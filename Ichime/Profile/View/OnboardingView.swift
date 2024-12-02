@@ -119,9 +119,7 @@ struct OnboardingView: View {
         }
       )
     }
-    #if os(iOS)
-      .toolbarTitleDisplayMode(.large)
-    #endif
+
   }
 }
 
@@ -142,15 +140,6 @@ struct AuthenticationAppFeature: View {
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .padding(.all)
-    #if os(macOS)
-      .background(Color.primary.blendMode(.overlay), in: RoundedRectangle(cornerRadius: 12))
-    #endif
-    #if !os(tvOS)
-      .background(
-        Color(uiColor: UIColor.secondarySystemBackground),
-        in: RoundedRectangle(cornerRadius: 12)
-      )
-    #endif
 
     .scenePadding(.horizontal)
   }

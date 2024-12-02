@@ -8,17 +8,9 @@
 import SwiftUI
 
 struct MomentCard: View {
-  #if os(tvOS)
-    public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 500
-  #else
-    public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 150
-  #endif
+  public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 500
 
-  #if os(tvOS)
-    public static let RECOMMENDED_SPACING: CGFloat = 60
-  #else
-    public static let RECOMMENDED_SPACING: CGFloat = 16
-  #endif
+  public static let RECOMMENDED_SPACING: CGFloat = 60
 
   public let title: String
   public let cover: URL
@@ -27,23 +19,14 @@ struct MomentCard: View {
   public let action: () -> Void
 
   var body: some View {
-    #if os(tvOS)
-      MomentCardTv(
-        title: title,
-        cover: cover,
-        websiteUrl: websiteUrl,
-        id: id,
-        action: action
-      )
-    #else
-      MomentCardCommon(
-        title: title,
-        cover: cover,
-        websiteUrl: websiteUrl,
-        id: id,
-        action: action
-      )
-    #endif
+    MomentCardTv(
+      title: title,
+      cover: cover,
+      websiteUrl: websiteUrl,
+      id: id,
+      action: action
+    )
+
   }
 }
 
@@ -155,15 +138,9 @@ private struct MomentCardTv: View {
 private struct ImagePlaceholder: View {
   var body: some View {
     Image(systemName: "photo")
-      #if os(tvOS)
-        .resizable()
-        .aspectRatio(contentMode: .fit)
-      #else
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(HierarchicalShapeStyle.quinary)
-        .cornerRadiusForMediumObject()
-        .clipped()
-      #endif
+      .resizable()
+      .aspectRatio(contentMode: .fit)
+
   }
 }
 

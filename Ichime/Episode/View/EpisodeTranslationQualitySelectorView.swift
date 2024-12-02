@@ -195,9 +195,7 @@ struct EpisodeTranslationQualitySelectorView: View {
 
       case .loading:
         ProgressView()
-          #if os(tvOS)
-            .focusable()
-          #endif
+          .focusable()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -205,9 +203,7 @@ struct EpisodeTranslationQualitySelectorView: View {
         } description: {
           Text(error.localizedDescription)
         }
-        #if !os(tvOS)
-          .textSelection(.enabled)
-        #endif
+
       case .loadedButEmpty:
         ContentUnavailableView {
           Label("Ничего не нашлось", systemImage: "list.bullet")
@@ -277,16 +273,11 @@ struct EpisodeTranslationQualitySelectorView: View {
           } header: {
             Text("Качество видео")
           } footer: {
-            #if !os(tvOS)
-              if episodeStreamingInfo.subtitles != nil {
-                Text("AirPlay не доступен для серий с софтсабом.")
-              }
-            #endif
+
           }
         }
-        #if os(tvOS)
-          .listStyle(.grouped)
-        #endif
+        .listStyle(.grouped)
+
       }
     }
     .toolbar {
@@ -297,9 +288,7 @@ struct EpisodeTranslationQualitySelectorView: View {
       }
     }
     .navigationTitle(translationTeam)
-    #if !os(tvOS)
-      .navigationBarTitleDisplayMode(.inline)
-    #endif
+
   }
 }
 

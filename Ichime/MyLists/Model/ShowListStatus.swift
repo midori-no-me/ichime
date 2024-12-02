@@ -63,23 +63,23 @@ final class ShowListStatusEntity {
 class ShowListStatusModel {
   private let apiClient: ScraperAPI.APIClient
   private let userManager: UserManager
-  private let modelContext: ModelContext
+  private let modelContainer: ModelContainer
 
   init(
     apiClient: ScraperAPI.APIClient,
     userManager: UserManager,
-    modelContext: ModelContext
+    modelContainer: ModelContainer
   ) {
     self.apiClient = apiClient
     self.userManager = userManager
-    self.modelContext = modelContext
+    self.modelContainer = modelContainer
   }
 
-  func getById(id: Int) -> ShowListStatusEntity? {
+  @MainActor func getById(id: Int) -> ShowListStatusEntity? {
     do {
       let descriptor =
         FetchDescriptor<ShowListStatusEntity>(predicate: #Predicate<ShowListStatusEntity> { $0.id == id })
-      let result = try modelContext.fetch(descriptor)
+      let result = try modelContainer.mainContext.fetch(descriptor)
       return result.first
     }
     catch {
@@ -91,9 +91,9 @@ class ShowListStatusModel {
   func saveData(listShows: [ShowListStatusEntity]) {
     for show in listShows {
       let status = ShowListStatusEntity(id: show.id, status: show.status)
-      modelContext.insert(status)
+      modelContainer.mainContext.insert(status)
     }
-    try? modelContext.save()
+    try? modelContainer.mainContext.save()
     print("saved list statuses")
   }
 

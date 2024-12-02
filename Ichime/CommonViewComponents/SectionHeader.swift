@@ -12,34 +12,20 @@ struct SectionHeaderRaw: View {
   let subtitle: String?
 
   var body: some View {
-    #if os(tvOS)
-      HStack(alignment: .firstTextBaseline) {
-        Text(title)
-          .font(.title3)
-          .fontWeight(.bold)
+    HStack(alignment: .firstTextBaseline) {
+      Text(title)
+        .font(.title3)
+        .fontWeight(.bold)
 
-        if let subtitle = subtitle {
-          Text(subtitle)
-            .font(.headline)
-            .foregroundStyle(.secondary)
-        }
+      if let subtitle = subtitle {
+        Text(subtitle)
+          .font(.headline)
+          .foregroundStyle(.secondary)
       }
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .focusSection()
-    #else
-      VStack(alignment: .leading) {
-        Text(title)
-          .font(.title)
-          .fontWeight(.bold)
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .focusSection()
 
-        if let subtitle = subtitle {
-          Text(subtitle)
-            .font(.headline)
-            .foregroundStyle(.secondary)
-        }
-      }
-      .frame(maxWidth: .infinity, alignment: .leading)
-    #endif
   }
 }
 
@@ -49,47 +35,23 @@ struct SectionHeader<Content: View>: View {
   @ViewBuilder let destination: Content
 
   var body: some View {
-    #if os(tvOS)
-      HStack(alignment: .firstTextBaseline) {
-        NavigationLink(destination: destination) {
-          Text(title)
-            .font(.title3)
-            .fontWeight(.bold)
-        }
-        .buttonStyle(.plain)
-
-        if let subtitle = subtitle {
-          Text(subtitle)
-            .font(.headline)
-            .foregroundStyle(.secondary)
-        }
+    HStack(alignment: .firstTextBaseline) {
+      NavigationLink(destination: destination) {
+        Text(title)
+          .font(.title3)
+          .fontWeight(.bold)
       }
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .focusSection()
-    #else
-      VStack(alignment: .leading) {
-        NavigationLink(destination: destination) {
-          HStack(alignment: .center) {
-            Text(title)
-              .font(.title)
-              .fontWeight(.bold)
+      .buttonStyle(.plain)
 
-            Image(systemName: "chevron.right")
-              .font(.title3)
-              .foregroundStyle(.secondary)
-              .fontWeight(.bold)
-          }
-        }
-        .buttonStyle(.plain)
-
-        if let subtitle = subtitle {
-          Text(subtitle)
-            .font(.headline)
-            .foregroundStyle(.secondary)
-        }
+      if let subtitle = subtitle {
+        Text(subtitle)
+          .font(.headline)
+          .foregroundStyle(.secondary)
       }
-      .frame(maxWidth: .infinity, alignment: .leading)
-    #endif
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .focusSection()
+
   }
 }
 

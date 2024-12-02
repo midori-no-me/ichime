@@ -44,9 +44,8 @@ struct ShowGenreListView: View {
     .navigationTitle(
       showTitle.translated.japaneseRomaji ?? showTitle.translated.russian ?? showTitle.full
     )
-    #if os(tvOS)
-      .listStyle(.grouped)
-    #endif
+    .listStyle(.grouped)
+
   }
 
   private func getShowsByGenre(genreId: Int) -> (_ offset: Int, _ limit: Int) async throws -> [Show] {

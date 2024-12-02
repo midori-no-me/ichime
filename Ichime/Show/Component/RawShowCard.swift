@@ -8,30 +8,12 @@
 import SwiftUI
 
 struct RawShowCard: View {
-  #if os(tvOS)
-    private static let IMAGE_WIDTH: CGFloat = 250
-  #else
-    private static let IMAGE_WIDTH: CGFloat = 100
-  #endif
+  private static let IMAGE_WIDTH: CGFloat = 250
+
   private static let IMAGE_HEIGHT: CGFloat = IMAGE_WIDTH * 1.35
-
-  #if os(tvOS)
-    public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = IMAGE_WIDTH * 3
-  #else
-    public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 300
-  #endif
-
-  #if os(tvOS)
-    public static let RECOMMENDED_SPACING: CGFloat = 60
-  #else
-    public static let RECOMMENDED_SPACING: CGFloat = 16
-  #endif
-
-  #if os(tvOS)
-    private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 50
-  #else
-    private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 8
-  #endif
+  public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = IMAGE_WIDTH * 3
+  public static let RECOMMENDED_SPACING: CGFloat = 60
+  private static let SPACING_BETWEEN_IMAGE_AND_CONTENT: CGFloat = 50
 
   let metadataLineComponents: [String]
   let cover: URL?
@@ -57,11 +39,6 @@ struct RawShowCard: View {
               image
                 .resizable()
                 .scaledToFit()
-                #if !os(tvOS)
-                  .cornerRadiusForMediumObject()
-                  .clipped()
-                  .shadow(radius: 0.5)
-                #endif
 
             case .failure:
               ImagePlaceholder()
@@ -109,15 +86,9 @@ struct RawShowCard: View {
 private struct ImagePlaceholder: View {
   var body: some View {
     Image(systemName: "photo")
-      #if os(tvOS)
-        .resizable()
-        .aspectRatio(contentMode: .fit)
-      #else
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(HierarchicalShapeStyle.quinary)
-        .cornerRadiusForMediumObject()
-        .clipped()
-      #endif
+      .resizable()
+      .aspectRatio(contentMode: .fit)
+
   }
 }
 //

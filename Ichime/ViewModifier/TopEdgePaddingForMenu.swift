@@ -3,11 +3,8 @@ import SwiftUI
 
 private struct TopEdgePaddingForMenu: ViewModifier {
   func body(content: Content) -> some View {
-    #if os(tvOS)
-      content.padding(.top, 40)
-    #else
-      content
-    #endif
+    content.padding(.top, 40)
+
   }
 }
 

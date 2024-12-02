@@ -174,9 +174,7 @@ struct ShowView: View {
 
       case .loading:
         ProgressView()
-          #if os(tvOS)
-            .focusable()
-          #endif
+          .focusable()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -184,9 +182,6 @@ struct ShowView: View {
         } description: {
           Text(error.localizedDescription)
         }
-        #if !os(tvOS)
-          .textSelection(.enabled)
-        #endif
 
       case let .loaded(show):
         ScrollView(.vertical) {
@@ -194,41 +189,18 @@ struct ShowView: View {
           ShowDetails(show: show, viewModel: self.viewModel)
             .scenePadding(.bottom)
         }
-        #if os(tvOS)
-          .scrollClipDisabled(true)
-        #endif
-        #if !os(tvOS)
-          .navigationTitle(show.title.translated.japaneseRomaji ?? show.title.full)
-        #endif
-        #if os(macOS)
-          .navigationSubtitle(show.title.translated.russian ?? "")
-        #endif
+        .scrollClipDisabled(true)
+
       }
     }
-    #if !os(tvOS)
-      .toolbar {
-        ToolbarItem(placement: .navigationBarTrailing) {
-          ShareLink(item: self.viewModel.shareUrl) {
-            Label("Поделиться", systemImage: "square.and.arrow.up")
-          }
-        }
-      }
-      .navigationBarTitleDisplayMode(.large)
-    #endif
-    #if os(tvOS)
-      .toolbar(.hidden, for: .tabBar)
-    #endif
+    .toolbar(.hidden, for: .tabBar)
+
     .refreshable {
       await self.viewModel.performPullToRefresh()
     }
   }
 }
-
-#if os(tvOS)
-  private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
-#else
-  private let SPACING_BETWEEN_SECTIONS: CGFloat = 20
-#endif
+private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
 
 private struct ShowDetails: View {
   let show: Show
@@ -236,18 +208,9 @@ private struct ShowDetails: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-      #if !os(tvOS)
-        HeadingSectionWithBackground(imageUrl: show.posterUrl) {
-          ShowKeyDetailsSection(show: show, viewModel: viewModel)
-            .padding(.bottom, SPACING_BETWEEN_SECTIONS)
-            .horizontalScreenEdgePadding()
-        }
-      #endif
 
       Group {
-        #if os(tvOS)
-          ShowKeyDetailsSection(show: show, viewModel: viewModel)
-        #endif
+        ShowKeyDetailsSection(show: show, viewModel: viewModel)
 
         if !show.descriptions.isEmpty {
           ShowDescriptionCards(descriptions: show.descriptions)
@@ -269,25 +232,12 @@ private struct ShowKeyDetailsSection: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-      #if os(iOS)
-        if let russianTitle = show.title.translated.russian, horizontalSizeClass == .compact {
-          ShowSecondaryTitle(title: russianTitle)
-        }
-      #endif
 
       HStack(alignment: .top, spacing: SPACING_BETWEEN_SECTIONS) {
         VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-          #if os(tvOS)
-            ShowPrimaryAndSecondaryTitles(title: show.title)
-          #elseif os(iOS)
-            if let russianTitle = show.title.translated.russian, horizontalSizeClass == .regular {
-              ShowSecondaryTitle(title: russianTitle)
-            }
-          #endif
+          ShowPrimaryAndSecondaryTitles(title: show.title)
 
-          #if os(tvOS)
-            ShowActionButtons(show: show, viewModel: viewModel)
-          #endif
+          ShowActionButtons(show: show, viewModel: viewModel)
 
           LazyVGrid(
             columns: [
@@ -331,13 +281,6 @@ private struct ShowKeyDetailsSection: View {
             }
           }
 
-          #if !os(tvOS)
-            if horizontalSizeClass == .regular {
-              Spacer()
-
-              ShowActionButtons(show: show, viewModel: viewModel)
-            }
-          #endif
         }
 
         if let posterUrl = self.show.posterUrl {
@@ -385,15 +328,9 @@ private struct ShowKeyDetailsSection: View {
         }
       }
 
-      #if !os(tvOS)
-        if horizontalSizeClass == .compact {
-          ShowActionButtons(show: show, viewModel: viewModel)
-        }
-      #endif
     }
-    #if os(tvOS)
-      .focusSection()
-    #endif
+    .focusSection()
+
   }
 }
 
@@ -448,12 +385,7 @@ private struct ShowActionButtons: View {
   let show: Show
   var viewModel: ShowViewModel
   @State var showEdit = false
-
-  #if os(tvOS)
-    private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
-  #else
-    private let SPACING_BETWEEN_BUTTONS: CGFloat = 10
-  #endif
+  private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
 
   var isInMyList: Bool {
     viewModel.showRateStatus != UserRateStatus.deleted
@@ -469,15 +401,11 @@ private struct ShowActionButtons: View {
             "Смотреть",
             systemImage: show.episodePreviews.isEmpty ? "play.slash.fill" : "play.fill"
           )
-          #if os(tvOS)
-            .padding(20)
-          #endif
+          .padding(20)
+
         }
-        #if os(tvOS)
-          .buttonStyle(.card)
-        #else
-          .buttonStyle(.borderedProminent)
-        #endif
+        .buttonStyle(.card)
+
         .disabled(show.episodePreviews.isEmpty)
 
         if viewModel.statusReady {
@@ -505,20 +433,14 @@ private struct ShowActionButtons: View {
                 )
               }
             }
-            #if os(tvOS)
-              .padding(20)
-            #endif
+            .padding(20)
+
           }
-          #if os(tvOS)
-            .buttonStyle(.card)
-          #else
-            .buttonStyle(.bordered)
-          #endif
+          .buttonStyle(.card)
+
         }
       }
-      #if os(tvOS)
-        .focusSection()
-      #endif
+      .focusSection()
 
       Group {
         if !show.episodePreviews.isEmpty && show.isOngoing,
@@ -572,14 +494,6 @@ private struct ShowProperty: View {
           .font(.caption)
           .fontWeight(.medium)
 
-        #if !os(tvOS)
-          if isInteractive {
-            Image(systemName: "chevron.right")
-              .font(.caption2)
-              .foregroundStyle(.secondary)
-              .fontWeight(.bold)
-          }
-        #endif
       }
 
       Text(self.value)
@@ -721,9 +635,8 @@ private struct ShowDescriptionCards: View {
         )
       }
     }
-    #if os(tvOS)
-      .focusSection()
-    #endif
+    .focusSection()
+
   }
 }
 

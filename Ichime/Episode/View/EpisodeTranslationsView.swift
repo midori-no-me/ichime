@@ -112,9 +112,7 @@ struct EpisodeTranslationsView: View {
 
       case .loading:
         ProgressView()
-          #if os(tvOS)
-            .focusable()
-          #endif
+          .focusable()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -122,9 +120,6 @@ struct EpisodeTranslationsView: View {
         } description: {
           Text(error.localizedDescription)
         }
-        #if !os(tvOS)
-          .textSelection(.enabled)
-        #endif
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -166,13 +161,8 @@ struct EpisodeTranslationsView: View {
         }
       }
     }
-    #if os(tvOS)
-      .listStyle(.grouped)
-    #endif
-    #if !os(tvOS)
-      .navigationTitle(episodeTitle)
-      .navigationBarTitleDisplayMode(.large)
-    #endif
+    .listStyle(.grouped)
+
   }
 }
 

@@ -162,9 +162,7 @@ struct SearchShowsView: View {
 
       case .loading:
         ProgressView()
-          #if os(tvOS)
-            .focusable()
-          #endif
+          .focusable()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -172,9 +170,6 @@ struct SearchShowsView: View {
         } description: {
           Text(error.localizedDescription)
         }
-        #if !os(tvOS)
-          .textSelection(.enabled)
-        #endif
 
       case .loadedButEmpty:
         ContentUnavailableView.search
@@ -192,21 +187,12 @@ struct SearchShowsView: View {
       }
     }
     .navigationTitle("Поиск")
-    #if os(tvOS)
-      .searchable(
-        text: $viewModel.currentlyTypedSearchQuery,
-        placement: .automatic,
-        prompt: "Название тайтла"
-      )
-    #else
-      .navigationBarTitleDisplayMode(.large)
-      .searchable(
-        text: $viewModel.currentlyTypedSearchQuery,
-        isPresented: $viewModel.isSearchPresented,
-        placement: .navigationBarDrawer(displayMode: .always),
-        prompt: "Название тайтла"
-      )
-    #endif
+    .searchable(
+      text: $viewModel.currentlyTypedSearchQuery,
+      placement: .automatic,
+      prompt: "Название тайтла"
+    )
+
     .onChange(of: viewModel.currentlyTypedSearchQuery) {
       self.viewModel.currentlyTypedSearchQueryChanged()
     }

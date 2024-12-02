@@ -109,27 +109,22 @@ struct CurrentlyWatchingView: View {
         }
       case .loading:
         ProgressView()
-          #if os(tvOS)
-            .focusable()
-          #endif
+          .focusable()
+
       case .needSubscribe:
         ContentUnavailableView {
           Label("Нужна подписка", systemImage: "person.fill.badge.plus")
         } description: {
           Text("Подпишись чтоб получить все возможности приложения")
         }
-        #if !os(tvOS)
-          .textSelection(.enabled)
-        #endif
+
       case let .loadingFailed(error):
         ContentUnavailableView {
           Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
         } description: {
           Text(error.localizedDescription)
         }
-        #if !os(tvOS)
-          .textSelection(.enabled)
-        #endif
+
       case .loadedButEmpty:
         ContentUnavailableView {
           Label("Ничего не нашлось", systemImage: "list.bullet")
@@ -178,71 +173,48 @@ struct LoadedCurrentlyWatching: View {
   }
 
   var body: some View {
-    #if os(tvOS)
-      ScrollView(.vertical) {
-        LazyVGrid(
-          columns: [
-            GridItem(
-              .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-              spacing: RawShowCard.RECOMMENDED_SPACING,
-              alignment: .topLeading
-            )
-          ],
-          spacing: RawShowCard.RECOMMENDED_SPACING
-        ) {
-          ForEach(self.shows) { show in
-            NavigationLink(value: show) {
-              WatchCard(data: show)
+    ScrollView(.vertical) {
+      LazyVGrid(
+        columns: [
+          GridItem(
+            .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+            spacing: RawShowCard.RECOMMENDED_SPACING,
+            alignment: .topLeading
+          )
+        ],
+        spacing: RawShowCard.RECOMMENDED_SPACING
+      ) {
+        ForEach(self.shows) { show in
+          NavigationLink(value: show) {
+            WatchCard(data: show)
+          }
+          .contextMenu(menuItems: {
+            Group {
+              if let contextShow {
+
+                NavigationLink(destination: ShowView(showId: contextShow.id)) {
+                  Text("Открыть")
+                }
+              }
+              else {
+                ProgressView()
+              }
+            }.task {
+              await fetchShowForContext(episode: show.id)
             }
-            .contextMenu(menuItems: {
-              Group {
-                if let contextShow {
-                  #if !os(tvOS)
-                    ShareLink(item: contextShow.websiteUrl) {
-                      Label("Поделиться", systemImage: "square.and.arrow.up")
-                    }
-                  #endif
-                  NavigationLink(destination: ShowView(showId: contextShow.id)) {
-                    Text("Открыть")
-                  }
-                }
-                else {
-                  ProgressView()
-                }
-              }.task {
-                await fetchShowForContext(episode: show.id)
-              }
-            })
-            .buttonStyle(.borderless)
-            .task {
-              if show == self.shows.last {
-                await self.loadMore()
-              }
+          })
+          .buttonStyle(.borderless)
+          .task {
+            if show == self.shows.last {
+              await self.loadMore()
             }
           }
         }
-        .topEdgePaddingForMenu()
       }
-      .scrollClipDisabled(true)
-    #else
-      List {
-        Section {
-          ForEach(shows) { show in
-            NavigationLink(value: show) {
-              WatchCard(data: show)
-            }
-            .task {
-              if show == self.shows.last {
-                await self.loadMore()
-              }
-            }
-          }
-        } header: {
-          Text("Серии к просмотру")
-        }
-      }
-      .listStyle(.plain)
-    #endif
+      .topEdgePaddingForMenu()
+    }
+    .scrollClipDisabled(true)
+
   }
 }
 

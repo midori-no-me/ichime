@@ -2,12 +2,7 @@ import SwiftUI
 
 struct CardWithExpandableText: View {
   public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 450
-
-  #if os(tvOS)
-    public static let RECOMMENDED_SPACING: CGFloat = 40
-  #else
-    public static let RECOMMENDED_SPACING: CGFloat = 10
-  #endif
+  public static let RECOMMENDED_SPACING: CGFloat = 40
 
   public let title: String
   public let text: String
@@ -34,11 +29,8 @@ struct CardWithExpandableText: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
       }
-      #if os(tvOS)
-        .padding(40)
-      #else
-        .padding()
-      #endif
+      .padding(40)
+
     }
     .sheet(isPresented: $isSheetPresented) {
       CardWithExpandableTextSheet(
@@ -46,14 +38,8 @@ struct CardWithExpandableText: View {
         text: text
       )
     }
-    #if os(tvOS)
-      .buttonStyle(.card)
-    #else
-      .buttonStyle(.plain)
-      .background(Material.ultraThick)
-      .cornerRadiusForLargeObject()
-      .clipped()
-    #endif
+    .buttonStyle(.card)
+
   }
 }
 
@@ -69,9 +55,7 @@ private struct CardWithExpandableTextSheet: View {
         Text(text)
           .frame(maxWidth: .infinity, alignment: .leading)
           .scenePadding()
-          #if !os(tvOS)
-            .textSelection(.enabled)
-          #endif
+
       }
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
@@ -81,9 +65,7 @@ private struct CardWithExpandableTextSheet: View {
         }
       }
       .navigationTitle(title)
-      #if os(iOS)
-        .navigationBarTitleDisplayMode(.inline)
-      #endif
+
     }
   }
 }

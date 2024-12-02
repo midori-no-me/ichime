@@ -23,9 +23,8 @@ packages:
 targets:
   Ichime:
     type: application
-    platform: [iOS, tvOS]
+    platform: [tvOS]
     deploymentTarget:
-      iOS: "18.1"
       tvOS: "18.1"
     sources:
       - path: Ichime
@@ -123,5 +122,5 @@ targets:
 
 settings:
   SWIFT_VERSION: "5"
-  APP_VERSION: "1.8.0"
+  APP_VERSION: "1.9.0"
   APP_NAME: Ichime

@@ -64,9 +64,7 @@ struct ProfileSheet: View {
               }
             )
             .frame(width: 50, height: 50)
-            #if !os(tvOS)
-              .background(Color(UIColor.secondarySystemBackground))
-            #endif
+
             .clipShape(.circle)
           }
 
@@ -102,20 +100,10 @@ struct ProfileSheet: View {
             Text("О приложении")
           }
         }
-        #if os(tvOS)
-          .listStyle(.grouped)
-        #endif
+        .listStyle(.grouped)
+
         .navigationTitle("Ваш профиль")
-        #if !os(tvOS)
-          .navigationBarTitleDisplayMode(.inline)
-          .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-              Button("Закрыть") {
-                self.dismiss()
-              }
-            }
-          }
-        #endif
+
       }
     }
   }

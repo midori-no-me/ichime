@@ -102,9 +102,7 @@ struct MyListEditView: View {
           }
         case .loading:
           ProgressView()
-            #if os(tvOS)
-              .focusable()
-            #endif
+            .focusable()
 
         case let .loadingFailed(error):
           ContentUnavailableView {
@@ -112,9 +110,7 @@ struct MyListEditView: View {
           } description: {
             Text(error.localizedDescription)
           }
-          #if !os(tvOS)
-            .textSelection(.enabled)
-          #endif
+
         case let .loaded(userRate):
           UserRateForm(userRate, totalEpisodes: totalEpisodes) { newUserRate in
             Task {
@@ -140,9 +136,7 @@ struct MyListEditView: View {
         }
       }
       .navigationTitle(show.name)
-      #if !os(tvOS)
-        .navigationBarTitleDisplayMode(.inline)
-      #endif
+
     }.presentationDetents([.medium, .large])
   }
 }

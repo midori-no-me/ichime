@@ -80,9 +80,7 @@ struct CalendarView: View {
 
       case .loading:
         ProgressView()
-          #if os(tvOS)
-            .focusable()
-          #endif
+          .focusable()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -90,9 +88,6 @@ struct CalendarView: View {
         } description: {
           Text(error.localizedDescription)
         }
-        #if !os(tvOS)
-          .textSelection(.enabled)
-        #endif
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -149,15 +144,11 @@ struct CalendarView: View {
         }
       }
     }
-    #if !os(tvOS)
-      .navigationTitle("Календарь")
-      .navigationBarTitleDisplayMode(.large)
-    #endif
+
     .refreshable {
       await self.viewModel.performPullToRefresh()
     }
-    #if os(tvOS)
-      .toolbar(.hidden, for: .tabBar)
-    #endif
+    .toolbar(.hidden, for: .tabBar)
+
   }
 }

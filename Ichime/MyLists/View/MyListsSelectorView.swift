@@ -20,11 +20,7 @@ struct MyListsSelectorView: View {
       }
     }
     .navigationTitle("Мой список")
-    #if !os(tvOS)
-      .navigationBarTitleDisplayMode(.large)
-    #endif
-    #if os(tvOS)
-      .listStyle(.grouped)
-    #endif
+    .listStyle(.grouped)
+
   }
 }

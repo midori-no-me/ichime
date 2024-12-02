@@ -77,11 +77,7 @@ struct AnimeList: View {
               )
               .contextMenu(
                 menuItems: {
-                  #if !os(tvOS)
-                    ShareLink(item: show.websiteUrl) {
-                      Label("Поделиться", systemImage: "square.and.arrow.up")
-                    }
-                  #endif
+
                   NavigationLink(destination: ShowView(showId: show.id)) {
                     Text("Открыть")
                   }

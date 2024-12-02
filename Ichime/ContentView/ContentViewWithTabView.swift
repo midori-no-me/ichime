@@ -53,23 +53,17 @@ struct ContentViewWithTabView: View {
             )
         }
       }
-      #if !os(tvOS)
-        .badge(notificationCounterWatcher.counter)
-      #endif
 
       Tab("Календарь", systemImage: "calendar") {
         NavigationStack {
           CalendarView()
         }
       }
-
-      #if os(tvOS)
-        Tab("Профиль", systemImage: "person.circle") {
-          NavigationStack {
-            ProfileSheet()
-          }
+      Tab("Профиль", systemImage: "person.circle") {
+        NavigationStack {
+          ProfileSheet()
         }
-      #endif
+      }
 
       Tab("Поиск", systemImage: "magnifyingglass", role: .search) {
         NavigationStack {
@@ -87,22 +81,14 @@ struct ContentViewWithTabView: View {
             }
           }
         }
-        #if !os(tvOS)
-          .defaultVisibility(.hidden, for: .tabBar)
-        #endif
+
       }
     }
     .task {
       await viewModel.cacheCategories()
     }
     .tabViewStyle(.sidebarAdaptable)
-    #if !os(tvOS)
-      .tabViewSidebarBottomBar {
-        SidebarProfileButton()
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-      }
-    #endif
+
   }
 }
 

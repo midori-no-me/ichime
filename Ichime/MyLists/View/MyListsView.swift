@@ -179,27 +179,22 @@ struct MyListsView: View {
         }
       case .loading:
         ProgressView()
-          #if os(tvOS)
-            .focusable()
-          #endif
+          .focusable()
+
       case .needSubscribe:
         ContentUnavailableView {
           Label("Нужна подписка", systemImage: "person.fill.badge.plus")
         } description: {
           Text("Подпишись чтоб получить все возможности приложения")
         }
-        #if !os(tvOS)
-          .textSelection(.enabled)
-        #endif
+
       case let .loadingFailed(error):
         ContentUnavailableView {
           Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
         } description: {
           Text(error.localizedDescription)
         }
-        #if !os(tvOS)
-          .textSelection(.enabled)
-        #endif
+
       case .loadedButEmpty:
         ContentUnavailableView {
           Label("Ничего не нашлось", systemImage: "list.bullet")
@@ -233,40 +228,7 @@ struct ToolbarWrapper<Content: View>: View {
 
   var body: some View {
     content()
-    #if !os(tvOS)
-      //            .toolbar {
-      //                ToolbarItem(placement: .navigationBarTrailing) {
-      //                    ShareLink(item: shareText) {
-      //                        Label("Поделиться", systemImage: "square.and.arrow.up")
-      //                    }
-      //                }
-      //                ToolbarItem(placement: .topBarTrailing) {
-      //                    Menu {
-      //                        Section {
-      //                            Picker(selection: self.$categoryType, label: Text("Управление списком")) {
-      //                                ForEach(ScraperAPI.Types.ListCategoryType.allCases, id: \.rawValue) { category in
-      //                                    Label(category.rawValue, systemImage: category.imageInDropdown)
-      //                                        .tag(category as ScraperAPI.Types.ListCategoryType?)
-      //                                }
-      //                            }
-      //                        }
-      //
-      //                        if self.categoryType != nil {
-      //                            Button(role: .destructive) {
-      //                                self.categoryType = nil
-      //                            } label: {
-      //                                Label("Сбросить", systemImage: "delete.forward")
-      //                            }
-      //                        }
-      //                    } label: {
-      //                        Label(
-      //                            "Управлять списком",
-      //                            systemImage: self.categoryType?.imageInToolbar ?? "list.bullet.circle"
-      //                        )
-      //                    }
-      //                }
-      //            }
-    #endif
+
   }
 }
 

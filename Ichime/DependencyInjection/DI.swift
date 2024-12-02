@@ -34,16 +34,11 @@ class ApplicationDependency: DIFramework {
         fatalError("Could not create ModelContainer: \(error)")
       }
     }.lifetime(.single)
-
-    #if os(tvOS)
-      container
-        .register {
-          HTTPCookieStorage.sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
-        }
-    #else
-      container
-        .register { HTTPCookieStorage.shared }
-    #endif
+    
+    container
+      .register {
+        HTTPCookieStorage.sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
+      }
 
     container
       .register { VideoPlayerHolder() }
@@ -78,7 +73,7 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowListStatusModel(apiClient: $0, userManager: $1, modelContext: $2)
+      ShowListStatusModel(apiClient: $0, userManager: $1, modelContainer: $2)
     }
 
     container.register { Anime365Client(apiClient: $0) }

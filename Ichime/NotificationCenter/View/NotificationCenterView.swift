@@ -103,9 +103,7 @@ struct NotificationCenterView: View {
         }
       case .loading:
         ProgressView()
-          #if os(tvOS)
-            .focusable()
-          #endif
+          .focusable()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -113,9 +111,7 @@ struct NotificationCenterView: View {
         } description: {
           Text(error.localizedDescription)
         }
-        #if !os(tvOS)
-          .textSelection(.enabled)
-        #endif
+
       case .loadedButEmpty:
         ContentUnavailableView {
           Label("Пока еще не было уведомлений", systemImage: "list.bullet")
@@ -148,52 +144,33 @@ struct LoadedNotificationCenter: View {
   let loadMore: () async -> Void
 
   var body: some View {
-    #if os(tvOS)
-      ScrollView(.vertical) {
-        LazyVGrid(
-          columns: [
-            GridItem(
-              .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-              spacing: RawShowCard.RECOMMENDED_SPACING,
-              alignment: .topLeading
-            )
-          ],
-          spacing: RawShowCard.RECOMMENDED_SPACING
-        ) {
-          ForEach(self.shows) { show in
-            NavigationLink(value: show) {
-              WatchCard(data: show)
-            }
-            .buttonStyle(.borderless)
-            .task {
-              if show == self.shows.last {
-                await self.loadMore()
-              }
+    ScrollView(.vertical) {
+      LazyVGrid(
+        columns: [
+          GridItem(
+            .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+            spacing: RawShowCard.RECOMMENDED_SPACING,
+            alignment: .topLeading
+          )
+        ],
+        spacing: RawShowCard.RECOMMENDED_SPACING
+      ) {
+        ForEach(self.shows) { show in
+          NavigationLink(value: show) {
+            WatchCard(data: show)
+          }
+          .buttonStyle(.borderless)
+          .task {
+            if show == self.shows.last {
+              await self.loadMore()
             }
           }
         }
-        .topEdgePaddingForMenu()
       }
-      .scrollClipDisabled(true)
-    #else
-      List {
-        Section {
-          ForEach(shows) { show in
-            NavigationLink(value: show) {
-              WatchCard(data: show)
-            }
-            .task {
-              if show == self.shows.last {
-                await self.loadMore()
-              }
-            }
-          }
-        } header: {
-          Text("Последние уведомления")
-        }
-      }
-      .listStyle(.plain)
-    #endif
+      .topEdgePaddingForMenu()
+    }
+    .scrollClipDisabled(true)
+
   }
 }
 

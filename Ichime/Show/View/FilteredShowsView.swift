@@ -126,9 +126,7 @@ struct FilteredShowsView: View {
 
       case .loading:
         ProgressView()
-          #if os(tvOS)
-            .focusable()
-          #endif
+          .focusable()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -136,9 +134,6 @@ struct FilteredShowsView: View {
         } description: {
           Text(error.localizedDescription)
         }
-        #if !os(tvOS)
-          .textSelection(.enabled)
-        #endif
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -170,18 +165,13 @@ struct FilteredShowsView: View {
         else {
           ScrollView([.vertical]) {
             Group {
-              #if os(tvOS)
-                Text(title)
-                  .font(.title2)
-              #endif
+              Text(title)
+                .font(.title2)
 
               if let description {
                 Text(description)
-                  #if os(tvOS)
-                    .font(.title3)
-                  #else
-                    .font(.title3)
-                  #endif
+                  .font(.title3)
+
                   .foregroundStyle(.secondary)
                   .horizontalScreenEdgePadding()
               }
@@ -207,30 +197,20 @@ struct FilteredShowsView: View {
                   }
               }
             }
-            #if os(macOS)
-              .padding()
-            #else
-              .padding(.top, 8)
-              .horizontalScreenEdgePadding()
-              .scenePadding(.bottom)
-            #endif
+            .padding(.top, 8)
+            .horizontalScreenEdgePadding()
+            .scenePadding(.bottom)
           }
-          #if os(tvOS)
-            .scrollClipDisabled(true)
-          #endif
+          .scrollClipDisabled(true)
+
         }
       }
     }
     .refreshable {
       await self.viewModel.performPullToRefresh()
     }
-    #if !os(tvOS)
-      .navigationTitle(title)
-      .navigationBarTitleDisplayMode(.large)
-    #endif
-    #if os(tvOS)
-      .toolbar(.hidden, for: .tabBar)
-    #endif
+    .toolbar(.hidden, for: .tabBar)
+
   }
 }
 

@@ -122,12 +122,7 @@ private class SeasonalSectionLoader: ShowsSectionLoader {
 struct HomeView: View {
   @State private var sectionLoaders: [any ShowsSectionLoader] = []
   @Environment(\.horizontalSizeClass) var horizontalSizeClass
-
-  #if os(tvOS)
-    private let SPACING_BETWEEN_SECTIONS: CGFloat = 70
-  #else
-    private let SPACING_BETWEEN_SECTIONS: CGFloat = 30
-  #endif
+  private let SPACING_BETWEEN_SECTIONS: CGFloat = 70
 
   var body: some View {
     ScrollView(.vertical) {
@@ -148,17 +143,8 @@ struct HomeView: View {
       sectionLoaders.append(getNextSectionLoader())
     }
     .navigationTitle("Главная")
-    #if !os(tvOS)
-      .navigationBarTitleDisplayMode(.large)
-      .toolbar {
-        if horizontalSizeClass == .compact {
-          ProfileButton()
-        }
-      }
-    #endif
-    #if os(tvOS)
-      .scrollClipDisabled(true)
-    #endif
+    .scrollClipDisabled(true)
+
   }
 
   private func getNextSectionLoader() -> any ShowsSectionLoader {
@@ -205,12 +191,7 @@ private struct ShowsSection: View {
 
   @State var isLoading: Bool = true
   @State var shows: [Show] = []
-
-  #if os(tvOS)
-    private let SPACING_BETWEEN_TITLE_CARD_CARDS: CGFloat = 50
-  #else
-    private let SPACING_BETWEEN_TITLE_CARD_CARDS: CGFloat = 20
-  #endif
+  private let SPACING_BETWEEN_TITLE_CARD_CARDS: CGFloat = 50
 
   var body: some View {
     if isLoading {

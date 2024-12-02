@@ -66,21 +66,13 @@ struct AuthenticationView: View {
   @Environment(\.dismiss) private var dismiss
 
   var body: some View {
-    #if os(macOS)
-      Spacer()
-    #endif
+
     HStack {
-      #if os(macOS)
-        Spacer()
-      #endif
+
       Form {
         Section {
           TextField("Почта", text: $viewModel.userEmail, prompt: Text("Адрес электронной почты"))
             .disableAutocorrection(true)
-            #if os(iOS)
-              .keyboardType(.emailAddress)
-              .autocapitalization(.none)
-            #endif
 
           SecureField("Пароль", text: $viewModel.userPassword, prompt: Text("Пароль"))
         } footer: {
@@ -105,9 +97,7 @@ struct AuthenticationView: View {
           Link("Восстановить пароль", destination: viewModel.getPasswordResetUrl())
         }
       }
-      #if os(macOS)
-        .padding(.all)
-      #endif
+
       .alert(
         "Не удалось авторизоваться",
         isPresented: $viewModel.showInvalidCredentialsAlert,
@@ -161,13 +151,9 @@ struct AuthenticationView: View {
         }
       }
       .navigationTitle("Авторизация")
-      #if os(iOS)
-        .navigationBarTitleDisplayMode(.inline)
-      #endif
+
     }
-    #if os(macOS)
-      Spacer()
-    #endif
+
   }
 }
 

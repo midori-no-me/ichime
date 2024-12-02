@@ -101,11 +101,7 @@ class ShowMomentsCardsViewModel {
 }
 
 struct ShowMomentsCardsView: View {
-  #if os(tvOS)
-    private static let SPACING_BETWEEN_TITLE_AND_CARDS: CGFloat = 50
-  #else
-    private static let SPACING_BETWEEN_TITLE_AND_CARDS: CGFloat = 20
-  #endif
+  private static let SPACING_BETWEEN_TITLE_AND_CARDS: CGFloat = 50
 
   let showId: Int
   let showName: String
@@ -144,9 +140,6 @@ struct ShowMomentsCardsView: View {
           } description: {
             Text(error.localizedDescription)
           }
-          #if !os(tvOS)
-            .textSelection(.enabled)
-          #endif
 
         case .loadedButEmpty:
           ContentUnavailableView {

@@ -163,19 +163,7 @@ struct UserRateForm: View {
             Text("/ \(totalEpisodes)")
           }
         }
-        #if !os(tvOS)
-          Section("Ваша заметка") {
-            ZStack(alignment: .topLeading) {
-              Text(comment)
-                .padding()
-                .opacity(comment.isEmpty ? 1 : 0)
-              TextEditor(text: $comment)
-                .frame(minHeight: 30, alignment: .leading)
-                .multilineTextAlignment(.leading)
-                .padding(9)
-            }
-          }
-        #endif
+
         Button("Удалить из списка", role: .destructive) {
           isDeleteDialogOpen = true
         }
