@@ -1,5 +1,5 @@
 format:
-	swift-format format . --recursive --in-place
+	swift format . --recursive --in-place
 
 lint:
-	swift-format lint . --recursive --strict
+	swift format lint . --recursive --strict
