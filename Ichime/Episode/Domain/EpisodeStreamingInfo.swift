@@ -48,7 +48,7 @@ struct EpisodeStreamingInfo: Hashable, Identifiable {
   let subtitles: SubtitlesUrls?
 
   static func == (lhs: EpisodeStreamingInfo, rhs: EpisodeStreamingInfo) -> Bool {
-    return lhs.id == rhs.id
+    lhs.id == rhs.id
   }
 
   func hash(into hasher: inout Hasher) {
@@ -62,7 +62,7 @@ struct EpisodeStreamingInfo: Hashable, Identifiable {
     let urls: [URL]
 
     static func == (lhs: StreamQualityOption, rhs: StreamQualityOption) -> Bool {
-      return lhs.id == rhs.id
+      lhs.id == rhs.id
     }
 
     func hash(into hasher: inout Hasher) {
@@ -140,6 +140,6 @@ struct SubtitleUrlGenerator {
 // Структура для работы с субтитрами
 extension HTTPCookieStorage {
   func cookie(for type: ScraperAPI.Session.Cookie) -> HTTPCookie? {
-    return cookies?.first { $0.name == type.rawValue }
+    cookies?.first { $0.name == type.rawValue }
   }
 }

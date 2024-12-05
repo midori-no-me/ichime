@@ -118,7 +118,7 @@ class ShowListStatusModel {
       return
     }
 
-    var shows = [(id: Int, status: ShowStatusProtocol)]()
+    var shows: [(id: Int, status: ShowStatusProtocol)] = []
 
     // Сохраняем все шоу в SwiftData
     for category in categories {

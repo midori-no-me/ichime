@@ -35,7 +35,7 @@ struct ShowFromCalendar: Hashable, Identifiable {
   }
 
   static func == (lhs: ShowFromCalendar, rhs: ShowFromCalendar) -> Bool {
-    return lhs.id == rhs.id
+    lhs.id == rhs.id
   }
 
   func hash(into hasher: inout Hasher) {

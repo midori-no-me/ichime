@@ -10,7 +10,7 @@ struct EpisodePreview: Hashable, Identifiable {
   let isUnderProcessing: Bool
 
   static func == (lhs: EpisodePreview, rhs: EpisodePreview) -> Bool {
-    return lhs.id == rhs.id
+    lhs.id == rhs.id
   }
 
   func hash(into hasher: inout Hasher) {
@@ -27,7 +27,7 @@ func guessEpisodeReleaseWeekdayAndTime(in episodePreviews: [EpisodePreview]) -> 
   let calendar = Calendar.current
 
   // Create a dictionary to store the count of occurrences for each weekday
-  var weekdayCount = [Int: Int]()
+  var weekdayCount: [Int: Int] = [:]
 
   // Variables to calculate the average time
   var totalSeconds = 0

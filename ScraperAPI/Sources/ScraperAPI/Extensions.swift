@@ -16,7 +16,7 @@ let logger = Logger(
 
 extension Array {
   func item(at index: Int) -> Element? {
-    return indices.contains(index) ? self[index] : nil
+    indices.contains(index) ? self[index] : nil
   }
 }
 

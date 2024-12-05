@@ -509,7 +509,7 @@ private struct SeasonShowProperty: View {
 
   private func getShowsBySeason() -> (_ offset: Int, _ limit: Int) async throws -> [Show] {
     func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [Show] {
-      return try await client.getSeason(
+      try await client.getSeason(
         offset: offset,
         limit: limit,
         airingSeason: airingSeason

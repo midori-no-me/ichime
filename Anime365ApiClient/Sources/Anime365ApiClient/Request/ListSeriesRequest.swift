@@ -21,7 +21,7 @@ public struct ListSeriesRequest: Anime365ApiRequest {
   }
 
   public func getEndpoint() -> String {
-    return "/series"
+    "/series"
   }
 
   public func getQueryItems() -> [URLQueryItem] {

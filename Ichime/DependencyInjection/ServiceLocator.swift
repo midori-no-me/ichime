@@ -53,16 +53,16 @@ enum ServiceLocator {
   static let appGroup = "group.dev.midorinome.ichime.group"
 
   static var userAgent: String {
-    return "\(applicationName) (\(applicationVersion) / Contact: petr@flaks.xyz"
+    "\(applicationName) (\(applicationVersion) / Contact: petr@flaks.xyz"
   }
 
   static let topShellSchema = "ichime-top-shelf"
 
   static var shikimoriUserAgent: String {
-    return "Ichime"
+    "Ichime"
   }
 
   static var shikimoriBaseUrl: URL {
-    return URL(string: "https://shikimori.one")!
+    URL(string: "https://shikimori.one")!
   }
 }

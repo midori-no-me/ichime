@@ -12,10 +12,10 @@ public struct GetTranslationEmbed: Anime365ApiRequest {
   }
 
   public func getEndpoint() -> String {
-    return "/translations/embed/\(self.translationId)"
+    "/translations/embed/\(self.translationId)"
   }
 
   public func getQueryItems() -> [URLQueryItem] {
-    return []
+    []
   }
 }
