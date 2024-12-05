@@ -2,6 +2,7 @@ name: Ichime
 fileGroups:
 - .editorconfig
 - .gitignore
+- .github/
 - .swift-format
 - Makefile
 - project.yml
