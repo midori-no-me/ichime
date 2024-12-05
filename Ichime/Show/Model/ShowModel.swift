@@ -56,7 +56,7 @@ struct Show: Hashable, Identifiable {
   }
 
   static func == (lhs: Show, rhs: Show) -> Bool {
-    return lhs.id == rhs.id
+    lhs.id == rhs.id
   }
 
   func hash(into hasher: inout Hasher) {
@@ -95,7 +95,7 @@ struct Show: Hashable, Identifiable {
 
   struct Description: Hashable {
     static func == (lhs: Description, rhs: Description) -> Bool {
-      return lhs.text == rhs.text
+      lhs.text == rhs.text
     }
 
     func hash(into hasher: inout Hasher) {

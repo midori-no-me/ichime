@@ -19,10 +19,10 @@ public struct GetEpisodeRequest: Anime365ApiRequest {
   }
 
   public func getEndpoint() -> String {
-    return "/episodes/\(episodeId)"
+    "/episodes/\(episodeId)"
   }
 
   public func getQueryItems() -> [URLQueryItem] {
-    return []
+    []
   }
 }

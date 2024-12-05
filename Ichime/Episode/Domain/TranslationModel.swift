@@ -65,7 +65,7 @@ struct Translation: Hashable, Identifiable {
   }
 
   static func == (lhs: Translation, rhs: Translation) -> Bool {
-    return lhs.id == rhs.id
+    lhs.id == rhs.id
   }
 
   func hash(into hasher: inout Hasher) {
@@ -105,7 +105,7 @@ struct Translation: Hashable, Identifiable {
     case other = 4
 
     static func < (lhs: TranslatedToLanguage, rhs: TranslatedToLanguage) -> Bool {
-      return lhs.rawValue < rhs.rawValue
+      lhs.rawValue < rhs.rawValue
     }
   }
 
@@ -116,7 +116,7 @@ struct Translation: Hashable, Identifiable {
     case other = 4
 
     static func < (lhs: TranslationMethod, rhs: TranslationMethod) -> Bool {
-      return lhs.rawValue < rhs.rawValue
+      lhs.rawValue < rhs.rawValue
     }
   }
 
@@ -129,7 +129,7 @@ struct Translation: Hashable, Identifiable {
     case other = 6
 
     static func < (lhs: CompositeType, rhs: CompositeType) -> Bool {
-      return lhs.rawValue < rhs.rawValue
+      lhs.rawValue < rhs.rawValue
     }
 
     func getLocalizedTranslation() -> String {

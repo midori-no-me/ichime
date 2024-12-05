@@ -49,7 +49,7 @@ actor WatchChecker: VideoPlayerObserver {
 
   // Set up an observer to track changes in the current time
   func addObserver(_ player: AVPlayer) {
-    var times = [NSValue]()
+    var times: [NSValue] = []
     // Set initial time to zero
     var currentTime = CMTimeMultiplyByFloat64(videoDuration, multiplier: 0.85)
     // Divide the asset's duration into quarters.

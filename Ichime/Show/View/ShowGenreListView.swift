@@ -50,7 +50,7 @@ struct ShowGenreListView: View {
 
   private func getShowsByGenre(genreId: Int) -> (_ offset: Int, _ limit: Int) async throws -> [Show] {
     func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [Show] {
-      return try await client.getByGenre(
+      try await client.getByGenre(
         offset: offset,
         limit: limit,
         genreIds: [genreId]

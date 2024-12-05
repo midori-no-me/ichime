@@ -25,12 +25,12 @@ class AuthenticationViewModel {
   }
 
   public func getProfileSettingsUrl() -> URL {
-    return baseUrlPreference.url
+    baseUrlPreference.url
       .appendingPathComponent("/users/profile")
   }
 
   public func getPasswordResetUrl() -> URL {
-    return baseUrlPreference.url
+    baseUrlPreference.url
       .appendingPathComponent("/users/forgotPassword")
   }
 

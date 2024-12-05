@@ -7,7 +7,7 @@
 
 extension ShikimoriApiClient {
   public func getCalendar() async throws -> [CalendarEntry] {
-    return try await self.sendRequest(
+    try await self.sendRequest(
       httpMethod: .GET,
       endpoint: "/api/calendar",
       queryItems: [],

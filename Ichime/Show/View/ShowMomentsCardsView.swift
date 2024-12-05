@@ -91,7 +91,7 @@ class ShowMomentsCardsViewModel {
     .Types.Moment]
   {
     func fetchFunction(_ page: Int) async throws -> [ScraperAPI.Types.Moment] {
-      return try await api.sendAPIRequest(
+      try await api.sendAPIRequest(
         ScraperAPI.Request.GetMomentsByShow(showId: showId, page: page)
       )
     }

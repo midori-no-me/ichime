@@ -8,5 +8,5 @@
 import os
 
 func createLogger(category: String) -> Logger {
-  return Logger(subsystem: ServiceLocator.applicationId, category: category)
+  Logger(subsystem: ServiceLocator.applicationId, category: category)
 }
