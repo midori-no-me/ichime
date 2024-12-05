@@ -7,5 +7,22 @@
     "maximumBlankLines": 1,
     "respectsExistingLineBreaks": true,
     "lineBreakBeforeControlFlowKeywords": true,
-    "lineBreakBeforeEachArgument": true
+    "lineBreakBeforeEachArgument": true,
+    "rules": {
+      "AlwaysUseLiteralForEmptyCollectionInit": true,
+      "DoNotUseSemicolons": true,
+      "FileScopedDeclarationPrivacy": true,
+      "FullyIndirectEnum": true,
+      "GroupNumericLiterals": true,
+      "NoAccessLevelOnExtensionDeclaration": true,
+      "NoEmptyTrailingClosureParentheses": true,
+      "NoParensAroundConditions": true,
+      "OmitExplicitReturns": true,
+      "OneCasePerLine": true,
+      "OneVariableDeclarationPerLine": true,
+      "OrderedImports": true,
+      "ReturnVoidInsteadOfEmptyTuple": true,
+      "UseShorthandTypeNames": true,
+      "UseSingleLinePropertyGetter": true
+    }
 }
