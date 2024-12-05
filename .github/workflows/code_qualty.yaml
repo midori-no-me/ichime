@@ -1,0 +1,15 @@
+name: Code Quality
+
+on: pull_request
+
+jobs:
+  swift_format:
+    name: swift-format
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check Code Formatting
+        run: swift format lint . --recursive --strict
