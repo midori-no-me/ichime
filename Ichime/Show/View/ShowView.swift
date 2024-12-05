@@ -356,7 +356,6 @@ private struct ShowPrimaryAndSecondaryTitles: View {
   }
 }
 
-
 private struct ShowActionButtons: View {
   let show: Show
   var viewModel: ShowViewModel

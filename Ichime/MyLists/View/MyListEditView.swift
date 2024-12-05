@@ -84,7 +84,8 @@ struct MyListEditView: View {
   var totalEpisodes: String {
     if let totalEpisodes = show.totalEpisodes {
       String(totalEpisodes)
-    } else {
+    }
+    else {
       "??"
     }
   }
