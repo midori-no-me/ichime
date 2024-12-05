@@ -71,3 +71,13 @@
 ```bash
 make format
 ```
+
+### Git Hooks
+
+Запускать XcodeGen и swift-format можно автоматически с помощью Git Hooks.
+
+Установите их с помощью команды:
+
+```bash
+make hooks
+```
