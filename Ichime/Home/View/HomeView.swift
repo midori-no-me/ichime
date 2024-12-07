@@ -144,8 +144,6 @@ struct HomeView: View {
       sectionLoaders.append(getNextSectionLoader())
     }
     .navigationTitle("Главная")
-    .scrollClipDisabled(true)
-
   }
 
   private func getNextSectionLoader() -> any ShowsSectionLoader {
