@@ -33,11 +33,9 @@ struct ContentViewWithTabView: View {
         }
       }
 
-      if UIDevice.current.userInterfaceIdiom != .pad {
-        Tab("Мой список", systemImage: "film.stack") {
-          NavigationStack {
-            MyListsSelectorView()
-          }
+      Tab("Мой список", systemImage: "film.stack") {
+        NavigationStack {
+          MyListsSelectorView()
         }
       }
 
@@ -69,19 +67,6 @@ struct ContentViewWithTabView: View {
         NavigationStack {
           SearchShowsView()
         }
-      }
-
-      if UIDevice.current.userInterfaceIdiom == .pad {
-        TabSection("Мой список") {
-          ForEach(ScraperAPI.Types.ListCategoryType.allCases, id: \.rawValue) { category in
-            Tab(category.rawValue, systemImage: category.imageInToolbarNotFilled) {
-              NavigationStack {
-                MyListsView(categoryType: category, modelContext: modelContext)
-              }
-            }
-          }
-        }
-
       }
     }
     .task {

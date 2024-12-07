@@ -143,62 +143,41 @@ struct FilteredShowsView: View {
         }
 
       case let .loaded(shows):
-        if UIDevice.current.userInterfaceIdiom == .phone {
-          List {
-            Section {
-              ForEach(shows) { show in
-                ShowCard(show: show, displaySeason: self.displaySeason)
-                  .task {
-                    if show == shows.last {
-                      await self.viewModel.performLazyLoading()
-                    }
-                  }
-              }
-            } header: {
-              if let description {
-                Text(description)
-              }
+        ScrollView([.vertical]) {
+          Group {
+            Text(title)
+              .font(.title2)
+
+            if let description {
+              Text(description)
+                .font(.title3)
+
+                .foregroundStyle(.secondary)
             }
           }
-          .listStyle(.plain)
-        }
-        else {
-          ScrollView([.vertical]) {
-            Group {
-              Text(title)
-                .font(.title2)
+          .frame(maxWidth: .infinity, alignment: .leading)
 
-              if let description {
-                Text(description)
-                  .font(.title3)
-
-                  .foregroundStyle(.secondary)
-              }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            LazyVGrid(
-              columns: [
-                GridItem(
-                  .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-                  spacing: RawShowCard.RECOMMENDED_SPACING,
-                  alignment: .topLeading
-                )
-              ],
-              spacing: RawShowCard.RECOMMENDED_SPACING
-            ) {
-              ForEach(shows) { show in
-                ShowCard(show: show, displaySeason: self.displaySeason)
-                  .task {
-                    if show == shows.last {
-                      await self.viewModel.performLazyLoading()
-                    }
+          LazyVGrid(
+            columns: [
+              GridItem(
+                .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+                spacing: RawShowCard.RECOMMENDED_SPACING,
+                alignment: .topLeading
+              )
+            ],
+            spacing: RawShowCard.RECOMMENDED_SPACING
+          ) {
+            ForEach(shows) { show in
+              ShowCard(show: show, displaySeason: self.displaySeason)
+                .task {
+                  if show == shows.last {
+                    await self.viewModel.performLazyLoading()
                   }
-              }
+                }
             }
-            .padding(.top, 8)
-            .scenePadding(.bottom)
           }
+          .padding(.top, 8)
+          .scenePadding(.bottom)
         }
       }
     }
