@@ -127,6 +127,7 @@ struct FilteredShowsView: View {
       case .loading:
         ProgressView()
           .focusable()
+          .centeredContentFix()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
