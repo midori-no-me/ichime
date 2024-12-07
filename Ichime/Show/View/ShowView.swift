@@ -216,8 +216,6 @@ private struct ShowKeyDetailsSection: View {
   @State private var showImage = false
   var viewModel: ShowViewModel
 
-  @Environment(\.horizontalSizeClass) var horizontalSizeClass
-
   var body: some View {
     VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
 

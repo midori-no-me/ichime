@@ -171,8 +171,6 @@ private struct TranslationRow: View {
   let episodeTranslation: Translation
   let isRecommendedTranslation: Bool
 
-  @Environment(\.horizontalSizeClass) var horizontalSizeClass
-
   @State private var showingSheet = false
 
   var body: some View {
@@ -182,37 +180,23 @@ private struct TranslationRow: View {
     }) {
       HStack {
         VStack(alignment: .leading) {
-          if horizontalSizeClass == .compact {
-            Text(
-              formatTranslationQuality(
-                episodeTranslation,
-                qualityNameFirst: false,
-                displayTranslationType: isRecommendedTranslation
-              )
-            )
-            .foregroundStyle(Color.secondary)
-            .font(.caption)
-          }
-
           Text(self.episodeTranslation.translationTeam)
             .lineLimit(isRecommendedTranslation ? 1 : nil)
             .truncationMode(.tail)
         }
 
-        if horizontalSizeClass != .compact {
-          Spacer()
+        Spacer()
 
-          Text(
-            formatTranslationQuality(
-              episodeTranslation,
-              qualityNameFirst: true,
-              displayTranslationType: isRecommendedTranslation
-            )
+        Text(
+          formatTranslationQuality(
+            episodeTranslation,
+            qualityNameFirst: true,
+            displayTranslationType: isRecommendedTranslation
           )
-          .foregroundStyle(Color.secondary)
-          .lineLimit(isRecommendedTranslation ? 1 : nil)
-          .truncationMode(.tail)
-        }
+        )
+        .foregroundStyle(Color.secondary)
+        .lineLimit(isRecommendedTranslation ? 1 : nil)
+        .truncationMode(.tail)
       }
     }
     .sheet(isPresented: $showingSheet) {
