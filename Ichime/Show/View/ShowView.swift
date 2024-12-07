@@ -209,7 +209,6 @@ private struct ShowDetails: View {
 
         ShowMomentsCardsView(showId: show.id, showName: show.title.compose)
       }
-      .horizontalScreenEdgePadding()
     }
   }
 }

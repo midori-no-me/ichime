@@ -138,7 +138,6 @@ struct CalendarView: View {
                 }
               }
             }
-            .horizontalScreenEdgePadding()
             .topEdgePaddingForMenu()
           }
         }

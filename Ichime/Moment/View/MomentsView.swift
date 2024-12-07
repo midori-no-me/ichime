@@ -179,7 +179,6 @@ struct MomentsView: View {
                 .font(.title3)
 
                 .foregroundStyle(.secondary)
-                .horizontalScreenEdgePadding()
             }
           }
           .frame(maxWidth: .infinity, alignment: .leading)
@@ -213,7 +212,6 @@ struct MomentsView: View {
             }
           }
           .padding(.top, 8)
-          .horizontalScreenEdgePadding()
           .scenePadding(.bottom)
         }
       }
