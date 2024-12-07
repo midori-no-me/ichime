@@ -184,8 +184,6 @@ struct ShowView: View {
         }
       }
     }
-    .toolbar(.hidden, for: .tabBar)
-
     .refreshable {
       await self.viewModel.performPullToRefresh()
     }
