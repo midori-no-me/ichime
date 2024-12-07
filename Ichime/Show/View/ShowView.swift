@@ -210,7 +210,6 @@ private struct ShowDetails: View {
 
 private struct ShowKeyDetailsSection: View {
   let show: Show
-  @State private var showImage = false
   var viewModel: ShowViewModel
 
   var body: some View {
@@ -267,47 +266,29 @@ private struct ShowKeyDetailsSection: View {
         }
 
         if let posterUrl = self.show.posterUrl {
-          GeometryReader { geometry in
-            AsyncImage(
-              url: posterUrl,
-              transaction: .init(animation: .easeInOut(duration: 0.5)),
-              content: { phase in
-                switch phase {
-                case .empty:
-                  EmptyView()
-                case let .success(image):
-                  image.resizable()
-                    .cornerRadiusForLargeObject()
-                    .aspectRatio(contentMode: .fit)
-                    .clipped()
-                    .onTapGesture(perform: {
-                      self.showImage = true
-                    })
-                case .failure:
-                  EmptyView()
-                @unknown default:
-                  EmptyView()
-                }
-              }
-            )
-            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .trailing)
-          }
-          .fullScreenCover(
-            isPresented: $showImage,
-            content: {
-              NavigationStack {
-                AsyncImage(url: self.show.posterUrl)
-                  .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                      Button("Закрыть") {
-                        showImage = false
-                      }
-                    }
+          Button(action: {}) {
+            GeometryReader { geometry in
+              AsyncImage(
+                url: posterUrl,
+                transaction: .init(animation: .easeInOut(duration: 0.5)),
+                content: { phase in
+                  switch phase {
+                  case .empty:
+                    EmptyView()
+                  case let .success(image):
+                    image.resizable()
+                      .aspectRatio(contentMode: .fit)
+                  case .failure:
+                    EmptyView()
+                  @unknown default:
+                    EmptyView()
                   }
-              }
-              .preferredColorScheme(.dark)
+                }
+              )
+              .frame(width: geometry.size.width, height: geometry.size.height, alignment: .trailing)
             }
-          )
+          }
+          .buttonStyle(.borderless)
         }
       }
 
