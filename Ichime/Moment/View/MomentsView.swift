@@ -216,8 +216,6 @@ struct MomentsView: View {
           .horizontalScreenEdgePadding()
           .scenePadding(.bottom)
         }
-        .scrollClipDisabled(true)
-
       }
     }
     .refreshable {

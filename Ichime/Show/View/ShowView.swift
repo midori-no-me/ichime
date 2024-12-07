@@ -182,8 +182,6 @@ struct ShowView: View {
           ShowDetails(show: show, viewModel: self.viewModel)
             .scenePadding(.bottom)
         }
-        .scrollClipDisabled(true)
-
       }
     }
     .toolbar(.hidden, for: .tabBar)

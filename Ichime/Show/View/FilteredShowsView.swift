@@ -201,8 +201,6 @@ struct FilteredShowsView: View {
             .horizontalScreenEdgePadding()
             .scenePadding(.bottom)
           }
-          .scrollClipDisabled(true)
-
         }
       }
     }

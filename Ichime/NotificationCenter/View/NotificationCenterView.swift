@@ -169,8 +169,6 @@ struct LoadedNotificationCenter: View {
       }
       .topEdgePaddingForMenu()
     }
-    .scrollClipDisabled(true)
-
   }
 }
 

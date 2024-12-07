@@ -213,8 +213,6 @@ struct LoadedCurrentlyWatching: View {
       }
       .topEdgePaddingForMenu()
     }
-    .scrollClipDisabled(true)
-
   }
 }
 
