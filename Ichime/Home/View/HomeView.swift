@@ -225,7 +225,6 @@ private struct ShowsSection: View {
             }
           }
         }
-        .scrollIndicators(.hidden)
         .scrollClipDisabled()
       }
     }
