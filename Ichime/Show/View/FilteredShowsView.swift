@@ -144,40 +144,40 @@ struct FilteredShowsView: View {
 
       case let .loaded(shows):
         ScrollView([.vertical]) {
-          Group {
-            Text(title)
-              .font(.title2)
+          VStack(alignment: .leading, spacing: 40) {
+            VStack(alignment: .leading) {
+              Text(title)
+                .font(.title2)
 
-            if let description {
-              Text(description)
-                .font(.title3)
+              if let description {
+                Text(description)
+                  .font(.title3)
 
-                .foregroundStyle(.secondary)
+                  .foregroundStyle(.secondary)
+              }
             }
-          }
-          .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
 
-          LazyVGrid(
-            columns: [
-              GridItem(
-                .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-                spacing: RawShowCard.RECOMMENDED_SPACING,
-                alignment: .topLeading
-              )
-            ],
-            spacing: RawShowCard.RECOMMENDED_SPACING
-          ) {
-            ForEach(shows) { show in
-              ShowCard(show: show, displaySeason: self.displaySeason)
-                .task {
-                  if show == shows.last {
-                    await self.viewModel.performLazyLoading()
+            LazyVGrid(
+              columns: [
+                GridItem(
+                  .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+                  spacing: RawShowCard.RECOMMENDED_SPACING,
+                  alignment: .topLeading
+                )
+              ],
+              spacing: RawShowCard.RECOMMENDED_SPACING
+            ) {
+              ForEach(shows) { show in
+                ShowCard(show: show, displaySeason: self.displaySeason)
+                  .task {
+                    if show == shows.last {
+                      await self.viewModel.performLazyLoading()
+                    }
                   }
-                }
+              }
             }
           }
-          .padding(.top, 8)
-          .scenePadding(.bottom)
         }
       }
     }
