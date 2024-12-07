@@ -23,5 +23,6 @@ class BaseUrlPreference: ObservableObject {
     URL(string: "https://smotret-anime.com")!,
     URL(string: "https://smotret-anime.online")!,
     URL(string: "https://smotret-anime.net")!,
+    URL(string: "https://smotret-anime.org/")!,
   ]
 }
