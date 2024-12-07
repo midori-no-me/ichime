@@ -180,7 +180,6 @@ struct ShowView: View {
       case let .loaded(show):
         ScrollView(.vertical) {
           ShowDetails(show: show, viewModel: self.viewModel)
-            .scenePadding(.bottom)
         }
       }
     }
@@ -369,8 +368,6 @@ private struct ShowActionButtons: View {
             "Смотреть",
             systemImage: show.episodePreviews.isEmpty ? "play.slash.fill" : "play.fill"
           )
-          .padding(20)
-
         }
         .buttonStyle(.card)
 
@@ -401,11 +398,8 @@ private struct ShowActionButtons: View {
                 )
               }
             }
-            .padding(20)
-
           }
           .buttonStyle(.card)
-
         }
       }
       .focusSection()
