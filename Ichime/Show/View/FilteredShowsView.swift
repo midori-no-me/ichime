@@ -173,7 +173,6 @@ struct FilteredShowsView: View {
                   .font(.title3)
 
                   .foregroundStyle(.secondary)
-                  .horizontalScreenEdgePadding()
               }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -198,7 +197,6 @@ struct FilteredShowsView: View {
               }
             }
             .padding(.top, 8)
-            .horizontalScreenEdgePadding()
             .scenePadding(.bottom)
           }
         }

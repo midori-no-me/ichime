@@ -137,7 +137,6 @@ struct HomeView: View {
           )
         }
       }
-      .horizontalScreenEdgePadding()
       .topEdgePaddingForMenu()
     }
     .onAppear {
