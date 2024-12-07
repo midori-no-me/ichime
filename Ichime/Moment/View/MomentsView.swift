@@ -219,8 +219,6 @@ struct MomentsView: View {
     .refreshable {
       await self.viewModel.performPullToRefresh()
     }
-    .toolbar(.hidden, for: .tabBar)
-
   }
 }
 
