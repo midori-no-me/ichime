@@ -24,8 +24,6 @@ struct EpisodeListView: View {
 struct EpisodePreviewRow: View {
   let episodePreview: EpisodePreview
 
-  @Environment(\.horizontalSizeClass) var horizontalSizeClass
-
   var body: some View {
     let releaseDateAndStatus = formatEpisodeReleaseDateAndStatus(
       episodePreview.uploadDate,
@@ -34,12 +32,6 @@ struct EpisodePreviewRow: View {
 
     HStack {
       VStack(alignment: .leading) {
-        if horizontalSizeClass == .compact {
-          Text(releaseDateAndStatus)
-            .foregroundStyle(.secondary)
-            .font(.caption)
-        }
-
         if let title = episodePreview.title {
           Text(title)
             + Text(" — \(episodePreview.typeAndNumber)")
@@ -50,12 +42,10 @@ struct EpisodePreviewRow: View {
         }
       }
 
-      if horizontalSizeClass != .compact {
-        Spacer()
+      Spacer()
 
-        Text(releaseDateAndStatus)
-          .foregroundStyle(.secondary)
-      }
+      Text(releaseDateAndStatus)
+        .foregroundStyle(.secondary)
     }
   }
 }

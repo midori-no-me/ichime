@@ -122,7 +122,6 @@ private class SeasonalSectionLoader: ShowsSectionLoader {
 
 struct HomeView: View {
   @State private var sectionLoaders: [any ShowsSectionLoader] = []
-  @Environment(\.horizontalSizeClass) var horizontalSizeClass
   private let SPACING_BETWEEN_SECTIONS: CGFloat = 70
 
   var body: some View {
