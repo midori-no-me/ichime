@@ -197,16 +197,13 @@ private struct ShowDetails: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
+      ShowKeyDetailsSection(show: show, viewModel: viewModel)
 
-      Group {
-        ShowKeyDetailsSection(show: show, viewModel: viewModel)
-
-        if !show.descriptions.isEmpty {
-          ShowDescriptionCards(descriptions: show.descriptions)
-        }
-
-        ShowMomentsCardsView(showId: show.id, showName: show.title.compose)
+      if !show.descriptions.isEmpty {
+        ShowDescriptionCards(descriptions: show.descriptions)
       }
+
+      ShowMomentsCardsView(showId: show.id, showName: show.title.compose)
     }
   }
 }
@@ -385,19 +382,17 @@ private struct ShowActionButtons: View {
               }
             }
           }) {
-            Group {
-              if isInMyList {
-                Label(
-                  self.viewModel.showRateStatus.statusDisplayName,
-                  systemImage: self.viewModel.showRateStatus.imageInToolbar
-                )
-              }
-              else {
-                Label(
-                  UserRateStatus.deleted.statusDisplayName,
-                  systemImage: UserRateStatus.deleted.imageInToolbar
-                )
-              }
+            if isInMyList {
+              Label(
+                self.viewModel.showRateStatus.statusDisplayName,
+                systemImage: self.viewModel.showRateStatus.imageInToolbar
+              )
+            }
+            else {
+              Label(
+                UserRateStatus.deleted.statusDisplayName,
+                systemImage: UserRateStatus.deleted.imageInToolbar
+              )
             }
           }
           .buttonStyle(.bordered)
