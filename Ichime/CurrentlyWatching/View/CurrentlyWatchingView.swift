@@ -110,6 +110,7 @@ struct CurrentlyWatchingView: View {
       case .loading:
         ProgressView()
           .focusable()
+          .centeredContentFix()
 
       case .needSubscribe:
         ContentUnavailableView {

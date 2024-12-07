@@ -169,6 +169,7 @@ struct ShowView: View {
       case .loading:
         ProgressView()
           .focusable()
+          .centeredContentFix()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -369,7 +370,7 @@ private struct ShowActionButtons: View {
             systemImage: show.episodePreviews.isEmpty ? "play.slash.fill" : "play.fill"
           )
         }
-        .buttonStyle(.card)
+        .buttonStyle(.bordered)
 
         .disabled(show.episodePreviews.isEmpty)
 
@@ -399,7 +400,7 @@ private struct ShowActionButtons: View {
               }
             }
           }
-          .buttonStyle(.card)
+          .buttonStyle(.bordered)
         }
       }
       .focusSection()
