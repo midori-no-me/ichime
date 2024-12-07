@@ -97,49 +97,33 @@ struct CalendarView: View {
         }
 
       case let .loaded(groupsOfShows):
-        if UIDevice.current.userInterfaceIdiom == .phone {
-          List {
+        ScrollView([.vertical]) {
+          VStack(alignment: .leading, spacing: 70) {
             ForEach(groupsOfShows, id: \.self) { groupOfShows in
-              Section {
-                ForEach(groupOfShows.shows) { show in
-                  ShowFromCalendarCard(show: show)
-                }
-              } header: {
-                Text(formatRelativeDateDay(groupOfShows.date))
-              }
-            }
-          }
-          .listStyle(.plain)
-        }
-        else {
-          ScrollView([.vertical]) {
-            VStack(alignment: .leading, spacing: 70) {
-              ForEach(groupsOfShows, id: \.self) { groupOfShows in
-                VStack(alignment: .leading, spacing: 50) {
-                  SectionHeaderRaw(
-                    title: formatRelativeDateDay(groupOfShows.date),
-                    subtitle: nil
-                  )
+              VStack(alignment: .leading, spacing: 50) {
+                SectionHeaderRaw(
+                  title: formatRelativeDateDay(groupOfShows.date),
+                  subtitle: nil
+                )
 
-                  LazyVGrid(
-                    columns: [
-                      GridItem(
-                        .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-                        spacing: RawShowCard.RECOMMENDED_SPACING,
-                        alignment: .topLeading
-                      )
-                    ],
-                    spacing: RawShowCard.RECOMMENDED_SPACING
-                  ) {
-                    ForEach(groupOfShows.shows) { show in
-                      ShowFromCalendarCard(show: show)
-                    }
+                LazyVGrid(
+                  columns: [
+                    GridItem(
+                      .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
+                      spacing: RawShowCard.RECOMMENDED_SPACING,
+                      alignment: .topLeading
+                    )
+                  ],
+                  spacing: RawShowCard.RECOMMENDED_SPACING
+                ) {
+                  ForEach(groupOfShows.shows) { show in
+                    ShowFromCalendarCard(show: show)
                   }
                 }
               }
             }
-            .topEdgePaddingForMenu()
           }
+          .topEdgePaddingForMenu()
         }
       }
     }
