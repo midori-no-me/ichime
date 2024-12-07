@@ -103,10 +103,6 @@ private struct ShowCardContextMenuPreview: View {
           }
         }
       )
-
-      #if os(iOS)  // !os(tvOS)
-        .background(Color(UIColor.secondarySystemBackground))
-      #endif
       .cornerRadius(10)
 
       if let metaInformationLine = self.getMetaInformationLine(
