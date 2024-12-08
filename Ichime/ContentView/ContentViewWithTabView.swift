@@ -9,21 +9,32 @@ import ScraperAPI
 import SwiftData
 import SwiftUI
 
+enum Tabs: String {
+  case home
+  case currentlyWatching
+  case myLists
+  case notifications
+  case calendar
+  case profile
+  case search
+}
+
 struct ContentViewWithTabView: View {
   @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
   @Environment(\.modelContext) private var modelContext
+  @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
 
   @State var viewModel: ShowListStatusModel = ApplicationDependency.container.resolve()
 
   var body: some View {
-    TabView {
-      Tab("Главная", systemImage: "play.house") {
+    TabView(selection: $selectedTab) {
+      Tab("Главная", systemImage: "play.house", value: .home) {
         NavigationStack {
           HomeView()
         }
       }
 
-      Tab("К просмотру", systemImage: "play.square.stack") {
+      Tab("К просмотру", systemImage: "play.square.stack", value: .currentlyWatching) {
         NavigationStack {
           CurrentlyWatchingView()
             .navigationDestination(
@@ -33,7 +44,7 @@ struct ContentViewWithTabView: View {
         }
       }
 
-      Tab("Мой список", systemImage: "film.stack") {
+      Tab("Мой список", systemImage: "film.stack", value: .myLists) {
         NavigationStack {
           MyListsSelectorView()
         }
@@ -41,7 +52,8 @@ struct ContentViewWithTabView: View {
 
       Tab(
         "Уведомления",
-        systemImage: notificationCounterWatcher.counter == 0 ? "bell" : "bell.badge"
+        systemImage: notificationCounterWatcher.counter == 0 ? "bell" : "bell.badge",
+        value: .notifications
       ) {
         NavigationStack {
           NotificationCenterView()
@@ -52,18 +64,18 @@ struct ContentViewWithTabView: View {
         }
       }
 
-      Tab("Календарь", systemImage: "calendar") {
+      Tab("Календарь", systemImage: "calendar", value: .calendar) {
         NavigationStack {
           CalendarView()
         }
       }
-      Tab("Профиль", systemImage: "person.circle") {
+      Tab("Профиль", systemImage: "person.circle", value: .profile) {
         NavigationStack {
           ProfileSheet()
         }
       }
 
-      Tab("Поиск", systemImage: "magnifyingglass", role: .search) {
+      Tab("Поиск", systemImage: "magnifyingglass", value: .search, role: .search) {
         NavigationStack {
           SearchShowsView()
         }
