@@ -12,7 +12,6 @@ struct ProfileSheet: View {
   private var userManager: UserManager = ApplicationDependency.container.resolve()
   @Environment(\.dismiss) private var dismiss
   @StateObject var baseUrlPreference: BaseUrlPreference = .init()
-  @StateObject var playerPreference: PlayerPreference = .init()
 
   private let appName =
     (Bundle.main.infoDictionary?["CFBundleDisplayName"]
@@ -33,71 +32,57 @@ struct ProfileSheet: View {
     NavigationStack {
       if case let .isAuth(user) = userManager.state {
         List {
-          Label {
-            VStack {
-              Text(user.username)
-                .padding()
-            }
-          } icon: {
-            AsyncImage(
-              url: user.avatarURL,
-              transaction: .init(animation: .easeInOut),
-              content: { phase in
-                switch phase {
-                case .empty:
-                  VStack {
-                    ProgressView()
-                  }
-                case let .success(image):
-                  image.resizable()
-                    .scaledToFill()
-                    .clipped()
-                    .shadow(radius: 4)
+          Section {
+            Label {
+              VStack {
+                Text(user.username)
+                  .padding()
+              }
+            } icon: {
+              AsyncImage(
+                url: user.avatarURL,
+                transaction: .init(animation: .easeInOut),
+                content: { phase in
+                  switch phase {
+                  case .empty:
+                    VStack {
+                      ProgressView()
+                    }
+                  case let .success(image):
+                    image.resizable()
+                      .scaledToFill()
+                      .clipped()
+                      .shadow(radius: 4)
 
-                case .failure:
-                  VStack {
-                    Image(systemName: "wifi.slash")
+                  case .failure:
+                    VStack {
+                      Image(systemName: "wifi.slash")
+                    }
+                  @unknown default:
+                    EmptyView()
                   }
-                @unknown default:
-                  EmptyView()
                 }
-              }
-            )
-            .frame(width: 50, height: 50)
-
-            .clipShape(.circle)
-          }
-
-          Section {
-            Text(baseUrlPreference.url.host()!)
-          } header: {
-            Text("Адрес сайта")
-          } footer: {
-            Text(
-              "Этот адрес используется для работы приложения. Попробуйте выбрать другой адрес, если приложение работает некорректно. Для изменения адреса нужно выйти из аккаунта."
-            )
-          }
-
-          Section {
-            Picker("Плеер по умолчанию", selection: $playerPreference.selectedPlayer) {
-              ForEach(PlayerPreference.Player.allCases, id: \.rawValue) { player in
-                Text(player.rawValue).tag(player)
-              }
+              )
+              .frame(width: 50, height: 50)
+              .clipShape(.circle)
             }
-          } header: {
-            Text("Настройки плеера")
-          }
 
-          Section {
             Button("Выйти из аккаунта", role: .destructive) {
               userManager.dropAuth()
             }
           }
 
           Section {
+            Link("Настройки приложения", destination: URL(string: UIApplication.openSettingsURLString)!)
+          } footer: {
+            Text(
+              "Адрес сайта: \(baseUrlPreference.url.host()!). Этот адрес используется для работы приложения. Попробуйте выбрать другой адрес, если приложение работает некорректно. Для изменения адреса нужно выйти из аккаунта."
+            )
+          }
+
+          Section {
+          } footer: {
             Text("\(appName) \(appVersion) (\(buildNumber)) \(buildConfiguration)")
-          } header: {
-            Text("О приложении")
           }
         }
         .listStyle(.grouped)

@@ -7,4 +7,5 @@
 *.ipa
 *.entitlements
 *.plist
+!Settings.bundle/Root.plist
 .github/secrets
