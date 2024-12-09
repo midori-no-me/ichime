@@ -29,6 +29,7 @@ targets:
       tvOS: "18.1"
     sources:
       - path: Ichime
+      - path: Settings.bundle
     info:
       path: Ichime/Info.plist
       properties:
