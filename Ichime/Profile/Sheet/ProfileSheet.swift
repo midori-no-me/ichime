@@ -86,9 +86,6 @@ struct ProfileSheet: View {
           }
         }
         .listStyle(.grouped)
-
-        .navigationTitle("Ваш профиль")
-
       }
     }
   }

@@ -248,8 +248,6 @@ struct EpisodeTranslationQualitySelectorView: View {
         }
       }
     }
-    .navigationTitle(translationTeam)
-
   }
 }
 

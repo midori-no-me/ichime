@@ -141,7 +141,6 @@ struct HomeView: View {
     .onAppear {
       sectionLoaders.append(getNextSectionLoader())
     }
-    .navigationTitle("Главная")
   }
 
   private func getNextSectionLoader() -> any ShowsSectionLoader {

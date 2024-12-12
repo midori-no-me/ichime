@@ -41,9 +41,6 @@ struct ShowGenreListView: View {
         Text("Жанры")
       }
     }
-    .navigationTitle(
-      showTitle.translated.japaneseRomaji ?? showTitle.translated.russian ?? showTitle.full
-    )
     .listStyle(.grouped)
 
   }

@@ -136,7 +136,6 @@ struct NotificationCenterView: View {
     .refreshable {
       await viewModel.performRefresh()
     }
-    .navigationTitle("Уведомления")
   }
 }
 
