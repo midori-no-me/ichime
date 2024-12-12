@@ -136,7 +136,6 @@ struct HomeView: View {
           )
         }
       }
-      .topEdgePaddingForMenu()
     }
     .onAppear {
       sectionLoaders.append(getNextSectionLoader())

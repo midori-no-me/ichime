@@ -1,25 +1,8 @@
-//
-//  ContentViewWithSideBar.swift
-//  ichime
-//
-//  Created by Nikita Nafranets on 14.03.2024.
-//
-
 import ScraperAPI
 import SwiftData
 import SwiftUI
 
-enum Tabs: String {
-  case home
-  case currentlyWatching
-  case myLists
-  case notifications
-  case calendar
-  case profile
-  case search
-}
-
-struct ContentViewWithTabView: View {
+struct ContentViewWithSideBar: View {
   @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
   @Environment(\.modelContext) private var modelContext
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
@@ -81,72 +64,9 @@ struct ContentViewWithTabView: View {
         }
       }
     }
+    .tabViewStyle(.sidebarAdaptable)
     .task {
       await viewModel.cacheCategories()
     }
-    .tabViewStyle(.sidebarAdaptable)
-
   }
 }
-
-private struct SidebarProfileButton: View {
-  private var userManager: UserManager = ApplicationDependency.container.resolve()
-
-  @State var profileSheetPresented = false
-
-  var body: some View {
-    Button(
-      action: {
-        profileSheetPresented.toggle()
-      },
-      label: {
-        if case let .isAuth(user) = userManager.state {
-          HStack {
-            AsyncImage(
-              url: user.avatarURL,
-              transaction: .init(animation: .easeInOut),
-              content: { phase in
-                switch phase {
-                case .empty:
-                  Image(systemName: "person.circle")
-                case let .success(image):
-                  image
-                    .resizable()
-                    .frame(width: 26, height: 26)
-                    .clipShape(.circle)
-                    .clipped()
-                case .failure:
-                  Image(systemName: "person.circle")
-                @unknown default:
-                  Image(systemName: "person.circle")
-                }
-              }
-            )
-
-            Text(user.username)
-              .fontWeight(.semibold)
-          }
-        }
-        else {
-          HStack {
-            Image(systemName: "person.circle")
-
-            Text("Профиль")
-              .fontWeight(.semibold)
-          }
-        }
-      }
-    )
-    .buttonStyle(.plain)
-    .sheet(
-      isPresented: $profileSheetPresented,
-      content: {
-        ProfileSheet()
-      }
-    )
-  }
-}
-
-// #Preview {
-//    ContentViewWithSideBar()
-// }

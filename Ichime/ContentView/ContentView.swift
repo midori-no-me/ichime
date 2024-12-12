@@ -8,8 +8,15 @@
 import ScraperAPI
 import SwiftUI
 
+private enum NavigationStyle: String {
+  case sideBar
+  case tabBar
+}
+
 struct ContentView: View {
   private var userManager: UserManager = ApplicationDependency.container.resolve()
+
+  @AppStorage("navigationStyle") private var navigationStyle: NavigationStyle = .tabBar
 
   var body: some View {
     switch userManager.state {
@@ -20,7 +27,12 @@ struct ContentView: View {
         .focusable()
 
     case .isAuth:
-      ContentViewWithTabView()
+      switch navigationStyle {
+      case .tabBar:
+        ContentViewWithTabBar()
+      case .sideBar:
+        ContentViewWithSideBar()
+      }
     case .isAnonym:
       NavigationStack {
         OnboardingView()

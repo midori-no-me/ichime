@@ -211,7 +211,6 @@ struct LoadedCurrentlyWatching: View {
           }
         }
       }
-      .topEdgePaddingForMenu()
     }
   }
 }

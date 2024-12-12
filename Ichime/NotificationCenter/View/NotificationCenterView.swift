@@ -167,7 +167,6 @@ struct LoadedNotificationCenter: View {
           }
         }
       }
-      .topEdgePaddingForMenu()
     }
   }
 }
