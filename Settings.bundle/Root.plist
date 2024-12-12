@@ -8,6 +8,32 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
+			<string>Приложение</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Навигация</string>
+			<key>Key</key>
+			<string>navigationStyle</string>
+			<key>DefaultValue</key>
+			<string>tabBar</string>
+			<key>Titles</key>
+			<array>
+				<string>Вкладки сверху</string>
+				<string>Меню слева</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>tabBar</string>
+				<string>sideBar</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
 			<string>Настройки плеера</string>
 		</dict>
 		<dict>
