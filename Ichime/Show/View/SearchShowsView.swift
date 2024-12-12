@@ -186,7 +186,6 @@ struct SearchShowsView: View {
         }
       }
     }
-    .navigationTitle("Поиск")
     .searchable(
       text: $viewModel.currentlyTypedSearchQuery,
       placement: .automatic,

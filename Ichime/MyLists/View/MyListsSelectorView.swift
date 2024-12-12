@@ -19,7 +19,6 @@ struct MyListsSelectorView: View {
         }
       }
     }
-    .navigationTitle("Мой список")
     .listStyle(.grouped)
 
   }

@@ -149,7 +149,6 @@ struct CurrentlyWatchingView: View {
     .refreshable {
       await viewModel.performRefresh()
     }
-    .navigationTitle("Я смотрю")
   }
 
   enum Navigation: Hashable {
