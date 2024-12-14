@@ -78,7 +78,7 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowListStatusModel(apiClient: $0, userManager: $1, modelContext: $2)
+      ShowListStatusModel(apiClient: $0, userManager: $1, modelContainer: $2)
     }
 
     container.register { Anime365Client(apiClient: $0) }
