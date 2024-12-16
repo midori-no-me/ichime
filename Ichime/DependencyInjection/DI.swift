@@ -13,6 +13,7 @@ import ShikimoriApiClient
 import SwiftData
 
 class ApplicationDependency: DIFramework {
+
   static let container: DIContainer = {
     let container = DIContainer()
     container.append(framework: ApplicationDependency.self)
@@ -21,7 +22,13 @@ class ApplicationDependency: DIFramework {
 
   static func load(container: DIContainer) {
     container.register {
-      let schema = Schema([ShowListStatusEntity.self])
+      let schema = Schema([
+        UserAnimeListModel.self,
+        DbAnime.self,
+        DbGenre.self,
+        DbStudio.self,
+      ])
+      let storeURL = URL.documentsDirectory.appending(path: "offline.sqlite")
       let modelConfiguration = ModelConfiguration(
         schema: schema,
         groupContainer: .identifier(ServiceLocator.appGroup)
@@ -73,7 +80,11 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowListStatusModel(apiClient: $0, userManager: $1, modelContainer: $2)
+      UserAnimeListCache(apiClient: $0, userManager: $1, modelContainer: $2)
+    }
+
+    container.register {
+      DbService(modelContainer: $0)
     }
 
     container.register { Anime365Client(apiClient: $0) }

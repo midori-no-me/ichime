@@ -6,13 +6,19 @@
 //
 
 import ScraperAPI
+import SwiftData
 import SwiftUI
 
 @Observable
 class MyListEditViewModel {
   private let client: ScraperAPI.APIClient
-  init(apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve()) {
+  private let userAnimeListManager: UserAnimeListManager
+  init(
+    apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
+    container: ModelContainer = ApplicationDependency.container.resolve()
+  ) {
     client = apiClient
+    userAnimeListManager = .init(modelContainer: container)
   }
 
   enum State {
@@ -49,6 +55,21 @@ class MyListEditViewModel {
       _ =
         try await client
         .sendAPIRequest(ScraperAPI.Request.UpdateUserRate(showId: showId, userRate: userRate))
+      let newStatus: AnimeWatchStatus =
+        switch userRate.status {
+        case .onHold:
+          .onHold
+        case .planned:
+          .planned
+        case .watching:
+          .watching
+        case .dropped:
+          .dropped
+        default:
+          .completed
+        }
+
+      await userAnimeListManager.updateStatusById(id: showId, status: newStatus)
       await updateState(.formSended)
     }
     catch {
@@ -66,6 +87,7 @@ class MyListEditViewModel {
           userRate: .init(score: 0, currentEpisode: 0, status: .deleted, comment: "")
         )
       )
+      await userAnimeListManager.remove(id: showId)
       await updateState(.formSended)
     }
     catch {
@@ -76,7 +98,17 @@ class MyListEditViewModel {
 
 struct MyListEditView: View {
   let show: MyListShow
-  let onUpdate: () -> Void
+  let onUpdate: (() -> Void)?
+
+  init(show: MyListShow) {
+    self.show = show
+    onUpdate = nil
+  }
+
+  init(show: MyListShow, onUpdate: @escaping () -> Void) {
+    self.show = show
+    self.onUpdate = onUpdate
+  }
 
   @State private var viewModel: MyListEditViewModel = .init()
   @Environment(\.dismiss) private var dismiss
@@ -100,6 +132,7 @@ struct MyListEditView: View {
               await viewModel.performInitialLoad(show.id)
             }
           }
+
         case .loading:
           ProgressView()
             .focusable()
@@ -121,10 +154,11 @@ struct MyListEditView: View {
               await viewModel.performDelete(show.id)
             }
           }
+
         case .formSended:
           Color.clear.onAppear {
             dismiss()
-            onUpdate()
+            onUpdate?()
           }
         }
       }
