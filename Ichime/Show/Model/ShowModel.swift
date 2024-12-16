@@ -7,7 +7,6 @@ struct Show: Hashable, Identifiable {
   ) -> Show {
     let score = Float(series.myAnimeListScore) ?? 0
 
-    print(series.numberOfEpisodes)
     return Show(
       id: series.id,
       title: Show.Title(
@@ -124,6 +123,7 @@ struct Show: Hashable, Identifiable {
     let id: Int
     let title: String
   }
+
 }
 
 func getWebsiteUrlByShowId(showId: Int) -> URL {

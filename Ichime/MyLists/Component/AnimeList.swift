@@ -56,60 +56,47 @@ private struct MyListEntry: View {
 }
 
 struct AnimeList: View {
-  let categories: [ScraperAPI.Types.ListByCategory]
-  let onUpdate: () async -> Void
+  let status: AnimeWatchStatus
+  let animeList: [UserAnimeListModel]
 
-  @State var selectedShow: ScraperAPI.Types.Show?
+  @State var selectedShow: MyListShow?
 
   var body: some View {
     List {
-      ForEach(categories, id: \.type) { category in
-        Section {
-          ForEach(category.shows, id: \.id) { show in
-            Button(action: {
-              selectedShow = show
-            }) {
-              MyListEntry(
-                primaryTitle: show.name.ru,  // TODO: сделать romaji primary
-                secondaryTitle: show.name.romaji,
-                currentEpisodeProgress: show.episodes.watched,
-                totalEpisodes: show.episodes.total
-              )
-              .contextMenu(
-                menuItems: {
-
-                  NavigationLink(destination: ShowView(showId: show.id)) {
-                    Text("Открыть")
-                  }
-                },
-                preview: {
-                  IndependentShowCardContextMenuPreview(showId: show.id)
+      Section {
+        ForEach(animeList, id: \.id) { show in
+          Button(action: {
+            selectedShow = .init(id: show.id, name: show.name.ru, totalEpisodes: show.progress.total)
+          }) {
+            MyListEntry(
+              primaryTitle: show.name.ru,  // TODO: сделать romaji primary
+              secondaryTitle: show.name.romaji,
+              currentEpisodeProgress: show.progress.watched,
+              totalEpisodes: show.progress.total
+            )
+            .contextMenu(
+              menuItems: {
+                NavigationLink(destination: ShowView(showId: show.id)) {
+                  Text("Открыть")
                 }
-              )
-            }
+              },
+              preview: {
+                IndependentShowCardContextMenuPreview(showId: show.id)
+              }
+            )
           }
-        } header: {
-          Text(category.type.rawValue)
         }
+      } header: {
+        Text(status.title)
       }
     }
     .sheet(
       item: $selectedShow,
       content: { show in
         MyListEditView(
-          show: .init(id: show.id, name: show.name.ru, totalEpisodes: show.episodes.total)
-        ) {
-          Task {
-            await onUpdate()
-          }
-        }
+          show: show
+        )
       }
     )
-  }
-}
-
-#Preview {
-  NavigationStack {
-    AnimeList(categories: ScraperAPI.Types.ListByCategory.sampleData) {}
   }
 }

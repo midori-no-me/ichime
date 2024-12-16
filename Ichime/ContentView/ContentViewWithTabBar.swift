@@ -6,7 +6,7 @@ struct ContentViewWithTabBar: View {
   @Environment(\.modelContext) private var modelContext
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
 
-  @State var viewModel: ShowListStatusModel = ApplicationDependency.container.resolve()
+  @State var viewModel: UserAnimeListCache = ApplicationDependency.container.resolve()
 
   var body: some View {
     TabView(selection: $selectedTab) {

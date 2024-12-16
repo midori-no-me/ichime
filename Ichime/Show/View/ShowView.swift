@@ -60,7 +60,7 @@ class ShowViewModel {
 
   private let client: Anime365Client
   private let scraperClient: ScraperAPI.APIClient
-  private let showListStatusModel: ShowListStatusModel
+  private let dbService: DbService
   private var showId: Int = 0
 
   var shareUrl: URL {
@@ -70,11 +70,11 @@ class ShowViewModel {
   init(
     client: Anime365Client = ApplicationDependency.container.resolve(),
     scraperClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
-    showListStatusModel: ShowListStatusModel = ApplicationDependency.container.resolve()
+    dbService: DbService = ApplicationDependency.container.resolve()
   ) {
     self.client = client
     self.scraperClient = scraperClient
-    self.showListStatusModel = showListStatusModel
+    self.dbService = dbService
   }
 
   func performInitialLoad(showId: Int, preloadedShow: Show?) async {
@@ -87,11 +87,19 @@ class ShowViewModel {
         state = .loaded(preloadedShow)
       }
       else {
-        let show = try await client.getShow(
-          seriesId: showId
-        )
+        let showFromDb = try await dbService.getAnime(id: showId)
 
-        state = .loaded(show)
+        if let showFromDb {
+          state = .loaded(.init(from: showFromDb))
+        }
+        else {
+          let show = try await client.getShow(
+            seriesId: showId
+          )
+
+          state = .loaded(show)
+        }
+
       }
 
       await getUserRate(showId: showId)
