@@ -17,7 +17,6 @@ struct EpisodeListView: View {
       }
     }
     .listStyle(.grouped)
-
   }
 }
 

@@ -87,18 +87,24 @@ class ShowViewModel {
         state = .loaded(preloadedShow)
       }
       else {
-        let showFromDb = try await dbService.getAnime(id: showId)
+        //        let showFromDb = try await dbService.getAnime(id: showId)
+        //
+        //        if let showFromDb {
+        //          state = .loaded(.init(from: showFromDb))
+        //        }
+        //        else {
+        //          let show = try await client.getShow(
+        //            seriesId: showId
+        //          )
+        //
+        //          state = .loaded(show)
+        //        }
 
-        if let showFromDb {
-          state = .loaded(.init(from: showFromDb))
-        }
-        else {
-          let show = try await client.getShow(
-            seriesId: showId
-          )
+        let show = try await client.getShow(
+          seriesId: showId
+        )
 
-          state = .loaded(show)
-        }
+        state = .loaded(show)
 
       }
 
