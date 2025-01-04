@@ -80,6 +80,10 @@ class EpisodeViewModel {
     var translationsGroupedByLocalizedSection: [Translation.CompositeType: [Translation]] = [:]
 
     for episodeTranslation in episodeTranslations {
+      if episodeTranslation.isHidden {
+        continue
+      }
+
       translationsGroupedByLocalizedSection[episodeTranslation.getCompositeType(), default: []]
         .append(episodeTranslation)
     }
@@ -191,7 +195,8 @@ private struct TranslationRow: View {
           formatTranslationQuality(
             episodeTranslation,
             qualityNameFirst: true,
-            displayTranslationType: isRecommendedTranslation
+            displayTranslationType: isRecommendedTranslation,
+            isUnderProcessing: episodeTranslation.isUnderProcessing
           )
         )
         .foregroundStyle(Color.secondary)
@@ -225,9 +230,12 @@ private struct TranslationRow: View {
 private func formatTranslationQuality(
   _ translation: Translation,
   qualityNameFirst: Bool,
-  displayTranslationType: Bool
+  displayTranslationType: Bool,
+  isUnderProcessing: Bool
 ) -> String {
-  var stringComponents = [String(translation.height) + "p"]
+  var stringComponents: [String] = []
+
+  stringComponents.append(String(translation.height) + "p")
 
   if translation.sourceVideoQuality != .tv {
     stringComponents.append(translation.sourceVideoQuality.getLocalizedTranslation())
@@ -235,6 +243,10 @@ private func formatTranslationQuality(
 
   if displayTranslationType {
     stringComponents.append(translation.getCompositeType().getLocalizedTranslation())
+  }
+
+  if isUnderProcessing {
+    stringComponents.append("В обработке")
   }
 
   if qualityNameFirst {

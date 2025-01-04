@@ -9,7 +9,7 @@ import Anime365ApiClient
 import Foundation
 
 struct Translation: Hashable, Identifiable {
-  static func createFromApiSeries(
+  static func createFromApiResponse(
     translation: Anime365ApiTranslation
   ) -> Translation {
     var sourceVideoQuality: SourceVideoQuality = .other
@@ -49,6 +49,19 @@ struct Translation: Hashable, Identifiable {
       translationMethod = .other
     }
 
+    let activeTime =
+      translation.activeDateTime == "2000-01-01 00:00:00"
+      ? nil
+      : convertApiDateStringToDate(string: translation.activeDateTime)!
+
+    let addedTime = convertApiDateStringToDate(string: translation.addedDateTime)
+
+    var addedTooLongAgo = true
+
+    if let addedTime {
+      addedTooLongAgo = Date.now.addingTimeInterval(60 * 60 * 24 * -1) > addedTime  // 1 day ago
+    }
+
     return Translation(
       id: translation.id,
       translationTeam: translation.authorsSummary == ""
@@ -60,7 +73,9 @@ struct Translation: Hashable, Identifiable {
       translationMethod: translationMethod,
       height: translation.height,
       sourceVideoQuality: sourceVideoQuality,
-      translationUrl: translation.url
+      translationUrl: translation.url,
+      isUnderProcessing: translation.isActive == 0 && activeTime == nil,
+      isHidden: (translation.isActive == 0 && addedTooLongAgo) || translation.height == 0
     )
   }
 
@@ -80,6 +95,8 @@ struct Translation: Hashable, Identifiable {
   let height: Int
   let sourceVideoQuality: SourceVideoQuality
   let translationUrl: String
+  let isUnderProcessing: Bool
+  let isHidden: Bool
 
   enum SourceVideoQuality {
     case tv
