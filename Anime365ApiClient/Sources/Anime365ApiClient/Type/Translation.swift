@@ -1,6 +1,7 @@
 public struct Anime365ApiTranslation: Decodable {
   public let id: Int
   public let activeDateTime: String
+  public let addedDateTime: String
   public let authorsList: [String]
   public let isActive: Int
   public let priority: Int

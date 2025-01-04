@@ -125,15 +125,13 @@ class Anime365Client {
     episodeId: Int
   ) async throws -> [Translation] {
     let apiResponse = try await apiClient.sendApiRequest(
-      ListTranslationsRequest(
-        episodeId: episodeId,
-        limit: 1000,
-        offset: 0
+      GetEpisodeRequest(
+        episodeId: episodeId
       )
     )
 
-    return apiResponse.map { translation in
-      Translation.createFromApiSeries(translation: translation)
+    return apiResponse.translations.map { translation in
+      Translation.createFromApiResponse(translation: translation)
     }
   }
 
