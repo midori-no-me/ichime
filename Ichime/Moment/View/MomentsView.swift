@@ -160,6 +160,7 @@ struct MomentsView: View {
         } description: {
           Text(error.localizedDescription)
         }
+        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -167,6 +168,7 @@ struct MomentsView: View {
         } description: {
           Text("Возможно, это баг")
         }
+        .focusable()
 
       case let .loaded(moments):
         ScrollView([.vertical]) {

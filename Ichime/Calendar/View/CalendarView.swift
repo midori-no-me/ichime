@@ -89,6 +89,7 @@ struct CalendarView: View {
         } description: {
           Text(error.localizedDescription)
         }
+        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -96,6 +97,7 @@ struct CalendarView: View {
         } description: {
           Text("Возможно, это баг")
         }
+        .focusable()
 
       case let .loaded(groupsOfShows):
         ScrollView([.vertical]) {

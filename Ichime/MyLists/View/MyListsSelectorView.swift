@@ -85,6 +85,7 @@ struct MyListsSelectorView: View {
         } description: {
           Text("Подпишись чтоб получить все возможности приложения")
         }
+        .focusable()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -92,6 +93,7 @@ struct MyListsSelectorView: View {
         } description: {
           Text(error.localizedDescription)
         }
+        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -99,6 +101,7 @@ struct MyListsSelectorView: View {
         } description: {
           Text("Вы еще ничего не добавили в свой список")
         }
+        .focusable()
 
       case .loaded:
         List {
