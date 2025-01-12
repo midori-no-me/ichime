@@ -35,9 +35,11 @@ class EpisodeViewModel {
     await updateState(.loading)
 
     do {
-      let episodeTranslations = try await client.getEpisodeTranslations(
+      var episodeTranslations = try await client.getEpisodeTranslations(
         episodeId: episodeId
       )
+
+      episodeTranslations = filterTranslations(episodeTranslations)
 
       if episodeTranslations.isEmpty {
         await updateState(.loadedButEmpty)
@@ -51,16 +53,59 @@ class EpisodeViewModel {
     }
   }
 
+  private func filterTranslations(
+    _ episodeTranslations: [Translation]
+  ) -> [Translation] {
+    episodeTranslations.filter({
+      if $0.isHidden {
+        return false
+      }
+
+      let hideRussianSubtitles = UserDefaults.standard.bool(forKey: "hide_translations_russian_subtitles")
+      let hideRussianVoiceover = UserDefaults.standard.bool(forKey: "hide_translations_russian_voiceover")
+      let hideEnglishSubtitles = UserDefaults.standard.bool(forKey: "hide_translations_english_subtitles")
+      let hideEnglishVoiceover = UserDefaults.standard.bool(forKey: "hide_translations_english_voiceover")
+      let hideJapanese = UserDefaults.standard.bool(forKey: "hide_translations_japanese")
+      let hideOther = UserDefaults.standard.bool(forKey: "hide_translations_other")
+
+      if $0.translatedToLanguage == .russian {
+        if $0.translationMethod == .subtitles && hideRussianSubtitles {
+          return false
+        }
+
+        if $0.translationMethod == .voiceover && hideRussianVoiceover {
+          return false
+        }
+      }
+
+      if $0.translatedToLanguage == .english {
+        if $0.translationMethod == .subtitles && hideEnglishSubtitles {
+          return false
+        }
+
+        if $0.translationMethod == .voiceover && hideEnglishVoiceover {
+          return false
+        }
+      }
+
+      if $0.translatedToLanguage == .japanese && hideJapanese {
+        return false
+      }
+
+      if $0.translatedToLanguage == .other && hideOther {
+        return false
+      }
+
+      return true
+    })
+  }
+
   private func getGroupedTranslations(
     episodeTranslations: [Translation]
   ) -> GroupedTranslation {
     var translationsGroupedByLocalizedSection: [Translation.CompositeType: [Translation]] = [:]
 
     for episodeTranslation in episodeTranslations {
-      if episodeTranslation.isHidden {
-        continue
-      }
-
       translationsGroupedByLocalizedSection[episodeTranslation.getCompositeType(), default: []]
         .append(episodeTranslation)
     }
