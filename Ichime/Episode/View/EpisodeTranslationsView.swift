@@ -14,7 +14,6 @@ class EpisodeViewModel {
   }
 
   private(set) var state = State.idle
-  private(set) var preselectedTranslation: Translation?
 
   private let client: Anime365Client
   private let scraper: ScraperAPI.APIClient
@@ -45,32 +44,10 @@ class EpisodeViewModel {
       }
       else {
         await updateState(.loaded(getGroupedTranslations(episodeTranslations: episodeTranslations)))
-
-        await getRecommendation(translations: episodeTranslations)
       }
     }
     catch {
       await updateState(.loadingFailed(error))
-    }
-  }
-
-  func getRecommendation(translations: [Translation]) async {
-    guard let translation = translations.first else {
-      return
-    }
-
-    guard
-      let recommendation =
-        try? await scraper
-        .sendAPIRequest(
-          ScraperAPI.Request.GetRecommendTranslation(episodeURL: translation.translationUrl)
-        )
-    else {
-      return
-    }
-
-    withAnimation {
-      preselectedTranslation = translations.first(where: { $0.id == recommendation })
     }
   }
 
@@ -134,28 +111,12 @@ struct EpisodeTranslationsView: View {
 
       case let .loaded(groupedTranslations):
         List {
-          Section {
-            if let preselectedTranslation = viewModel.preselectedTranslation {
-              TranslationRow(
-                episodeId: episodeId,
-                episodeTranslation: preselectedTranslation,
-                isRecommendedTranslation: true
-              )
-            }
-            else {
-              ProgressView()
-            }
-          } header: {
-            Text("Рекомендованный перевод")
-          }
-
           ForEach(groupedTranslations, id: \.key) { translationGroup in
             Section {
               ForEach(translationGroup.value, id: \.id) { episodeTranslation in
                 TranslationRow(
                   episodeId: episodeId,
-                  episodeTranslation: episodeTranslation,
-                  isRecommendedTranslation: false
+                  episodeTranslation: episodeTranslation
                 )
               }
             } header: {
@@ -166,14 +127,12 @@ struct EpisodeTranslationsView: View {
       }
     }
     .listStyle(.grouped)
-
   }
 }
 
 private struct TranslationRow: View {
   let episodeId: Int
   let episodeTranslation: Translation
-  let isRecommendedTranslation: Bool
 
   @State private var showingSheet = false
 
@@ -185,7 +144,6 @@ private struct TranslationRow: View {
       HStack {
         VStack(alignment: .leading) {
           Text(self.episodeTranslation.translationTeam)
-            .lineLimit(isRecommendedTranslation ? 1 : nil)
             .truncationMode(.tail)
         }
 
@@ -195,12 +153,10 @@ private struct TranslationRow: View {
           formatTranslationQuality(
             episodeTranslation,
             qualityNameFirst: true,
-            displayTranslationType: isRecommendedTranslation,
             isUnderProcessing: episodeTranslation.isUnderProcessing
           )
         )
         .foregroundStyle(Color.secondary)
-        .lineLimit(isRecommendedTranslation ? 1 : nil)
         .truncationMode(.tail)
       }
     }
@@ -230,7 +186,6 @@ private struct TranslationRow: View {
 private func formatTranslationQuality(
   _ translation: Translation,
   qualityNameFirst: Bool,
-  displayTranslationType: Bool,
   isUnderProcessing: Bool
 ) -> String {
   var stringComponents: [String] = []
@@ -239,10 +194,6 @@ private func formatTranslationQuality(
 
   if translation.sourceVideoQuality != .tv {
     stringComponents.append(translation.sourceVideoQuality.getLocalizedTranslation())
-  }
-
-  if displayTranslationType {
-    stringComponents.append(translation.getCompositeType().getLocalizedTranslation())
   }
 
   if isUnderProcessing {
