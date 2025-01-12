@@ -62,7 +62,7 @@ extension ScraperAPI.Types {
       }
 
       let image = try htmlElement.select(".collection-item.avatar .circle").imageBackground()
-        .replacingOccurrences(of: "140x140.1", with: "400x400.0").dropFirst()
+        .replacingOccurrences(of: ".140x140.1", with: "").dropFirst()
       let episodeNumberText = try htmlElement.select("span.online-h").first()?.text() ?? ""
       let episode = Episode(id: episodeID, episodeText: episodeNumberText)
 
