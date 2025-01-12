@@ -112,6 +112,7 @@ struct NotificationCenterView: View {
         } description: {
           Text(error.localizedDescription)
         }
+        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -119,6 +120,8 @@ struct NotificationCenterView: View {
         } description: {
           Text("Как только вы добавите аниме в свой список, начнут приходить уведомления")
         }
+        .focusable()
+
       case let .loaded(shows):
         LoadedNotificationCenter(shows: shows) {
           await viewModel.performLazyLoad()

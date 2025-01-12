@@ -118,6 +118,7 @@ struct CurrentlyWatchingView: View {
         } description: {
           Text("Подпишись чтоб получить все возможности приложения")
         }
+        .focusable()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -125,6 +126,7 @@ struct CurrentlyWatchingView: View {
         } description: {
           Text(error.localizedDescription)
         }
+        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -132,6 +134,8 @@ struct CurrentlyWatchingView: View {
         } description: {
           Text("Вы еще ничего не добавили в свой список")
         }
+        .focusable()
+
       case let .loaded(shows):
         LoadedCurrentlyWatching(shows: shows) {
           await viewModel.performLazyLoad()

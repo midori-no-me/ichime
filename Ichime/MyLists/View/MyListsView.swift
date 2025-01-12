@@ -27,6 +27,7 @@ struct MyListsView: View {
         } description: {
           Text("В этой категории пока нет аниме")
         }
+        .focusable()
       }
       else {
         AnimeList(status: status, animeList: userAnimeList)

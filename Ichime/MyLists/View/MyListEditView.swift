@@ -143,6 +143,7 @@ struct MyListEditView: View {
           } description: {
             Text(error.localizedDescription)
           }
+          .focusable()
 
         case let .loaded(userRate):
           UserRateForm(userRate, totalEpisodes: totalEpisodes) { newUserRate in

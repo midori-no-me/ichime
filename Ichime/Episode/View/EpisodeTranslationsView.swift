@@ -146,6 +146,7 @@ struct EpisodeTranslationsView: View {
         } description: {
           Text(error.localizedDescription)
         }
+        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -153,6 +154,7 @@ struct EpisodeTranslationsView: View {
         } description: {
           Text("Скорее всего, у этой серии ещё нет переводов, либо они находятся в обработке")
         }
+        .focusable()
 
       case let .loaded(groupedTranslations):
         List {

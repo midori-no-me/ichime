@@ -191,6 +191,7 @@ struct ShowView: View {
         } description: {
           Text(error.localizedDescription)
         }
+        .focusable()
 
       case let .loaded(show):
         ScrollView(.vertical) {

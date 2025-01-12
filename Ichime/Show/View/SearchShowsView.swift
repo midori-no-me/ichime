@@ -138,6 +138,7 @@ struct SearchShowsView: View {
           } description: {
             Text("Предыдущие запросы поиска будут сохраняться на этом экране")
           }
+          .focusable()
         }
         else {
           List {
@@ -170,9 +171,11 @@ struct SearchShowsView: View {
         } description: {
           Text(error.localizedDescription)
         }
+        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView.search
+          .focusable()
 
       case let .loaded(shows):
         ScrollView([.vertical]) {

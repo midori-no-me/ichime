@@ -135,6 +135,7 @@ struct FilteredShowsView: View {
         } description: {
           Text(error.localizedDescription)
         }
+        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -142,6 +143,7 @@ struct FilteredShowsView: View {
         } description: {
           Text("Возможно, это баг")
         }
+        .focusable()
 
       case let .loaded(shows):
         ScrollView([.vertical]) {

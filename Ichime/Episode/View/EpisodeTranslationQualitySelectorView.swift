@@ -172,6 +172,7 @@ struct EpisodeTranslationQualitySelectorView: View {
         } description: {
           Text(error.localizedDescription)
         }
+        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -179,6 +180,7 @@ struct EpisodeTranslationQualitySelectorView: View {
         } description: {
           Text("Скорее всего, что-то пошло не так")
         }
+        .focusable()
 
       case let .loaded(episodeStreamingInfo):
         List {
