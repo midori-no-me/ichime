@@ -72,12 +72,14 @@ struct ProfileSheet: View {
             }
           }
 
-          Section {
-            Link("Настройки приложения", destination: URL(string: UIApplication.openSettingsURLString)!)
-          } footer: {
-            Text(
-              "Адрес сайта: \(baseUrlPreference.url.host()!). Этот адрес используется для работы приложения. Попробуйте выбрать другой адрес, если приложение работает некорректно. Для изменения адреса нужно выйти из аккаунта."
-            )
+          if let host = baseUrlPreference.url.host() {
+            Section {
+              Link("Настройки приложения", destination: URL(string: UIApplication.openSettingsURLString)!)
+            } footer: {
+              Text(
+                "Адрес сайта: \(host). Этот адрес используется для работы приложения. Попробуйте выбрать другой адрес, если приложение работает некорректно. Для изменения адреса нужно выйти из аккаунта."
+              )
+            }
           }
 
           Section {

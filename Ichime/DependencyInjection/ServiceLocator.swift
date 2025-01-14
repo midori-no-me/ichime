@@ -11,7 +11,16 @@ import ScraperAPI
 
 enum ServiceLocator {
   static var websiteBaseUrl: URL {
-    UserDefaults.standard.url(forKey: "anime365-base-url") ?? URL(string: "https://anime365.ru")!
+    guard let userDefaults = UserDefaults(suiteName: appGroup) else {
+      fatalError("Cannot get user defaults")
+    }
+    if let url = userDefaults.string(forKey: "anime365-base-url") {
+      return URL(string: url)!
+    }
+
+    userDefaults.set("https://smotret-anime.org", forKey: "anime365-base-url")
+
+    return URL(string: "https://smotret-anime.org")!
   }
 
   static var applicationId: String {
