@@ -129,19 +129,20 @@ struct AuthenticationAppFeature: View {
   let description: LocalizedStringKey
 
   var body: some View {
-    VStack(alignment: .leading) {
-      HStack {
-        Image(systemName: systemImage)
-        Text(title)
-      }
-      Text(description)
-        .foregroundStyle(Color.secondary)
-        .padding(.top, 4)
-    }
-    .frame(maxWidth: .infinity, alignment: .leading)
-    .padding(.all)
+    Button {
+    } label: {
+      VStack(alignment: .leading, spacing: 16) {
+        HStack(alignment: .top, spacing: 16) {
+          Image(systemName: systemImage)
+          Text(title)
+        }
 
-    .scenePadding(.horizontal)
+        Text(description)
+          .foregroundStyle(.secondary)
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .padding(.vertical)
+    }
   }
 }
 
