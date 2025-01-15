@@ -3,16 +3,14 @@ import SwiftUI
 @Observable
 class SearchShowsViewModel {
   enum State {
-    case idle([String])
+    case idle
     case loading
     case loadingFailed(Error)
     case loadedButEmpty
     case loaded([Show])
   }
 
-  private(set) var state: State = .idle(
-    UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
-  )
+  private(set) var state: State = .idle
   var currentlyTypedSearchQuery = ""
   var isSearchPresented: Bool = false
 
@@ -22,7 +20,7 @@ class SearchShowsViewModel {
   private var currentOffset: Int = 0
   private var shows: [Show] = []
   private var stopLazyLoading: Bool = false
-  private var recentSearches: [String] = []
+  public var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
 
   private let SHOWS_PER_PAGE = 20
 
@@ -95,17 +93,6 @@ class SearchShowsViewModel {
     }
   }
 
-  func currentlyTypedSearchQueryChanged() {
-    if !currentlyTypedSearchQuery.isEmpty {
-      return
-    }
-
-    state = .idle(recentSearches)
-    stopLazyLoading = false
-    currentOffset = 0
-    shows = []
-  }
-
   private func addRecentSearch(searchQuery: String) {
     var uniqueRecentSearches: [String] = []
 
@@ -131,35 +118,8 @@ struct SearchShowsView: View {
   var body: some View {
     Group {
       switch self.viewModel.state {
-      case let .idle(recentSearches):
-        if recentSearches.isEmpty {
-          ContentUnavailableView {
-            Label("Тут пока ничего нет", systemImage: "magnifyingglass")
-          } description: {
-            Text("Предыдущие запросы поиска будут сохраняться на этом экране")
-          }
-          .focusable()
-        }
-        else {
-          List {
-            Section(header: Text("Ранее вы искали")) {
-              ForEach(recentSearches, id: \.self) { searchQuery in
-                Button(action: {
-                  Task {
-                    await self.viewModel.performInitialSearchFromRecentSearch(
-                      searchQuery: searchQuery
-                    )
-                  }
-                }) {
-                  Text(searchQuery)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .buttonStyle(.borderless)
-              }
-            }
-          }
-          .listStyle(.plain)
-        }
+      case .idle:
+        Color.clear
 
       case .loading:
         ProgressView()
@@ -171,11 +131,9 @@ struct SearchShowsView: View {
         } description: {
           Text(error.localizedDescription)
         }
-        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView.search
-          .focusable()
 
       case let .loaded(shows):
         ScrollView([.vertical]) {
@@ -183,9 +141,8 @@ struct SearchShowsView: View {
             shows: shows,
             loadMore: { await self.viewModel.performLazyLoading() }
           )
-          .padding(.top, 18)
-          .scenePadding(.horizontal)
-          .scenePadding(.bottom)
+          .padding(.top, RawShowCard.RECOMMENDED_SPACING)
+          .padding(.leading, RawShowCard.RECOMMENDED_SPACING)
         }
       }
     }
@@ -193,10 +150,11 @@ struct SearchShowsView: View {
       text: $viewModel.currentlyTypedSearchQuery,
       placement: .automatic,
       prompt: "Название тайтла"
-    )
-
-    .onChange(of: viewModel.currentlyTypedSearchQuery) {
-      self.viewModel.currentlyTypedSearchQueryChanged()
+    ) {
+      ForEach(viewModel.recentSearches, id: \.self) { searchQuery in
+        Text(searchQuery)
+          .searchCompletion(searchQuery)
+      }
     }
     .onSubmit(of: .search) {
       Task {
