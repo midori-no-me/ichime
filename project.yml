@@ -26,7 +26,7 @@ targets:
     type: application
     platform: [tvOS]
     deploymentTarget:
-      tvOS: "18.1"
+      tvOS: "18.0"
     sources:
       - path: Ichime
       - path: Settings.bundle
@@ -87,7 +87,7 @@ targets:
     platform: [tvOS]
     supportedDestinations: tvOS
     deploymentTarget:
-      tvOS: "18.1"
+      tvOS: "18.0"
     sources:
       - path: Ichime/Extensions/ScraperAPI.Types.Episode.swift
       - path: Ichime/DependencyInjection/ServiceLocator.swift
