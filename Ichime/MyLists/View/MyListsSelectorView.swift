@@ -16,7 +16,7 @@ class MyListsSelectorViewModel {
     case needSubscribe
   }
 
-  private(set) var state = State.idle
+  private(set) var state: State = .idle
 
   init(
     userManager: UserManager = ApplicationDependency.container.resolve(),

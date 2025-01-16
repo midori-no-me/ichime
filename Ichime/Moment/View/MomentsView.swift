@@ -10,7 +10,7 @@ class MomentsViewModel: ObservableObject {
     case loaded([ScraperAPI.Types.Moment])
   }
 
-  @Published private(set) var state = State.idle
+  @Published private(set) var state: State = .idle
 
   private var currentPage: Int = 1
   private var moments: [ScraperAPI.Types.Moment] = []

@@ -2,7 +2,7 @@ import Foundation
 import OSLog
 import SwiftSoup
 
-let logger = Logger(
+let logger: Logger = .init(
   subsystem: Bundle.main.bundleIdentifier ?? "dev.midorinome.ichime",
   category: "ScaperAPI"
 )

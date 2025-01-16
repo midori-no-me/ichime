@@ -36,7 +36,7 @@ class ShowViewModel {
     case loaded(Show)
   }
 
-  private(set) var state = State.idle
+  private(set) var state: State = .idle
   private var userRate: ScraperAPI.Types.UserRate?
   var showRateStatus: UserRateStatus {
     if let userRate {

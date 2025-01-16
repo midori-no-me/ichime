@@ -19,8 +19,8 @@ class PlayerPreference: ObservableObject {
     }
   }
 
-  private let allowedCharacterSet =
-    CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
+  private let allowedCharacterSet: CharacterSet =
+    .init(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
 
   func getLink(type: Player, video: URL, subtitle: URL?) -> URL? {
     switch type {

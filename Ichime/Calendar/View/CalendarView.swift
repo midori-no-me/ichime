@@ -9,7 +9,7 @@ class CalendarViewModel: ObservableObject {
     case loaded([GroupedShowsFromCalendar])
   }
 
-  @Published private(set) var state = State.idle
+  @Published private(set) var state: State = .idle
 
   private var shows: [GroupedShowsFromCalendar] = []
 
