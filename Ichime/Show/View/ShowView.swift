@@ -33,7 +33,7 @@ class ShowViewModel {
     case idle
     case loading
     case loadingFailed(Error)
-    case loaded(Show)
+    case loaded(ShowFull)
   }
 
   private(set) var state: State = .idle
@@ -51,9 +51,8 @@ class ShowViewModel {
     self.userRate != nil
   }
 
-  private let client: Anime365Client
+  private let showService: ShowService
   private let scraperClient: ScraperAPI.APIClient
-  private let dbService: DbService
   private var showId: Int = 0
 
   var shareUrl: URL {
@@ -61,44 +60,24 @@ class ShowViewModel {
   }
 
   init(
-    client: Anime365Client = ApplicationDependency.container.resolve(),
-    scraperClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
-    dbService: DbService = ApplicationDependency.container.resolve()
+    showService: ShowService = ApplicationDependency.container.resolve(),
+    scraperClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve()
   ) {
-    self.client = client
+    self.showService = showService
     self.scraperClient = scraperClient
-    self.dbService = dbService
   }
 
-  func performInitialLoad(showId: Int, preloadedShow: Show?) async {
+  func performInitialLoad(showId: Int) async {
     self.state = .loading
 
     self.showId = showId
 
     do {
-      if let preloadedShow {
-        self.state = .loaded(preloadedShow)
-      }
-      else {
-        //        let showFromDb = try await dbService.getAnime(id: showId)
-        //
-        //        if let showFromDb {
-        //          state = .loaded(.init(from: showFromDb))
-        //        }
-        //        else {
-        //          let show = try await client.getShow(
-        //            seriesId: showId
-        //          )
-        //
-        //          state = .loaded(show)
-        //        }
+      let show = try await showService.getFullShow(
+        showId: showId
+      )
 
-        let show = try await client.getShow(
-          seriesId: showId
-        )
-
-        self.state = .loaded(show)
-      }
+      self.state = .loaded(show)
 
       await self.getUserRate(showId: showId)
     }
@@ -109,8 +88,8 @@ class ShowViewModel {
 
   func performPullToRefresh() async {
     do {
-      let show = try await client.getShow(
-        seriesId: self.showId
+      let show = try await showService.getFullShow(
+        showId: self.showId
       )
 
       await self.getUserRate(showId: self.showId)
@@ -155,7 +134,6 @@ class ShowViewModel {
 
 struct ShowView: View {
   var showId: Int
-  var preloadedShow: Show?
 
   @State private var viewModel: ShowViewModel = .init()
 
@@ -166,8 +144,7 @@ struct ShowView: View {
         Color.clear.onAppear {
           Task {
             await self.viewModel.performInitialLoad(
-              showId: self.showId,
-              preloadedShow: self.preloadedShow
+              showId: self.showId
             )
           }
         }
@@ -200,24 +177,26 @@ struct ShowView: View {
 private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
 
 private struct ShowDetails: View {
-  let show: Show
+  let show: ShowFull
   var viewModel: ShowViewModel
 
   var body: some View {
     VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
       ShowKeyDetailsSection(show: self.show, viewModel: self.viewModel)
 
-      if !self.show.descriptions.isEmpty {
-        ShowDescriptionCards(descriptions: self.show.descriptions)
+      if !self.show.studios.isEmpty || !self.show.descriptions.isEmpty {
+        ShowStudiosAndDescriptions(studios: self.show.studios, descriptions: self.show.descriptions)
       }
 
-      ShowMomentsCardsView(showId: self.show.id, showName: self.show.title.compose)
+      if !self.show.screenshots.isEmpty {
+        Screenshots(screenshots: self.show.screenshots)
+      }
     }
   }
 }
 
 private struct ShowKeyDetailsSection: View {
-  let show: Show
+  let show: ShowFull
   var viewModel: ShowViewModel
 
   var body: some View {
@@ -303,7 +282,7 @@ private struct ShowKeyDetailsSection: View {
 }
 
 private struct ShowPrimaryAndSecondaryTitles: View {
-  let title: Show.Title
+  let title: ShowFull.Title
 
   var body: some View {
     VStack {
@@ -332,7 +311,7 @@ private struct ShowPrimaryAndSecondaryTitles: View {
 }
 
 private struct ShowActionButtons: View {
-  let show: Show
+  let show: ShowFull
   var viewModel: ShowViewModel
   @State var showEdit = false
   private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
@@ -487,8 +466,8 @@ private struct SeasonShowProperty: View {
 }
 
 private struct GenresShowProperty: View {
-  let showTitle: Show.Title
-  let genres: [Show.Genre]
+  let showTitle: ShowFull.Title
+  let genres: [ShowFull.Genre]
 
   var body: some View {
     NavigationLink(
@@ -556,27 +535,249 @@ private struct EpisodesShowProperty: View {
   }
 }
 
-private struct ShowDescriptionCards: View {
-  let descriptions: [Show.Description]
+private struct ShowStudiosAndDescriptions: View {
+  let studios: [ShowFull.Studio]
+  let descriptions: [ShowFull.Description]
 
   var body: some View {
-    LazyVGrid(
-      columns: [
-        GridItem(
-          .adaptive(minimum: CardWithExpandableText.RECOMMENDED_MINIMUM_WIDTH),
-          spacing: CardWithExpandableText.RECOMMENDED_SPACING
-        )
-      ],
-      spacing: CardWithExpandableText.RECOMMENDED_SPACING
-    ) {
-      ForEach(self.descriptions, id: \.self) { description in
-        CardWithExpandableText(
-          title: "Описание от \(description.source)",
-          text: description.text
-        )
+    ScrollView(.horizontal) {
+      LazyHStack(alignment: .top) {
+        if !self.studios.isEmpty {
+          VStack(alignment: .leading) {
+            Section(
+              header: Text(self.studios.count == 1 ? "Студия" : "Студии")
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundStyle(.secondary)
+            ) {
+              LazyHStack(alignment: .top) {
+                ForEach(self.studios) { studio in
+                  StudioCard(
+                    title: studio.name,
+                    cover: studio.image,
+                    id: studio.id
+                  )
+                  .frame(width: 300, height: 300)
+                }
+              }
+            }
+          }
+        }
+
+        if !self.descriptions.isEmpty {
+          VStack(alignment: .leading) {
+            Section(
+              header: Text("Описание")
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundStyle(.secondary)
+            ) {
+              LazyHStack(alignment: .top) {
+                ForEach(self.descriptions, id: \.self) { description in
+                  ShowDescriptionCard(
+                    title: description.source,
+                    text: description.text
+                  )
+                  .frame(width: 600, height: 300)
+                }
+              }
+            }
+          }
+        }
       }
     }
-    .focusSection()
+    .scrollClipDisabled()
+  }
+}
+
+private struct StudioCard: View {
+  public let title: String
+  public let cover: URL?
+  public let id: Int
+
+  var body: some View {
+    Button(action: {}) {
+      VStack(alignment: .leading, spacing: 16) {
+        Group {
+          if let cover {
+            AsyncImage(
+              url: cover,
+              transaction: .init(animation: .easeInOut(duration: 0.5))
+            ) { phase in
+              switch phase {
+              case .empty:
+                Color.clear
+
+              case let .success(image):
+                image
+                  .resizable()
+                  .scaledToFit()
+
+              case .failure:
+                Color.clear
+
+              @unknown default:
+                Color.clear
+              }
+            }
+          }
+          else {
+            Color.clear
+          }
+        }
+        .frame(
+          maxWidth: .infinity,
+          maxHeight: .infinity
+        )
+
+        Text(self.title)
+          .lineLimit(1)
+          .truncationMode(.tail)
+          .font(.body)
+          .foregroundColor(.secondary)
+      }
+      .padding(24)
+      .frame(
+        maxWidth: .infinity,
+        maxHeight: .infinity,
+        alignment: .leading
+      )
+    }
+    .buttonStyle(.card)
+  }
+}
+
+private struct ShowDescriptionCard: View {
+  public let title: String
+  public let text: String
+
+  @State private var isSheetPresented = false
+
+  var body: some View {
+    Button {
+      self.isSheetPresented.toggle()
+    } label: {
+      VStack(alignment: .leading, spacing: 16) {
+        Group {
+          Text(self.title)
+            .lineLimit(1)
+            .truncationMode(.tail)
+            .font(.body)
+            .fontWeight(.bold)
+
+          Text(self.text)
+            .lineLimit(6)
+            .truncationMode(.tail)
+            .font(.callout)
+            .foregroundColor(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+      }
+      .padding(24)
+      .frame(
+        maxWidth: .infinity,
+        maxHeight: .infinity,
+        alignment: .topLeading
+      )
+    }
+    .sheet(isPresented: self.$isSheetPresented) {
+      ShowDescriptionCardSheet(title: self.title, text: self.text)
+    }
+    .buttonStyle(.card)
+  }
+}
+
+private struct ShowDescriptionCardSheet: View {
+  let title: String
+  let text: String
+
+  @Environment(\.dismiss) private var dismiss
+
+  var body: some View {
+    NavigationStack {
+      ScrollView([.vertical]) {
+        Text(self.text)
+          .frame(maxWidth: 1000, alignment: .center)
+      }
+      .toolbar {
+        ToolbarItem(placement: .cancellationAction) {
+          Button("Закрыть") {
+            self.dismiss()
+          }
+        }
+      }
+      .navigationTitle(self.title)
+    }
+  }
+}
+
+private struct ImagePlaceholder: View {
+  var body: some View {
+    Image(systemName: "photo")
+      .resizable()
+      .aspectRatio(contentMode: .fit)
+  }
+}
+
+private struct Screenshots: View {
+  let screenshots: [URL]
+
+  private static let HEIGHT: CGFloat = 300
+
+  var body: some View {
+    VStack(alignment: .leading) {
+      Section(
+        header: Text("Скриншоты")
+          .font(.headline)
+          .fontWeight(.bold)
+          .foregroundStyle(.secondary)
+      ) {
+        ScrollView(.horizontal) {
+          LazyHStack(alignment: .top) {
+            ForEach(self.screenshots, id: \.self) { screenshot in
+              Screenshot(url: screenshot)
+                .frame(width: 16 / 9 * Self.HEIGHT, height: Self.HEIGHT)
+            }
+          }
+        }
+      }
+      .scrollClipDisabled()
+    }
+  }
+}
+
+private struct Screenshot: View {
+  let url: URL
+
+  var body: some View {
+    Button(action: {}) {
+      AsyncImage(
+        url: self.url,
+        transaction: .init(animation: .easeInOut(duration: 0.5))
+      ) { phase in
+        switch phase {
+        case .empty:
+          Color.clear
+
+        case let .success(image):
+          image
+            .resizable()
+            .scaledToFit()
+
+        case .failure:
+          Color.clear
+
+        @unknown default:
+          Color.clear
+        }
+      }
+      .frame(
+        maxWidth: .infinity,
+        maxHeight: .infinity,
+        alignment: .leading
+      )
+    }
+    .buttonStyle(.borderless)
   }
 }
 

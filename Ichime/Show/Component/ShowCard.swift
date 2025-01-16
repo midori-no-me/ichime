@@ -6,7 +6,7 @@ struct ShowCard: View {
 
   var body: some View {
     NavigationLink(
-      destination: ShowView(showId: self.show.id, preloadedShow: self.show)
+      destination: ShowView(showId: self.show.id)
     ) {
       RawShowCard(
         metadataLineComponents: formatMetadataLine(self.show, displaySeason: self.displaySeason),
