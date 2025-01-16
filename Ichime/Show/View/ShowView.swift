@@ -221,7 +221,6 @@ private struct ShowKeyDetailsSection: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-
       HStack(alignment: .top, spacing: SPACING_BETWEEN_SECTIONS) {
         VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
           ShowPrimaryAndSecondaryTitles(title: self.show.title)

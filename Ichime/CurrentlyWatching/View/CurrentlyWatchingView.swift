@@ -188,7 +188,6 @@ struct LoadedCurrentlyWatching: View {
           .contextMenu(menuItems: {
             Group {
               if let contextShow {
-
                 NavigationLink(destination: ShowView(showId: contextShow.id)) {
                   Text("Открыть")
                 }
