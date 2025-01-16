@@ -77,7 +77,7 @@ struct Translation: Hashable, Identifiable {
   }
 
   func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
+    hasher.combine(self.id)
   }
 
   let id: Int
@@ -178,23 +178,23 @@ struct Translation: Hashable, Identifiable {
   }
 
   func getCompositeType() -> CompositeType {
-    if translatedToLanguage == .russian && translationMethod == .subtitles {
+    if self.translatedToLanguage == .russian && self.translationMethod == .subtitles {
       return .russianSubtitles
     }
 
-    if translatedToLanguage == .russian && translationMethod == .voiceover {
+    if self.translatedToLanguage == .russian && self.translationMethod == .voiceover {
       return .russianVoiceOver
     }
 
-    if translatedToLanguage == .english && translationMethod == .subtitles {
+    if self.translatedToLanguage == .english && self.translationMethod == .subtitles {
       return .englishSubtitles
     }
 
-    if translatedToLanguage == .english && translationMethod == .voiceover {
+    if self.translatedToLanguage == .english && self.translationMethod == .voiceover {
       return .englishVoiceOver
     }
 
-    if translatedToLanguage == .japanese {
+    if self.translatedToLanguage == .japanese {
       return .japanese
     }
 

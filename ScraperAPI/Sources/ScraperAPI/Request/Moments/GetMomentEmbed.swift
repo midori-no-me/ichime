@@ -10,7 +10,7 @@ extension ScraperAPI.Request {
     }
 
     public func getEndpoint() -> String {
-      "moments/embed/\(id)"
+      "moments/embed/\(self.id)"
     }
 
     public func getQueryItems() -> [URLQueryItem] {

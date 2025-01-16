@@ -19,8 +19,8 @@ extension ScraperAPI.Request {
       var query = [
         URLQueryItem(name: "ajax", value: "m-index-personal-episodes")
       ]
-      if page > 1 {
-        query.append(URLQueryItem(name: "pageP", value: String(page)))
+      if self.page > 1 {
+        query.append(URLQueryItem(name: "pageP", value: String(self.page)))
       }
       return query
     }

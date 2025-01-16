@@ -19,30 +19,30 @@ final class VideoPlayerController: NSObject {
 
   override init() {
     super.init()
-    logger.debug("create player")
+    self.logger.debug("create player")
 
-    coordinator = Coordinator(self)
-    playerViewController.allowsPictureInPicturePlayback = true
-    playerViewController.delegate = coordinator
+    self.coordinator = Coordinator(self)
+    self.playerViewController.allowsPictureInPicturePlayback = true
+    self.playerViewController.delegate = self.coordinator
   }
 
   func showPlayer(player: AVPlayer) {
     self.player?.pause()
-    logger.debug("show player")
-    playerViewController.player = player
+    self.logger.debug("show player")
+    self.playerViewController.player = player
     self.player = player
     self.playerItem = player.currentItem
 
     // Start observing the playerItem's buffering status
-    startObservingBuffering()
-    sceneController.present(playerViewController) {
+    self.startObservingBuffering()
+    self.sceneController.present(self.playerViewController) {
       player.play()
       self.addLoadingIndicator()
     }
   }
 
   private func startObservingBuffering() {
-    playerItemObserver = playerItem?.observe(\.isPlaybackLikelyToKeepUp, options: [.new, .old]) {
+    self.playerItemObserver = self.playerItem?.observe(\.isPlaybackLikelyToKeepUp, options: [.new, .old]) {
       [weak self] playerItem, change in
       guard let self = self else { return }
 
@@ -73,43 +73,43 @@ final class VideoPlayerController: NSObject {
     let loadingIndicator = UIActivityIndicatorView(style: .large)
     loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
     loadingIndicator.hidesWhenStopped = true
-    playerViewController.view.addSubview(loadingIndicator)
+    self.playerViewController.view.addSubview(loadingIndicator)
 
     // Center the indicator in the playerViewController's view
     NSLayoutConstraint.activate([
-      loadingIndicator.centerXAnchor.constraint(equalTo: playerViewController.view.centerXAnchor),
-      loadingIndicator.centerYAnchor.constraint(equalTo: playerViewController.view.centerYAnchor),
+      loadingIndicator.centerXAnchor.constraint(equalTo: self.playerViewController.view.centerXAnchor),
+      loadingIndicator.centerYAnchor.constraint(equalTo: self.playerViewController.view.centerYAnchor),
     ])
 
     self.loadingIndicator = loadingIndicator
   }
 
   private func showLoadingIndicator() {
-    loadingIndicator?.startAnimating()
+    self.loadingIndicator?.startAnimating()
   }
 
   private func hideLoadingIndicator() {
-    loadingIndicator?.stopAnimating()
+    self.loadingIndicator?.stopAnimating()
   }
 
   func play(player: AVPlayer) {
     self.player?.pause()
-    logger.debug("play player")
-    playerViewController.player = player
+    self.logger.debug("play player")
+    self.playerViewController.player = player
     self.player = player
     player.play()
   }
 
   func dispose() {
-    pausePlayer()
-    playerViewController.player = nil
-    player = nil
-    sceneController.dismiss()
+    self.pausePlayer()
+    self.playerViewController.player = nil
+    self.player = nil
+    self.sceneController.dismiss()
   }
 
   func pausePlayer() {
-    logger.info("pause player")
-    player?.pause()
+    self.logger.info("pause player")
+    self.player?.pause()
   }
 }
 
@@ -132,11 +132,11 @@ extension VideoPlayerController {
     }
 
     func playerViewControllerDidStartPictureInPicture(_: AVPlayerViewController) {
-      control.isInPiP = true
+      self.control.isInPiP = true
     }
 
     func playerViewControllerDidStopPictureInPicture(_: AVPlayerViewController) {
-      control.isInPiP = false
+      self.control.isInPiP = false
     }
 
     // Не ломает пип после выхода из пипа
@@ -148,11 +148,11 @@ extension VideoPlayerController {
       )
         -> Void
     ) {
-      if control.sceneController.isPresent(playerViewController) {
+      if self.control.sceneController.isPresent(playerViewController) {
         return
       }
 
-      control.sceneController.present(playerViewController) {
+      self.control.sceneController.present(playerViewController) {
         completionHandler(false)
       }
     }

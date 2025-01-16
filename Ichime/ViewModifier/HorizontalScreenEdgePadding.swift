@@ -5,7 +5,7 @@ private struct HorizontalScreenEdgePadding: ViewModifier {
   @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
   func body(content: Content) -> some View {
-    switch horizontalSizeClass {
+    switch self.horizontalSizeClass {
     case .compact:
       content.padding(.horizontal, 16)
 

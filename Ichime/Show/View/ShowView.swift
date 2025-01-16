@@ -48,7 +48,7 @@ class ShowViewModel {
   }
 
   var statusReady: Bool {
-    userRate != nil
+    self.userRate != nil
   }
 
   private let client: Anime365Client
@@ -57,7 +57,7 @@ class ShowViewModel {
   private var showId: Int = 0
 
   var shareUrl: URL {
-    getWebsiteUrlByShowId(showId: showId)
+    getWebsiteUrlByShowId(showId: self.showId)
   }
 
   init(
@@ -71,13 +71,13 @@ class ShowViewModel {
   }
 
   func performInitialLoad(showId: Int, preloadedShow: Show?) async {
-    state = .loading
+    self.state = .loading
 
     self.showId = showId
 
     do {
       if let preloadedShow {
-        state = .loaded(preloadedShow)
+        self.state = .loaded(preloadedShow)
       }
       else {
         //        let showFromDb = try await dbService.getAnime(id: showId)
@@ -97,35 +97,35 @@ class ShowViewModel {
           seriesId: showId
         )
 
-        state = .loaded(show)
+        self.state = .loaded(show)
 
       }
 
-      await getUserRate(showId: showId)
+      await self.getUserRate(showId: showId)
     }
     catch {
-      state = .loadingFailed(error)
+      self.state = .loadingFailed(error)
     }
   }
 
   func performPullToRefresh() async {
     do {
       let show = try await client.getShow(
-        seriesId: showId
+        seriesId: self.showId
       )
 
-      await getUserRate(showId: showId)
+      await self.getUserRate(showId: self.showId)
 
-      state = .loaded(show)
+      self.state = .loaded(show)
     }
     catch {
-      state = .loadingFailed(error)
+      self.state = .loadingFailed(error)
     }
   }
 
   private func getUserRate(showId: Int) async {
     do {
-      userRate = try await scraperClient.sendAPIRequest(
+      self.userRate = try await self.scraperClient.sendAPIRequest(
         ScraperAPI.Request.GetUserRate(showId: showId, fullCheck: true)
       )
     }
@@ -136,17 +136,17 @@ class ShowViewModel {
 
   func addToList() async {
     let request = ScraperAPI.Request.UpdateUserRate(
-      showId: showId,
+      showId: self.showId,
       userRate: .init(
-        score: userRate?.score ?? 0,
-        currentEpisode: userRate?.currentEpisode ?? 0,
+        score: self.userRate?.score ?? 0,
+        currentEpisode: self.userRate?.currentEpisode ?? 0,
         status: .planned,
         comment: ""
       )
     )
 
     do {
-      userRate = try await scraperClient.sendAPIRequest(request)
+      self.userRate = try await self.scraperClient.sendAPIRequest(request)
     }
     catch {
       print("\(error.localizedDescription)")
@@ -205,13 +205,13 @@ private struct ShowDetails: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-      ShowKeyDetailsSection(show: show, viewModel: viewModel)
+      ShowKeyDetailsSection(show: self.show, viewModel: self.viewModel)
 
-      if !show.descriptions.isEmpty {
-        ShowDescriptionCards(descriptions: show.descriptions)
+      if !self.show.descriptions.isEmpty {
+        ShowDescriptionCards(descriptions: self.show.descriptions)
       }
 
-      ShowMomentsCardsView(showId: show.id, showName: show.title.compose)
+      ShowMomentsCardsView(showId: self.show.id, showName: self.show.title.compose)
     }
   }
 }
@@ -225,9 +225,9 @@ private struct ShowKeyDetailsSection: View {
 
       HStack(alignment: .top, spacing: SPACING_BETWEEN_SECTIONS) {
         VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-          ShowPrimaryAndSecondaryTitles(title: show.title)
+          ShowPrimaryAndSecondaryTitles(title: self.show.title)
 
-          ShowActionButtons(show: show, viewModel: viewModel)
+          ShowActionButtons(show: self.show, viewModel: self.viewModel)
 
           LazyVGrid(
             columns: [
@@ -312,8 +312,8 @@ private struct ShowPrimaryAndSecondaryTitles: View {
   var body: some View {
     VStack {
       Group {
-        if title.translated.japaneseRomaji == nil || title.translated.russian == nil {
-          Text(title.full)
+        if self.title.translated.japaneseRomaji == nil || self.title.translated.russian == nil {
+          Text(self.title.full)
             .font(.title2)
         }
 
@@ -342,36 +342,36 @@ private struct ShowActionButtons: View {
   private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
 
   var isInMyList: Bool {
-    viewModel.showRateStatus != UserRateStatus.deleted
+    self.viewModel.showRateStatus != UserRateStatus.deleted
   }
 
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
-      HStack(alignment: .center, spacing: SPACING_BETWEEN_BUTTONS) {
+      HStack(alignment: .center, spacing: self.SPACING_BETWEEN_BUTTONS) {
         NavigationLink(
           destination: EpisodeListView(episodePreviews: self.show.episodePreviews)
         ) {
           Label(
             "Смотреть",
-            systemImage: show.episodePreviews.isEmpty ? "play.slash.fill" : "play.fill"
+            systemImage: self.show.episodePreviews.isEmpty ? "play.slash.fill" : "play.fill"
           )
         }
         .buttonStyle(.bordered)
 
-        .disabled(show.episodePreviews.isEmpty)
+        .disabled(self.show.episodePreviews.isEmpty)
 
-        if viewModel.statusReady {
+        if self.viewModel.statusReady {
           Button(action: {
-            if isInMyList {
-              showEdit = true
+            if self.isInMyList {
+              self.showEdit = true
             }
             else {
               Task {
-                await viewModel.addToList()
+                await self.viewModel.addToList()
               }
             }
           }) {
-            if isInMyList {
+            if self.isInMyList {
               Label(
                 self.viewModel.showRateStatus.statusDisplayName,
                 systemImage: self.viewModel.showRateStatus.imageInToolbar
@@ -390,7 +390,7 @@ private struct ShowActionButtons: View {
       .focusSection()
 
       Group {
-        if !show.episodePreviews.isEmpty && show.isOngoing,
+        if !self.show.episodePreviews.isEmpty && self.show.isOngoing,
           let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: show.episodePreviews)
         {
           Text(
@@ -398,7 +398,7 @@ private struct ShowActionButtons: View {
           )
         }
 
-        if show.episodePreviews.isEmpty {
+        if self.show.episodePreviews.isEmpty {
           Text(
             "У этого тайтла пока что нет загруженных серий."
           )
@@ -409,13 +409,13 @@ private struct ShowActionButtons: View {
       .font(.caption)
     }
     .sheet(
-      isPresented: $showEdit,
+      isPresented: self.$showEdit,
       content: {
         MyListEditView(
           show: .init(
-            id: show.id,
-            name: show.title.compose,
-            totalEpisodes: show.numberOfEpisodes ?? nil
+            id: self.show.id,
+            name: self.show.title.compose,
+            totalEpisodes: self.show.numberOfEpisodes ?? nil
           ),
           onUpdate: {
             Task {
@@ -464,15 +464,15 @@ private struct SeasonShowProperty: View {
   var body: some View {
     NavigationLink(
       destination: FilteredShowsView(
-        viewModel: .init(fetchShows: getShowsBySeason()),
-        title: airingSeason.getLocalizedTranslation(),
+        viewModel: .init(fetchShows: self.getShowsBySeason()),
+        title: self.airingSeason.getLocalizedTranslation(),
         description: nil,
         displaySeason: false
       )
     ) {
       ShowProperty(
         label: "Сезон",
-        value: airingSeason.getLocalizedTranslation(),
+        value: self.airingSeason.getLocalizedTranslation(),
         isInteractive: true
       )
     }
@@ -481,10 +481,10 @@ private struct SeasonShowProperty: View {
 
   private func getShowsBySeason() -> (_ offset: Int, _ limit: Int) async throws -> [Show] {
     func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [Show] {
-      try await client.getSeason(
+      try await self.client.getSeason(
         offset: offset,
         limit: limit,
-        airingSeason: airingSeason
+        airingSeason: self.airingSeason
       )
     }
 
@@ -499,14 +499,14 @@ private struct GenresShowProperty: View {
   var body: some View {
     NavigationLink(
       destination: ShowGenreListView(
-        showTitle: showTitle,
-        genres: genres
+        showTitle: self.showTitle,
+        genres: self.genres
       )
     ) {
       ShowProperty(
         label: "Жанры",
         value:
-          genres
+          self.genres
           .map { genre in genre.title }
           .formatted(.list(type: .and, width: .narrow)),
         isInteractive: true
@@ -524,15 +524,15 @@ private struct EpisodesShowProperty: View {
   var body: some View {
     ShowProperty(
       label: "Количество эпизодов",
-      value: formatString(),
+      value: self.formatString(),
       isInteractive: false
     )
   }
 
   private func formatString() -> String {
-    let latestEpisodeNumber = getLatestEpisodeNumber()
+    let latestEpisodeNumber = self.getLatestEpisodeNumber()
 
-    if isOngoing {
+    if self.isOngoing {
       return "Вышло \(latestEpisodeNumber.formatted()) из \(totalEpisodes?.formatted() ?? "???")"
     }
 
@@ -545,7 +545,7 @@ private struct EpisodesShowProperty: View {
 
   private func getLatestEpisodeNumber() -> Float {
     let filteredAndSortedEpisodes =
-      episodePreviews
+      self.episodePreviews
       .filter { episodePreview in episodePreview.type != .trailer }
       .filter { episodePreview in episodePreview.episodeNumber != nil }
       .filter { episodePreview in episodePreview.episodeNumber! > 0 }
@@ -575,7 +575,7 @@ private struct ShowDescriptionCards: View {
       ],
       spacing: CardWithExpandableText.RECOMMENDED_SPACING
     ) {
-      ForEach(descriptions, id: \.self) { description in
+      ForEach(self.descriptions, id: \.self) { description in
         CardWithExpandableText(
           title: "Описание от \(description.source)",
           text: description.text

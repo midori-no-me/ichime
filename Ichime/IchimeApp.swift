@@ -21,8 +21,8 @@ struct IchimeApp: App {
     WindowGroup {
       ContentView()
         .overlay(alignment: .bottom) {
-          if isImporting {
-            ProgressView(progressText)
+          if self.isImporting {
+            ProgressView(self.progressText)
               .padding()
               .background(.ultraThinMaterial)
               .cornerRadius(10)
@@ -33,10 +33,10 @@ struct IchimeApp: App {
           NotificationCounterWatcher.askBadgePermission()
         }
         .task {
-          await importDatabase()
+          await self.importDatabase()
         }
-    }.onChange(of: phase) {
-      switch phase {
+    }.onChange(of: self.phase) {
+      switch self.phase {
       case .background:
         scheduleAppRefresh()
       default: break
@@ -44,12 +44,12 @@ struct IchimeApp: App {
     }.backgroundTask(.appRefresh(ServiceLocator.permittedScheduleBGTaskName)) {
       await NotificationCounterWatcher.checkCounter()
     }
-    .modelContainer(container)
+    .modelContainer(self.container)
   }
 
   private func importDatabase() async {
-    guard !isImporting else { return }
-    isImporting = true
+    guard !self.isImporting else { return }
+    self.isImporting = true
 
     do {
       // Запрос к API
@@ -61,7 +61,7 @@ struct IchimeApp: App {
       let lastTimestamp = Int(lastUpdated) ?? 0
 
       if lastTimestamp == response.date {
-        isImporting = false
+        self.isImporting = false
         return
       }
 
@@ -72,24 +72,24 @@ struct IchimeApp: App {
           async let result: () = animeImporter.importDatabase(from: dbUrl)
           for await progress in await animeImporter.currentProgress {
             await MainActor.run {
-              progressText = progress
+              self.progressText = progress
             }
           }
           try await result
           await MainActor.run {
-            isImporting = false
+            self.isImporting = false
             UserDefaults().set(response.date, forKey: "lastUpdated")
           }
         }
         catch {
           await MainActor.run {
-            isImporting = false
+            self.isImporting = false
           }
         }
       }
     }
     catch {
-      isImporting = false
+      self.isImporting = false
       print("Error fetching database info: \(error)")
     }
   }

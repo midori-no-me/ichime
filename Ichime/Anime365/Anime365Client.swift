@@ -132,7 +132,7 @@ class Anime365Client {
     let episodeResponse = try await apiClient.sendApiRequest(
       GetEpisodeRequest(episodeId: episodeId)
     )
-    return try await getShow(seriesId: episodeResponse.seriesId)
+    return try await self.getShow(seriesId: episodeResponse.seriesId)
   }
 
   public func searchShows(

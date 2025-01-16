@@ -31,7 +31,7 @@ private class OngoingsSectionLoader: ShowsSectionLoader {
 
   func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
     do {
-      return try await client.getOngoings(offset: offset, limit: limit)
+      return try await self.client.getOngoings(offset: offset, limit: limit)
     }
     catch {
       return []
@@ -64,7 +64,7 @@ private class TopSectionLoader: ShowsSectionLoader {
 
   func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
     do {
-      return try await client.getTop(offset: offset, limit: limit)
+      return try await self.client.getTop(offset: offset, limit: limit)
     }
     catch {
       return []
@@ -89,25 +89,25 @@ private class SeasonalSectionLoader: ShowsSectionLoader {
     self.client = client
     self.airingSeason = airingSeason
     self.description = description
-    id = "\(airingSeason.year)_\(airingSeason.calendarSeason)"
+    self.id = "\(airingSeason.year)_\(airingSeason.calendarSeason)"
   }
 
   var id: String
 
   func getTitle() -> String {
-    "\(airingSeason.calendarSeason.getLocalizedTranslation()) \(airingSeason.year)"
+    "\(self.airingSeason.calendarSeason.getLocalizedTranslation()) \(self.airingSeason.year)"
   }
 
   func getSubtitle() -> String? {
-    description
+    self.description
   }
 
   func getCards(_ offset: Int, _ limit: Int) async -> [Show] {
     do {
-      return try await client.getSeason(
+      return try await self.client.getSeason(
         offset: offset,
         limit: limit,
-        airingSeason: airingSeason
+        airingSeason: self.airingSeason
       )
     }
     catch {
@@ -126,19 +126,19 @@ struct HomeView: View {
 
   var body: some View {
     ScrollView(.vertical) {
-      LazyVStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-        ForEach(sectionLoaders, id: \.id) { sectionLoader in
+      LazyVStack(alignment: .leading, spacing: self.SPACING_BETWEEN_SECTIONS) {
+        ForEach(self.sectionLoaders, id: \.id) { sectionLoader in
           ShowsSection(
             sectionLoader: sectionLoader,
             onLoaded: {
-              sectionLoaders.append(getNextSectionLoader())
+              self.sectionLoaders.append(self.getNextSectionLoader())
             }
           )
         }
       }
     }
     .onAppear {
-      sectionLoaders.append(getNextSectionLoader())
+      self.sectionLoaders.append(self.getNextSectionLoader())
     }
   }
 
@@ -162,8 +162,8 @@ struct HomeView: View {
       ),
     ]
 
-    if sectionLoaders.count < predefinedLoaders.count {
-      return predefinedLoaders[sectionLoaders.count]
+    if self.sectionLoaders.count < predefinedLoaders.count {
+      return predefinedLoaders[self.sectionLoaders.count]
     }
 
     let lastPredefinedSeasonalSectionShift = ShowSeasonService.PREVIOUS_SEASON
@@ -172,7 +172,7 @@ struct HomeView: View {
       airingSeason:
         showSeasonService
         .getRelativeSeason(
-          shift: predefinedLoaders.count - sectionLoaders.count + lastPredefinedSeasonalSectionShift
+          shift: predefinedLoaders.count - self.sectionLoaders.count + lastPredefinedSeasonalSectionShift
             - 1
         ),
       description: nil
@@ -189,36 +189,36 @@ private struct ShowsSection: View {
   private let SPACING_BETWEEN_TITLE_CARD_CARDS: CGFloat = 50
 
   var body: some View {
-    if isLoading {
+    if self.isLoading {
       Color.clear.onAppear {
         Task {
-          self.shows = await sectionLoader.getCards(0, 10)
+          self.shows = await self.sectionLoader.getCards(0, 10)
           self.isLoading = false
           self.onLoaded()
         }
       }
     }
     else {
-      VStack(alignment: .leading, spacing: SPACING_BETWEEN_TITLE_CARD_CARDS) {
+      VStack(alignment: .leading, spacing: self.SPACING_BETWEEN_TITLE_CARD_CARDS) {
         SectionHeader(
-          title: sectionLoader.getTitle(),
-          subtitle: sectionLoader.getSubtitle()
+          title: self.sectionLoader.getTitle(),
+          subtitle: self.sectionLoader.getSubtitle()
         ) {
           FilteredShowsView(
             viewModel: FilteredShowsViewModel(
-              preloadedShows: shows,
-              fetchShows: sectionLoader.getCards
+              preloadedShows: self.shows,
+              fetchShows: self.sectionLoader.getCards
             ),
-            title: sectionLoader.getTitle(),
-            description: sectionLoader.getSubtitle(),
-            displaySeason: sectionLoader.displaySeason()
+            title: self.sectionLoader.getTitle(),
+            description: self.sectionLoader.getSubtitle(),
+            displaySeason: self.sectionLoader.displaySeason()
           )
         }
 
         ScrollView(.horizontal) {
           LazyHStack(spacing: RawShowCard.RECOMMENDED_SPACING) {
             ForEach(self.shows) { show in
-              ShowCard(show: show, displaySeason: sectionLoader.displaySeason())
+              ShowCard(show: show, displaySeason: self.sectionLoader.displaySeason())
                 .frame(width: RawShowCard.RECOMMENDED_MINIMUM_WIDTH)
             }
           }

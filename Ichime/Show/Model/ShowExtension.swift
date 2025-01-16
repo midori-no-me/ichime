@@ -2,8 +2,8 @@ import Foundation
 
 extension Show {
   init(from dbAnime: DbAnime) {
-    self.id = dbAnime.id
-    self.title = Show.Title(
+    id = dbAnime.id
+    title = Show.Title(
       full: dbAnime.titles.ru,
       translated: Show.Title.TranslatedTitles(
         russian: dbAnime.titles.ru,
@@ -12,34 +12,34 @@ extension Show {
         japaneseRomaji: dbAnime.titles.romaji
       )
     )
-    self.descriptions = dbAnime.descriptions.map { description in
+    descriptions = dbAnime.descriptions.map { description in
       Show.Description(
         text: description.value,
         source: description.source
       )
     }
-    self.posterUrl = URL(string: dbAnime.poster.anime365.original)
-    self.websiteUrl = getWebsiteUrlByShowId(showId: dbAnime.id)
+    posterUrl = URL(string: dbAnime.poster.anime365.original)
+    websiteUrl = getWebsiteUrlByShowId(showId: dbAnime.id)
     if let score = Float(dbAnime.score) {
       self.score = score <= 0 ? nil : score
     }
     else {
-      self.score = nil
+      score = nil
     }
-    self.airingSeason = AiringSeason(
+    airingSeason = AiringSeason(
       fromTranslatedString: dbAnime.season
     )
-    self.numberOfEpisodes = dbAnime.numberOfEpisodes <= 0 ? nil : dbAnime.numberOfEpisodes
-    self.typeTitle = dbAnime.typeTitle
-    self.broadcastType = .createFromApiType(apiType: dbAnime.type)
-    self.genres = dbAnime.genres.map { genre in
+    numberOfEpisodes = dbAnime.numberOfEpisodes <= 0 ? nil : dbAnime.numberOfEpisodes
+    typeTitle = dbAnime.typeTitle
+    broadcastType = .createFromApiType(apiType: dbAnime.type)
+    genres = dbAnime.genres.map { genre in
       Show.Genre(
         id: genre.id,
         title: genre.title
       )
     }
-    self.isOngoing = dbAnime.isAiring == 1
-    self.episodePreviews = dbAnime.episodes.map { episode in
+    isOngoing = dbAnime.isAiring == 1
+    episodePreviews = dbAnime.episodes.map { episode in
       let title = episode.titles?.en ?? (episode.title.isEmpty ? nil : episode.title)
       let uploadDate =
         episode

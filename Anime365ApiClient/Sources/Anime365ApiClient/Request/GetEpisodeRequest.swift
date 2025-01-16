@@ -12,7 +12,7 @@ public struct GetEpisodeRequest: Anime365ApiRequest {
   }
 
   public func getEndpoint() -> String {
-    "/episodes/\(episodeId)"
+    "/episodes/\(self.episodeId)"
   }
 
   public func getQueryItems() -> [URLQueryItem] {

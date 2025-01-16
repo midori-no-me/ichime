@@ -29,74 +29,74 @@ class SearchShowsViewModel {
   }
 
   func performInitialSearch() async {
-    if currentlyTypedSearchQuery.isEmpty {
+    if self.currentlyTypedSearchQuery.isEmpty {
       return
     }
 
-    state = .loading
-    lastPerformedSearchQuery = currentlyTypedSearchQuery
+    self.state = .loading
+    self.lastPerformedSearchQuery = self.currentlyTypedSearchQuery
 
-    addRecentSearch(searchQuery: currentlyTypedSearchQuery)
+    self.addRecentSearch(searchQuery: self.currentlyTypedSearchQuery)
 
     do {
       let shows = try await client.searchShows(
-        searchQuery: lastPerformedSearchQuery,
-        offset: currentOffset,
-        limit: SHOWS_PER_PAGE
+        searchQuery: self.lastPerformedSearchQuery,
+        offset: self.currentOffset,
+        limit: self.SHOWS_PER_PAGE
       )
 
       if shows.isEmpty {
-        state = .loadedButEmpty
+        self.state = .loadedButEmpty
       }
       else {
-        stopLazyLoading = false
-        currentOffset = SHOWS_PER_PAGE
+        self.stopLazyLoading = false
+        self.currentOffset = self.SHOWS_PER_PAGE
         self.shows = shows
-        state = .loaded(self.shows)
+        self.state = .loaded(self.shows)
       }
     }
     catch {
-      state = .loadingFailed(error)
+      self.state = .loadingFailed(error)
     }
   }
 
   func performInitialSearchFromRecentSearch(
     searchQuery: String
   ) async {
-    currentlyTypedSearchQuery = searchQuery
+    self.currentlyTypedSearchQuery = searchQuery
 
-    await performInitialSearch()
+    await self.performInitialSearch()
   }
 
   func performLazyLoading() async {
-    if stopLazyLoading {
+    if self.stopLazyLoading {
       return
     }
 
     do {
       let shows = try await client.searchShows(
-        searchQuery: lastPerformedSearchQuery,
-        offset: currentOffset,
-        limit: SHOWS_PER_PAGE
+        searchQuery: self.lastPerformedSearchQuery,
+        offset: self.currentOffset,
+        limit: self.SHOWS_PER_PAGE
       )
 
-      if shows.count < SHOWS_PER_PAGE {
-        stopLazyLoading = true
+      if shows.count < self.SHOWS_PER_PAGE {
+        self.stopLazyLoading = true
       }
 
-      currentOffset = currentOffset + SHOWS_PER_PAGE
+      self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
       self.shows += shows
-      state = .loaded(self.shows)
+      self.state = .loaded(self.shows)
     }
     catch {
-      stopLazyLoading = true
+      self.stopLazyLoading = true
     }
   }
 
   private func addRecentSearch(searchQuery: String) {
     var uniqueRecentSearches: [String] = []
 
-    for query in [searchQuery] + recentSearches {
+    for query in [searchQuery] + self.recentSearches {
       if uniqueRecentSearches.contains(query) {
         continue
       }
@@ -106,7 +106,7 @@ class SearchShowsViewModel {
 
     uniqueRecentSearches = Array(uniqueRecentSearches.prefix(20))
 
-    recentSearches = uniqueRecentSearches
+    self.recentSearches = uniqueRecentSearches
 
     UserDefaults.standard.set(uniqueRecentSearches, forKey: "recentSearches")
   }
@@ -147,11 +147,11 @@ struct SearchShowsView: View {
       }
     }
     .searchable(
-      text: $viewModel.currentlyTypedSearchQuery,
+      text: self.$viewModel.currentlyTypedSearchQuery,
       placement: .automatic,
       prompt: "Название тайтла"
     ) {
-      ForEach(viewModel.recentSearches, id: \.self) { searchQuery in
+      ForEach(self.viewModel.recentSearches, id: \.self) { searchQuery in
         Text(searchQuery)
           .searchCompletion(searchQuery)
       }

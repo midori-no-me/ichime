@@ -13,7 +13,7 @@ extension ScraperAPI.Request {
     }
 
     public func getEndpoint() -> String {
-      "animelist/edit/\(id)"
+      "animelist/edit/\(self.id)"
     }
 
     public func getQueryItems() -> [URLQueryItem] {
@@ -22,15 +22,15 @@ extension ScraperAPI.Request {
 
     public func getFormData() -> [URLQueryItem] {
       [
-        .init(name: "UsersRates[score]", value: String(params.score)),
-        .init(name: "UsersRates[episodes]", value: String(params.currentEpisode)),
-        .init(name: "UsersRates[status]", value: String(params.status.rawValue)),
-        .init(name: "UsersRates[comment]", value: String(params.comment)),
+        .init(name: "UsersRates[score]", value: String(self.params.score)),
+        .init(name: "UsersRates[episodes]", value: String(self.params.currentEpisode)),
+        .init(name: "UsersRates[status]", value: String(self.params.status.rawValue)),
+        .init(name: "UsersRates[comment]", value: String(self.params.comment)),
       ]
     }
 
     public func parseResponse(html: String, baseURL: URL) throws -> ScraperAPI.Types.UserRate {
-      params
+      self.params
     }
   }
 }

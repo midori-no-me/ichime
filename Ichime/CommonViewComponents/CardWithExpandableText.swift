@@ -15,13 +15,13 @@ struct CardWithExpandableText: View {
     } label: {
       VStack(alignment: .leading, spacing: 10) {
         Group {
-          Text(title)
+          Text(self.title)
             .lineLimit(1)
             .truncationMode(.tail)
             .font(.body)
             .fontWeight(.bold)
 
-          Text(text)
+          Text(self.text)
             .lineLimit(5, reservesSpace: true)
             .truncationMode(.tail)
             .font(.caption)
@@ -32,10 +32,10 @@ struct CardWithExpandableText: View {
       .padding(40)
 
     }
-    .sheet(isPresented: $isSheetPresented) {
+    .sheet(isPresented: self.$isSheetPresented) {
       CardWithExpandableTextSheet(
-        title: title,
-        text: text
+        title: self.title,
+        text: self.text
       )
     }
     .buttonStyle(.card)
@@ -52,7 +52,7 @@ private struct CardWithExpandableTextSheet: View {
   var body: some View {
     NavigationStack {
       ScrollView([.vertical]) {
-        Text(text)
+        Text(self.text)
           .frame(maxWidth: .infinity, alignment: .leading)
           .scenePadding()
 
@@ -64,7 +64,7 @@ private struct CardWithExpandableTextSheet: View {
           }
         }
       }
-      .navigationTitle(title)
+      .navigationTitle(self.title)
 
     }
   }

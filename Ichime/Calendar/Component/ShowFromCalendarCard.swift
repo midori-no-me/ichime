@@ -9,12 +9,12 @@ struct ShowFromCalendarCard: View {
       label: {
         RawShowCard(
           metadataLineComponents: [
-            "\(show.nextEpisodeNumber.formatted()) серия",
-            formatTime(show.nextEpisodeReleaseDate),
+            "\(self.show.nextEpisodeNumber.formatted()) серия",
+            formatTime(self.show.nextEpisodeReleaseDate),
           ],
-          cover: show.posterUrl,
-          primaryTitle: show.title.translated.japaneseRomaji,
-          secondaryTitle: show.title.translated.russian
+          cover: self.show.posterUrl,
+          primaryTitle: self.show.title.translated.japaneseRomaji,
+          secondaryTitle: self.show.title.translated.russian
         )
       }
     )

@@ -92,7 +92,7 @@ public struct AiringSeason {
   }
 
   func getLocalizedTranslation() -> String {
-    "\(calendarSeason.getLocalizedTranslation()) \(year)"
+    "\(self.calendarSeason.getLocalizedTranslation()) \(self.year)"
   }
 }
 
@@ -104,14 +104,14 @@ struct ShowSeasonService {
   private let currentDate: Date
 
   init() {
-    currentDate = Date()
+    self.currentDate = Date()
   }
 
   /// 1 = next season
   /// 0 = current season
   /// -1 = previous season
   func getRelativeSeason(shift: Int) -> AiringSeason {
-    let shiftedDate = Calendar.current.date(byAdding: .month, value: shift * 3, to: currentDate)!
+    let shiftedDate = Calendar.current.date(byAdding: .month, value: shift * 3, to: self.currentDate)!
     let shiftedYear = Calendar.current.component(.year, from: shiftedDate)
     let shiftedMonthNumber = Calendar.current.component(.month, from: shiftedDate)
 

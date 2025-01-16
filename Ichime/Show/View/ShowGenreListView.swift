@@ -18,10 +18,10 @@ struct ShowGenreListView: View {
   var body: some View {
     List {
       Section {
-        ForEach(genres) { genre in
+        ForEach(self.genres) { genre in
           NavigationLink(
             destination: FilteredShowsView(
-              viewModel: .init(fetchShows: getShowsByGenre(genreId: genre.id)),
+              viewModel: .init(fetchShows: self.getShowsByGenre(genreId: genre.id)),
               title: genre.title,
               description: nil,
               displaySeason: true
@@ -40,7 +40,7 @@ struct ShowGenreListView: View {
 
   private func getShowsByGenre(genreId: Int) -> (_ offset: Int, _ limit: Int) async throws -> [Show] {
     func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [Show] {
-      try await client.getByGenre(
+      try await self.client.getByGenre(
         offset: offset,
         limit: limit,
         genreIds: [genreId]

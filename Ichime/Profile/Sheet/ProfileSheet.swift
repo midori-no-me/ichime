@@ -61,7 +61,7 @@ struct ProfileSheet: View {
             }
 
             Button("Выйти из аккаунта", role: .destructive) {
-              userManager.dropAuth()
+              self.userManager.dropAuth()
             }
           }
 
@@ -77,7 +77,7 @@ struct ProfileSheet: View {
 
           Section {
           } footer: {
-            Text("\(appName) \(appVersion) (\(buildNumber)) \(buildConfiguration)")
+            Text("\(self.appName) \(self.appVersion) (\(self.buildNumber)) \(self.buildConfiguration)")
           }
         }
         .listStyle(.grouped)

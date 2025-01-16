@@ -20,11 +20,11 @@ class BaseUrlPreference: ObservableObject {
       {
         return url
       }
-      userDefaults.set(defaultURL.absoluteString, forKey: baseURLKey)
-      return defaultURL
+      self.userDefaults.set(self.defaultURL.absoluteString, forKey: self.baseURLKey)
+      return self.defaultURL
     }
     set {
-      userDefaults.set(newValue.absoluteString, forKey: baseURLKey)
+      self.userDefaults.set(newValue.absoluteString, forKey: self.baseURLKey)
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
         exit(0)
       }

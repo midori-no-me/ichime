@@ -23,8 +23,8 @@ struct EpisodeStreamingInfo: Hashable, Identifiable {
       )
     }
 
-    id = apiResponse.embedUrl
-    streamQualityOptions = apiResponse.stream.map { streamQualityOption in
+    self.id = apiResponse.embedUrl
+    self.streamQualityOptions = apiResponse.stream.map { streamQualityOption in
       StreamQualityOption(
         id: streamQualityOption.height,
         height: streamQualityOption.height,
@@ -45,7 +45,7 @@ struct EpisodeStreamingInfo: Hashable, Identifiable {
   }
 
   func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
+    hasher.combine(self.id)
   }
 
   struct StreamQualityOption: Hashable, Identifiable {
@@ -59,7 +59,7 @@ struct EpisodeStreamingInfo: Hashable, Identifiable {
     }
 
     func hash(into hasher: inout Hasher) {
-      hasher.combine(id)
+      hasher.combine(self.id)
     }
   }
 
@@ -83,9 +83,9 @@ struct SubtitleUrlGenerator {
     guard let subtitlesUrlString = subtitlesUrlString else { return nil }
 
     // Если нет, продолжаем генерировать URL как раньше
-    let episodeId = extractId(from: subtitlesUrlString)
+    let episodeId = self.extractId(from: subtitlesUrlString)
     let domain = URL(string: websiteBaseUrl)?.host ?? ""
-    let cookieToken = getCookieToken()
+    let cookieToken = self.getCookieToken()
 
     // Формируем URL с параметрами
     let subtitleUrl =
@@ -115,9 +115,9 @@ struct SubtitleUrlGenerator {
   private func getCookieToken() -> String {
     // Получаем значения для cookie по ключам
     let cookiesDict = [
-      ScraperAPI.Session.Cookie.csrf.rawValue: cookies.cookie(for: .csrf)?.value,
-      ScraperAPI.Session.Cookie.phpsessid.rawValue: cookies.cookie(for: .phpsessid)?.value,
-      ScraperAPI.Session.Cookie.token.rawValue: cookies.cookie(for: .token)?.value,
+      ScraperAPI.Session.Cookie.csrf.rawValue: self.cookies.cookie(for: .csrf)?.value,
+      ScraperAPI.Session.Cookie.phpsessid.rawValue: self.cookies.cookie(for: .phpsessid)?.value,
+      ScraperAPI.Session.Cookie.token.rawValue: self.cookies.cookie(for: .token)?.value,
     ]
 
     // Фильтруем пустые значения и формируем строку в формате "cookieName=cookieValue"

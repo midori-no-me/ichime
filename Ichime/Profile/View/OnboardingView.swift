@@ -86,7 +86,7 @@ struct OnboardingView: View {
       )
 
       Button(
-        action: { showAuth = true },
+        action: { self.showAuth = true },
         label: {
           Text("Войти в аккаунт")
         }
@@ -96,7 +96,7 @@ struct OnboardingView: View {
       .padding(.top)
     }
     .sheet(
-      isPresented: $showAuth,
+      isPresented: self.$showAuth,
       content: {
         NavigationStack {
           AuthenticationView()
@@ -106,7 +106,7 @@ struct OnboardingView: View {
     .navigationTitle("Ichime")
     .toolbar {
       Button(
-        action: { showAuth = true },
+        action: { self.showAuth = true },
         label: {
           Text("Вход")
         }
@@ -126,11 +126,11 @@ struct AuthenticationAppFeature: View {
     } label: {
       VStack(alignment: .leading, spacing: 16) {
         HStack(alignment: .top, spacing: 16) {
-          Image(systemName: systemImage)
-          Text(title)
+          Image(systemName: self.systemImage)
+          Text(self.title)
         }
 
-        Text(description)
+        Text(self.description)
           .foregroundStyle(.secondary)
       }
       .frame(maxWidth: .infinity, alignment: .leading)
@@ -143,7 +143,7 @@ struct AuthenticationAppFeatureSectionTitle: View {
   let title: LocalizedStringKey
 
   var body: some View {
-    Text(title)
+    Text(self.title)
       .frame(maxWidth: .infinity, alignment: .leading)
       .font(.title)
       .fontWeight(.bold)
@@ -156,7 +156,7 @@ struct AuthenticationTextParagraph: View {
   let text: LocalizedStringKey
 
   var body: some View {
-    Text(text)
+    Text(self.text)
       .font(.title3)
       .frame(maxWidth: .infinity, alignment: .leading)
       .scenePadding(.horizontal)

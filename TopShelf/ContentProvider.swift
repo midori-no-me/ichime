@@ -9,14 +9,14 @@ class ContentProvider: TVTopShelfContentProvider {
     forGroupContainerIdentifier: ServiceLocator.appGroup
   )
   var session: ScraperAPI.Session {
-    .init(cookieStorage: cookieStorage, baseURL: ServiceLocator.websiteBaseUrl)
+    .init(cookieStorage: self.cookieStorage, baseURL: ServiceLocator.websiteBaseUrl)
   }
 
   var api: ScraperAPI.APIClient {
     .init(
       baseURL: ServiceLocator.websiteBaseUrl,
       userAgent: ServiceLocator.userAgent,
-      session: session
+      session: self.session
     )
   }
 

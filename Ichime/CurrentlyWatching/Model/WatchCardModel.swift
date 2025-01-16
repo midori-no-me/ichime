@@ -50,7 +50,7 @@ struct WatchCardModel: Equatable, Identifiable, Hashable {
     self.image = image
     self.title = title
     self.sideText = sideText
-    data = watchData
+    self.data = watchData
   }
 
   init(from show: ScraperAPI.Types.WatchShow) {

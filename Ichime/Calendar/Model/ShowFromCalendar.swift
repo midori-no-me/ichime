@@ -39,7 +39,7 @@ struct ShowFromCalendar: Hashable, Identifiable {
   }
 
   func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
+    hasher.combine(self.id)
   }
 
   let id: Int

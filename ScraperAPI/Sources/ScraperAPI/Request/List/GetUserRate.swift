@@ -14,11 +14,11 @@ extension ScraperAPI.Request {
     }
 
     public func getEndpoint() -> String {
-      "animelist/edit/\(id)"
+      "animelist/edit/\(self.id)"
     }
 
     public func getQueryItems() -> [URLQueryItem] {
-      if fullCheck {
+      if self.fullCheck {
         return [.init(name: "mode", value: "mini")]
       }
 
@@ -35,7 +35,7 @@ extension ScraperAPI.Request {
         throw ScraperAPI.APIClientError.parseError
       }
 
-      if fullCheck,
+      if self.fullCheck,
         let emptyButton = try? fragment.select("form.animelist_mini button[type=submit]").first(),
         let emptyButtonText = try? emptyButton.text(trimAndNormaliseWhitespace: true),
         emptyButtonText == "Добавить в список"

@@ -28,37 +28,37 @@ class MyListsSelectorViewModel {
 
   @MainActor
   private func updateState(_ newState: State) {
-    state = newState
+    self.state = newState
   }
 
   func performLoad() async {
-    if !userManager.subscribed {
-      return await updateState(.needSubscribe)
+    if !self.userManager.subscribed {
+      return await self.updateState(.needSubscribe)
     }
 
     // Проверяем есть ли данные в базе
     let isEmpty = await userAnimeListCache.isCategoriesEmpty()
     if !isEmpty {
-      await updateState(.loaded)
+      await self.updateState(.loaded)
       // Обновляем данные в фоне
       Task {
-        await loadFromAPI()
+        await self.loadFromAPI()
       }
       return
     }
 
-    await updateState(.loading)
-    await loadFromAPI()
+    await self.updateState(.loading)
+    await self.loadFromAPI()
   }
 
   private func loadFromAPI() async {
-    await userAnimeListCache.cacheCategories()
+    await self.userAnimeListCache.cacheCategories()
 
-    if await userAnimeListCache.isCategoriesEmpty() {
-      return await updateState(.loadedButEmpty)
+    if await self.userAnimeListCache.isCategoriesEmpty() {
+      return await self.updateState(.loadedButEmpty)
     }
 
-    return await updateState(.loaded)
+    return await self.updateState(.loaded)
   }
 }
 
@@ -67,11 +67,11 @@ struct MyListsSelectorView: View {
 
   var body: some View {
     Group {
-      switch viewModel.state {
+      switch self.viewModel.state {
       case .idle:
         Color.clear.onAppear {
           Task {
-            await viewModel.performLoad()
+            await self.viewModel.performLoad()
           }
         }
 
@@ -120,7 +120,7 @@ struct MyListsSelectorView: View {
       }
     }
     .refreshable {
-      await viewModel.performLoad()
+      await self.viewModel.performLoad()
     }
   }
 }

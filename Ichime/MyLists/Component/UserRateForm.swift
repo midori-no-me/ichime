@@ -125,24 +125,24 @@ struct UserRateForm: View {
   var body: some View {
     VStack {
       Form {
-        Picker("Оценка", selection: $score) {
+        Picker("Оценка", selection: self.$score) {
           ForEach(Score.allCases, id: \.self) { score in
             Text(score.description)
               .tag(score.rawValue)
           }
         }
-        Picker("Статус", selection: $status) {
+        Picker("Статус", selection: self.$status) {
           ForEach(ScraperAPI.Types.UserRateStatus.allCases, id: \.self) { status in
             Text(status.displayName)
           }
         }
         LabeledContent("Текущий эпизод") {
           HStack {
-            TextField("Текущий эпизод", text: $currentEpisode).keyboardType(.numberPad)
+            TextField("Текущий эпизод", text: self.$currentEpisode).keyboardType(.numberPad)
               .multilineTextAlignment(.trailing)
-              .focused($isFocused)
-              .onChange(of: isFocused) {
-                if isFocused {
+              .focused(self.$isFocused)
+              .onChange(of: self.isFocused) {
+                if self.isFocused {
                   DispatchQueue.main.async {
                     UIApplication.shared.sendAction(
                       #selector(UIResponder.selectAll(_:)),
@@ -153,22 +153,22 @@ struct UserRateForm: View {
                   }
                 }
               }
-            Text("/ \(totalEpisodes)")
+            Text("/ \(self.totalEpisodes)")
           }
         }
 
         Button("Удалить из списка", role: .destructive) {
-          isDeleteDialogOpen = true
+          self.isDeleteDialogOpen = true
         }
         .confirmationDialog(
           "Вы точно уверены, что хотите удалить?",
-          isPresented: $isDeleteDialogOpen
+          isPresented: self.$isDeleteDialogOpen
         ) {
           Button("Да, удалить", role: .destructive) {
-            onRemove()
+            self.onRemove()
           }
           Button("Отмена", role: .cancel) {
-            isDeleteDialogOpen = false
+            self.isDeleteDialogOpen = false
           }
         }
       }.toolbar {
@@ -176,7 +176,7 @@ struct UserRateForm: View {
           placement: .confirmationAction,
           content: {
             Button(action: {
-              onSubmit(
+              self.onSubmit(
                 .init(
                   score: self.score,
                   currentEpisode: Int(self.currentEpisode) ?? 0,

@@ -16,7 +16,7 @@ private struct MyListEntry: View {
   var body: some View {
     HStack {
       VStack(alignment: .leading) {
-        Text(primaryTitle)
+        Text(self.primaryTitle)
 
         if let secondaryTitle {
           Text(secondaryTitle)
@@ -27,7 +27,7 @@ private struct MyListEntry: View {
 
       Spacer()
 
-      Text(formatEpisodeProgressString())
+      Text(self.formatEpisodeProgressString())
         .foregroundStyle(Color.secondary)
     }
   }
@@ -57,9 +57,9 @@ struct AnimeList: View {
   var body: some View {
     List {
       Section {
-        ForEach(animeList, id: \.id) { show in
+        ForEach(self.animeList, id: \.id) { show in
           Button(action: {
-            selectedShow = .init(id: show.id, name: show.name.ru, totalEpisodes: show.progress.total)
+            self.selectedShow = .init(id: show.id, name: show.name.ru, totalEpisodes: show.progress.total)
           }) {
             MyListEntry(
               primaryTitle: show.name.ru,  // TODO: сделать romaji primary
@@ -80,11 +80,11 @@ struct AnimeList: View {
           }
         }
       } header: {
-        Text(status.title)
+        Text(self.status.title)
       }
     }
     .sheet(
-      item: $selectedShow,
+      item: self.$selectedShow,
       content: { show in
         MyListEditView(
           show: show

@@ -20,14 +20,14 @@ class ShowMomentsCardsViewModel {
     scraperClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
     videoPlayerHolder: VideoPlayerHolder = ApplicationDependency.container.resolve()
   ) {
-    api = scraperClient
-    videoHolder = videoPlayerHolder
+    self.api = scraperClient
+    self.videoHolder = videoPlayerHolder
   }
 
   func performInitialLoad(showId: Int) async {
-    state = .loading
+    self.state = .loading
 
-    await performPullToRefresh(showId: showId)
+    await self.performPullToRefresh(showId: showId)
   }
 
   func performPullToRefresh(showId: Int) async {
@@ -37,14 +37,14 @@ class ShowMomentsCardsViewModel {
       )
 
       if moments.isEmpty {
-        state = .loadedButEmpty
+        self.state = .loadedButEmpty
       }
       else {
-        state = .loaded(moments)
+        self.state = .loaded(moments)
       }
     }
     catch {
-      state = .loadingFailed(error)
+      self.state = .loadingFailed(error)
     }
   }
 
@@ -59,7 +59,7 @@ class ShowMomentsCardsViewModel {
         return
       }
 
-      await videoHolder.play(
+      await self.videoHolder.play(
         video: .init(
           videoURL: videoURL,
           subtitleURL: nil,
@@ -84,7 +84,7 @@ class ShowMomentsCardsViewModel {
     .Types.Moment]
   {
     func fetchFunction(_ page: Int) async throws -> [ScraperAPI.Types.Moment] {
-      try await api.sendAPIRequest(
+      try await self.api.sendAPIRequest(
         ScraperAPI.Request.GetMomentsByShow(showId: showId, page: page)
       )
     }
@@ -108,19 +108,19 @@ struct ShowMomentsCardsView: View {
       ) {
         MomentsView(
           viewModel: .init(
-            fetchMoments: viewModel.getShowMomentsFetchFunction(showId: showId)
+            fetchMoments: self.viewModel.getShowMomentsFetchFunction(showId: self.showId)
           ),
           title: "Моменты",
-          description: showName
+          description: self.showName
         )
       }
 
       Group {
-        switch viewModel.state {
+        switch self.viewModel.state {
         case .idle:
           Color.clear.onAppear {
             Task {
-              await self.viewModel.performInitialLoad(showId: showId)
+              await self.viewModel.performInitialLoad(showId: self.showId)
             }
           }
 
@@ -154,7 +154,7 @@ struct ShowMomentsCardsView: View {
                   id: moment.id
                 ) {
                   Task {
-                    await viewModel.showMoment(id: moment.id, showName: showName)
+                    await self.viewModel.showMoment(id: moment.id, showName: self.showName)
                   }
                 }
               }

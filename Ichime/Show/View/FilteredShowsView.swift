@@ -23,9 +23,9 @@ class FilteredShowsViewModel: ObservableObject {
     fetchShows: @escaping (_ offset: Int, _ limit: Int) async throws -> [Show]
   ) {
     if let preloadedShows = preloadedShows, !preloadedShows.isEmpty {
-      currentOffset = preloadedShows.count
-      shows = preloadedShows
-      state = .loaded(shows)
+      self.currentOffset = preloadedShows.count
+      self.shows = preloadedShows
+      self.state = .loaded(self.shows)
     }
 
     self.fetchShows = fetchShows
@@ -33,11 +33,11 @@ class FilteredShowsViewModel: ObservableObject {
 
   @MainActor
   func updateState(_ newState: State) {
-    state = newState
+    self.state = newState
   }
 
   func performInitialLoad() async {
-    await updateState(.loading)
+    await self.updateState(.loading)
 
     do {
       let shows = try await fetchShows(
@@ -46,21 +46,21 @@ class FilteredShowsViewModel: ObservableObject {
       )
 
       if shows.isEmpty {
-        await updateState(.loadedButEmpty)
+        await self.updateState(.loadedButEmpty)
       }
       else {
-        currentOffset = SHOWS_PER_PAGE
+        self.currentOffset = self.SHOWS_PER_PAGE
         self.shows = shows
-        await updateState(.loaded(self.shows))
+        await self.updateState(.loaded(self.shows))
       }
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
   }
 
   func performLazyLoading() async {
-    if stopLazyLoading {
+    if self.stopLazyLoading {
       return
     }
 
@@ -70,16 +70,16 @@ class FilteredShowsViewModel: ObservableObject {
         SHOWS_PER_PAGE
       )
 
-      if shows.count < SHOWS_PER_PAGE {
-        stopLazyLoading = true
+      if shows.count < self.SHOWS_PER_PAGE {
+        self.stopLazyLoading = true
       }
 
-      currentOffset = currentOffset + SHOWS_PER_PAGE
+      self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
       self.shows += shows
-      await updateState(.loaded(self.shows))
+      await self.updateState(.loaded(self.shows))
     }
     catch {
-      stopLazyLoading = true
+      self.stopLazyLoading = true
     }
   }
 
@@ -91,19 +91,19 @@ class FilteredShowsViewModel: ObservableObject {
       )
 
       if shows.isEmpty {
-        await updateState(.loadedButEmpty)
+        await self.updateState(.loadedButEmpty)
       }
       else {
-        currentOffset = SHOWS_PER_PAGE
+        self.currentOffset = self.SHOWS_PER_PAGE
         self.shows = shows
-        await updateState(.loaded(self.shows))
+        await self.updateState(.loaded(self.shows))
       }
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
 
-    stopLazyLoading = false
+    self.stopLazyLoading = false
   }
 }
 
@@ -149,7 +149,7 @@ struct FilteredShowsView: View {
         ScrollView([.vertical]) {
           VStack(alignment: .leading, spacing: 40) {
             VStack(alignment: .leading) {
-              Text(title)
+              Text(self.title)
                 .font(.title2)
 
               if let description {

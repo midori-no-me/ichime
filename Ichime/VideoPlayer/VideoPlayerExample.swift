@@ -9,9 +9,9 @@ struct VideoPlayerExample: View {
   var body: some View {
     Button("Play video") {
       Task {
-        await videoPlayer.createPlayer(video: video)
+        await self.videoPlayer.createPlayer(video: self.video)
         if let player = videoPlayer.player {
-          videoView.showPlayer(player: player)
+          self.videoView.showPlayer(player: player)
         }
       }
     }

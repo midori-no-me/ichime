@@ -38,7 +38,7 @@ extension ScraperAPI.Types {
     init(id: Int, name: Name, imageSrc: URL, episode: Episode, update: UpdateType) {
       self.id = id
       self.name = name
-      imageURL = imageSrc
+      self.imageURL = imageSrc
       self.episode = episode
       self.update = update
     }

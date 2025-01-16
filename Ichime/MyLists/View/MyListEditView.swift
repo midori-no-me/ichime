@@ -10,8 +10,8 @@ class MyListEditViewModel {
     apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
     container: ModelContainer = ApplicationDependency.container.resolve()
   ) {
-    client = apiClient
-    userAnimeListManager = .init(modelContainer: container)
+    self.client = apiClient
+    self.userAnimeListManager = .init(modelContainer: container)
   }
 
   enum State {
@@ -26,27 +26,27 @@ class MyListEditViewModel {
 
   @MainActor
   private func updateState(_ newState: State) {
-    state = newState
+    self.state = newState
   }
 
   func performInitialLoad(_ showId: Int) async {
-    await updateState(.loading)
+    await self.updateState(.loading)
 
     do {
       let userRate = try await client.sendAPIRequest(ScraperAPI.Request.GetUserRate(showId: showId))
-      await updateState(.loaded(userRate))
+      await self.updateState(.loaded(userRate))
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
   }
 
   func performUpdate(_ showId: Int, _ userRate: ScraperAPI.Types.UserRate) async {
-    await updateState(.loading)
+    await self.updateState(.loading)
 
     do {
       _ =
-        try await client
+        try await self.client
         .sendAPIRequest(ScraperAPI.Request.UpdateUserRate(showId: showId, userRate: userRate))
       let newStatus: AnimeWatchStatus =
         switch userRate.status {
@@ -62,29 +62,29 @@ class MyListEditViewModel {
           .completed
         }
 
-      await userAnimeListManager.updateStatusById(id: showId, status: newStatus)
-      await updateState(.formSended)
+      await self.userAnimeListManager.updateStatusById(id: showId, status: newStatus)
+      await self.updateState(.formSended)
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
   }
 
   func performDelete(_ showId: Int) async {
-    await updateState(.loading)
+    await self.updateState(.loading)
 
     do {
-      _ = try await client.sendAPIRequest(
+      _ = try await self.client.sendAPIRequest(
         ScraperAPI.Request.UpdateUserRate(
           showId: showId,
           userRate: .init(score: 0, currentEpisode: 0, status: .deleted, comment: "")
         )
       )
-      await userAnimeListManager.remove(id: showId)
-      await updateState(.formSended)
+      await self.userAnimeListManager.remove(id: showId)
+      await self.updateState(.formSended)
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
   }
 }
@@ -95,7 +95,7 @@ struct MyListEditView: View {
 
   init(show: MyListShow) {
     self.show = show
-    onUpdate = nil
+    self.onUpdate = nil
   }
 
   init(show: MyListShow, onUpdate: @escaping () -> Void) {
@@ -118,11 +118,11 @@ struct MyListEditView: View {
   var body: some View {
     NavigationStack {
       Group {
-        switch viewModel.state {
+        switch self.viewModel.state {
         case .idle:
           Color.clear.onAppear {
             Task {
-              await viewModel.performInitialLoad(show.id)
+              await self.viewModel.performInitialLoad(self.show.id)
             }
           }
 
@@ -139,20 +139,20 @@ struct MyListEditView: View {
           .focusable()
 
         case let .loaded(userRate):
-          UserRateForm(userRate, totalEpisodes: totalEpisodes) { newUserRate in
+          UserRateForm(userRate, totalEpisodes: self.totalEpisodes) { newUserRate in
             Task {
-              await viewModel.performUpdate(show.id, newUserRate)
+              await self.viewModel.performUpdate(self.show.id, newUserRate)
             }
           } onRemove: {
             Task {
-              await viewModel.performDelete(show.id)
+              await self.viewModel.performDelete(self.show.id)
             }
           }
 
         case .formSended:
           Color.clear.onAppear {
-            dismiss()
-            onUpdate?()
+            self.dismiss()
+            self.onUpdate?()
           }
         }
       }
@@ -163,7 +163,7 @@ struct MyListEditView: View {
           }
         }
       }
-      .navigationTitle(show.name)
+      .navigationTitle(self.show.name)
 
     }.presentationDetents([.medium, .large])
   }

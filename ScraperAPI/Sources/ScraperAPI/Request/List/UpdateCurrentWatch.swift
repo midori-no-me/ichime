@@ -9,7 +9,7 @@ extension ScraperAPI.Request {
     }
 
     public func getEndpoint() -> String {
-      "translations/watched/\(id)"
+      "translations/watched/\(self.id)"
     }
 
     public func getQueryItems() -> [URLQueryItem] {

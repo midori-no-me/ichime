@@ -12,7 +12,7 @@ struct ContentViewWithSideBar: View {
   @State var viewModel: UserAnimeListCache = ApplicationDependency.container.resolve()
 
   var body: some View {
-    TabView(selection: $selectedTab) {
+    TabView(selection: self.$selectedTab) {
       Tab("Главная", systemImage: "play.house", value: .home) {
         NavigationStack {
           HomeView()
@@ -37,7 +37,7 @@ struct ContentViewWithSideBar: View {
 
       Tab(
         "Уведомления",
-        systemImage: notificationCounterWatcher.counter == 0 ? "bell" : "bell.badge",
+        systemImage: self.notificationCounterWatcher.counter == 0 ? "bell" : "bell.badge",
         value: .notifications
       ) {
         NavigationStack {
@@ -68,9 +68,9 @@ struct ContentViewWithSideBar: View {
     }
     .tabViewStyle(.sidebarAdaptable)
     .task {
-      await viewModel.cacheCategories()
+      await self.viewModel.cacheCategories()
     }
-    .sheet(item: $route) { route in
+    .sheet(item: self.$route) { route in
       switch route.type {
       case .show:
         NavigationStack {
@@ -102,10 +102,10 @@ struct ContentViewWithSideBar: View {
       switch action {
       case URLActions.show.rawValue:
         print("its show \(id)")
-        route = Route(id: id, type: .show, title: nil)
+        self.route = Route(id: id, type: .show, title: nil)
       case URLActions.episode.rawValue:
         print("its episode \(id)")
-        route = Route(id: id, type: .episode, title: episodeTitle)
+        self.route = Route(id: id, type: .episode, title: episodeTitle)
       default:
         print("idk")
       }

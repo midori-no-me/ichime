@@ -25,17 +25,17 @@ class MomentsViewModel: ObservableObject {
     videoPlayerHolder: VideoPlayerHolder = ApplicationDependency.container.resolve()
   ) {
     self.fetchMoments = fetchMoments
-    videoHolder = videoPlayerHolder
-    api = scraperClient
+    self.videoHolder = videoPlayerHolder
+    self.api = scraperClient
   }
 
   @MainActor
   func updateState(_ newState: State) {
-    state = newState
+    self.state = newState
   }
 
   func performInitialLoad() async {
-    await updateState(.loading)
+    await self.updateState(.loading)
 
     do {
       let moments = try await fetchMoments(
@@ -43,21 +43,21 @@ class MomentsViewModel: ObservableObject {
       )
 
       if moments.isEmpty {
-        await updateState(.loadedButEmpty)
+        await self.updateState(.loadedButEmpty)
       }
       else {
-        currentPage += 1
+        self.currentPage += 1
         self.moments = moments
-        await updateState(.loaded(self.moments))
+        await self.updateState(.loaded(self.moments))
       }
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
   }
 
   func performLazyLoading() async {
-    if stopLazyLoading {
+    if self.stopLazyLoading {
       return
     }
 
@@ -67,15 +67,15 @@ class MomentsViewModel: ObservableObject {
       )
 
       if moments.isEmpty {
-        stopLazyLoading = true
+        self.stopLazyLoading = true
       }
 
-      currentPage += 1
+      self.currentPage += 1
       self.moments += moments
-      await updateState(.loaded(self.moments))
+      await self.updateState(.loaded(self.moments))
     }
     catch {
-      stopLazyLoading = true
+      self.stopLazyLoading = true
     }
   }
 
@@ -86,19 +86,19 @@ class MomentsViewModel: ObservableObject {
       )
 
       if moments.isEmpty {
-        await updateState(.loadedButEmpty)
+        await self.updateState(.loadedButEmpty)
       }
       else {
-        currentPage = 2
+        self.currentPage = 2
         self.moments = moments
-        await updateState(.loaded(self.moments))
+        await self.updateState(.loaded(self.moments))
       }
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
 
-    stopLazyLoading = false
+    self.stopLazyLoading = false
   }
 
   func showMoment(id: Int, showName: String) async {
@@ -112,7 +112,7 @@ class MomentsViewModel: ObservableObject {
         return
       }
 
-      await videoHolder.play(
+      await self.videoHolder.play(
         video: .init(
           videoURL: videoURL,
           subtitleURL: nil,
@@ -173,7 +173,7 @@ struct MomentsView: View {
       case let .loaded(moments):
         ScrollView([.vertical]) {
           Group {
-            Text(title)
+            Text(self.title)
               .font(.title2)
 
             if let description {
@@ -203,7 +203,7 @@ struct MomentsView: View {
                 id: moment.id
               ) {
                 Task {
-                  await viewModel.showMoment(id: moment.id, showName: "show name")
+                  await self.viewModel.showMoment(id: moment.id, showName: "show name")
                 }
               }
               .task {

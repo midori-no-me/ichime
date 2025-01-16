@@ -23,8 +23,8 @@ extension ScraperAPI.Request {
 
     public func getFormData() -> [URLQueryItem] {
       [
-        .init(name: "LoginForm[username]", value: username),
-        .init(name: "LoginForm[password]", value: password),
+        .init(name: "LoginForm[username]", value: self.username),
+        .init(name: "LoginForm[password]", value: self.password),
         .init(name: "dynpage", value: "1"),
         .init(name: "yt0", value: ""),
       ]

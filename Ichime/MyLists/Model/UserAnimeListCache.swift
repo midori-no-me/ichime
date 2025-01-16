@@ -19,11 +19,11 @@ class UserAnimeListCache {
   ) {
     self.apiClient = apiClient
     self.userManager = userManager
-    userAnimeListManager = .init(modelContainer: modelContainer)
+    self.userAnimeListManager = .init(modelContainer: modelContainer)
   }
 
   func isCategoriesEmpty() async -> Bool {
-    await userAnimeListManager.getAllCount() == 0
+    await self.userAnimeListManager.getAllCount() == 0
   }
 
   func cacheCategories() async {
@@ -59,6 +59,6 @@ class UserAnimeListCache {
       }
     }
 
-    await userAnimeListManager.insertMany(listShows: shows)
+    await self.userAnimeListManager.insertMany(listShows: shows)
   }
 }

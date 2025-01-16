@@ -7,11 +7,11 @@ extension ScraperAPI.Request {
     let episodeURL: String
 
     public init(episodeURL url: String) {
-      episodeURL = url
+      self.episodeURL = url
     }
 
     public func getEndpoint() -> String {
-      let components = episodeURL.components(separatedBy: "/")
+      let components = self.episodeURL.components(separatedBy: "/")
       let trimmedComponents = components.dropLast()
       let url = URL(string: trimmedComponents.joined(separator: "/"))!
       return url.path()

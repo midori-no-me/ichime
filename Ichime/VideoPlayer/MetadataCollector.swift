@@ -41,7 +41,7 @@ struct MetadataCollector {
       .identifier3GPUserDataRecordingYear: metadata.year,
     ]
 
-    return mapping.compactMap { createMetadataItem(for: $0, value: $1) }
+    return mapping.compactMap { self.createMetadataItem(for: $0, value: $1) }
   }
 
   private static func createMetadataItem(
@@ -71,9 +71,9 @@ struct MetadataCollector {
 
   func getMetadata() async -> MetadataPlayer? {
     do {
-      let episodeData = try await api.sendApiRequest(GetEpisodeRequest(episodeId: episodeId))
+      let episodeData = try await api.sendApiRequest(GetEpisodeRequest(episodeId: self.episodeId))
       let showData = try await api.sendApiRequest(GetSeriesRequest(seriesId: episodeData.seriesId))
-      let translation = episodeData.translations.first(where: { $0.id == translationId })
+      let translation = episodeData.translations.first(where: { $0.id == self.translationId })
 
       var description = ""
 

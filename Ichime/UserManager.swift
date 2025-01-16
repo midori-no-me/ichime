@@ -19,23 +19,23 @@ class UserManager {
   private let api: ScraperAPI.APIClient
 
   init(client: ScraperAPI.APIClient) {
-    api = client
-    restoreUser()
+    self.api = client
+    self.restoreUser()
     Task {
-      await checkAuth()
+      await self.checkAuth()
     }
   }
 
   func checkAuth() async {
     do {
-      await loading()
+      await self.loading()
       let user = try await api.sendAPIRequest(ScraperAPI.Request.GetMe())
       print("success check auth")
-      await saveUser(user: user)
+      await self.saveUser(user: user)
     }
     catch {
       print(error.localizedDescription)
-      await isAnonym()
+      await self.isAnonym()
     }
   }
 
@@ -44,36 +44,36 @@ class UserManager {
       ScraperAPI.Request.Login(username: username, password: password)
     )
     print("success auth")
-    await saveUser(user: user)
+    await self.saveUser(user: user)
     return user
   }
 
   func dropAuth() {
-    api.session.logout()
-    state = .isAnonym
-    cachedUser = nil
+    self.api.session.logout()
+    self.state = .isAnonym
+    self.cachedUser = nil
   }
 
   @MainActor
   private func loading() {
-    state = .loading
+    self.state = .loading
     print("start loading")
   }
 
   @MainActor
   private func isAnonym() {
-    state = .isAnonym
+    self.state = .isAnonym
     print("auth is fail")
   }
 
   @MainActor
   private func saveUser(user: ScraperAPI.Types.User) {
-    state = .isAuth(user)
-    subscribed = user.subscribed
+    self.state = .isAuth(user)
+    self.subscribed = user.subscribed
 
     let encoder = JSONEncoder()
     if let encoded = try? encoder.encode(user) {
-      cachedUser = encoded
+      self.cachedUser = encoded
     }
     print("save user to auth")
   }
@@ -83,8 +83,8 @@ class UserManager {
     if let cachedUser,
       let decodedUser = try? decoder.decode(ScraperAPI.Types.User.self, from: cachedUser)
     {
-      state = .isAuth(decodedUser)
-      subscribed = decodedUser.subscribed
+      self.state = .isAuth(decodedUser)
+      self.subscribed = decodedUser.subscribed
     }
   }
 

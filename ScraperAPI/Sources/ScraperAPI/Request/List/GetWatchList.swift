@@ -15,7 +15,7 @@ extension ScraperAPI.Request {
 
     public func getEndpoint() -> String {
       var path = "users/\(userId)/list"
-      switch type {
+      switch self.type {
       case .completed:
         path = path + "/completed"
       case .dropped:

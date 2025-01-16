@@ -8,33 +8,33 @@ class VideoPlayerHolder {
 
   @MainActor
   private func pause() {
-    videoPlayerController.pausePlayer()
+    self.videoPlayerController.pausePlayer()
   }
 
   @MainActor
   private func recreate() {
-    videoPlayerController.dispose()
-    videoPlayerController = .init()
+    self.videoPlayerController.dispose()
+    self.videoPlayerController = .init()
   }
 
   func play(video: VideoModel, onDismiss dismiss: @escaping () -> Void = {}) async {
-    if isBusy {
+    if self.isBusy {
       return
     }
 
-    isBusy = true
+    self.isBusy = true
 
-    if videoPlayerController.player != nil {
-      await pause()
+    if self.videoPlayerController.player != nil {
+      await self.pause()
     }
 
-    player = VideoPlayer()
+    self.player = VideoPlayer()
 
     if let translationId = video.translationId {
-      player.addObserver(WatchChecker(translationId: translationId))
+      self.player.addObserver(WatchChecker(translationId: translationId))
     }
 
-    await player.createPlayer(
+    await self.player.createPlayer(
       video: video
     )
 
@@ -43,16 +43,16 @@ class VideoPlayerHolder {
     }
 
     await MainActor.run {
-      if videoPlayerController.isInPiP {
+      if self.videoPlayerController.isInPiP {
         dismiss()
-        videoPlayerController.play(player: avplayer)
-        isBusy = false
+        self.videoPlayerController.play(player: avplayer)
+        self.isBusy = false
 
         return
       }
 
-      videoPlayerController.showPlayer(player: avplayer)
-      isBusy = false
+      self.videoPlayerController.showPlayer(player: avplayer)
+      self.isBusy = false
     }
   }
 }

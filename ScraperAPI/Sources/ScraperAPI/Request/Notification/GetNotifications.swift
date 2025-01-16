@@ -17,7 +17,7 @@ extension ScraperAPI.Request {
 
     public func getQueryItems() -> [URLQueryItem] {
       [
-        .init(name: "Notifications_page", value: String(page)),
+        .init(name: "Notifications_page", value: String(self.page)),
         .init(name: "ajax", value: "yw0"),
       ]
     }

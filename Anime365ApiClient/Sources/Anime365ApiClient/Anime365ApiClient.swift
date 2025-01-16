@@ -36,12 +36,12 @@ public final class Anime365ApiClient {
     self.userAgent = userAgent
     let config = URLSessionConfiguration.default
     config.httpCookieStorage = cookieStorage
-    urlSession = URLSession(configuration: config)
+    self.urlSession = URLSession(configuration: config)
   }
 
   public func sendApiRequest<T: Anime365ApiRequest>(_ apiRequest: T) async throws -> T.ResponseType {
     // Составляем URL запроса
-    var fullURL = baseURL.appendingPathComponent("/api" + apiRequest.getEndpoint())
+    var fullURL = self.baseURL.appendingPathComponent("/api" + apiRequest.getEndpoint())
     let queryItems = apiRequest.getQueryItems()
 
     if !queryItems.isEmpty {
@@ -50,7 +50,7 @@ public final class Anime365ApiClient {
 
     var httpRequest = URLRequest(url: fullURL)
     httpRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-    httpRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+    httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
     httpRequest.timeoutInterval = 3
 
     // Логируем заранее сформированный запрос
