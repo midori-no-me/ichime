@@ -1,10 +1,3 @@
-//
-//  ShowFromCalendarView.swift
-//  Ichime
-//
-//  Created by Flaks Petr on 24.11.2024.
-//
-
 import SwiftUI
 
 struct ShowFromCalendarCard: View {

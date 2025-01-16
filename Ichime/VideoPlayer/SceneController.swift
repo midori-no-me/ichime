@@ -1,10 +1,3 @@
-//
-//  SceneController.swift
-//  Ichime
-//
-//  Created by Nikita Nafranets on 22.03.2024.
-//
-
 import Foundation
 import SwiftUI
 

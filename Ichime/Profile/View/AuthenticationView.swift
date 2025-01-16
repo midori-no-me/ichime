@@ -1,10 +1,3 @@
-//
-//  AuthenticationView.swift
-//  ichime
-//
-//  Created by p.flaks on 23.01.2024.
-//
-
 import ScraperAPI
 import SwiftUI
 

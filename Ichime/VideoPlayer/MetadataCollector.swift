@@ -1,10 +1,3 @@
-//
-//  MetadataCollector.swift
-//  Ichime
-//
-//  Created by Nikita Nafranets on 25.03.2024.
-//
-
 import AVFoundation
 import Anime365ApiClient
 import Foundation

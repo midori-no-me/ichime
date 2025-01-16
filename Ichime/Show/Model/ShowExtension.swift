@@ -1,10 +1,3 @@
-//
-//  Test.swift
-//  Ichime
-//
-//  Created by Nafranets Nikita on 15.12.2024.
-//
-
 import Foundation
 
 extension Show {

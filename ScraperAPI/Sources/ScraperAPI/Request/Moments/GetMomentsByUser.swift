@@ -1,10 +1,3 @@
-//
-//  File.swift
-//
-//
-//  Created by Nikita Nafranets on 24.03.2024.
-//
-
 import Foundation
 import SwiftSoup
 

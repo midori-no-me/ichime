@@ -1,10 +1,3 @@
-//
-//  PlayerPreference.swift
-//  ichime
-//
-//  Created by n.nafranets on 20.09.2024.
-//
-
 import Foundation
 import SwiftUI
 

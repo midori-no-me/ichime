@@ -1,10 +1,3 @@
-//
-//  ProfileButton.swift
-//  ichime
-//
-//  Created by p.flaks on 05.02.2024.
-//
-
 import ScraperAPI
 import SwiftUI
 

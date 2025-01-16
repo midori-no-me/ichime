@@ -1,10 +1,3 @@
-//
-//  OnboardingView.swift
-//  ichime
-//
-//  Created by p.flaks on 22.01.2024.
-//
-
 import SwiftUI
 
 struct OnboardingView: View {

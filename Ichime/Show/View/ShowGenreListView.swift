@@ -1,10 +1,3 @@
-//
-//  ShowGenreListView.swift
-//  ichime
-//
-//  Created by p.flaks on 05.04.2024.
-//
-
 import SwiftUI
 
 struct ShowGenreListView: View {

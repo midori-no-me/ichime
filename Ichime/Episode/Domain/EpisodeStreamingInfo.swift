@@ -1,10 +1,3 @@
-//
-//  EmbedModel.swift
-//  ichime
-//
-//  Created by p.flaks on 20.01.2024.
-//
-
 import Anime365ApiClient
 import Foundation
 import ScraperAPI

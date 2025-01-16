@@ -1,10 +1,3 @@
-//
-//  UserRateForm.swift
-//  ichime
-//
-//  Created by Nikita Nafranets on 26.01.2024.
-//
-
 import Combine
 import ScraperAPI
 import SwiftUI

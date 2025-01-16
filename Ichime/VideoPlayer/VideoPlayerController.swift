@@ -1,10 +1,3 @@
-//
-//  Player.swift
-//  ichime
-//
-//  Created by Nikita Nafranets on 21.01.2024.
-//
-
 import AVKit
 import Foundation
 import SwiftUI

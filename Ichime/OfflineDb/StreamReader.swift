@@ -1,10 +1,3 @@
-//
-//  StreamReader.swift
-//  Ichime
-//
-//  Created by Nafranets Nikita on 13.12.2024.
-//
-
 import CoreData
 import Foundation
 

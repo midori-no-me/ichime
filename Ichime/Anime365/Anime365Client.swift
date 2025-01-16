@@ -1,10 +1,3 @@
-//
-//  Anime365.swift
-//  ichime
-//
-//  Created by p.flaks on 02.01.2024.
-//
-
 import Anime365ApiClient
 import Foundation
 

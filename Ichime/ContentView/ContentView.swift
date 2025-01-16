@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  ichime
-//
-//  Created by p.flaks on 05.01.2024.
-//
-
 import ScraperAPI
 import SwiftUI
 
