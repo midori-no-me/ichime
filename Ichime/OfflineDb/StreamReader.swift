@@ -2,7 +2,6 @@ import CoreData
 import Foundation
 
 class StreamReader {
-
   let encoding: String.Encoding
   let chunkSize: Int
   var fileHandle: FileHandle!
@@ -16,7 +15,6 @@ class StreamReader {
     encoding: String.Encoding = .utf8,
     chunkSize: Int = 4096
   ) {
-
     guard let fileHandle = FileHandle(forReadingAtPath: path),
       let delimData = delimiter.data(using: encoding)
     else {
