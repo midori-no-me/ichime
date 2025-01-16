@@ -4,6 +4,7 @@ public struct Anime365ApiSeries: Decodable {
   public let posterUrl: String
   public let posterUrlSmall: String
   public let myAnimeListScore: String
+  public let myAnimeListId: Int
   public let worldArtScore: String
   public let url: String
   public let isAiring: Int

@@ -15,7 +15,7 @@ public enum ShikimoriApiClientError: Error {
 }
 
 public class ShikimoriApiClient {
-  private let baseUrl: URL
+  public let baseUrl: URL
   private let userAgent: String
 
   public init(

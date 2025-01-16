@@ -1,13 +1,13 @@
 import SwiftUI
 
 struct ShowGenreListView: View {
-  private let showTitle: Show.Title
-  private let genres: [Show.Genre]
+  private let showTitle: ShowFull.Title
+  private let genres: [ShowFull.Genre]
   private let client: Anime365Client
 
   init(
-    showTitle: Show.Title,
-    genres: [Show.Genre],
+    showTitle: ShowFull.Title,
+    genres: [ShowFull.Genre],
     client: Anime365Client = ApplicationDependency.container.resolve()
   ) {
     self.showTitle = showTitle
@@ -53,9 +53,9 @@ struct ShowGenreListView: View {
 #Preview {
   NavigationStack {
     ShowGenreListView(
-      showTitle: Show.Title(
+      showTitle: ShowFull.Title(
         full: "Full Title",
-        translated: Show.Title.TranslatedTitles(
+        translated: ShowFull.Title.TranslatedTitles(
           russian: "Russian",
           english: "English",
           japanese: "Japanese",
@@ -63,8 +63,8 @@ struct ShowGenreListView: View {
         )
       ),
       genres: [
-        Show.Genre(id: 22, title: "Романтика"),
-        Show.Genre(id: 23, title: "Школа"),
+        ShowFull.Genre(id: 22, title: "Романтика"),
+        ShowFull.Genre(id: 23, title: "Школа"),
       ]
     )
   }

@@ -88,6 +88,10 @@ class ApplicationDependency: DIFramework {
       )
     }
 
+    container.register {
+      ShowService(anime365ApiClient: $0, shikimoriApiClient: $1)
+    }
+
     if !container.makeGraph().checkIsValid() {
       fatalError("Граф зависимостей не валиден")
     }
