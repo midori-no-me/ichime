@@ -2,10 +2,10 @@ import OSLog
 import ScraperAPI
 import TVServices
 
-let logger = Logger(subsystem: "dev.midorinome.ichime.topshelf", category: "contentProvider")
+let logger: Logger = .init(subsystem: "dev.midorinome.ichime.topshelf", category: "contentProvider")
 
 class ContentProvider: TVTopShelfContentProvider {
-  let cookieStorage = HTTPCookieStorage.sharedCookieStorage(
+  let cookieStorage: HTTPCookieStorage = .sharedCookieStorage(
     forGroupContainerIdentifier: ServiceLocator.appGroup
   )
   var session: ScraperAPI.Session {

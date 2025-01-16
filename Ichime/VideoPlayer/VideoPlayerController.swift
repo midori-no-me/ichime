@@ -5,9 +5,9 @@ import SwiftUI
 final class VideoPlayerController: NSObject {
   private let logger = createLogger(category: String(describing: VideoPlayerController.self))
 
-  private let playerViewController = AVPlayerViewController()
+  private let playerViewController: AVPlayerViewController = .init()
   private var coordinator: Coordinator?
-  private let sceneController = SceneController()
+  private let sceneController: SceneController = .init()
 
   private(set) var player: AVPlayer?
 

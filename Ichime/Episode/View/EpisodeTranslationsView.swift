@@ -13,7 +13,7 @@ class EpisodeViewModel {
     case loaded(GroupedTranslation)
   }
 
-  private(set) var state = State.idle
+  private(set) var state: State = .idle
 
   private let client: Anime365Client
   private let scraper: ScraperAPI.APIClient

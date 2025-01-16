@@ -5,7 +5,7 @@ struct Translation: Hashable, Identifiable {
   static func createFromApiResponse(
     translation: Anime365ApiTranslation
   ) -> Translation {
-    var sourceVideoQuality: SourceVideoQuality = .other
+    var sourceVideoQuality = SourceVideoQuality.other
 
     switch translation.qualityType {
     case "tv":
@@ -16,7 +16,7 @@ struct Translation: Hashable, Identifiable {
       sourceVideoQuality = .other
     }
 
-    var translatedToLanguage: TranslatedToLanguage = .other
+    var translatedToLanguage = TranslatedToLanguage.other
 
     switch translation.typeLang {
     case "ru":
@@ -29,7 +29,7 @@ struct Translation: Hashable, Identifiable {
       translatedToLanguage = .other
     }
 
-    var translationMethod: TranslationMethod = .other
+    var translationMethod = TranslationMethod.other
 
     switch translation.typeKind {
     case "voice":

@@ -4,7 +4,7 @@ import SwiftUI
 class BaseUrlPreference: ObservableObject {
   private let userDefaults: UserDefaults
   private let baseURLKey = "anime365-base-url"
-  private let defaultURL = URL(string: "https://smotret-anime.org")!
+  private let defaultURL: URL = .init(string: "https://smotret-anime.org")!
 
   init() {
     guard let userDefaults = UserDefaults(suiteName: ServiceLocator.appGroup) else {

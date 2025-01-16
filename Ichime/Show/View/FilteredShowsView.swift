@@ -9,7 +9,7 @@ class FilteredShowsViewModel: ObservableObject {
     case loaded([Show])
   }
 
-  @Published private(set) var state = State.idle
+  @Published private(set) var state: State = .idle
 
   private var currentOffset: Int = 0
   private var shows: [Show] = []

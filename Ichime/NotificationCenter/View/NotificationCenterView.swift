@@ -16,7 +16,7 @@ class NotificationCenterViewModel {
     case loaded([WatchCardModel])
   }
 
-  private(set) var state = State.idle
+  private(set) var state: State = .idle
   private var page = 1
   private var shows: [WatchCardModel] = []
   private var stopLazyLoading = false

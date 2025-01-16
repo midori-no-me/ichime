@@ -22,7 +22,7 @@ class MyListEditViewModel {
     case formSended
   }
 
-  private(set) var state = State.idle
+  private(set) var state: State = .idle
 
   @MainActor
   private func updateState(_ newState: State) {

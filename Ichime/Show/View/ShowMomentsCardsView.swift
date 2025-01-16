@@ -11,7 +11,7 @@ class ShowMomentsCardsViewModel {
     case loaded([ScraperAPI.Types.Moment])
   }
 
-  private(set) var state = State.idle
+  private(set) var state: State = .idle
 
   private let api: ScraperAPI.APIClient
   private let videoHolder: VideoPlayerHolder
