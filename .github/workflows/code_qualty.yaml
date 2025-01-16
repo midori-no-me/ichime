@@ -13,3 +13,14 @@ jobs:
 
       - name: Check Code Formatting
         run: swift format lint . --recursive --strict
+
+  swiftformat:
+    name: swiftformat
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check Code Formatting
+        run: swiftformat --lint .

@@ -49,7 +49,7 @@
 2. Установите [XcodeGen](https://github.com/yonaskolb/XcodeGen).
 
 3. В корне директории выполните команду:
-  
+
    ```bash
    xcodegen generate
    ```
@@ -65,6 +65,8 @@
 ### Кодстайл
 
 Мы используем официальный форматтер кодстайла для Swift: [swift-format](https://github.com/swiftlang/swift-format). Убедитесь, что у вас Swift 6.0 или новее.
+
+А также используем [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
 
 Перед коммитом не забудьте запустить автоматическое исправление кодстайла:
 

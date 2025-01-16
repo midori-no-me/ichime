@@ -1,0 +1,12 @@
+--indent 2
+--disable all
+--enable blankLinesAtEndOfScope
+--enable blankLinesAtStartOfScope
+--enable blankLinesBetweenChainedFunctions
+--enable blankLinesBetweenScopes
+--enable fileHeader
+--header strip
+--enable propertyTypes
+--propertytypes infer-locals-only
+--enable redundantSelf
+--self insert
