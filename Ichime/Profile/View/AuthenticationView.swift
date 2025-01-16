@@ -42,7 +42,6 @@ class AuthenticationViewModel {
       print("invalidCredentials")
 
       self.showInvalidCredentialsAlert = true
-
     }
     catch {
       print(error)

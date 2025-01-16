@@ -18,7 +18,6 @@ struct SectionHeaderRaw: View {
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .focusSection()
-
   }
 }
 
@@ -44,7 +43,6 @@ struct SectionHeader<Content: View>: View {
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .focusSection()
-
   }
 }
 

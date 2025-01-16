@@ -53,7 +53,6 @@ extension ScraperAPI.Request {
               baseURL: baseURL
             )
           }
-
       }
       catch {
         logger

@@ -81,7 +81,6 @@ private struct ImagePlaceholder: View {
     Image(systemName: "photo")
       .resizable()
       .aspectRatio(contentMode: .fit)
-
   }
 }
 //

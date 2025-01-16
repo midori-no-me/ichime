@@ -42,7 +42,6 @@ extension ScraperAPI.Request {
 
         return try fragment.select(".m-moment__card")
           .map { try ScraperAPI.Types.Moment(from: $0, baseURL: baseURL) }
-
       }
       catch {
         logger

@@ -19,6 +19,5 @@ struct ShowFromCalendarCard: View {
       }
     )
     .buttonStyle(.borderless)
-
   }
 }
