@@ -352,7 +352,6 @@ private struct ShowActionButtons: View {
           )
         }
         .buttonStyle(.bordered)
-
         .disabled(self.show.episodePreviews.isEmpty)
 
         if self.viewModel.statusReady {

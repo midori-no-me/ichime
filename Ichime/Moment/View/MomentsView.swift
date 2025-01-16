@@ -179,7 +179,6 @@ struct MomentsView: View {
             if let description {
               Text(description)
                 .font(.title3)
-
                 .foregroundStyle(.secondary)
             }
           }
