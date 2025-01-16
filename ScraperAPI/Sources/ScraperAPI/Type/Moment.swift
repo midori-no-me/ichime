@@ -104,7 +104,7 @@ extension ScraperAPI.Types {
     }
 
     public func hash(into hasher: inout Hasher) {
-      hasher.combine(id)
+      hasher.combine(self.id)
     }
   }
 

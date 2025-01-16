@@ -9,7 +9,7 @@ struct ProfileButton: View {
   var body: some View {
     Button(
       action: {
-        profileSheetPresented.toggle()
+        self.profileSheetPresented.toggle()
       },
       label: {
         if case let .isAuth(user) = userManager.state {
@@ -40,7 +40,7 @@ struct ProfileButton: View {
       }
     )
     .sheet(
-      isPresented: $profileSheetPresented,
+      isPresented: self.$profileSheetPresented,
       content: {
         ProfileSheet()
       }

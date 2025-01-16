@@ -14,20 +14,20 @@ class NotificationCounterWatcher: ObservableObject {
   private let api: ScraperAPI.APIClient
 
   init() {
-    api = ApplicationDependency.container.resolve()
+    self.api = ApplicationDependency.container.resolve()
   }
 
   func checkCounter() async {
     do {
       let counter = try await api.sendAPIRequest(ScraperAPI.Request.GetNotificationCount())
-      logger.notice("get counter \(counter)")
+      self.logger.notice("get counter \(counter)")
       await MainActor.run {
         self.counter = counter
       }
-      if badgeIsAvailable {
+      if self.badgeIsAvailable {
         do {
           try await UNUserNotificationCenter.current().setBadgeCount(counter)
-          logger.notice("set badge")
+          self.logger.notice("set badge")
         }
         catch {
           print(error)

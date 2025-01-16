@@ -7,7 +7,7 @@ struct HeadingSectionWithBackground<Content: View>: View {
 
   var body: some View {
     VStack {
-      content
+      self.content
     }
     .frame(maxWidth: .infinity)
     .background(alignment: .center) {

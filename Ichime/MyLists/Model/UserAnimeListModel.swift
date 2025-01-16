@@ -17,7 +17,7 @@ class UserAnimeListModel {
   var progress: UserAnimeProgress
 
   var status: AnimeWatchStatus {
-    AnimeWatchStatus(rawValue: statusRaw) ?? .planned
+    AnimeWatchStatus(rawValue: self.statusRaw) ?? .planned
   }
 
   init(id: Int, name: UserAnimeListName, status: AnimeWatchStatus, score: Int, progress: UserAnimeProgress) {

@@ -30,7 +30,7 @@ class EpisodeTranslationQualitySelectorViewModel {
 
   @MainActor
   func updateState(_ newState: State) {
-    state = newState
+    self.state = newState
   }
 
   private var translationId: Int = 0
@@ -39,7 +39,7 @@ class EpisodeTranslationQualitySelectorViewModel {
   func performInitialLoad(episodeId: Int, translationId: Int) async {
     self.translationId = translationId
     self.episodeId = episodeId
-    await updateState(.loading)
+    await self.updateState(.loading)
 
     do {
       let episodeStreamingInfo = try await client.getEpisodeStreamingInfo(
@@ -47,20 +47,20 @@ class EpisodeTranslationQualitySelectorViewModel {
       )
 
       if episodeStreamingInfo.streamQualityOptions.isEmpty {
-        await updateState(.loadedButEmpty)
+        await self.updateState(.loadedButEmpty)
       }
       else {
-        await updateState(.loaded(episodeStreamingInfo))
+        await self.updateState(.loaded(episodeStreamingInfo))
       }
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
   }
 
   func performUpdateWatch(translationId: Int) async {
     do {
-      try await scraperClient.sendAPIRequest(
+      try await self.scraperClient.sendAPIRequest(
         ScraperAPI.Request
           .UpdateCurrentWatch(translationId: translationId)
       )
@@ -76,12 +76,12 @@ class EpisodeTranslationQualitySelectorViewModel {
   var dismissModal: (() -> Void)?
 
   var defaultPlayer: PlayerPreference.Player {
-    playerPreference.selectedPlayer
+    self.playerPreference.selectedPlayer
   }
 
   func playThroughURL(video: URL, subtitle: URL?, player: PlayerPreference.Player) {
     if subtitle != nil, player.supportSubtitle == false {
-      shownChangePlayerAlert = true
+      self.shownChangePlayerAlert = true
       return
     }
 
@@ -90,8 +90,8 @@ class EpisodeTranslationQualitySelectorViewModel {
       UIApplication.shared.open(url)
     }
 
-    selectedVideoUrl = nil
-    shownCompleteAlert = true
+    self.selectedVideoUrl = nil
+    self.shownCompleteAlert = true
   }
 
   func handleStartPlay(
@@ -99,7 +99,7 @@ class EpisodeTranslationQualitySelectorViewModel {
     subtitle: EpisodeStreamingInfo.SubtitlesUrls?,
     dismiss: @escaping () -> Void
   ) {
-    handleStartPlay(video: video, subtitle: subtitle, dismiss: dismiss, player: defaultPlayer)
+    self.handleStartPlay(video: video, subtitle: subtitle, dismiss: dismiss, player: self.defaultPlayer)
   }
 
   func handleStartPlay(
@@ -108,26 +108,26 @@ class EpisodeTranslationQualitySelectorViewModel {
     dismiss: @escaping () -> Void,
     player: PlayerPreference.Player
   ) {
-    shownChangePlayerAlert = false
-    selectedVideoUrl = video
-    dismissModal = dismiss
+    self.shownChangePlayerAlert = false
+    self.selectedVideoUrl = video
+    self.dismissModal = dismiss
 
-    playThroughURL(video: video, subtitle: subtitle?.base, player: player)
+    self.playThroughURL(video: video, subtitle: subtitle?.base, player: player)
   }
 
   func checkWatch() async {
-    try? await scraperClient.sendAPIRequest(
+    try? await self.scraperClient.sendAPIRequest(
       ScraperAPI.Request
-        .UpdateCurrentWatch(translationId: translationId)
+        .UpdateCurrentWatch(translationId: self.translationId)
     )
-    shownCompleteAlert = false
+    self.shownCompleteAlert = false
     if let dismissModal = dismissModal {
       dismissModal()
     }
   }
 
   func hideAlert() {
-    shownCompleteAlert = false
+    self.shownCompleteAlert = false
   }
 }
 
@@ -149,8 +149,8 @@ struct EpisodeTranslationQualitySelectorView: View {
         Color.clear.onAppear {
           Task {
             await self.viewModel.performInitialLoad(
-              episodeId: episodeId,
-              translationId: translationId
+              episodeId: self.episodeId,
+              translationId: self.translationId
             )
           }
         }
@@ -181,17 +181,17 @@ struct EpisodeTranslationQualitySelectorView: View {
             ForEach(episodeStreamingInfo.streamQualityOptions) { streamQualityOption in
               ForEach(streamQualityOption.urls, id: \.self) { url in
                 Button(action: {
-                  viewModel.handleStartPlay(
+                  self.viewModel.handleStartPlay(
                     video: url,
-                    subtitle: !disableSubs ? episodeStreamingInfo.subtitles : nil,
+                    subtitle: !self.disableSubs ? episodeStreamingInfo.subtitles : nil,
                     dismiss: {
-                      dismiss()
+                      self.dismiss()
                     }
                   )
                 }) {
                   HStack {
                     Text("\(String(streamQualityOption.height))p")
-                    if viewModel.selectedVideoUrl == url {
+                    if self.viewModel.selectedVideoUrl == url {
                       Spacer()
                       ProgressView()
                     }
@@ -199,28 +199,28 @@ struct EpisodeTranslationQualitySelectorView: View {
                 }
                 .alert(
                   "Выбранный плеер не поддерживает субтитры, запустить в",
-                  isPresented: $viewModel.shownChangePlayerAlert,
+                  isPresented: self.$viewModel.shownChangePlayerAlert,
                   actions: {
                     if let url = viewModel.selectedVideoUrl {
                       Button("Infuse") {
-                        viewModel.handleStartPlay(
+                        self.viewModel.handleStartPlay(
                           video: url,
-                          subtitle: !disableSubs ? episodeStreamingInfo.subtitles : nil,
-                          dismiss: { dismiss() },
+                          subtitle: !self.disableSubs ? episodeStreamingInfo.subtitles : nil,
+                          dismiss: { self.dismiss() },
                           player: .Infuse
                         )
                       }
                     }
                   }
                 )
-                .alert("Отметить как просмотренное?", isPresented: $viewModel.shownCompleteAlert) {
+                .alert("Отметить как просмотренное?", isPresented: self.$viewModel.shownCompleteAlert) {
                   Button("Нет", role: .cancel) {
-                    viewModel.hideAlert()
+                    self.viewModel.hideAlert()
                   }
 
                   Button("Да") {
                     Task {
-                      await viewModel.checkWatch()
+                      await self.viewModel.checkWatch()
                     }
                   }
                 }

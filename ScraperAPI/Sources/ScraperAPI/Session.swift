@@ -25,14 +25,14 @@ extension ScraperAPI {
         .domain: domain,
         .path: "/",
       ]) {
-        cookieStorage.setCookie(
+        self.cookieStorage.setCookie(
           cookie
         )
       }
     }
 
     func get(name: Cookie) -> HTTPCookie? {
-      cookieStorage.cookies?.first(where: { $0.name == name.rawValue })
+      self.cookieStorage.cookies?.first(where: { $0.name == name.rawValue })
     }
 
     public func logout() {
@@ -44,9 +44,9 @@ extension ScraperAPI {
         Cookie.fv.rawValue,
         Cookie.lastTranslationType.rawValue,
       ]
-      cookieStorage.cookies?.filter { cookie in cookies.contains(where: { cookie.name == $0 }) }
+      self.cookieStorage.cookies?.filter { cookie in cookies.contains(where: { cookie.name == $0 }) }
         .forEach {
-          cookieStorage.deleteCookie($0)
+          self.cookieStorage.deleteCookie($0)
         }
     }
   }

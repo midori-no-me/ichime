@@ -9,19 +9,19 @@ struct SceneController {
   }
 
   private var rootViewController: UIViewController? {
-    scene?.windows.first?.rootViewController
+    self.scene?.windows.first?.rootViewController
   }
 
   func isBusy() -> Bool {
-    rootViewController?.presentedViewController != nil
+    self.rootViewController?.presentedViewController != nil
   }
 
   func isPresent(_ view: UIViewController) -> Bool {
-    view === rootViewController?.presentedViewController
+    view === self.rootViewController?.presentedViewController
   }
 
   func dismiss() {
-    rootViewController?.dismiss(animated: false, completion: nil)
+    self.rootViewController?.dismiss(animated: false, completion: nil)
   }
 
   func present(_ view: UIViewController, _ onPresent: @escaping () -> Void) {
@@ -33,7 +33,7 @@ struct SceneController {
     DispatchQueue.main.async {
       // Get the key window scene
       if let rootViewController {
-        if isBusy() {
+        if self.isBusy() {
           print("is busy")
           rootViewController.dismiss(animated: false) {
             print("dismiss old view and present new")

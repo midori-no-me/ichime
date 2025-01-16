@@ -5,6 +5,6 @@ struct GroupedShowsFromCalendar: Hashable {
   let shows: [ShowFromCalendar]
 
   func hash(into hasher: inout Hasher) {
-    hasher.combine(date)
+    hasher.combine(self.date)
   }
 }

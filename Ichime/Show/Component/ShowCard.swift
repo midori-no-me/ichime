@@ -6,13 +6,13 @@ struct ShowCard: View {
 
   var body: some View {
     NavigationLink(
-      destination: ShowView(showId: show.id, preloadedShow: show)
+      destination: ShowView(showId: self.show.id, preloadedShow: self.show)
     ) {
       RawShowCard(
-        metadataLineComponents: formatMetadataLine(show, displaySeason: displaySeason),
-        cover: show.posterUrl,
-        primaryTitle: show.title.translated.japaneseRomaji ?? show.title.full,
-        secondaryTitle: show.title.translated.russian
+        metadataLineComponents: formatMetadataLine(self.show, displaySeason: self.displaySeason),
+        cover: self.show.posterUrl,
+        primaryTitle: self.show.title.translated.japaneseRomaji ?? self.show.title.full,
+        secondaryTitle: self.show.title.translated.russian
       )
     }
     .buttonStyle(.borderless)
@@ -57,8 +57,8 @@ struct IndependentShowCardContextMenuPreview: View {
         ProgressView()
       }
     }.task {
-      show = try? await client.getShow(
-        seriesId: showId
+      self.show = try? await self.client.getShow(
+        seriesId: self.showId
       )
     }
   }
@@ -73,7 +73,7 @@ private struct ShowCardContextMenuPreview: View {
   var body: some View {
     VStack(alignment: .center) {
       AsyncImage(
-        url: posterUrl,
+        url: self.posterUrl,
         transaction: .init(animation: .easeInOut),
         content: { phase in
           switch phase {
@@ -108,7 +108,7 @@ private struct ShowCardContextMenuPreview: View {
           .frame(maxWidth: .infinity, alignment: .topLeading)
       }
 
-      Text(title)
+      Text(self.title)
         .font(.subheadline)
         .frame(maxWidth: .infinity, alignment: .topLeading)
     }

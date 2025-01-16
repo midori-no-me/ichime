@@ -7,10 +7,10 @@ struct WatchCard: View {
 
   var body: some View {
     RawShowCard(
-      metadataLineComponents: [data.title, data.sideText],
-      cover: data.image,
-      primaryTitle: data.name.romaji,
-      secondaryTitle: data.name.ru
+      metadataLineComponents: [self.data.title, self.data.sideText],
+      cover: self.data.image,
+      primaryTitle: self.data.name.romaji,
+      secondaryTitle: self.data.name.ru
     )
   }
 }

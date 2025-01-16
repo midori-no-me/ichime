@@ -32,7 +32,7 @@ public class ShikimoriApiClient {
     queryItems: [URLQueryItem],
     requestBody: Encodable?
   ) async throws -> T {
-    var fullURL = baseUrl.appendingPathComponent(endpoint)
+    var fullURL = self.baseUrl.appendingPathComponent(endpoint)
 
     if !queryItems.isEmpty {
       fullURL.append(queryItems: queryItems.sorted(by: { $0.name < $1.name }))
@@ -43,7 +43,7 @@ public class ShikimoriApiClient {
     httpRequest.httpMethod = httpMethod.rawValue
 
     httpRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-    httpRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+    httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
 
     if let requestBody = requestBody {
       httpRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")

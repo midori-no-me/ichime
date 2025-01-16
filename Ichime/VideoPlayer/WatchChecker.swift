@@ -14,7 +14,7 @@ actor WatchChecker: VideoPlayerObserver {
 
   init(translationId: Int) {
     self.translationId = translationId
-    api = ApplicationDependency.container.resolve()
+    self.api = ApplicationDependency.container.resolve()
   }
 
   func savePlayer(_ player: AVPlayer) {
@@ -22,21 +22,21 @@ actor WatchChecker: VideoPlayerObserver {
   }
 
   nonisolated func create(player: AVPlayer) {
-    logger.notice("add watcher to player")
+    self.logger.notice("add watcher to player")
     Task {
       if await self.player != nil {
         print("already setted watcher")
         return
       }
-      await savePlayer(player)
-      await saveDuration(player)
-      await addObserver(player)
+      await self.savePlayer(player)
+      await self.saveDuration(player)
+      await self.addObserver(player)
     }
   }
 
   nonisolated func destroy() {
     Task {
-      await removeObserver()
+      await self.removeObserver()
     }
   }
 
@@ -49,13 +49,13 @@ actor WatchChecker: VideoPlayerObserver {
     let interval = CMTimeMultiplyByFloat64(videoDuration, multiplier: 0.001)
 
     // Build boundary times at 25%, 50%, 75%, 100%
-    while currentTime < videoDuration {
+    while currentTime < self.videoDuration {
       currentTime = currentTime + interval
       times.append(NSValue(time: currentTime))
     }
 
-    logger.notice("add observer")
-    timeObserverToken = player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
+    self.logger.notice("add observer")
+    self.timeObserverToken = player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
       [weak self] in
       guard let self = self else {
         return
@@ -67,7 +67,7 @@ actor WatchChecker: VideoPlayerObserver {
   }
 
   func removeObserver() {
-    logger.notice("remove watcher observer")
+    self.logger.notice("remove watcher observer")
     if let timeObserverToken, let player {
       player.removeTimeObserver(timeObserverToken)
       self.timeObserverToken = nil
@@ -77,30 +77,30 @@ actor WatchChecker: VideoPlayerObserver {
   func saveDuration(_ player: AVPlayer) async {
     guard let asset = player.currentItem?.asset else { return }
     do {
-      videoDuration = try await asset.load(.duration)
+      self.videoDuration = try await asset.load(.duration)
     }
     catch {
-      logger.error("Cannot get duration \(error)")
+      self.logger.error("Cannot get duration \(error)")
     }
   }
 
   var isStarted = false
   func performUpdateWatch() async {
-    if isStarted {
+    if self.isStarted {
       return
     }
-    isStarted = true
-    let id = translationId
+    self.isStarted = true
+    let id = self.translationId
     do {
-      logger.notice("Update watch translationId: \(id)")
-      try await api.sendAPIRequest(
+      self.logger.notice("Update watch translationId: \(id)")
+      try await self.api.sendAPIRequest(
         ScraperAPI.Request
-          .UpdateCurrentWatch(translationId: translationId)
+          .UpdateCurrentWatch(translationId: self.translationId)
       )
-      removeObserver()
+      self.removeObserver()
     }
     catch {
-      logger.error("Cannot update watch \(error)")
+      self.logger.error("Cannot update watch \(error)")
     }
   }
 }

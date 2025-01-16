@@ -9,7 +9,7 @@ struct ShowReleaseSchedule {
     let calendarEntries = try await shikimoriApiClient.getCalendar()
     let showsFromCalendar = calendarEntries.map {
       ShowFromCalendar.createFromShikimoriApi(
-        shikimoriBaseUrl: shikimoriBaseUrl,
+        shikimoriBaseUrl: self.shikimoriBaseUrl,
         calendarEntry: $0
       )
     }

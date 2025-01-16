@@ -26,18 +26,18 @@ struct EpisodePreviewRow: View {
   var body: some View {
     let releaseDateAndStatus = formatEpisodeReleaseDateAndStatus(
       episodePreview.uploadDate,
-      episodePreview.isUnderProcessing
+      self.episodePreview.isUnderProcessing
     )
 
     HStack {
       VStack(alignment: .leading) {
         if let title = episodePreview.title {
           Text(title)
-            + Text(" — \(episodePreview.typeAndNumber)")
+            + Text(" — \(self.episodePreview.typeAndNumber)")
             .foregroundStyle(.secondary)
         }
         else {
-          Text(episodePreview.typeAndNumber)
+          Text(self.episodePreview.typeAndNumber)
         }
       }
 

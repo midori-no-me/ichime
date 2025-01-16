@@ -16,8 +16,8 @@ actor AnimeImporter {
       continuation = cont
     }
 
-    progressStream = stream
-    progressContinuation = continuation
+    self.progressStream = stream
+    self.progressContinuation = continuation
 
     return stream
   }
@@ -28,7 +28,7 @@ actor AnimeImporter {
   private let batchSize = 250
 
   func importDatabase(from url: String) async throws {
-    progressContinuation?.yield("Загрузка базы данных...")
+    self.progressContinuation?.yield("Загрузка базы данных...")
 
     guard let url = URL(string: url) else {
       print("Invalid URL")
@@ -62,7 +62,7 @@ actor AnimeImporter {
     var models: [DbAnime] = []
     let startParseTime = Date()
 
-    progressContinuation?.yield("Парсим данные из источника")
+    self.progressContinuation?.yield("Парсим данные из источника")
 
     let cachedDb = try modelContext.fetch(FetchDescriptor<DbAnime>()).map { $0.id }
 
@@ -88,7 +88,7 @@ actor AnimeImporter {
 
     print("Parsed \(models.count) in \(Date().timeIntervalSince(startParseTime)) seconds")
 
-    progressContinuation?.yield("Сохраняем данные в нашей базе")
+    self.progressContinuation?.yield("Сохраняем данные в нашей базе")
     let startSaveTime = Date()
     models.forEach {
       modelContext.insert($0)
@@ -98,7 +98,7 @@ actor AnimeImporter {
 
     print("Saved \(models.count) in \(Date().timeIntervalSince(startSaveTime)) seconds")
 
-    progressContinuation?.yield("Заканчиваем... обработали \(models.count) аниме")
+    self.progressContinuation?.yield("Заканчиваем... обработали \(models.count) аниме")
     try modelContext.save()
 
     print(
@@ -122,7 +122,7 @@ actor AnimeImporter {
         return existingGenre
       }
       let genre = DbGenre(id: rawGenre.id, title: rawGenre.title, url: rawGenre.url)
-      genresMap[rawGenre.id] = genre
+      self.genresMap[rawGenre.id] = genre
       return genre
     }
 
@@ -139,12 +139,12 @@ actor AnimeImporter {
         name: rawStudio.name,
         real: rawStudio.real
       )
-      studioMap[rawStudio.id] = studio
+      self.studioMap[rawStudio.id] = studio
       return studio
     }
 
     // Создание Poster
-    let poster = createPosterModel(from: rawAnime.poster)
+    let poster = self.createPosterModel(from: rawAnime.poster)
 
     // Создание Trailers
     let trailers = rawAnime.trailers.map { rawTrailer in
@@ -162,7 +162,7 @@ actor AnimeImporter {
     // Создание Roles
     let roles = rawAnime.roles.map { rawRole in
       DbRole(
-        character: createCharacterModel(from: rawRole.character),
+        character: self.createCharacterModel(from: rawRole.character),
         roleNames: rawRole.roleNames.map { roleName in
           DbRoleName(
             name: roleName.name,

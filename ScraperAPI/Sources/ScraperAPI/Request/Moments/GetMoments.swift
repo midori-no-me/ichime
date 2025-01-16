@@ -21,17 +21,17 @@ extension ScraperAPI.Request {
       var query: [URLQueryItem] = [
         .init(name: "yt0", value: nil),
         .init(name: "MomentsFilter[categoryId]", value: filter.category.rawValue),
-        .init(name: "MomentsFilter[sort]", value: filter.sort.rawValue),
-        .init(name: "MomentsFilter[duration]", value: filter.duration.rawValue),
+        .init(name: "MomentsFilter[sort]", value: self.filter.sort.rawValue),
+        .init(name: "MomentsFilter[duration]", value: self.filter.duration.rawValue),
       ]
 
-      if page == 1 {
+      if self.page == 1 {
         query.append(.init(name: "dynpage", value: "1"))
       }
       else {
         query.append(.init(name: "ajaxPage", value: "yw_moments_all"))
         query.append(.init(name: "ajaxPageMode", value: "more"))
-        query.append(.init(name: "moments-page", value: "\(page)"))
+        query.append(.init(name: "moments-page", value: "\(self.page)"))
       }
       return query
     }

@@ -23,25 +23,25 @@ class CalendarViewModel: ObservableObject {
 
   @MainActor
   func updateState(_ newState: State) {
-    state = newState
+    self.state = newState
   }
 
   func performInitialLoad() async {
-    await updateState(.loading)
+    await self.updateState(.loading)
 
     do {
       let shows = try await schedule.getSchedule()
 
       if shows.isEmpty {
-        await updateState(.loadedButEmpty)
+        await self.updateState(.loadedButEmpty)
       }
       else {
         self.shows = shows
-        await updateState(.loaded(self.shows))
+        await self.updateState(.loaded(self.shows))
       }
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
   }
 
@@ -50,15 +50,15 @@ class CalendarViewModel: ObservableObject {
       let shows = try await schedule.getSchedule()
 
       if shows.isEmpty {
-        await updateState(.loadedButEmpty)
+        await self.updateState(.loadedButEmpty)
       }
       else {
         self.shows = shows
-        await updateState(.loaded(self.shows))
+        await self.updateState(.loaded(self.shows))
       }
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
   }
 }

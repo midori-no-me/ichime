@@ -14,19 +14,19 @@ extension ScraperAPI.Request {
     }
 
     public func getEndpoint() -> String {
-      "users/\(id)/moments"
+      "users/\(self.id)/moments"
     }
 
     public func getQueryItems() -> [URLQueryItem] {
       var query: [URLQueryItem] = []
 
-      if page == 1 {
+      if self.page == 1 {
         query.append(.init(name: "dynpage", value: "1"))
       }
       else {
         query.append(.init(name: "ajaxPage", value: "yw_moments_by_user"))
         query.append(.init(name: "ajaxPageMode", value: "more"))
-        query.append(.init(name: "moments-page", value: "\(page)"))
+        query.append(.init(name: "moments-page", value: "\(self.page)"))
       }
 
       return query
@@ -46,7 +46,7 @@ extension ScraperAPI.Request {
             try ScraperAPI.Types.Moment(
               from: $0,
               withUser: .init(
-                id: id,
+                id: self.id,
                 name: userName,
                 avatar: baseURL.appending(path: userAvatar)
               ),

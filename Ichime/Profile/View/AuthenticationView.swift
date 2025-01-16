@@ -18,39 +18,39 @@ class AuthenticationViewModel {
   }
 
   public func getProfileSettingsUrl() -> URL {
-    baseUrlPreference.url
+    self.baseUrlPreference.url
       .appendingPathComponent("/users/profile")
   }
 
   public func getPasswordResetUrl() -> URL {
-    baseUrlPreference.url
+    self.baseUrlPreference.url
       .appendingPathComponent("/users/forgotPassword")
   }
 
   public func performAuthentication() async {
-    isLoadingAuthentication = true
+    self.isLoadingAuthentication = true
 
     do {
-      _ = try await userManager.startAuth(
-        username: userEmail,
-        password: userPassword
+      _ = try await self.userManager.startAuth(
+        username: self.userEmail,
+        password: self.userPassword
       )
 
-      isSuccess = true
+      self.isSuccess = true
     }
     catch ScraperAPI.APIClientError.invalidCredentials {
       print("invalidCredentials")
 
-      showInvalidCredentialsAlert = true
+      self.showInvalidCredentialsAlert = true
 
     }
     catch {
       print(error)
 
-      showUnknownErrorAlert = true
+      self.showUnknownErrorAlert = true
     }
 
-    isLoadingAuthentication = false
+    self.isLoadingAuthentication = false
   }
 }
 
@@ -61,19 +61,19 @@ struct AuthenticationView: View {
   var body: some View {
     Form {
       Section {
-        TextField("Почта", text: $viewModel.userEmail, prompt: Text("Адрес электронной почты"))
+        TextField("Почта", text: self.$viewModel.userEmail, prompt: Text("Адрес электронной почты"))
           .keyboardType(.emailAddress)
           .disableAutocorrection(true)
 
-        SecureField("Пароль", text: $viewModel.userPassword, prompt: Text("Пароль"))
+        SecureField("Пароль", text: self.$viewModel.userPassword, prompt: Text("Пароль"))
       } footer: {
         Text(
-          "Приложение не поддерживает авторизацию через социальные сети. Установите пароль в [настройках профиля](\(viewModel.getProfileSettingsUrl().absoluteString)) на сайте."
+          "Приложение не поддерживает авторизацию через социальные сети. Установите пароль в [настройках профиля](\(self.viewModel.getProfileSettingsUrl().absoluteString)) на сайте."
         )
       }
 
       Section {
-        Picker("Адрес сайта", selection: $viewModel.baseUrlPreference.url) {
+        Picker("Адрес сайта", selection: self.$viewModel.baseUrlPreference.url) {
           ForEach(BaseUrlPreference.allPossibleWebsiteBaseDomains, id: \.self) { url in
             Text(url.host()!).tag(url)
           }
@@ -86,13 +86,13 @@ struct AuthenticationView: View {
     }
     .alert(
       "Не удалось авторизоваться",
-      isPresented: $viewModel.showInvalidCredentialsAlert,
+      isPresented: self.$viewModel.showInvalidCredentialsAlert,
       actions: {
         Button(
           "Закрыть",
           role: .cancel,
           action: {
-            viewModel.showInvalidCredentialsAlert.toggle()
+            self.viewModel.showInvalidCredentialsAlert.toggle()
           }
         )
       }
@@ -101,13 +101,13 @@ struct AuthenticationView: View {
     }
     .alert(
       "Не удалось авторизоваться",
-      isPresented: $viewModel.showUnknownErrorAlert,
+      isPresented: self.$viewModel.showUnknownErrorAlert,
       actions: {
         Button(
           "Закрыть",
           role: .cancel,
           action: {
-            viewModel.showUnknownErrorAlert.toggle()
+            self.viewModel.showUnknownErrorAlert.toggle()
           }
         )
       }
@@ -118,22 +118,22 @@ struct AuthenticationView: View {
     }
     .toolbar {
       Group {
-        if viewModel.isLoadingAuthentication {
+        if self.viewModel.isLoadingAuthentication {
           ProgressView()
         }
         else {
           Button("Войти") {
             Task {
-              await viewModel.performAuthentication()
+              await self.viewModel.performAuthentication()
             }
           }
-          .disabled(viewModel.userEmail.isEmpty || viewModel.userPassword.isEmpty)
+          .disabled(self.viewModel.userEmail.isEmpty || self.viewModel.userPassword.isEmpty)
         }
       }
     }
-    .onChange(of: viewModel.isSuccess) {
-      if viewModel.isSuccess {
-        dismiss()
+    .onChange(of: self.viewModel.isSuccess) {
+      if self.viewModel.isSuccess {
+        self.dismiss()
       }
     }
     .navigationTitle("Авторизация")

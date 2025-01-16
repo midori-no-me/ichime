@@ -13,11 +13,11 @@ struct MomentCard: View {
 
   var body: some View {
     MomentCardTv(
-      title: title,
-      cover: cover,
-      websiteUrl: websiteUrl,
-      id: id,
-      action: action
+      title: self.title,
+      cover: self.cover,
+      websiteUrl: self.websiteUrl,
+      id: self.id,
+      action: self.action
     )
 
   }
@@ -34,9 +34,9 @@ private struct MomentCardTv: View {
   private static let CARD_HEIGHT: CGFloat = 250
 
   var body: some View {
-    Button(action: action) {
+    Button(action: self.action) {
       AsyncImage(
-        url: cover,
+        url: self.cover,
         transaction: .init(animation: .easeInOut(duration: 0.5))
       ) { phase in
         switch phase {
@@ -56,7 +56,7 @@ private struct MomentCardTv: View {
         }
       }
 
-      Text(title)
+      Text(self.title)
         .lineLimit(2, reservesSpace: true)
         .truncationMode(.tail)
     }

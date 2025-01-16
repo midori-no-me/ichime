@@ -5,7 +5,7 @@ import SwiftUI
 class NotificationCenterViewModel {
   private let client: ScraperAPI.APIClient
   init(apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve()) {
-    client = apiClient
+    self.client = apiClient
   }
 
   enum State {
@@ -23,59 +23,59 @@ class NotificationCenterViewModel {
 
   @MainActor
   private func updateState(_ newState: State) {
-    state = newState
+    self.state = newState
   }
 
   func performInitialLoading() async {
-    await updateState(.loading)
-    await performRefresh()
+    await self.updateState(.loading)
+    await self.performRefresh()
   }
 
   func performRefresh() async {
-    page = 1
-    shows = []
-    stopLazyLoading = false
+    self.page = 1
+    self.shows = []
+    self.stopLazyLoading = false
 
     do {
-      let shows = try await client.sendAPIRequest(ScraperAPI.Request.GetNotifications(page: page))
+      let shows = try await client.sendAPIRequest(ScraperAPI.Request.GetNotifications(page: self.page))
         .map { WatchCardModel(from: $0) }
 
       if shows.isEmpty {
-        return await updateState(.loadedButEmpty)
+        return await self.updateState(.loadedButEmpty)
       }
       else {
         self.shows = shows
-        return await updateState(.loaded(shows))
+        return await self.updateState(.loaded(shows))
       }
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
   }
 
   func performLazyLoad() async {
-    if stopLazyLoading {
+    if self.stopLazyLoading {
       return
     }
 
     do {
-      page += 1
+      self.page += 1
       let newShows = try await client.sendAPIRequest(
-        ScraperAPI.Request.GetNotifications(page: page)
+        ScraperAPI.Request.GetNotifications(page: self.page)
       )
 
       let newWatchCards = newShows.map { WatchCardModel(from: $0) }
 
-      if newWatchCards.last == shows.last {
-        stopLazyLoading = true
+      if newWatchCards.last == self.shows.last {
+        self.stopLazyLoading = true
         return
       }
 
-      shows += newWatchCards
-      await updateState(.loaded(shows))
+      self.shows += newWatchCards
+      await self.updateState(.loaded(self.shows))
     }
     catch {
-      stopLazyLoading = true
+      self.stopLazyLoading = true
     }
   }
 }
@@ -86,12 +86,12 @@ struct NotificationCenterView: View {
 
   var body: some View {
     Group {
-      switch viewModel.state {
+      switch self.viewModel.state {
       case .idle:
         Color.clear.onAppear {
           Task {
-            await viewModel.performInitialLoading()
-            await notificationCounter.checkCounter()
+            await self.viewModel.performInitialLoading()
+            await self.notificationCounter.checkCounter()
           }
         }
       case .loading:
@@ -117,20 +117,20 @@ struct NotificationCenterView: View {
 
       case let .loaded(shows):
         LoadedNotificationCenter(shows: shows) {
-          await viewModel.performLazyLoad()
+          await self.viewModel.performLazyLoad()
         }
       }
     }
     .task {
-      switch viewModel.state {
+      switch self.viewModel.state {
       case .loadedButEmpty, .loaded, .loadingFailed:
-        await viewModel.performRefresh()
+        await self.viewModel.performRefresh()
       case .idle, .loading:
         return
       }
     }
     .refreshable {
-      await viewModel.performRefresh()
+      await self.viewModel.performRefresh()
     }
   }
 }

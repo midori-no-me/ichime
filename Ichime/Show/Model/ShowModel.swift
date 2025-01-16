@@ -59,7 +59,7 @@ struct Show: Hashable, Identifiable {
   }
 
   func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
+    hasher.combine(self.id)
   }
 
   let id: Int
@@ -88,7 +88,7 @@ struct Show: Hashable, Identifiable {
     }
 
     var compose: String {
-      translated.japaneseRomaji ?? translated.english ?? translated.russian ?? full
+      self.translated.japaneseRomaji ?? self.translated.english ?? self.translated.russian ?? self.full
     }
   }
 
@@ -98,7 +98,7 @@ struct Show: Hashable, Identifiable {
     }
 
     func hash(into hasher: inout Hasher) {
-      hasher.combine(text)
+      hasher.combine(self.text)
     }
 
     let text: String

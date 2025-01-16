@@ -42,7 +42,7 @@ extension ScraperAPI {
       self.session = session
       let config = URLSessionConfiguration.default
       config.httpCookieStorage = session.cookieStorage
-      urlSession = URLSession(configuration: config)
+      self.urlSession = URLSession(configuration: config)
     }
 
     public func sendAPIRequest<T: ScraperHTMLRequest>(_ request: T) async throws -> T.ResponseType {
@@ -52,10 +52,10 @@ extension ScraperAPI {
       }
       else {
         csrf = UUID().uuidString
-        session.set(name: .csrf, value: csrf)
+        self.session.set(name: .csrf, value: csrf)
       }
 
-      var fullURL = baseURL.appendingPathComponent(request.getEndpoint())
+      var fullURL = self.baseURL.appendingPathComponent(request.getEndpoint())
 
       let queryItems = request.getQueryItems()
 
@@ -66,7 +66,7 @@ extension ScraperAPI {
       var httpRequest = URLRequest(url: fullURL)
 
       httpRequest.timeoutInterval = 10
-      httpRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+      httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
 
       var formData = request.getFormData()
       if !formData.isEmpty {
@@ -115,7 +115,7 @@ extension ScraperAPI {
         switch httpResponse.statusCode {
         case 200...299:
           let htmlString = String(data: data, encoding: .utf8) ?? ""
-          return try request.parseResponse(html: htmlString, baseURL: baseURL)
+          return try request.parseResponse(html: htmlString, baseURL: self.baseURL)
         case 400...499:
           throw APIClientError.invalidResponse
         case 500...599:

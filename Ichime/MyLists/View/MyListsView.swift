@@ -9,12 +9,12 @@ struct MyListsView: View {
   init(status: AnimeWatchStatus) {
     self.status = status
     let rawValue = status.rawValue
-    self._userAnimeList = .init(filter: #Predicate<UserAnimeListModel> { $0.statusRaw == rawValue })
+    _userAnimeList = .init(filter: #Predicate<UserAnimeListModel> { $0.statusRaw == rawValue })
   }
 
   var body: some View {
     Group {
-      if userAnimeList.isEmpty {
+      if self.userAnimeList.isEmpty {
         ContentUnavailableView {
           Label("Ничего не нашлось", systemImage: "list.bullet")
         } description: {
@@ -23,7 +23,7 @@ struct MyListsView: View {
         .focusable()
       }
       else {
-        AnimeList(status: status, animeList: userAnimeList)
+        AnimeList(status: self.status, animeList: self.userAnimeList)
       }
     }
   }

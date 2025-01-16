@@ -52,14 +52,14 @@ struct RawShowCard: View {
       )
 
       VStack(alignment: .leading, spacing: 4) {
-        if !metadataLineComponents.isEmpty {
-          Text(metadataLineComponents.joined(separator: " • "))
+        if !self.metadataLineComponents.isEmpty {
+          Text(self.metadataLineComponents.joined(separator: " • "))
             .font(.caption)
             .fontWeight(.medium)
             .foregroundStyle(.secondary)
         }
 
-        Text(primaryTitle)
+        Text(self.primaryTitle)
           .font(.callout)
           .fontWeight(.medium)
 

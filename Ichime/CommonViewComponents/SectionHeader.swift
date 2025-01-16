@@ -6,7 +6,7 @@ struct SectionHeaderRaw: View {
 
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
-      Text(title)
+      Text(self.title)
         .font(.title3)
         .fontWeight(.bold)
 
@@ -29,8 +29,8 @@ struct SectionHeader<Content: View>: View {
 
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
-      NavigationLink(destination: destination) {
-        Text(title)
+      NavigationLink(destination: self.destination) {
+        Text(self.title)
           .font(.title3)
           .fontWeight(.bold)
       }

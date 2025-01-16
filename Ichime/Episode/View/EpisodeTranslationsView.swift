@@ -28,28 +28,28 @@ class EpisodeViewModel {
 
   @MainActor
   func updateState(_ newState: State) {
-    state = newState
+    self.state = newState
   }
 
   func performInitialLoad(episodeId: Int) async {
-    await updateState(.loading)
+    await self.updateState(.loading)
 
     do {
       var episodeTranslations = try await client.getEpisodeTranslations(
         episodeId: episodeId
       )
 
-      episodeTranslations = filterTranslations(episodeTranslations)
+      episodeTranslations = self.filterTranslations(episodeTranslations)
 
       if episodeTranslations.isEmpty {
-        await updateState(.loadedButEmpty)
+        await self.updateState(.loadedButEmpty)
       }
       else {
-        await updateState(.loaded(getGroupedTranslations(episodeTranslations: episodeTranslations)))
+        await self.updateState(.loaded(self.getGroupedTranslations(episodeTranslations: episodeTranslations)))
       }
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
   }
 
@@ -132,7 +132,7 @@ struct EpisodeTranslationsView: View {
       case .idle:
         Color.clear.onAppear {
           Task {
-            await self.viewModel.performInitialLoad(episodeId: episodeId)
+            await self.viewModel.performInitialLoad(episodeId: self.episodeId)
           }
         }
 
@@ -162,7 +162,7 @@ struct EpisodeTranslationsView: View {
             Section {
               ForEach(translationGroup.value, id: \.id) { episodeTranslation in
                 TranslationRow(
-                  episodeId: episodeId,
+                  episodeId: self.episodeId,
                   episodeTranslation: episodeTranslation
                 )
               }
@@ -186,7 +186,7 @@ private struct TranslationRow: View {
   var body: some View {
     Button(action: {
       self.showingSheet.toggle()
-      updateLastSelectedTranslation()
+      self.updateLastSelectedTranslation()
     }) {
       HStack {
         VStack(alignment: .leading) {
@@ -198,22 +198,22 @@ private struct TranslationRow: View {
 
         Text(
           formatTranslationQuality(
-            episodeTranslation,
+            self.episodeTranslation,
             qualityNameFirst: true,
-            isUnderProcessing: episodeTranslation.isUnderProcessing
+            isUnderProcessing: self.episodeTranslation.isUnderProcessing
           )
         )
         .foregroundStyle(Color.secondary)
         .truncationMode(.tail)
       }
     }
-    .sheet(isPresented: $showingSheet) {
+    .sheet(isPresented: self.$showingSheet) {
       NavigationStack {
         EpisodeTranslationQualitySelectorView(
-          episodeId: episodeId,
-          translationId: episodeTranslation.id,
-          translationTeam: episodeTranslation.translationTeam,
-          disableSubs: episodeTranslation.translationMethod == .voiceover
+          episodeId: self.episodeId,
+          translationId: self.episodeTranslation.id,
+          translationTeam: self.episodeTranslation.translationTeam,
+          disableSubs: self.episodeTranslation.translationMethod == .voiceover
         )
       }
       .presentationDetents([.medium])
@@ -225,7 +225,7 @@ private struct TranslationRow: View {
 
     session.set(
       name: .lastTranslationType,
-      value: episodeTranslation.getCompositeType().translationTypeForCookie
+      value: self.episodeTranslation.getCompositeType().translationTypeForCookie
     )
   }
 }

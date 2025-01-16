@@ -10,7 +10,7 @@ struct ContentViewWithTabBar: View {
   @State var viewModel: UserAnimeListCache = ApplicationDependency.container.resolve()
 
   var body: some View {
-    TabView(selection: $selectedTab) {
+    TabView(selection: self.$selectedTab) {
       Tab(value: .home) {
         NavigationStack {
           HomeView()
@@ -67,7 +67,7 @@ struct ContentViewWithTabBar: View {
         Image(systemName: "magnifyingglass")
       }
     }
-    .sheet(item: $route) { route in
+    .sheet(item: self.$route) { route in
       switch route.type {
       case .show:
         NavigationStack {
@@ -79,7 +79,7 @@ struct ContentViewWithTabBar: View {
     }
     .tabViewStyle(.tabBarOnly)
     .task {
-      await viewModel.cacheCategories()
+      await self.viewModel.cacheCategories()
     }
     .onOpenURL(perform: { url in
       guard url.scheme == ServiceLocator.topShellSchema,
@@ -103,10 +103,10 @@ struct ContentViewWithTabBar: View {
       switch action {
       case URLActions.show.rawValue:
         print("its show \(id)")
-        route = Route(id: id, type: .show, title: nil)
+        self.route = Route(id: id, type: .show, title: nil)
       case URLActions.episode.rawValue:
         print("its episode \(id)")
-        route = Route(id: id, type: .episode, title: episodeTitle)
+        self.route = Route(id: id, type: .episode, title: episodeTitle)
       default:
         print("idk")
       }

@@ -10,7 +10,7 @@ class CurrentlyWatchingViewModel {
     apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
     userManager: UserManager = ApplicationDependency.container.resolve()
   ) {
-    client = apiClient
+    self.client = apiClient
     self.userManager = userManager
   }
 
@@ -30,60 +30,60 @@ class CurrentlyWatchingViewModel {
 
   @MainActor
   private func updateState(_ newState: State) {
-    state = newState
+    self.state = newState
   }
 
   func performInitialLoading() async {
-    if !userManager.subscribed {
-      return await updateState(.needSubscribe)
+    if !self.userManager.subscribed {
+      return await self.updateState(.needSubscribe)
     }
-    await updateState(.loading)
-    await performRefresh()
+    await self.updateState(.loading)
+    await self.performRefresh()
   }
 
   func performRefresh() async {
-    page = 1
-    shows = []
-    stopLazyLoading = false
+    self.page = 1
+    self.shows = []
+    self.stopLazyLoading = false
 
     do {
-      let shows = try await client.sendAPIRequest(ScraperAPI.Request.GetNextToWatch(page: page))
+      let shows = try await client.sendAPIRequest(ScraperAPI.Request.GetNextToWatch(page: self.page))
         .map { WatchCardModel(from: $0) }
 
       if shows.isEmpty {
-        return await updateState(.loadedButEmpty)
+        return await self.updateState(.loadedButEmpty)
       }
       else {
         self.shows = shows
-        return await updateState(.loaded(shows))
+        return await self.updateState(.loaded(shows))
       }
     }
     catch {
-      await updateState(.loadingFailed(error))
+      await self.updateState(.loadingFailed(error))
     }
   }
 
   func performLazyLoad() async {
-    if stopLazyLoading {
+    if self.stopLazyLoading {
       return
     }
 
     do {
-      page += 1
-      let newShows = try await client.sendAPIRequest(ScraperAPI.Request.GetNextToWatch(page: page))
+      self.page += 1
+      let newShows = try await client.sendAPIRequest(ScraperAPI.Request.GetNextToWatch(page: self.page))
 
       let newWatchCards = newShows.map { WatchCardModel(from: $0) }
 
-      if newWatchCards.last == shows.last {
-        stopLazyLoading = true
+      if newWatchCards.last == self.shows.last {
+        self.stopLazyLoading = true
         return
       }
 
-      shows += newWatchCards
-      await updateState(.loaded(shows))
+      self.shows += newWatchCards
+      await self.updateState(.loaded(self.shows))
     }
     catch {
-      stopLazyLoading = true
+      self.stopLazyLoading = true
     }
   }
 }
@@ -93,11 +93,11 @@ struct CurrentlyWatchingView: View {
 
   var body: some View {
     Group {
-      switch viewModel.state {
+      switch self.viewModel.state {
       case .idle:
         Color.clear.onAppear {
           Task {
-            await viewModel.performInitialLoading()
+            await self.viewModel.performInitialLoading()
           }
         }
       case .loading:
@@ -131,20 +131,20 @@ struct CurrentlyWatchingView: View {
 
       case let .loaded(shows):
         LoadedCurrentlyWatching(shows: shows) {
-          await viewModel.performLazyLoad()
+          await self.viewModel.performLazyLoad()
         }
       }
     }
     .task {
-      switch viewModel.state {
+      switch self.viewModel.state {
       case .loadedButEmpty, .loadingFailed, .loaded, .needSubscribe:
-        await viewModel.performRefresh()
+        await self.viewModel.performRefresh()
       case .idle, .loading:
         return
       }
     }
     .refreshable {
-      await viewModel.performRefresh()
+      await self.viewModel.performRefresh()
     }
   }
 
@@ -162,10 +162,10 @@ struct LoadedCurrentlyWatching: View {
   private func fetchShowForContext(episode: Int) async {
     let api: Anime365Client = ApplicationDependency.container.resolve()
     do {
-      contextShow = try await api.getShowByEpisodeId(episodeId: episode)
+      self.contextShow = try await api.getShowByEpisodeId(episodeId: episode)
     }
     catch {
-      contextShow = nil
+      self.contextShow = nil
     }
   }
 
@@ -197,7 +197,7 @@ struct LoadedCurrentlyWatching: View {
                 ProgressView()
               }
             }.task {
-              await fetchShowForContext(episode: show.id)
+              await self.fetchShowForContext(episode: show.id)
             }
           })
           .buttonStyle(.borderless)

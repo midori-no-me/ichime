@@ -12,7 +12,7 @@ struct ContentView: View {
   @AppStorage("navigationStyle") private var navigationStyle: NavigationStyle = .tabBar
 
   var body: some View {
-    switch userManager.state {
+    switch self.userManager.state {
     case .idle:
       Color.clear
     case .loading:
@@ -20,7 +20,7 @@ struct ContentView: View {
         .focusable()
 
     case .isAuth:
-      switch navigationStyle {
+      switch self.navigationStyle {
       case .tabBar:
         ContentViewWithTabBar()
       case .sideBar:

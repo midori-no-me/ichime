@@ -92,13 +92,13 @@ final class VideoPlayer {
         )
       }
       catch {
-        logger.error("Error inserting \(mediaType.rawValue) track: \(error, privacy: .public)")
+        self.logger.error("Error inserting \(mediaType.rawValue) track: \(error, privacy: .public)")
         throw PlayerError.compositionError("Error inserting \(mediaType.rawValue) track: \(error)")
       }
     }
 
     guard let immutableComposition = composition.copy() as? AVComposition else {
-      logger.error("Could not create an immutable composition copy")
+      self.logger.error("Could not create an immutable composition copy")
       throw PlayerError.compositionError("Could not create an immutable composition copy")
     }
 
