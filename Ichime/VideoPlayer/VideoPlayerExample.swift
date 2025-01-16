@@ -1,10 +1,3 @@
-//
-//  VideoPlayerExample.swift
-//  Ichime
-//
-//  Created by Nikita Nafranets on 28.03.2024.
-//
-
 import SwiftUI
 
 struct VideoPlayerExample: View {

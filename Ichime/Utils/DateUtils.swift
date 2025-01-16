@@ -1,10 +1,3 @@
-//
-//  DateUtils.swift
-//  Ichime
-//
-//  Created by p.flaks on 19.03.2024.
-//
-
 import Foundation
 
 public func formatRelativeDate(_ releaseDate: Date?) -> String {

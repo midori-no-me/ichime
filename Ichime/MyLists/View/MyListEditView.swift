@@ -1,10 +1,3 @@
-//
-//  MyListEditView.swift
-//  ichime
-//
-//  Created by Nikita Nafranets on 25.01.2024.
-//
-
 import ScraperAPI
 import SwiftData
 import SwiftUI

@@ -1,10 +1,3 @@
-//
-//  ScraperAPI.Types.Episode.swift
-//  ichime
-//
-//  Created by Nikita Nafranets on 05.04.2024.
-//
-
 import Foundation
 import ScraperAPI
 

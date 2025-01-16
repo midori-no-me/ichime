@@ -1,10 +1,3 @@
-//
-//  DI.swift
-//  ichime
-//
-//  Created by Nikita Nafranets on 31.01.2024.
-//
-
 import Anime365ApiClient
 import DITranquillity
 import Foundation

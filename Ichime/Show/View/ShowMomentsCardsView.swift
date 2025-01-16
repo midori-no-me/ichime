@@ -1,10 +1,3 @@
-//
-//  ShowMomentsCardsView.swift
-//  Ichime
-//
-//  Created by Nikita Nafranets on 27.03.2024.
-//
-
 import ScraperAPI
 import SwiftUI
 

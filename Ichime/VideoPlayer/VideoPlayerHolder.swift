@@ -1,10 +1,3 @@
-//
-//  VideoPlayerHolder.swift
-//  Ichime
-//
-//  Created by Nikita Nafranets on 10.04.2024.
-//
-
 import Foundation
 
 class VideoPlayerHolder {

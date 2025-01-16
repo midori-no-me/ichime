@@ -1,10 +1,3 @@
-//
-//  WatchCard.swift
-//  ichime
-//
-//  Created by Nikita Nafranets on 28.01.2024.
-//
-
 import SwiftUI
 
 struct WatchCard: View {

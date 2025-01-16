@@ -1,10 +1,3 @@
-//
-//  Anime365ScraperManager.swift
-//  ichime
-//
-//  Created by Nikita Nafranets on 14.01.2024.
-//
-
 import Foundation
 import Observation
 import ScraperAPI

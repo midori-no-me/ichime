@@ -1,10 +1,3 @@
-//
-//  NotificationCenterView.swift
-//  ichime
-//
-//  Created by p.flaks on 20.01.2024.
-//
-
 import ScraperAPI
 import SwiftUI
 

@@ -1,10 +1,3 @@
-//
-//  TranslationModel.swift
-//  ichime
-//
-//  Created by p.flaks on 15.01.2024.
-//
-
 import Anime365ApiClient
 import Foundation
 

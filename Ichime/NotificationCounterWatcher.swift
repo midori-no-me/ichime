@@ -1,10 +1,3 @@
-//
-//  NotificationCounterWatcher.swift
-//  ichime
-//
-//  Created by Nikita Nafranets on 07.03.2024.
-//
-
 import BackgroundTasks
 import Foundation
 import ScraperAPI

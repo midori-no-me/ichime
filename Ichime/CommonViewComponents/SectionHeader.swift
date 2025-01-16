@@ -1,10 +1,3 @@
-//
-//  SectionHeader.swift
-//  Ichime
-//
-//  Created by p.flaks on 13.04.2024.
-//
-
 import SwiftUI
 
 struct SectionHeaderRaw: View {

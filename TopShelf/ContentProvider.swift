@@ -1,10 +1,3 @@
-//
-//  ContentProvider.swift
-//  TopShelf
-//
-//  Created by p.flaks on 29.03.2024.
-//
-
 import OSLog
 import ScraperAPI
 import TVServices

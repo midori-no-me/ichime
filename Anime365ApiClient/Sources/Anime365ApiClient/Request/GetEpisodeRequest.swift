@@ -1,10 +1,3 @@
-//
-//  File.swift
-//
-//
-//  Created by Nikita Nafranets on 25.03.2024.
-//
-
 import Foundation
 
 public struct GetEpisodeRequest: Anime365ApiRequest {

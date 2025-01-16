@@ -1,10 +1,3 @@
-//
-//  EpisodeTranslationQualityView.swift
-//  ichime
-//
-//  Created by p.flaks on 17.01.2024.
-//
-
 import ScraperAPI
 import SwiftUI
 
