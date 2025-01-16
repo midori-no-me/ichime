@@ -196,6 +196,7 @@ struct ShowView: View {
     }
   }
 }
+
 private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
 
 private struct ShowDetails: View {
