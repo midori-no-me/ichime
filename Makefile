@@ -20,10 +20,12 @@ xcodegen generate --use-cache
 endef
 
 format:
+	swiftformat .
 	swift format . --recursive --in-place
 	@echo "Done formatting"
 
 lint:
+	swiftformat --lint .
 	swift format lint . --recursive --strict
 	@echo "Done linting"
 

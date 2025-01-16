@@ -4,6 +4,7 @@ fileGroups:
 - .gitignore
 - .github/
 - .swift-format
+- .swiftformat
 - Makefile
 - project.yml
 - README.md
