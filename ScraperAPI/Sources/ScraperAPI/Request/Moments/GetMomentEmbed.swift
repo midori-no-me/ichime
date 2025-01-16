@@ -30,7 +30,6 @@ extension ScraperAPI.Request {
         }
 
         return try ScraperAPI.Types.MomentEmbed(from: element)
-
       }
       catch {
         logger

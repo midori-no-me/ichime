@@ -16,7 +16,6 @@ struct ShowCard: View {
       )
     }
     .buttonStyle(.borderless)
-
   }
 }
 

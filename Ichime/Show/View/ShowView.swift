@@ -98,7 +98,6 @@ class ShowViewModel {
         )
 
         self.state = .loaded(show)
-
       }
 
       await self.getUserRate(showId: showId)
@@ -270,7 +269,6 @@ private struct ShowKeyDetailsSection: View {
               GenresShowProperty(showTitle: self.show.title, genres: self.show.genres)
             }
           }
-
         }
 
         if let posterUrl = self.show.posterUrl {
@@ -299,10 +297,8 @@ private struct ShowKeyDetailsSection: View {
           .buttonStyle(.borderless)
         }
       }
-
     }
     .focusSection()
-
   }
 }
 
@@ -440,7 +436,6 @@ private struct ShowProperty: View {
           .foregroundStyle(.secondary)
           .font(.caption)
           .fontWeight(.medium)
-
       }
 
       Text(self.value)
@@ -583,7 +578,6 @@ private struct ShowDescriptionCards: View {
       }
     }
     .focusSection()
-
   }
 }
 

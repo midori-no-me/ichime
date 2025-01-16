@@ -35,7 +35,6 @@ struct ShowGenreListView: View {
       }
     }
     .listStyle(.grouped)
-
   }
 
   private func getShowsByGenre(genreId: Int) -> (_ offset: Int, _ limit: Int) async throws -> [Show] {

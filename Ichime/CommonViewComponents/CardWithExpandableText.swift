@@ -30,7 +30,6 @@ struct CardWithExpandableText: View {
         .frame(maxWidth: .infinity, alignment: .leading)
       }
       .padding(40)
-
     }
     .sheet(isPresented: self.$isSheetPresented) {
       CardWithExpandableTextSheet(
@@ -39,7 +38,6 @@ struct CardWithExpandableText: View {
       )
     }
     .buttonStyle(.card)
-
   }
 }
 
@@ -55,7 +53,6 @@ private struct CardWithExpandableTextSheet: View {
         Text(self.text)
           .frame(maxWidth: .infinity, alignment: .leading)
           .scenePadding()
-
       }
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
@@ -65,7 +62,6 @@ private struct CardWithExpandableTextSheet: View {
         }
       }
       .navigationTitle(self.title)
-
     }
   }
 }

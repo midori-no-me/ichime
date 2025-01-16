@@ -19,7 +19,6 @@ struct MomentCard: View {
       id: self.id,
       action: self.action
     )
-
   }
 }
 
@@ -74,7 +73,6 @@ private struct ImagePlaceholder: View {
     Image(systemName: "photo")
       .resizable()
       .aspectRatio(contentMode: .fit)
-
   }
 }
 

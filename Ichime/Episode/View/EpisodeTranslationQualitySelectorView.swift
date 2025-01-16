@@ -229,11 +229,9 @@ struct EpisodeTranslationQualitySelectorView: View {
           } header: {
             Text("Качество видео")
           } footer: {
-
           }
         }
         .listStyle(.grouped)
-
       }
     }
     .toolbar {
