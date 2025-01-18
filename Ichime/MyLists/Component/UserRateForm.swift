@@ -96,17 +96,18 @@ extension Binding where Value: Equatable {
 }
 
 struct UserRateForm: View {
-  let onSubmit: (_ userRate: ScraperAPI.Types.UserRate) -> Void
-  let onRemove: () -> Void
-  let totalEpisodes: String
+  @FocusState var isFocused
+
   @State private var score: Int = 0
   @State private var currentEpisode: String = "0"
   @State private var status: ScraperAPI.Types.UserRateStatus = .planned
   @State private var comment: String = ""
-
-  @FocusState var isFocused
-
   @State private var isDeleteDialogOpen = false
+
+  let onSubmit: (_ userRate: ScraperAPI.Types.UserRate) -> Void
+  let onRemove: () -> Void
+  let totalEpisodes: String
+
   init(
     _ userRate: ScraperAPI.Types.UserRate,
     totalEpisodes: String,

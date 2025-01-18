@@ -23,14 +23,14 @@ struct MomentCard: View {
 }
 
 private struct MomentCardTv: View {
+  private static let CARD_WIDTH: CGFloat = 350
+  private static let CARD_HEIGHT: CGFloat = 250
+
   public let title: String
   public let cover: URL
   public let websiteUrl: URL
   public let id: Int
   public let action: () -> Void
-
-  private static let CARD_WIDTH: CGFloat = 350
-  private static let CARD_HEIGHT: CGFloat = 250
 
   var body: some View {
     Button(action: self.action) {

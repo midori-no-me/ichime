@@ -37,7 +37,12 @@ class ShowViewModel {
   }
 
   private(set) var state: State = .idle
+
   private var userRate: ScraperAPI.Types.UserRate?
+  private let showService: ShowService
+  private let scraperClient: ScraperAPI.APIClient
+  private var showId: Int = 0
+
   var showRateStatus: UserRateStatus {
     if let userRate {
       return userRate.status
@@ -50,10 +55,6 @@ class ShowViewModel {
   var statusReady: Bool {
     self.userRate != nil
   }
-
-  private let showService: ShowService
-  private let scraperClient: ScraperAPI.APIClient
-  private var showId: Int = 0
 
   var shareUrl: URL {
     getWebsiteUrlByShowId(showId: self.showId)
@@ -101,17 +102,6 @@ class ShowViewModel {
     }
   }
 
-  private func getUserRate(showId: Int) async {
-    do {
-      self.userRate = try await self.scraperClient.sendAPIRequest(
-        ScraperAPI.Request.GetUserRate(showId: showId, fullCheck: true)
-      )
-    }
-    catch {
-      print("\(error.localizedDescription)")
-    }
-  }
-
   func addToList() async {
     let request = ScraperAPI.Request.UpdateUserRate(
       showId: self.showId,
@@ -125,6 +115,17 @@ class ShowViewModel {
 
     do {
       self.userRate = try await self.scraperClient.sendAPIRequest(request)
+    }
+    catch {
+      print("\(error.localizedDescription)")
+    }
+  }
+
+  private func getUserRate(showId: Int) async {
+    do {
+      self.userRate = try await self.scraperClient.sendAPIRequest(
+        ScraperAPI.Request.GetUserRate(showId: showId, fullCheck: true)
+      )
     }
     catch {
       print("\(error.localizedDescription)")
@@ -720,9 +721,9 @@ private struct ImagePlaceholder: View {
 }
 
 private struct Screenshots: View {
-  let screenshots: [URL]
-
   private static let HEIGHT: CGFloat = 300
+
+  let screenshots: [URL]
 
   var body: some View {
     VStack(alignment: .leading) {

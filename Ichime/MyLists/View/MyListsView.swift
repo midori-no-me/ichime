@@ -3,8 +3,9 @@ import SwiftData
 import SwiftUI
 
 struct MyListsView: View {
-  let status: AnimeWatchStatus
   @Query private var userAnimeList: [UserAnimeListModel]
+
+  let status: AnimeWatchStatus
 
   init(status: AnimeWatchStatus) {
     self.status = status

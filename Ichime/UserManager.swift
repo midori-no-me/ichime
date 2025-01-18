@@ -13,6 +13,7 @@ class UserManager {
   }
 
   @ObservationIgnored @AppStorage("userManagerCachedUser") private var cachedUser: Data?
+
   var state: State = .idle
   var subscribed: Bool = false
 

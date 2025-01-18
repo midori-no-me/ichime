@@ -12,6 +12,8 @@ actor WatchChecker: VideoPlayerObserver {
   weak var player: AVPlayer?
   var timeObserverToken: Any?
 
+  var isStarted = false
+
   init(translationId: Int) {
     self.translationId = translationId
     self.api = ApplicationDependency.container.resolve()
@@ -84,7 +86,6 @@ actor WatchChecker: VideoPlayerObserver {
     }
   }
 
-  var isStarted = false
   func performUpdateWatch() async {
     if self.isStarted {
       return

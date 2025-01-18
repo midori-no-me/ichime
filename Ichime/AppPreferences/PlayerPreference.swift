@@ -2,8 +2,6 @@ import Foundation
 import SwiftUI
 
 class PlayerPreference: ObservableObject {
-  @AppStorage("defaultPlayer") var selectedPlayer: Player = .Infuse
-
   enum Player: String, CaseIterable {
     case Infuse
     case VLC
@@ -18,6 +16,8 @@ class PlayerPreference: ObservableObject {
       }
     }
   }
+
+  @AppStorage("defaultPlayer") var selectedPlayer: Player = .Infuse
 
   private let allowedCharacterSet: CharacterSet =
     .init(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")

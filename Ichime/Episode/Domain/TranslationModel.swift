@@ -2,6 +2,103 @@ import Anime365ApiClient
 import Foundation
 
 struct Translation: Hashable, Identifiable {
+  enum SourceVideoQuality {
+    case tv
+    case bd
+    case other
+
+    func getLocalizedTranslation() -> String {
+      switch self {
+      case .tv:
+        String(localized: "TV")
+      case .bd:
+        String(localized: "BD")
+      case .other:
+        String(localized: "Качество неизвестно")
+      }
+    }
+  }
+
+  enum TranslatedToLanguage: Int, Comparable {
+    case russian = 1
+    case english = 2
+    case japanese = 3
+    case other = 4
+
+    static func < (lhs: TranslatedToLanguage, rhs: TranslatedToLanguage) -> Bool {
+      lhs.rawValue < rhs.rawValue
+    }
+  }
+
+  enum TranslationMethod: Int, Comparable {
+    case subtitles = 1
+    case voiceover = 2
+    case raw = 3
+    case other = 4
+
+    static func < (lhs: TranslationMethod, rhs: TranslationMethod) -> Bool {
+      lhs.rawValue < rhs.rawValue
+    }
+  }
+
+  enum CompositeType: Int, Comparable {
+    case russianSubtitles = 1
+    case russianVoiceOver = 2
+    case englishSubtitles = 3
+    case englishVoiceOver = 4
+    case japanese = 5
+    case other = 6
+
+    var translationTypeForCookie: String {
+      switch self {
+      case .russianSubtitles:
+        "subRu"
+      case .russianVoiceOver:
+        "voiceRu"
+      case .englishSubtitles:
+        "subEn"
+      case .englishVoiceOver:
+        "voiceEn"
+      case .japanese:
+        "raw"
+      case .other:
+        ""
+      }
+    }
+
+    static func < (lhs: CompositeType, rhs: CompositeType) -> Bool {
+      lhs.rawValue < rhs.rawValue
+    }
+
+    func getLocalizedTranslation() -> String {
+      switch self {
+      case .russianSubtitles:
+        String(localized: "Русские субтитры")
+      case .russianVoiceOver:
+        String(localized: "Русская озвучка")
+      case .englishSubtitles:
+        String(localized: "Английские субтитры")
+      case .englishVoiceOver:
+        String(localized: "Английская озвучка")
+      case .japanese:
+        String(localized: "Японский")
+      case .other:
+        String(localized: "Прочее")
+      }
+    }
+  }
+
+  let id: Int
+  let translationTeam: String
+  let websiteUrl: URL
+  let translatedToLanguage: TranslatedToLanguage
+  let translationMethod: TranslationMethod
+  let height: Int
+  let sourceVideoQuality: SourceVideoQuality
+  let translationUrl: String
+  let isUnderProcessing: Bool
+  let isHidden: Bool
+
   static func createFromApiResponse(
     translation: Anime365ApiTranslation
   ) -> Translation {
@@ -78,103 +175,6 @@ struct Translation: Hashable, Identifiable {
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(self.id)
-  }
-
-  let id: Int
-  let translationTeam: String
-  let websiteUrl: URL
-  let translatedToLanguage: TranslatedToLanguage
-  let translationMethod: TranslationMethod
-  let height: Int
-  let sourceVideoQuality: SourceVideoQuality
-  let translationUrl: String
-  let isUnderProcessing: Bool
-  let isHidden: Bool
-
-  enum SourceVideoQuality {
-    case tv
-    case bd
-    case other
-
-    func getLocalizedTranslation() -> String {
-      switch self {
-      case .tv:
-        String(localized: "TV")
-      case .bd:
-        String(localized: "BD")
-      case .other:
-        String(localized: "Качество неизвестно")
-      }
-    }
-  }
-
-  enum TranslatedToLanguage: Int, Comparable {
-    case russian = 1
-    case english = 2
-    case japanese = 3
-    case other = 4
-
-    static func < (lhs: TranslatedToLanguage, rhs: TranslatedToLanguage) -> Bool {
-      lhs.rawValue < rhs.rawValue
-    }
-  }
-
-  enum TranslationMethod: Int, Comparable {
-    case subtitles = 1
-    case voiceover = 2
-    case raw = 3
-    case other = 4
-
-    static func < (lhs: TranslationMethod, rhs: TranslationMethod) -> Bool {
-      lhs.rawValue < rhs.rawValue
-    }
-  }
-
-  enum CompositeType: Int, Comparable {
-    case russianSubtitles = 1
-    case russianVoiceOver = 2
-    case englishSubtitles = 3
-    case englishVoiceOver = 4
-    case japanese = 5
-    case other = 6
-
-    static func < (lhs: CompositeType, rhs: CompositeType) -> Bool {
-      lhs.rawValue < rhs.rawValue
-    }
-
-    func getLocalizedTranslation() -> String {
-      switch self {
-      case .russianSubtitles:
-        String(localized: "Русские субтитры")
-      case .russianVoiceOver:
-        String(localized: "Русская озвучка")
-      case .englishSubtitles:
-        String(localized: "Английские субтитры")
-      case .englishVoiceOver:
-        String(localized: "Английская озвучка")
-      case .japanese:
-        String(localized: "Японский")
-      case .other:
-        String(localized: "Прочее")
-      }
-    }
-
-    var translationTypeForCookie: String {
-      switch self {
-      case .russianSubtitles:
-        "subRu"
-      case .russianVoiceOver:
-        "voiceRu"
-      case .englishSubtitles:
-        "subEn"
-      case .englishVoiceOver:
-        "voiceEn"
-      case .japanese:
-        "raw"
-      case .other:
-        ""
-      }
-    }
   }
 
   func getCompositeType() -> CompositeType {

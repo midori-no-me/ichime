@@ -2,6 +2,8 @@ import Foundation
 
 extension ScraperAPI.Request {
   public struct UpdateCurrentWatch: ScraperHTMLRequest {
+    public typealias ResponseType = Void
+
     private let id: Int
 
     public init(translationId id: Int) {
@@ -21,7 +23,5 @@ extension ScraperAPI.Request {
     }
 
     public func parseResponse(html _: String, baseURL _: URL) throws {}
-
-    public typealias ResponseType = Void
   }
 }

@@ -4,16 +4,6 @@ import SwiftUI
 
 @Observable
 class CurrentlyWatchingViewModel {
-  private let client: ScraperAPI.APIClient
-  private let userManager: UserManager
-  init(
-    apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
-    userManager: UserManager = ApplicationDependency.container.resolve()
-  ) {
-    self.client = apiClient
-    self.userManager = userManager
-  }
-
   enum State {
     case idle
     case loading
@@ -24,13 +14,19 @@ class CurrentlyWatchingViewModel {
   }
 
   private(set) var state: State = .idle
+
+  private let client: ScraperAPI.APIClient
+  private let userManager: UserManager
   private var page = 1
   private var shows: [WatchCardModel] = []
   private var stopLazyLoading = false
 
-  @MainActor
-  private func updateState(_ newState: State) {
-    self.state = newState
+  init(
+    apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
+    userManager: UserManager = ApplicationDependency.container.resolve()
+  ) {
+    self.client = apiClient
+    self.userManager = userManager
   }
 
   func performInitialLoading() async {
@@ -86,9 +82,18 @@ class CurrentlyWatchingViewModel {
       self.stopLazyLoading = true
     }
   }
+
+  @MainActor
+  private func updateState(_ newState: State) {
+    self.state = newState
+  }
 }
 
 struct CurrentlyWatchingView: View {
+  enum Navigation: Hashable {
+    case notifications
+  }
+
   @State private var viewModel: CurrentlyWatchingViewModel = .init()
 
   var body: some View {
@@ -146,10 +151,6 @@ struct CurrentlyWatchingView: View {
     .refreshable {
       await self.viewModel.performRefresh()
     }
-  }
-
-  enum Navigation: Hashable {
-    case notifications
   }
 }
 

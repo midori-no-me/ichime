@@ -3,11 +3,6 @@ import SwiftUI
 
 @Observable
 class NotificationCenterViewModel {
-  private let client: ScraperAPI.APIClient
-  init(apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve()) {
-    self.client = apiClient
-  }
-
   enum State {
     case idle
     case loading
@@ -17,13 +12,14 @@ class NotificationCenterViewModel {
   }
 
   private(set) var state: State = .idle
+
+  private let client: ScraperAPI.APIClient
   private var page = 1
   private var shows: [WatchCardModel] = []
   private var stopLazyLoading = false
 
-  @MainActor
-  private func updateState(_ newState: State) {
-    self.state = newState
+  init(apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve()) {
+    self.client = apiClient
   }
 
   func performInitialLoading() async {
@@ -77,6 +73,11 @@ class NotificationCenterViewModel {
     catch {
       self.stopLazyLoading = true
     }
+  }
+
+  @MainActor
+  private func updateState(_ newState: State) {
+    self.state = newState
   }
 }
 

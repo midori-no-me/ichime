@@ -24,6 +24,18 @@ class ShowMomentsCardsViewModel {
     self.videoHolder = videoPlayerHolder
   }
 
+  public func getShowMomentsFetchFunction(showId: Int) -> (_ page: Int) async throws -> [ScraperAPI
+    .Types.Moment]
+  {
+    func fetchFunction(_ page: Int) async throws -> [ScraperAPI.Types.Moment] {
+      try await self.api.sendAPIRequest(
+        ScraperAPI.Request.GetMomentsByShow(showId: showId, page: page)
+      )
+    }
+
+    return fetchFunction
+  }
+
   func performInitialLoad(showId: Int) async {
     self.state = .loading
 
@@ -78,18 +90,6 @@ class ShowMomentsCardsViewModel {
     catch {
       print(error)
     }
-  }
-
-  public func getShowMomentsFetchFunction(showId: Int) -> (_ page: Int) async throws -> [ScraperAPI
-    .Types.Moment]
-  {
-    func fetchFunction(_ page: Int) async throws -> [ScraperAPI.Types.Moment] {
-      try await self.api.sendAPIRequest(
-        ScraperAPI.Request.GetMomentsByShow(showId: showId, page: page)
-      )
-    }
-
-    return fetchFunction
   }
 }
 

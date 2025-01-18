@@ -2,18 +2,6 @@ import Foundation
 
 extension ScraperAPI.Types {
   public struct Episode {
-    public let id: Int
-    public let type: EpisodeType
-
-    init(id: Int, type: EpisodeType) {
-      self.id = id
-      self.type = type
-    }
-
-    init(id: Int, episodeText: String) {
-      self.init(id: id, type: EpisodeType(from: episodeText))
-    }
-
     public enum EpisodeType {
       case TV(episode: Double)
       case Movie
@@ -45,6 +33,18 @@ extension ScraperAPI.Types {
           self = .TV(episode: episodeNumber)
         }
       }
+    }
+
+    public let id: Int
+    public let type: EpisodeType
+
+    init(id: Int, type: EpisodeType) {
+      self.id = id
+      self.type = type
+    }
+
+    init(id: Int, episodeText: String) {
+      self.init(id: id, type: EpisodeType(from: episodeText))
     }
   }
 

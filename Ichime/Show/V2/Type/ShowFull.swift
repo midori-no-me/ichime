@@ -3,6 +3,76 @@ import Foundation
 import ShikimoriApiClient
 
 struct ShowFull {
+  struct Title {
+    struct TranslatedTitles {
+      let russian: String?
+      let english: String?
+      let japanese: String?
+      let japaneseRomaji: String?
+    }
+
+    let full: String
+    let translated: TranslatedTitles
+
+    var compose: String {
+      self.translated.japaneseRomaji ?? self.translated.english ?? self.translated.russian ?? self.full
+    }
+  }
+
+  struct Description: Hashable {
+    let text: String
+    let source: String
+
+    static func == (lhs: Description, rhs: Description) -> Bool {
+      lhs.text == rhs.text
+    }
+
+    func hash(into hasher: inout Hasher) {
+      hasher.combine(self.text)
+    }
+  }
+
+  enum BroadcastType {
+    case tv
+    case other
+
+    static func createFromApiType(apiType: String) -> Self {
+      switch apiType {
+      case "tv":
+        return .tv
+      default:
+        return .other
+      }
+    }
+  }
+
+  struct Genre: Identifiable {
+    let id: Int
+    let title: String
+  }
+
+  struct Studio: Identifiable {
+    let id: Int
+    let name: String
+    let image: URL?
+  }
+
+  let id: Int
+  let title: Title
+  let descriptions: [Description]
+  let posterUrl: URL?
+  let score: Float?
+  let airingSeason: AiringSeason?
+  let numberOfEpisodes: Int?
+  let typeTitle: String
+  let broadcastType: BroadcastType
+  let genres: [Genre]
+  let isOngoing: Bool
+  let episodePreviews: [EpisodePreview]
+  let myAnimeListId: Int
+  let studios: [Studio]
+  let screenshots: [URL]
+
   static func create(
     anime365Series: Anime365ApiSeries,
     shikimoriAnime: AnimeV1,
@@ -71,75 +141,5 @@ struct ShowFull {
         URL(string: shikimoriBaseUrl.absoluteString + screenshot.original)!
       }
     )
-  }
-
-  let id: Int
-  let title: Title
-  let descriptions: [Description]
-  let posterUrl: URL?
-  let score: Float?
-  let airingSeason: AiringSeason?
-  let numberOfEpisodes: Int?
-  let typeTitle: String
-  let broadcastType: BroadcastType
-  let genres: [Genre]
-  let isOngoing: Bool
-  let episodePreviews: [EpisodePreview]
-  let myAnimeListId: Int
-  let studios: [Studio]
-  let screenshots: [URL]
-
-  struct Title {
-    let full: String
-    let translated: TranslatedTitles
-
-    struct TranslatedTitles {
-      let russian: String?
-      let english: String?
-      let japanese: String?
-      let japaneseRomaji: String?
-    }
-
-    var compose: String {
-      self.translated.japaneseRomaji ?? self.translated.english ?? self.translated.russian ?? self.full
-    }
-  }
-
-  struct Description: Hashable {
-    static func == (lhs: Description, rhs: Description) -> Bool {
-      lhs.text == rhs.text
-    }
-
-    func hash(into hasher: inout Hasher) {
-      hasher.combine(self.text)
-    }
-
-    let text: String
-    let source: String
-  }
-
-  enum BroadcastType {
-    static func createFromApiType(apiType: String) -> Self {
-      switch apiType {
-      case "tv":
-        return .tv
-      default:
-        return .other
-      }
-    }
-
-    case tv
-    case other
-  }
-
-  struct Genre: Identifiable {
-    let id: Int
-    let title: String
-  }
-
-  struct Studio: Identifiable {
-    let id: Int
-    let name: String
-    let image: URL?
   }
 }

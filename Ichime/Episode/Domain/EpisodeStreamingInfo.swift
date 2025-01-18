@@ -3,6 +3,30 @@ import Foundation
 import ScraperAPI
 
 struct EpisodeStreamingInfo: Hashable, Identifiable {
+  struct StreamQualityOption: Hashable, Identifiable {
+    var id: Int
+
+    let height: Int
+    let urls: [URL]
+
+    static func == (lhs: StreamQualityOption, rhs: StreamQualityOption) -> Bool {
+      lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+      hasher.combine(self.id)
+    }
+  }
+
+  struct SubtitlesUrls {
+    let vtt: URL
+    let base: URL
+  }
+
+  let id: String
+  let streamQualityOptions: [StreamQualityOption]
+  let subtitles: SubtitlesUrls?
+
   init(apiResponse: Anime365TranslationEmbed) {
     let websiteBaseUrl = ServiceLocator.websiteBaseUrl.absoluteString
     let cookies: HTTPCookieStorage = ApplicationDependency.container.resolve()
@@ -36,36 +60,12 @@ struct EpisodeStreamingInfo: Hashable, Identifiable {
     self.subtitles = subtitles
   }
 
-  let id: String
-  let streamQualityOptions: [StreamQualityOption]
-  let subtitles: SubtitlesUrls?
-
   static func == (lhs: EpisodeStreamingInfo, rhs: EpisodeStreamingInfo) -> Bool {
     lhs.id == rhs.id
   }
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(self.id)
-  }
-
-  struct StreamQualityOption: Hashable, Identifiable {
-    var id: Int
-
-    let height: Int
-    let urls: [URL]
-
-    static func == (lhs: StreamQualityOption, rhs: StreamQualityOption) -> Bool {
-      lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-      hasher.combine(self.id)
-    }
-  }
-
-  struct SubtitlesUrls {
-    let vtt: URL
-    let base: URL
   }
 }
 

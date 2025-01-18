@@ -1,6 +1,10 @@
 import Foundation
 
 enum EpisodeType {
+  case trailer
+  case tv
+  case other
+
   static func createFromApiType(apiType: String) -> Self {
     switch apiType {
     case "tv":
@@ -11,8 +15,4 @@ enum EpisodeType {
       return .other
     }
   }
-
-  case trailer
-  case tv
-  case other
 }

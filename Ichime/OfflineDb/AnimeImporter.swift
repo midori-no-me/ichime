@@ -6,6 +6,11 @@ actor AnimeImporter {
   private var progressStream: AsyncStream<String>?
   private var progressContinuation: AsyncStream<String>.Continuation?
 
+  private var genresMap: [Int: DbGenre] = [:]
+  private var studioMap: [Int: DbStudio] = [:]
+  private var charactersMap: [Int: DbCharacter] = [:]
+  private let batchSize = 250
+
   var currentProgress: AsyncStream<String> {
     if let stream = progressStream {
       return stream
@@ -21,11 +26,6 @@ actor AnimeImporter {
 
     return stream
   }
-
-  private var genresMap: [Int: DbGenre] = [:]
-  private var studioMap: [Int: DbStudio] = [:]
-  private var charactersMap: [Int: DbCharacter] = [:]
-  private let batchSize = 250
 
   func importDatabase(from url: String) async throws {
     self.progressContinuation?.yield("Загрузка базы данных...")

@@ -3,19 +3,19 @@ import Foundation
 import SwiftUI
 
 final class VideoPlayerController: NSObject {
+  private(set) var player: AVPlayer?
+
+  private(set) var isInPiP = false
+
   private let logger = createLogger(category: String(describing: VideoPlayerController.self))
 
   private let playerViewController: AVPlayerViewController = .init()
   private var coordinator: Coordinator?
   private let sceneController: SceneController = .init()
 
-  private(set) var player: AVPlayer?
-
   private var playerItem: AVPlayerItem?
   private var playerItemObserver: NSKeyValueObservation?
   private var loadingIndicator: UIActivityIndicatorView?
-
-  private(set) var isInPiP = false
 
   override init() {
     super.init()
@@ -39,6 +39,26 @@ final class VideoPlayerController: NSObject {
       player.play()
       self.addLoadingIndicator()
     }
+  }
+
+  func play(player: AVPlayer) {
+    self.player?.pause()
+    self.logger.debug("play player")
+    self.playerViewController.player = player
+    self.player = player
+    player.play()
+  }
+
+  func dispose() {
+    self.pausePlayer()
+    self.playerViewController.player = nil
+    self.player = nil
+    self.sceneController.dismiss()
+  }
+
+  func pausePlayer() {
+    self.logger.info("pause player")
+    self.player?.pause()
   }
 
   private func startObservingBuffering() {
@@ -90,26 +110,6 @@ final class VideoPlayerController: NSObject {
 
   private func hideLoadingIndicator() {
     self.loadingIndicator?.stopAnimating()
-  }
-
-  func play(player: AVPlayer) {
-    self.player?.pause()
-    self.logger.debug("play player")
-    self.playerViewController.player = player
-    self.player = player
-    player.play()
-  }
-
-  func dispose() {
-    self.pausePlayer()
-    self.playerViewController.player = nil
-    self.player = nil
-    self.sceneController.dismiss()
-  }
-
-  func pausePlayer() {
-    self.logger.info("pause player")
-    self.player?.pause()
   }
 }
 

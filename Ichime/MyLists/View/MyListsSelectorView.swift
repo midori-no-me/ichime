@@ -4,9 +4,6 @@ import SwiftUI
 
 @Observable
 class MyListsSelectorViewModel {
-  private let userManager: UserManager
-  private let userAnimeListCache: UserAnimeListCache
-
   enum State {
     case idle
     case loading
@@ -18,17 +15,15 @@ class MyListsSelectorViewModel {
 
   private(set) var state: State = .idle
 
+  private let userManager: UserManager
+  private let userAnimeListCache: UserAnimeListCache
+
   init(
     userManager: UserManager = ApplicationDependency.container.resolve(),
     userAnimeListCache: UserAnimeListCache = ApplicationDependency.container.resolve()
   ) {
     self.userManager = userManager
     self.userAnimeListCache = userAnimeListCache
-  }
-
-  @MainActor
-  private func updateState(_ newState: State) {
-    self.state = newState
   }
 
   func performLoad() async {
@@ -49,6 +44,11 @@ class MyListsSelectorViewModel {
 
     await self.updateState(.loading)
     await self.loadFromAPI()
+  }
+
+  @MainActor
+  private func updateState(_ newState: State) {
+    self.state = newState
   }
 
   private func loadFromAPI() async {

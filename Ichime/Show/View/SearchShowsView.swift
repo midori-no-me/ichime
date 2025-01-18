@@ -10,6 +10,8 @@ class SearchShowsViewModel {
     case loaded([Show])
   }
 
+  public var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
+
   private(set) var state: State = .idle
   var currentlyTypedSearchQuery = ""
   var isSearchPresented: Bool = false
@@ -20,7 +22,6 @@ class SearchShowsViewModel {
   private var currentOffset: Int = 0
   private var shows: [Show] = []
   private var stopLazyLoading: Bool = false
-  public var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
 
   private let SHOWS_PER_PAGE = 20
 

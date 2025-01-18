@@ -3,6 +3,39 @@ import Foundation
 import ShikimoriApiClient
 
 struct ShowFromCalendar: Hashable, Identifiable {
+  struct Title {
+    struct TranslatedTitles {
+      let russian: String?
+      let japaneseRomaji: String
+    }
+
+    let translated: TranslatedTitles
+  }
+
+  enum BroadcastType {
+    case tv
+    case other
+
+    static func createFromApiType(apiType: String) -> Self {
+      switch apiType {
+      case "tv":
+        return .tv
+      default:
+        return .other
+      }
+    }
+  }
+
+  let id: Int
+  let title: Title
+  let posterUrl: URL?
+  let score: Float?
+  let numberOfEpisodes: Int?
+  let broadcastType: BroadcastType
+  let isOngoing: Bool
+  let nextEpisodeNumber: Int
+  let nextEpisodeReleaseDate: Date
+
   static func createFromShikimoriApi(
     shikimoriBaseUrl: URL,
     calendarEntry: CalendarEntry
@@ -40,38 +73,5 @@ struct ShowFromCalendar: Hashable, Identifiable {
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(self.id)
-  }
-
-  let id: Int
-  let title: Title
-  let posterUrl: URL?
-  let score: Float?
-  let numberOfEpisodes: Int?
-  let broadcastType: BroadcastType
-  let isOngoing: Bool
-  let nextEpisodeNumber: Int
-  let nextEpisodeReleaseDate: Date
-
-  struct Title {
-    let translated: TranslatedTitles
-
-    struct TranslatedTitles {
-      let russian: String?
-      let japaneseRomaji: String
-    }
-  }
-
-  enum BroadcastType {
-    static func createFromApiType(apiType: String) -> Self {
-      switch apiType {
-      case "tv":
-        return .tv
-      default:
-        return .other
-      }
-    }
-
-    case tv
-    case other
   }
 }
