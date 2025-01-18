@@ -3,6 +3,8 @@ import SwiftSoup
 
 extension ScraperAPI.Request {
   public struct GetMomentEmbed: ScraperHTMLRequest {
+    public typealias ResponseType = ScraperAPI.Types.MomentEmbed
+
     let id: Int
 
     public init(momentId id: Int) {
@@ -39,7 +41,5 @@ extension ScraperAPI.Request {
         throw ScraperAPI.APIClientError.parseError
       }
     }
-
-    public typealias ResponseType = ScraperAPI.Types.MomentEmbed
   }
 }

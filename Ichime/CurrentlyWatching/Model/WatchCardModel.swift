@@ -20,8 +20,10 @@ extension ScraperAPI.Types.WatchShow.UpdateType {
 }
 
 struct WatchCardModel: Equatable, Identifiable, Hashable {
-  static func == (lhs: WatchCardModel, rhs: WatchCardModel) -> Bool {
-    lhs.id == rhs.id
+  struct WatchData: Hashable {
+    let episode: Int
+    let title: String
+    let translation: Int?
   }
 
   let id: Int
@@ -30,12 +32,6 @@ struct WatchCardModel: Equatable, Identifiable, Hashable {
   let title: String
   let sideText: String
   let data: WatchData
-
-  struct WatchData: Hashable {
-    let episode: Int
-    let title: String
-    let translation: Int?
-  }
 
   init(
     id: Int,
@@ -77,5 +73,9 @@ struct WatchCardModel: Equatable, Identifiable, Hashable {
         translation: notification.translation.id
       )
     )
+  }
+
+  static func == (lhs: WatchCardModel, rhs: WatchCardModel) -> Bool {
+    lhs.id == rhs.id
   }
 }

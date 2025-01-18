@@ -13,10 +13,22 @@ class EpisodeTranslationQualitySelectorViewModel {
 
   private(set) var state: State = .idle
 
+  private(set) var selectedVideoUrl: URL?
+  var shownCompleteAlert = false
+  var shownChangePlayerAlert = false
+  var dismissModal: (() -> Void)?
+
   private let client: Anime365Client
   private let scraperClient: ScraperAPI.APIClient
   private let videoHolder: VideoPlayerHolder
   private let playerPreference: PlayerPreference = .init()
+
+  private var translationId: Int = 0
+  private var episodeId: Int = 0
+
+  var defaultPlayer: PlayerPreference.Player {
+    self.playerPreference.selectedPlayer
+  }
 
   init(
     client: Anime365Client = ApplicationDependency.container.resolve(),
@@ -32,9 +44,6 @@ class EpisodeTranslationQualitySelectorViewModel {
   func updateState(_ newState: State) {
     self.state = newState
   }
-
-  private var translationId: Int = 0
-  private var episodeId: Int = 0
 
   func performInitialLoad(episodeId: Int, translationId: Int) async {
     self.translationId = translationId
@@ -68,15 +77,6 @@ class EpisodeTranslationQualitySelectorViewModel {
     catch {
       print(error.localizedDescription)
     }
-  }
-
-  private(set) var selectedVideoUrl: URL?
-  var shownCompleteAlert = false
-  var shownChangePlayerAlert = false
-  var dismissModal: (() -> Void)?
-
-  var defaultPlayer: PlayerPreference.Player {
-    self.playerPreference.selectedPlayer
   }
 
   func playThroughURL(video: URL, subtitle: URL?, player: PlayerPreference.Player) {

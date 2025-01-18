@@ -12,6 +12,14 @@ protocol VideoPlayerObserver: AnyObject {
 }
 
 final class VideoPlayer {
+  enum PlayerError: Error {
+    case compositionError(String)
+  }
+
+  private var observer: VideoPlayerObserver?
+
+  private let logger = createLogger(category: String(describing: VideoPlayer.self))
+
   var player: AVPlayer? {
     didSet {
       if let observer, let player {
@@ -20,15 +28,51 @@ final class VideoPlayer {
     }
   }
 
-  private var observer: VideoPlayerObserver?
-
-  private let logger = createLogger(category: String(describing: VideoPlayer.self))
-
   func addObserver(_ observer: VideoPlayerObserver) {
     self.observer = observer
     if let player {
       observer.create(player: player)
     }
+  }
+
+  func createPlayer(video: VideoModel) async {
+    let videoURL = video.videoURL
+    let subtitleURL = video.subtitleURL
+
+    let videoAsset = AVURLAsset(
+      url: videoURL,
+      options: [AVURLAssetPreferPreciseDurationAndTimingKey: true]
+    )
+    let subtitleAsset = await createSubtitleAsset(from: subtitleURL)
+
+    let playerItem: AVPlayerItem
+
+    if let subtitleAsset,
+      let composition = try? await createMutableComposition(videoAsset, subtitleAsset)
+    {
+      playerItem = .init(asset: composition)
+    }
+    else {
+      playerItem = .init(asset: videoAsset)
+    }
+
+    if let metadata = video.metadata {
+      let metadata = MetadataCollector.createMetadataItems(for: metadata)
+
+      if !metadata.isEmpty {
+        playerItem.externalMetadata = metadata
+      }
+    }
+
+    // Буферим 600 секунд видео
+    playerItem.preferredForwardBufferDuration = 30
+
+    let player = AVPlayer(playerItem: playerItem)
+    player.allowsExternalPlayback = subtitleURL == nil
+    player.usesExternalPlaybackWhileExternalScreenIsActive = true
+    player.preventsDisplaySleepDuringVideoPlayback = true
+
+    self.player = player
   }
 
   private func downloadFileToTemporaryDirectory(from url: URL) async throws -> URL {
@@ -58,10 +102,6 @@ final class VideoPlayer {
       return nil
     }
     return AVAsset(url: filepath)
-  }
-
-  enum PlayerError: Error {
-    case compositionError(String)
   }
 
   private func createMutableComposition(
@@ -103,45 +143,5 @@ final class VideoPlayer {
     }
 
     return immutableComposition
-  }
-
-  func createPlayer(video: VideoModel) async {
-    let videoURL = video.videoURL
-    let subtitleURL = video.subtitleURL
-
-    let videoAsset = AVURLAsset(
-      url: videoURL,
-      options: [AVURLAssetPreferPreciseDurationAndTimingKey: true]
-    )
-    let subtitleAsset = await createSubtitleAsset(from: subtitleURL)
-
-    let playerItem: AVPlayerItem
-
-    if let subtitleAsset,
-      let composition = try? await createMutableComposition(videoAsset, subtitleAsset)
-    {
-      playerItem = .init(asset: composition)
-    }
-    else {
-      playerItem = .init(asset: videoAsset)
-    }
-
-    if let metadata = video.metadata {
-      let metadata = MetadataCollector.createMetadataItems(for: metadata)
-
-      if !metadata.isEmpty {
-        playerItem.externalMetadata = metadata
-      }
-    }
-
-    // Буферим 600 секунд видео
-    playerItem.preferredForwardBufferDuration = 30
-
-    let player = AVPlayer(playerItem: playerItem)
-    player.allowsExternalPlayback = subtitleURL == nil
-    player.usesExternalPlaybackWhileExternalScreenIsActive = true
-    player.preventsDisplaySleepDuringVideoPlayback = true
-
-    self.player = player
   }
 }

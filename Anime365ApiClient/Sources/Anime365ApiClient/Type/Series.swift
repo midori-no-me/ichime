@@ -1,23 +1,4 @@
 public struct Anime365ApiSeries: Decodable {
-  public let id: Int
-  public let title: String
-  public let posterUrl: String
-  public let posterUrlSmall: String
-  public let myAnimeListScore: String
-  public let myAnimeListId: Int
-  public let worldArtScore: String
-  public let url: String
-  public let isAiring: Int
-  public let numberOfEpisodes: Int
-  public let season: String
-  public let year: Int
-  public let type: String
-  public let typeTitle: String
-  public let titles: Titles
-  public let genres: [Genre]?
-  public let descriptions: [Description]?
-  public let episodes: [EpisodePreview]?
-
   public struct Titles: Decodable {
     public let ru: String?
     public let romaji: String?
@@ -47,4 +28,23 @@ public struct Anime365ApiSeries: Decodable {
     public let isActive: Int
     public let isFirstUploaded: Int
   }
+
+  public let id: Int
+  public let title: String
+  public let posterUrl: String
+  public let posterUrlSmall: String
+  public let myAnimeListScore: String
+  public let myAnimeListId: Int
+  public let worldArtScore: String
+  public let url: String
+  public let isAiring: Int
+  public let numberOfEpisodes: Int
+  public let season: String
+  public let year: Int
+  public let type: String
+  public let typeTitle: String
+  public let titles: Titles
+  public let genres: [Genre]?
+  public let descriptions: [Description]?
+  public let episodes: [EpisodePreview]?
 }

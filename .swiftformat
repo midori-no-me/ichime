@@ -10,3 +10,6 @@
 --propertytypes infer-locals-only
 --enable redundantSelf
 --self insert
+--enable organizeDeclarations
+--organizationmode type
+--markcategories false

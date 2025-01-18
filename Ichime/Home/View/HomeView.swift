@@ -11,6 +11,8 @@ private protocol ShowsSectionLoader: Identifiable {
 }
 
 private class OngoingsSectionLoader: ShowsSectionLoader {
+  var id: String = "ongoing"
+
   private let client: Anime365Client
 
   init(
@@ -18,8 +20,6 @@ private class OngoingsSectionLoader: ShowsSectionLoader {
   ) {
     self.client = client
   }
-
-  var id: String = "ongoing"
 
   func getTitle() -> String {
     "Онгоинги"
@@ -44,6 +44,8 @@ private class OngoingsSectionLoader: ShowsSectionLoader {
 }
 
 private class TopSectionLoader: ShowsSectionLoader {
+  var id: String = "top"
+
   private let client: Anime365Client
 
   init(
@@ -51,8 +53,6 @@ private class TopSectionLoader: ShowsSectionLoader {
   ) {
     self.client = client
   }
-
-  var id: String = "top"
 
   func getTitle() -> String {
     "Топ по оценке"
@@ -77,6 +77,8 @@ private class TopSectionLoader: ShowsSectionLoader {
 }
 
 private class SeasonalSectionLoader: ShowsSectionLoader {
+  var id: String
+
   private let client: Anime365Client
   private let airingSeason: AiringSeason
   private let description: String?
@@ -91,8 +93,6 @@ private class SeasonalSectionLoader: ShowsSectionLoader {
     self.description = description
     self.id = "\(airingSeason.year)_\(airingSeason.calendarSeason)"
   }
-
-  var id: String
 
   func getTitle() -> String {
     "\(self.airingSeason.calendarSeason.getLocalizedTranslation()) \(self.airingSeason.year)"
@@ -122,6 +122,7 @@ private class SeasonalSectionLoader: ShowsSectionLoader {
 
 struct HomeView: View {
   @State private var sectionLoaders: [any ShowsSectionLoader] = []
+
   private let SPACING_BETWEEN_SECTIONS: CGFloat = 70
 
   var body: some View {

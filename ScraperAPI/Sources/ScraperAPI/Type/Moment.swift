@@ -3,6 +3,12 @@ import SwiftSoup
 
 extension ScraperAPI.Types {
   public struct Moment: Identifiable, Hashable {
+    public struct User {
+      public let id: Int
+      public let name: String
+      public let avatar: URL
+    }
+
     public let id: Int
     public let title: String
     public let duration: String
@@ -12,12 +18,6 @@ extension ScraperAPI.Types {
     public let user: User?
     public let date: String
     public let hits: String
-
-    public struct User {
-      public let id: Int
-      public let name: String
-      public let avatar: URL
-    }
 
     init(
       id: Int,
@@ -109,14 +109,14 @@ extension ScraperAPI.Types {
   }
 
   public struct MomentEmbed {
-    public let id: Int
-    public let title: String
-    public let video: [VideoSource]
-
     public struct VideoSource: Codable {
       public let height: Int
       public let urls: [String]
     }
+
+    public let id: Int
+    public let title: String
+    public let video: [VideoSource]
 
     init(id: Int, title: String, video: [VideoSource]) {
       self.id = id

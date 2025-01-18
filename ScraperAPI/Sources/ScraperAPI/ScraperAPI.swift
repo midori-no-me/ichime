@@ -31,9 +31,10 @@ extension ScraperAPI {
   }
 
   public final class APIClient {
+    public let session: ScraperAPI.Session
+
     private let baseURL: URL
     private let userAgent: String
-    public let session: ScraperAPI.Session
     private let urlSession: URLSession
 
     public init(baseURL: URL, userAgent: String, session: ScraperAPI.Session) {

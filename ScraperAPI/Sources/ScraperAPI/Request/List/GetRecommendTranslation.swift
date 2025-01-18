@@ -4,6 +4,7 @@ import SwiftSoup
 extension ScraperAPI.Request {
   public struct GetRecommendTranslation: ScraperHTMLRequest {
     public typealias ResponseType = Int
+
     let episodeURL: String
 
     public init(episodeURL url: String) {

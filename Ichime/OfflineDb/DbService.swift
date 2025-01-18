@@ -22,6 +22,28 @@ let animeList = try await dbService.getAnimeList(
 */
 @ModelActor
 actor DbService {
+  // MARK: - Helper Extensions
+
+  enum AnimeSort {
+    case title
+    case score
+    case year
+    case episodes
+
+    var descriptor: SortDescriptor<DbAnime> {
+      switch self {
+      case .title:
+        return SortDescriptor(\DbAnime.titles.ru)
+      case .score:
+        return SortDescriptor(\DbAnime.score, order: .reverse)
+      case .year:
+        return SortDescriptor(\DbAnime.year, order: .reverse)
+      case .episodes:
+        return SortDescriptor(\DbAnime.numberOfEpisodes, order: .reverse)
+      }
+    }
+  }
+
   // MARK: - Anime Queries
 
   func getAnime(id: Int) throws -> DbAnime? {
@@ -82,27 +104,5 @@ actor DbService {
       sortBy: sortBy.map { [$0] } ?? [SortDescriptor(\.name)]
     )
     return try modelContext.fetch(descriptor)
-  }
-
-  // MARK: - Helper Extensions
-
-  enum AnimeSort {
-    case title
-    case score
-    case year
-    case episodes
-
-    var descriptor: SortDescriptor<DbAnime> {
-      switch self {
-      case .title:
-        return SortDescriptor(\DbAnime.titles.ru)
-      case .score:
-        return SortDescriptor(\DbAnime.score, order: .reverse)
-      case .year:
-        return SortDescriptor(\DbAnime.year, order: .reverse)
-      case .episodes:
-        return SortDescriptor(\DbAnime.numberOfEpisodes, order: .reverse)
-      }
-    }
   }
 }

@@ -6,15 +6,24 @@ import UserNotifications
 
 class NotificationCounterWatcher: ObservableObject {
   static let storageKey = "notificationCount"
-  let logger = createLogger(category: String(describing: NotificationCounterWatcher.self))
 
   @AppStorage("notificationCount") var counter = 0
   @AppStorage("accessToBadge") var badgeIsAvailable = false
+
+  let logger = createLogger(category: String(describing: NotificationCounterWatcher.self))
 
   private let api: ScraperAPI.APIClient
 
   init() {
     self.api = ApplicationDependency.container.resolve()
+  }
+
+  static func checkCounter() async {
+    await NotificationCounterWatcher().checkCounter()
+  }
+
+  static func askBadgePermission() {
+    NotificationCounterWatcher().askBadgePermission()
   }
 
   func checkCounter() async {
@@ -35,14 +44,6 @@ class NotificationCounterWatcher: ObservableObject {
       }
     }
     catch {}
-  }
-
-  static func checkCounter() async {
-    await NotificationCounterWatcher().checkCounter()
-  }
-
-  static func askBadgePermission() {
-    NotificationCounterWatcher().askBadgePermission()
   }
 
   func askBadgePermission() {

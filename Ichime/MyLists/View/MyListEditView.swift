@@ -4,16 +4,6 @@ import SwiftUI
 
 @Observable
 class MyListEditViewModel {
-  private let client: ScraperAPI.APIClient
-  private let userAnimeListManager: UserAnimeListManager
-  init(
-    apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
-    container: ModelContainer = ApplicationDependency.container.resolve()
-  ) {
-    self.client = apiClient
-    self.userAnimeListManager = .init(modelContainer: container)
-  }
-
   enum State {
     case idle
     case loading
@@ -24,9 +14,15 @@ class MyListEditViewModel {
 
   private(set) var state: State = .idle
 
-  @MainActor
-  private func updateState(_ newState: State) {
-    self.state = newState
+  private let client: ScraperAPI.APIClient
+  private let userAnimeListManager: UserAnimeListManager
+
+  init(
+    apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
+    container: ModelContainer = ApplicationDependency.container.resolve()
+  ) {
+    self.client = apiClient
+    self.userAnimeListManager = .init(modelContainer: container)
   }
 
   func performInitialLoad(_ showId: Int) async {
@@ -87,11 +83,28 @@ class MyListEditViewModel {
       await self.updateState(.loadingFailed(error))
     }
   }
+
+  @MainActor
+  private func updateState(_ newState: State) {
+    self.state = newState
+  }
 }
 
 struct MyListEditView: View {
+  @State private var viewModel: MyListEditViewModel = .init()
+  @Environment(\.dismiss) private var dismiss
+
   let show: MyListShow
   let onUpdate: (() -> Void)?
+
+  var totalEpisodes: String {
+    if let totalEpisodes = show.totalEpisodes {
+      String(totalEpisodes)
+    }
+    else {
+      "??"
+    }
+  }
 
   init(show: MyListShow) {
     self.show = show
@@ -101,18 +114,6 @@ struct MyListEditView: View {
   init(show: MyListShow, onUpdate: @escaping () -> Void) {
     self.show = show
     self.onUpdate = onUpdate
-  }
-
-  @State private var viewModel: MyListEditViewModel = .init()
-  @Environment(\.dismiss) private var dismiss
-
-  var totalEpisodes: String {
-    if let totalEpisodes = show.totalEpisodes {
-      String(totalEpisodes)
-    }
-    else {
-      "??"
-    }
   }
 
   var body: some View {

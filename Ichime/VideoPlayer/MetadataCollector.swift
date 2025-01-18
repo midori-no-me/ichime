@@ -57,18 +57,6 @@ struct MetadataCollector {
     return item.copy() as! AVMetadataItem
   }
 
-  private func getRating(malScore: String, worldartScore: String) -> String? {
-    if malScore != "-1" {
-      return "MAL: \(malScore)"
-    }
-
-    if worldartScore != "-1" {
-      return "WorldART: \(worldartScore)"
-    }
-
-    return nil
-  }
-
   func getMetadata() async -> MetadataPlayer? {
     do {
       let episodeData = try await api.sendApiRequest(GetEpisodeRequest(episodeId: self.episodeId))
@@ -109,5 +97,17 @@ struct MetadataCollector {
       print("Cannot download metadata \(error)")
       return nil
     }
+  }
+
+  private func getRating(malScore: String, worldartScore: String) -> String? {
+    if malScore != "-1" {
+      return "MAL: \(malScore)"
+    }
+
+    if worldartScore != "-1" {
+      return "WorldART: \(worldartScore)"
+    }
+
+    return nil
   }
 }

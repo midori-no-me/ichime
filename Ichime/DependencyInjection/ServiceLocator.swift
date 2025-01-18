@@ -3,6 +3,10 @@ import Foundation
 import ScraperAPI
 
 enum ServiceLocator {
+  static let appGroup = "group.dev.midorinome.ichime.group"
+
+  static let topShellSchema = "ichime-top-shelf"
+
   static var websiteBaseUrl: URL {
     guard let userDefaults = UserDefaults(suiteName: appGroup) else {
       fatalError("Cannot get user defaults")
@@ -52,13 +56,9 @@ enum ServiceLocator {
     return version
   }
 
-  static let appGroup = "group.dev.midorinome.ichime.group"
-
   static var userAgent: String {
     "\(applicationName) (\(applicationVersion) / Contact: petr@flaks.xyz"
   }
-
-  static let topShellSchema = "ichime-top-shelf"
 
   static var shikimoriUserAgent: String {
     "Ichime"

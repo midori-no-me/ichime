@@ -2,6 +2,68 @@ import Anime365ApiClient
 import Foundation
 
 struct Show: Hashable, Identifiable {
+  struct Title {
+    struct TranslatedTitles {
+      let russian: String?
+      let english: String?
+      let japanese: String?
+      let japaneseRomaji: String?
+    }
+
+    let full: String
+    let translated: TranslatedTitles
+
+    var compose: String {
+      self.translated.japaneseRomaji ?? self.translated.english ?? self.translated.russian ?? self.full
+    }
+  }
+
+  struct Description: Hashable {
+    let text: String
+    let source: String
+
+    static func == (lhs: Description, rhs: Description) -> Bool {
+      lhs.text == rhs.text
+    }
+
+    func hash(into hasher: inout Hasher) {
+      hasher.combine(self.text)
+    }
+  }
+
+  enum BroadcastType {
+    case tv
+    case other
+
+    static func createFromApiType(apiType: String) -> Self {
+      switch apiType {
+      case "tv":
+        return .tv
+      default:
+        return .other
+      }
+    }
+  }
+
+  struct Genre: Identifiable {
+    let id: Int
+    let title: String
+  }
+
+  let id: Int
+  let title: Title
+  let descriptions: [Description]
+  let posterUrl: URL?
+  let websiteUrl: URL
+  let score: Float?
+  let airingSeason: AiringSeason?
+  let numberOfEpisodes: Int?
+  let typeTitle: String
+  let broadcastType: BroadcastType
+  let genres: [Genre]
+  let isOngoing: Bool
+  let episodePreviews: [EpisodePreview]
+
   static func createFromApiSeries(
     series: Anime365ApiSeries
   ) -> Show {
@@ -60,68 +122,6 @@ struct Show: Hashable, Identifiable {
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(self.id)
-  }
-
-  let id: Int
-  let title: Title
-  let descriptions: [Description]
-  let posterUrl: URL?
-  let websiteUrl: URL
-  let score: Float?
-  let airingSeason: AiringSeason?
-  let numberOfEpisodes: Int?
-  let typeTitle: String
-  let broadcastType: BroadcastType
-  let genres: [Genre]
-  let isOngoing: Bool
-  let episodePreviews: [EpisodePreview]
-
-  struct Title {
-    let full: String
-    let translated: TranslatedTitles
-
-    struct TranslatedTitles {
-      let russian: String?
-      let english: String?
-      let japanese: String?
-      let japaneseRomaji: String?
-    }
-
-    var compose: String {
-      self.translated.japaneseRomaji ?? self.translated.english ?? self.translated.russian ?? self.full
-    }
-  }
-
-  struct Description: Hashable {
-    static func == (lhs: Description, rhs: Description) -> Bool {
-      lhs.text == rhs.text
-    }
-
-    func hash(into hasher: inout Hasher) {
-      hasher.combine(self.text)
-    }
-
-    let text: String
-    let source: String
-  }
-
-  enum BroadcastType {
-    static func createFromApiType(apiType: String) -> Self {
-      switch apiType {
-      case "tv":
-        return .tv
-      default:
-        return .other
-      }
-    }
-
-    case tv
-    case other
-  }
-
-  struct Genre: Identifiable {
-    let id: Int
-    let title: String
   }
 }
 

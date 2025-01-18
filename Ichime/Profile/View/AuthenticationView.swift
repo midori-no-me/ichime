@@ -3,8 +3,6 @@ import SwiftUI
 
 @Observable
 class AuthenticationViewModel {
-  private let userManager: UserManager
-
   var userEmail = ""
   var userPassword = ""
   var showInvalidCredentialsAlert = false
@@ -12,6 +10,8 @@ class AuthenticationViewModel {
   var isLoadingAuthentication = false
   var isSuccess = false
   var baseUrlPreference: BaseUrlPreference = .init()
+
+  private let userManager: UserManager
 
   init(userManager: UserManager = ApplicationDependency.container.resolve()) {
     self.userManager = userManager

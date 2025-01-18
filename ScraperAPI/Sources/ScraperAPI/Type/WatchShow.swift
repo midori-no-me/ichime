@@ -12,12 +12,6 @@ extension ScraperAPI.Types {
 
      */
   public struct WatchShow {
-    public let id: Int
-    public let name: Name
-    public let imageURL: URL
-    public let episode: Episode
-    public let update: UpdateType
-
     public enum UpdateType {
       case plan(date: Date)
       case release(date: Date)
@@ -34,6 +28,12 @@ extension ScraperAPI.Types {
         }
       }
     }
+
+    public let id: Int
+    public let name: Name
+    public let imageURL: URL
+    public let episode: Episode
+    public let update: UpdateType
 
     init(id: Int, name: Name, imageSrc: URL, episode: Episode, update: UpdateType) {
       self.id = id

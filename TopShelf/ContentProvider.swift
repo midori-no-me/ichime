@@ -8,6 +8,7 @@ class ContentProvider: TVTopShelfContentProvider {
   let cookieStorage: HTTPCookieStorage = .sharedCookieStorage(
     forGroupContainerIdentifier: ServiceLocator.appGroup
   )
+
   var session: ScraperAPI.Session {
     .init(cookieStorage: self.cookieStorage, baseURL: ServiceLocator.websiteBaseUrl)
   }

@@ -36,16 +36,6 @@ enum AnimeWatchStatus: String, Codable, CaseIterable {
   case dropped = "dropped"
   case planned = "planned"
 
-  init(from category: ScraperAPI.Types.ListCategoryType) {
-    switch category {
-    case .watching: self = .watching
-    case .completed: self = .completed
-    case .onHold: self = .onHold
-    case .dropped: self = .dropped
-    case .planned: self = .planned
-    }
-  }
-
   var title: String {
     switch self {
     case .watching: return "Смотрю"
@@ -63,6 +53,16 @@ enum AnimeWatchStatus: String, Codable, CaseIterable {
     case .completed: return "checkmark.circle"
     case .onHold: return "pause.circle"
     case .dropped: return "archivebox.circle"
+    }
+  }
+
+  init(from category: ScraperAPI.Types.ListCategoryType) {
+    switch category {
+    case .watching: self = .watching
+    case .completed: self = .completed
+    case .onHold: self = .onHold
+    case .dropped: self = .dropped
+    case .planned: self = .planned
     }
   }
 }
