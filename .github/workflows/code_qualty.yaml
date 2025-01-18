@@ -15,7 +15,7 @@ jobs:
         run: swift format lint . --recursive --strict
 
   swiftformat:
-    name: swiftformat
+    name: SwiftFormat
     runs-on: macos-15
 
     steps:
