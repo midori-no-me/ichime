@@ -741,8 +741,8 @@ private struct Screenshots: View {
             }
           }
         }
+        .scrollClipDisabled()
       }
-      .scrollClipDisabled()
     }
   }
 }
