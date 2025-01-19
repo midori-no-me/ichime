@@ -27,6 +27,21 @@ struct ShowFull {
       lhs.text == rhs.text
     }
 
+    static func createFiltered(
+      text: String,
+      source: String
+    ) -> Description {
+      let filteredText = text.replacing(
+        try! Regex(#"\n+"#),
+        with: "\n\n"
+      )
+
+      return Description(
+        text: filteredText,
+        source: source
+      )
+    }
+
     func hash(into hasher: inout Hasher) {
       hasher.combine(self.text)
     }
@@ -92,7 +107,7 @@ struct ShowFull {
         )
       ),
       descriptions: (anime365Series.descriptions ?? []).map { description in
-        ShowFull.Description(
+        ShowFull.Description.createFiltered(
           text: description.value,
           source: description.source
         )

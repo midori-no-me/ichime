@@ -697,17 +697,17 @@ private struct ShowDescriptionCardSheet: View {
   var body: some View {
     NavigationStack {
       ScrollView([.vertical]) {
-        Text(self.text)
-          .frame(maxWidth: 1000, alignment: .center)
-      }
-      .toolbar {
-        ToolbarItem(placement: .cancellationAction) {
-          Button("Закрыть") {
-            self.dismiss()
+        VStack(spacing: 16) {
+          Group {
+            ForEach(self.text.split(separator: "\n\n"), id: \.self) { paragraph in
+              Text(paragraph)
+            }
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .focusable()
         }
+        .frame(maxWidth: 1000, alignment: .center)
       }
-      .navigationTitle(self.title)
     }
   }
 }
