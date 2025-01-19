@@ -15,10 +15,7 @@ class ApplicationDependency: DIFramework {
   static func load(container: DIContainer) {
     container.register {
       let schema = Schema([
-        UserAnimeListModel.self,
-        DbAnime.self,
-        DbGenre.self,
-        DbStudio.self,
+        UserAnimeListModel.self
       ])
       let storeURL = URL.documentsDirectory.appending(path: "offline.sqlite")
       let modelConfiguration = ModelConfiguration(
@@ -73,10 +70,6 @@ class ApplicationDependency: DIFramework {
 
     container.register {
       UserAnimeListCache(apiClient: $0, userManager: $1, modelContainer: $2)
-    }
-
-    container.register {
-      DbService(modelContainer: $0)
     }
 
     container.register { Anime365Client(apiClient: $0) }

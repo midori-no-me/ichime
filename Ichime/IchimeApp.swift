@@ -32,9 +32,6 @@ struct IchimeApp: App {
           VideoPlayerController.enableBackgroundMode()
           NotificationCounterWatcher.askBadgePermission()
         }
-        .task {
-          await self.importDatabase()
-        }
     }.onChange(of: self.phase) {
       switch self.phase {
       case .background:
@@ -45,53 +42,6 @@ struct IchimeApp: App {
       await NotificationCounterWatcher.checkCounter()
     }
     .modelContainer(self.container)
-  }
-
-  private func importDatabase() async {
-    guard !self.isImporting else { return }
-    self.isImporting = true
-
-    do {
-      // Запрос к API
-      let url = URL(string: "https://db.dimensi.dev/api/latest")!
-      let (data, _) = try await URLSession.shared.data(from: url)
-      let response = try JSONDecoder().decode(DbServerResponse.self, from: data)
-
-      let lastUpdated = UserDefaults().string(forKey: "lastUpdated") ?? ""
-      let lastTimestamp = Int(lastUpdated) ?? 0
-
-      if lastTimestamp == response.date {
-        self.isImporting = false
-        return
-      }
-
-      let animeImporter = AnimeImporter(modelContainer: container)
-      Task.detached(priority: .high) {
-        do {
-          let dbUrl = "https://db.dimensi.dev\(response.url)"
-          async let result: () = animeImporter.importDatabase(from: dbUrl)
-          for await progress in await animeImporter.currentProgress {
-            await MainActor.run {
-              self.progressText = progress
-            }
-          }
-          try await result
-          await MainActor.run {
-            self.isImporting = false
-            UserDefaults().set(response.date, forKey: "lastUpdated")
-          }
-        }
-        catch {
-          await MainActor.run {
-            self.isImporting = false
-          }
-        }
-      }
-    }
-    catch {
-      self.isImporting = false
-      print("Error fetching database info: \(error)")
-    }
   }
 }
 
