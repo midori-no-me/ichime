@@ -83,7 +83,6 @@ class NotificationCenterViewModel {
 
 struct NotificationCenterView: View {
   @State private var viewModel: NotificationCenterViewModel = .init()
-  @StateObject private var notificationCounter: NotificationCounterWatcher = .init()
 
   var body: some View {
     Group {
@@ -92,7 +91,6 @@ struct NotificationCenterView: View {
         Color.clear.onAppear {
           Task {
             await self.viewModel.performInitialLoading()
-            await self.notificationCounter.checkCounter()
           }
         }
       case .loading:

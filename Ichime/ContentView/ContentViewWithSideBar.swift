@@ -3,7 +3,6 @@ import SwiftData
 import SwiftUI
 
 struct ContentViewWithSideBar: View {
-  @StateObject private var notificationCounterWatcher: NotificationCounterWatcher = .init()
   @Environment(\.modelContext) private var modelContext
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
 
@@ -37,7 +36,7 @@ struct ContentViewWithSideBar: View {
 
       Tab(
         "Уведомления",
-        systemImage: self.notificationCounterWatcher.counter == 0 ? "bell" : "bell.badge",
+        systemImage: "bell",
         value: .notifications
       ) {
         NavigationStack {
