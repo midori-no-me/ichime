@@ -28,13 +28,14 @@ targets:
     platform: [tvOS]
     deploymentTarget:
       tvOS: "18.0"
+    scheme:
+      configVariants:
     sources:
       - path: Ichime
       - path: Settings.bundle
     info:
       path: Ichime/Info.plist
       properties:
-        BGTaskSchedulerPermittedIdentifiers: [dev.midorinome.ichime.background-tasks]
         CFBundleShortVersionString: $(APP_VERSION)
         CFBundleURLTypes:
           - CFBundleTypeRole: viewer
@@ -89,6 +90,8 @@ targets:
     supportedDestinations: tvOS
     deploymentTarget:
       tvOS: "18.0"
+    scheme:
+      configVariants:
     sources:
       - path: Ichime/Extensions/ScraperAPI.Types.Episode.swift
       - path: Ichime/DependencyInjection/ServiceLocator.swift
