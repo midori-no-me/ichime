@@ -15,6 +15,8 @@ options:
 packages:
   Anime365ApiClient:
     path: ./Anime365ApiClient
+  JikanApiClient:
+    path: ./JikanApiClient
   ScraperAPI:
     path: ./ScraperAPI
   ShikimoriApiClient:
@@ -64,6 +66,7 @@ targets:
     dependencies:
       - package: DITranquillity
       - package: Anime365ApiClient
+      - package: JikanApiClient
       - package: ScraperAPI
       - package: ShikimoriApiClient
       - target: TopShelf_tvOS

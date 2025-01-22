@@ -67,4 +67,12 @@ enum ServiceLocator {
   static var shikimoriBaseUrl: URL {
     URL(string: "https://shikimori.one")!
   }
+
+  static var jikanUserAgent: String {
+    "Ichime"
+  }
+
+  static var jikanBaseUrl: URL {
+    URL(string: "https://api.jikan.moe/v4")!
+  }
 }

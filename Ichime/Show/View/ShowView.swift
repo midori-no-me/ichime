@@ -325,7 +325,7 @@ private struct ShowActionButtons: View {
     VStack(alignment: .leading, spacing: 10) {
       HStack(alignment: .center, spacing: self.SPACING_BETWEEN_BUTTONS) {
         NavigationLink(
-          destination: EpisodeListView(episodePreviews: self.show.episodePreviews)
+          destination: EpisodeListView(showId: self.show.id)
         ) {
           Label(
             "Смотреть",

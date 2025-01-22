@@ -4,7 +4,7 @@ import SwiftUI
 typealias GroupedTranslation = [(key: Translation.CompositeType, value: [Translation])]
 
 @Observable
-class EpisodeViewModel {
+private class EpisodeViewModel {
   enum State {
     case idle
     case loading

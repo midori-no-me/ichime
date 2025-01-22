@@ -1,6 +1,7 @@
 import Anime365ApiClient
 import DITranquillity
 import Foundation
+import JikanApiClient
 import ScraperAPI
 import ShikimoriApiClient
 import SwiftData
@@ -82,7 +83,18 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
+      JikanApiClient(
+        baseUrl: ServiceLocator.jikanBaseUrl,
+        userAgent: ServiceLocator.jikanUserAgent
+      )
+    }
+
+    container.register {
       ShowService(anime365ApiClient: $0, shikimoriApiClient: $1)
+    }
+
+    container.register {
+      EpisodeService(anime365ApiClient: $0, jikanApiClient: $1)
     }
 
     if !container.makeGraph().checkIsValid() {
