@@ -31,38 +31,14 @@ targets:
     deploymentTarget:
       tvOS: "18.0"
     scheme:
-      configVariants:
+      configVariants: # Костыль для того, чтобы в Xcode автоматически создавалась схема этого таргета
     sources:
       - path: Ichime
-      - path: Settings.bundle
-    info:
-      path: Ichime/Info.plist
-      properties:
-        CFBundleShortVersionString: $(APP_VERSION)
-        CFBundleURLTypes:
-          - CFBundleTypeRole: viewer
-            CFBundleURLName: $(PRODUCT_BUNDLE_IDENTIFIER).TopShelfURL
-            CFBundleURLSchemes: [ichime-top-shelf]
-        CFBundleVersion: $(APP_VERSION)
-        LSApplicationCategoryType: public.app-category.entertainment
-        UIBackgroundModes:
-          - audio
-          - processing
-          - fetch
-        UILaunchScreen: {}
-        UISupportedInterfaceOrientations~ipad:
-          - UIInterfaceOrientationPortrait
-          - UIInterfaceOrientationPortraitUpsideDown
-          - UIInterfaceOrientationLandscapeLeft
-          - UIInterfaceOrientationLandscapeRight
-        UISupportedInterfaceOrientations~iphone:
-          - UIInterfaceOrientationPortrait
-          - UIInterfaceOrientationLandscapeLeft
-          - UIInterfaceOrientationLandscapeRight
+      - path: Settings.bundle # Явно добавляем папку Settings.bundle в билд таргета, чтобы наше приложение отобразилось в системных настройках
     entitlements:
       path: Ichime/Ichime.entitlements
       properties:
-        com.apple.security.application-groups: [group.dev.midorinome.ichime.group]
+        com.apple.security.application-groups: [group.dev.midorinome.ichime.group] # Application Groups нужны для расшаренных UserDefaults между основным приложением и Top Shelf
     dependencies:
       - package: DITranquillity
       - package: Anime365ApiClient
@@ -73,28 +49,14 @@ targets:
         destinationFilters: [tvOS]
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime
-        MARKETING_VERSION: $(APP_VERSION)
-        CURRENT_PROJECT_VERSION: 1
-        DEVELOPMENT_TEAM: YBBAN7R28K
-        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.entertainment
-      configs:
-        Release:
-          DEBUG_MODE: NO
-          PRODUCT_NAME: $(APP_NAME)
-          INFOPLIST_KEY_CFBundleDisplayName: $(APP_NAME)
-        Debug:
-          DEBUG_MODE: YES
-          PRODUCT_NAME: $(APP_NAME) (dev)
-          INFOPLIST_KEY_CFBundleDisplayName: $(APP_NAME) (dev)
+        GENERATE_INFOPLIST_FILE: "YES" # Так как мы свой Info.plist пока не используем, то просим Xcode генерировать Info.plist автоматически, а все параметры добавляем через INFOPLIST_KEY_*
+        PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime # Bundle ID этого таргета
   TopShelf:
     type: app-extension
     platform: [tvOS]
     supportedDestinations: tvOS
     deploymentTarget:
       tvOS: "18.0"
-    scheme:
-      configVariants:
     sources:
       - path: Ichime/Extensions/ScraperAPI.Types.Episode.swift
       - path: Ichime/DependencyInjection/ServiceLocator.swift
@@ -102,34 +64,29 @@ targets:
     info:
       path: TopShelf/Info.plist
       properties:
-        CFBundleShortVersionString: $(APP_VERSION)
-        CFBundleVersion: $(APP_VERSION)
-        CFBundleDisplayName: TopShelf
-        UIRequiredDeviceCapabilities:
-          - arm64
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION) # Техническая версия приложения
+        CFBundleShortVersionString: $(MARKETING_VERSION) # Человекочитабельная версия приложения
         NSExtension:
-          NSExtensionPointIdentifier: com.apple.tv-top-shelf
-          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ContentProvider
+          NSExtensionPointIdentifier: com.apple.tv-top-shelf # Тип экстеншена - Top Shelf
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ContentProvider # Класс, являющийся точкой входа в экстеншен
     entitlements:
       path: TopShelf/TopShelf.entitlements
       properties:
-        com.apple.security.application-groups: [group.dev.midorinome.ichime.group]
+        com.apple.security.application-groups: [group.dev.midorinome.ichime.group] # Application Groups нужны для расшаренных UserDefaults между основным приложением и Top Shelf
     dependencies:
       - package: Anime365ApiClient
       - package: ScraperAPI
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime.TopShelf
-        MARKETING_VERSION: $(APP_VERSION)
-        CURRENT_PROJECT_VERSION: 1
-        DEVELOPMENT_TEAM: YBBAN7R28K
-      configs:
-        Release:
-          DEBUG_MODE: NO
-        Debug:
-          DEBUG_MODE: YES
-
+        PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime.TopShelf # Bundle ID этого таргета
 settings:
-  SWIFT_VERSION: "5"
-  APP_VERSION: "1.8.0"
-  APP_NAME: Ichime
+  base:
+    CURRENT_PROJECT_VERSION: 108000 # Техническая версия приложения
+    DEVELOPMENT_TEAM: YBBAN7R28K # ID аккаунта команды Apple Developer
+    INFOPLIST_KEY_CFBundleDisplayName: Ichime # Человекочитабельное название приложения. When GENERATE_INFOPLIST_FILE is enabled, sets the value of the CFBundleDisplayName key in the Info.plist file to the value of this build setting.
+    INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.entertainment # К какой категории относится приложение. When GENERATE_INFOPLIST_FILE is enabled, sets the value of the LSApplicationCategoryType key in the Info.plist file to the value of this build setting.
+    MARKETING_VERSION: "1.8.0" # Человекочитабельная версия приложения
+    SWIFT_VERSION: "5" # Какую версию Swift использовать для компиляции приложения
+  configs:
+    Debug:
+      INFOPLIST_KEY_CFBundleDisplayName: Ichime (dev) # Человекочитабельное название приложения. When GENERATE_INFOPLIST_FILE is enabled, sets the value of the CFBundleDisplayName key in the Info.plist file to the value of this build setting.
