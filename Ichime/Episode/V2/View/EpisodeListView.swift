@@ -86,6 +86,8 @@ private struct EpisodePreviews: View {
 }
 
 private struct EpisodePreviewRow: View {
+  @FocusState private var isLinkFocused: Bool
+
   let episodeInfo: EpisodeInfo
 
   var body: some View {
@@ -112,21 +114,18 @@ private struct EpisodePreviewRow: View {
         Spacer()
 
         Group {
-          if let myAnimeListScore = episodeInfo.myAnimeListScore {
+          if self.isLinkFocused, let myAnimeListScore = episodeInfo.myAnimeListScore {
             Text("★ \(myAnimeListScore.formatted(.number.precision(.fractionLength(2))))")
           }
           else {
-            Text("")
+            Text(formatRelativeDate(self.episodeInfo.officiallyAiredAt ?? self.episodeInfo.uploadedAt))
           }
         }
+        .frame(minWidth: 300, alignment: .trailing)
         .foregroundStyle(.secondary)
-        .frame(minWidth: 120, alignment: .leading)
-
-        Text(formatRelativeDate(self.episodeInfo.officiallyAiredAt ?? self.episodeInfo.uploadedAt))
-          .foregroundStyle(.secondary)
-          .frame(minWidth: 300, alignment: .trailing)
       }
     }
+    .focused(self.$isLinkFocused)
   }
 
   private func formatTitleLine() -> String {
