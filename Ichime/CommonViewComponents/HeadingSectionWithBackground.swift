@@ -53,10 +53,17 @@ struct HeadingSectionWithBackground<Content: View>: View {
           height: backgroundImageHeight,
           alignment: .center
         )
-        .overlay(.thickMaterial)
+        .opacity(0.25)
+        #if os(tvOS)
+          // На tvOS материалы исчезают при открытии sheet или нажатии на NavigationLink, из-за этого при транзишене исчезает блюр и становится видна заблюренная фоновая картинка. Поэтому используем блюр, а не материалы.
+          .blur(radius: 100)
+        #else
+          .overlay(.thickMaterial)
+        #endif
         .clipped()
         .offset(y: imageOffset)
       }
+      .ignoresSafeArea()
     }
   }
 }
