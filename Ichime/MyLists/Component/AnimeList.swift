@@ -41,7 +41,9 @@ private struct MyListEntry: View {
       stringComponents.append(String(totalEpisodes))
     }
     else {
-      stringComponents.append("??")
+      stringComponents.append(
+        EpisodeService.formatUnknownEpisodeCountBasedOnAlreadyAiredEpisodeCount(self.currentEpisodeProgress)
+      )
     }
 
     return stringComponents.joined(separator: " / ")

@@ -13,6 +13,23 @@ struct EpisodeService {
     self.jikanApiClient = jikanApiClient
   }
 
+  /// Форматирует неизвестное количество эпизодов
+  ///
+  /// Полезно для ситуаций, когда общее количество эпизодов у сериала не известно.
+  /// Принимает число (количество уже вышедших или уже просмотренных эпизодов) и возвращает количество вопросиков такой же длины.
+  ///
+  /// Примеры:
+  ///
+  /// - Если передать 5, то вернется  "??"
+  /// - Если передать 55, то вернется  "??"
+  /// - Если передать 555, то вернется  "???"
+  /// - Если передать 5555, то вернется  "????"
+  static func formatUnknownEpisodeCountBasedOnAlreadyAiredEpisodeCount(_ airedEpisodes: Int) -> String {
+    let charactersLength = String(airedEpisodes).count
+
+    return String(repeating: "?", count: max(2, charactersLength))
+  }
+
   private static func mapAnime365EpisodesToJikanEpisodes(
     anime365EpisodePreviews: [Anime365ApiSeries.EpisodePreview],
     jikanEpisodes: [Episode]

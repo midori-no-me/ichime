@@ -516,7 +516,8 @@ private struct EpisodesShowProperty: View {
     let latestEpisodeNumber = self.getLatestEpisodeNumber()
 
     if self.isOngoing {
-      return "Вышло \(latestEpisodeNumber.formatted()) из \(totalEpisodes?.formatted() ?? "???")"
+      return
+        "Вышло \(latestEpisodeNumber.formatted()) из \(totalEpisodes?.formatted() ?? EpisodeService.formatUnknownEpisodeCountBasedOnAlreadyAiredEpisodeCount(Int(latestEpisodeNumber)))"
     }
 
     if let totalEpisodes {
