@@ -48,3 +48,40 @@ public func formatTime(_ releaseDate: Date) -> String {
 
   return relativeDateFormatter.string(from: releaseDate)
 }
+
+/// Примеры:
+///
+/// Соседние с текущим дни:
+///
+/// - Вчера в 17:00
+/// - Сегодня в 17:00
+/// - Завтра в 17:00
+///
+/// Дата в этом году:
+///
+/// - Четверг, 18 января в 17:00
+///
+/// Дата в году, номер которого отличается от текущего:
+///
+/// - Четверг, 18 января 2024 г. в 17:00
+func formatRelativeDateWithWeekdayNameAndDateAndTime(_ date: Date) -> String {
+  let calendar = Calendar.current
+  let now = Date.now
+  let formatter = DateFormatter()
+
+  if calendar.isDateInYesterday(date) || calendar.isDateInToday(date) || calendar.isDateInTomorrow(date) {
+    // Пример: Завтра в 17:00
+    formatter.dateStyle = .full
+    formatter.timeStyle = .short
+    formatter.doesRelativeDateFormatting = true
+  }
+  else if calendar.isDate(date, equalTo: now, toGranularity: .year) {
+    // Пример: Четверг, 18 января в 17:00
+    formatter.setLocalizedDateFormatFromTemplate("EEEE d MMMM HH mm")
+  }
+  else {
+    // Пример: Четверг, 18 января 2024 г. в 17:00
+    formatter.setLocalizedDateFormatFromTemplate("EEEE d MMMM yyyy HH mm")
+  }
+  return formatter.string(from: date)
+}

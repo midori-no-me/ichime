@@ -20,11 +20,11 @@ struct ShowService {
       )
     )
 
-    async let shikimoriAnimeFuture = shikimoriApiClient.getAnimeById(
+    async let shikimoriAnimeFuture = self.shikimoriApiClient.getAnimeById(
       animeId: anime365Series.myAnimeListId
     )
 
-    async let shikimoriScreenshotsFuture = shikimoriApiClient.getAnimeScreenshotsById(
+    async let shikimoriScreenshotsFuture = self.shikimoriApiClient.getAnimeScreenshotsById(
       animeId: anime365Series.myAnimeListId
     )
 

@@ -39,6 +39,7 @@ private class EpisodeListViewModel {
 
 struct EpisodeListView: View {
   var showId: Int
+  var nextEpisodeReleasesAt: Date?
 
   @State private var viewModel: EpisodeListViewModel = .init()
 
@@ -67,18 +68,30 @@ struct EpisodeListView: View {
       .focusable()
 
     case let .loaded(episodeInfos):
-      EpisodePreviews(episodeInfos: episodeInfos)
+      EpisodePreviews(
+        episodeInfos: episodeInfos,
+        nextEpisodeReleasesAt: self.nextEpisodeReleasesAt
+      )
     }
   }
 }
 
 private struct EpisodePreviews: View {
   let episodeInfos: [EpisodeInfo]
+  let nextEpisodeReleasesAt: Date?
 
   var body: some View {
     List {
-      ForEach(self.episodeInfos, id: \.anime365Id) { episodeInfo in
-        EpisodePreviewRow(episodeInfo: episodeInfo)
+      Section {
+        ForEach(self.episodeInfos, id: \.anime365Id) { episodeInfo in
+          EpisodePreviewRow(episodeInfo: episodeInfo)
+        }
+      } footer: {
+        if let nextEpisodeReleasesAt {
+          Text(
+            "Следующая серия: \(formatRelativeDateWithWeekdayNameAndDateAndTime(nextEpisodeReleasesAt).lowercased())."
+          )
+        }
       }
     }
     .listStyle(.grouped)

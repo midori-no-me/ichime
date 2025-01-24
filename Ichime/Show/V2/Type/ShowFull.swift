@@ -87,6 +87,7 @@ struct ShowFull {
   let myAnimeListId: Int
   let studios: [Studio]
   let screenshots: [URL]
+  let nextEpisodeReleasesAt: Date?
 
   static func create(
     anime365Series: Anime365ApiSeries,
@@ -155,7 +156,8 @@ struct ShowFull {
       },
       screenshots: shikimoriScreenshots.map { screenshot in
         URL(string: shikimoriBaseUrl.absoluteString + screenshot.original)!
-      }
+      },
+      nextEpisodeReleasesAt: shikimoriAnime.next_episode_at
     )
   }
 }

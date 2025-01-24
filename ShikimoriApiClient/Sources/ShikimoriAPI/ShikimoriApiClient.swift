@@ -70,8 +70,11 @@ public class ShikimoriApiClient {
     }
 
     do {
-      let apiResponse = try JSONDecoder()
-        .decode(T.self, from: data)
+      let jsonDecoder = JSONDecoder()
+
+      jsonDecoder.dateDecodingStrategy = .iso8601WithFractionalSeconds
+
+      let apiResponse = try jsonDecoder.decode(T.self, from: data)
 
       return apiResponse
     }
@@ -90,5 +93,33 @@ public class ShikimoriApiClient {
 
       throw ShikimoriApiClientError.canNotDecodeResponseJson
     }
+  }
+}
+
+extension Formatter {
+  fileprivate static var customISO8601DateFormatter: ISO8601DateFormatter = {
+    let formatter = ISO8601DateFormatter()
+
+    formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
+    return formatter
+  }()
+}
+
+extension JSONDecoder.DateDecodingStrategy {
+  fileprivate static var iso8601WithFractionalSeconds = custom { decoder in
+    let dateString = try decoder.singleValueContainer().decode(String.self)
+    let customIsoFormatter = Formatter.customISO8601DateFormatter
+
+    if let date = customIsoFormatter.date(from: dateString) {
+      return date
+    }
+
+    throw DecodingError.dataCorrupted(
+      DecodingError.Context(
+        codingPath: decoder.codingPath,
+        debugDescription: "Invalid date"
+      )
+    )
   }
 }

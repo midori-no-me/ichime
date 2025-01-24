@@ -32,4 +32,5 @@ public struct AnimeV1: Decodable {
   public let released_on: String?
   public let studios: [Studio]
   public let screenshots: [Screenshot]
+  public let next_episode_at: Date?
 }

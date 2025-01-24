@@ -329,7 +329,7 @@ private struct ShowActionButtons: View {
       HStack(alignment: .center, spacing: self.SPACING_BETWEEN_BUTTONS) {
         if !self.show.episodePreviews.isEmpty {
           NavigationLink(
-            destination: EpisodeListView(showId: self.show.id)
+            destination: EpisodeListView(showId: self.show.id, nextEpisodeReleasesAt: self.show.nextEpisodeReleasesAt)
           ) {
             Label(
               "Смотреть",
@@ -377,15 +377,12 @@ private struct ShowActionButtons: View {
       .focusSection()
 
       Group {
-        if !self.show.episodePreviews.isEmpty && self.show.isOngoing,
-          let episodeReleaseSchedule = guessEpisodeReleaseWeekdayAndTime(in: show.episodePreviews)
-        {
+        if let nextEpisodeReleasesAt = self.show.nextEpisodeReleasesAt {
           Text(
-            "Обычно новые серии выходят по \(episodeReleaseSchedule.0), примерно в \(episodeReleaseSchedule.1)."
+            "Следующая серия: \(formatRelativeDateWithWeekdayNameAndDateAndTime(nextEpisodeReleasesAt).lowercased())."
           )
         }
-
-        if self.show.episodePreviews.isEmpty {
+        else if self.show.episodePreviews.isEmpty {
           Text(
             "У этого тайтла пока что нет загруженных серий."
           )
