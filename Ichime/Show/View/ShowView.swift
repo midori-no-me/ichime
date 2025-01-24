@@ -327,28 +327,33 @@ private struct ShowActionButtons: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
       HStack(alignment: .center, spacing: self.SPACING_BETWEEN_BUTTONS) {
-        NavigationLink(
-          destination: EpisodeListView(showId: self.show.id)
-        ) {
-          Label(
-            "Смотреть",
-            systemImage: self.show.episodePreviews.isEmpty ? "play.slash.fill" : "play.fill"
-          )
+        if !self.show.episodePreviews.isEmpty {
+          NavigationLink(
+            destination: EpisodeListView(showId: self.show.id)
+          ) {
+            Label(
+              "Смотреть",
+              systemImage: self.show.episodePreviews.isEmpty ? "play.slash.fill" : "play.fill"
+            )
+            .font(.headline)
+            .fontWeight(.semibold)
+            .padding(.vertical, 20)
+            .padding(.horizontal, 40)
+          }
+          .buttonStyle(.card)
         }
-        .buttonStyle(.bordered)
-        .disabled(self.show.episodePreviews.isEmpty)
 
-        if self.viewModel.statusReady {
-          Button(action: {
-            if self.isInMyList {
-              self.showEdit = true
+        Button(action: {
+          if self.isInMyList {
+            self.showEdit = true
+          }
+          else {
+            Task {
+              await self.viewModel.addToList()
             }
-            else {
-              Task {
-                await self.viewModel.addToList()
-              }
-            }
-          }) {
+          }
+        }) {
+          Group {
             if self.isInMyList {
               Label(
                 self.viewModel.showRateStatus.statusDisplayName,
@@ -362,8 +367,12 @@ private struct ShowActionButtons: View {
               )
             }
           }
-          .buttonStyle(.bordered)
+          .font(.headline)
+          .fontWeight(.semibold)
+          .padding(.vertical, 20)
+          .padding(.horizontal, 40)
         }
+        .buttonStyle(.card)
       }
       .focusSection()
 
