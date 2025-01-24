@@ -14,19 +14,27 @@ struct ShowService {
   }
 
   func getFullShow(showId: Int) async throws -> ShowFull {
-    let anime365ApiResponse = try await anime365ApiClient.sendApiRequest(
+    let anime365Series = try await anime365ApiClient.sendApiRequest(
       GetSeriesRequest(
         seriesId: showId
       )
     )
 
-    let shikimoriApiResponse = try await shikimoriApiClient.getAnimeById(
-      animeId: anime365ApiResponse.myAnimeListId
+    async let shikimoriAnimeFuture = shikimoriApiClient.getAnimeById(
+      animeId: anime365Series.myAnimeListId
     )
 
+    async let shikimoriScreenshotsFuture = shikimoriApiClient.getAnimeScreenshotsById(
+      animeId: anime365Series.myAnimeListId
+    )
+
+    let shikimoriAnime = try await shikimoriAnimeFuture
+    let shikimoriScreenshots = (try? await shikimoriScreenshotsFuture) ?? []
+
     return ShowFull.create(
-      anime365Series: anime365ApiResponse,
-      shikimoriAnime: shikimoriApiResponse,
+      anime365Series: anime365Series,
+      shikimoriAnime: shikimoriAnime,
+      shikimoriScreenshots: shikimoriScreenshots,
       shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
     )
   }

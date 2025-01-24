@@ -9,4 +9,15 @@ extension ShikimoriApiClient {
       requestBody: nil
     )
   }
+
+  public func getAnimeScreenshotsById(
+    animeId: Int
+  ) async throws -> [AnimeV1.Screenshot] {
+    try await sendRequest(
+      httpMethod: .GET,
+      endpoint: "/api/animes/\(animeId)/screenshots",
+      queryItems: [],
+      requestBody: nil
+    )
+  }
 }

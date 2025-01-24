@@ -91,6 +91,7 @@ struct ShowFull {
   static func create(
     anime365Series: Anime365ApiSeries,
     shikimoriAnime: AnimeV1,
+    shikimoriScreenshots: [AnimeV1.Screenshot],
     shikimoriBaseUrl: URL
   ) -> ShowFull {
     let score = Float(anime365Series.myAnimeListScore) ?? 0
@@ -152,7 +153,7 @@ struct ShowFull {
           image: imageUrl
         )
       },
-      screenshots: shikimoriAnime.screenshots.map { screenshot in
+      screenshots: shikimoriScreenshots.map { screenshot in
         URL(string: shikimoriBaseUrl.absoluteString + screenshot.original)!
       }
     )

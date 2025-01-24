@@ -733,7 +733,7 @@ private struct ImagePlaceholder: View {
 }
 
 private struct Screenshots: View {
-  private static let HEIGHT: CGFloat = 300
+  private static let SPACING: CGFloat = 64
 
   let screenshots: [URL]
 
@@ -746,10 +746,10 @@ private struct Screenshots: View {
           .foregroundStyle(.secondary)
       ) {
         ScrollView(.horizontal) {
-          LazyHStack(alignment: .top) {
+          LazyHStack(alignment: .top, spacing: Self.SPACING) {
             ForEach(self.screenshots, id: \.self) { screenshot in
               Screenshot(url: screenshot)
-                .frame(width: 16 / 9 * Self.HEIGHT, height: Self.HEIGHT)
+                .containerRelativeFrame(.horizontal, count: 3, span: 1, spacing: Self.SPACING)
             }
           }
         }
@@ -784,6 +784,7 @@ private struct Screenshot: View {
           Color.clear
         }
       }
+      .aspectRatio(16 / 9, contentMode: .fit)
       .frame(
         maxWidth: .infinity,
         maxHeight: .infinity,
