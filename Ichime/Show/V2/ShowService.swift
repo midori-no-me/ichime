@@ -3,11 +3,11 @@ import ShikimoriApiClient
 
 struct ShowService {
   private let anime365ApiClient: Anime365ApiClient
-  private let shikimoriApiClient: ShikimoriApiClient
+  private let shikimoriApiClient: ShikimoriApiClient.ApiClient
 
   init(
     anime365ApiClient: Anime365ApiClient,
-    shikimoriApiClient: ShikimoriApiClient
+    shikimoriApiClient: ShikimoriApiClient.ApiClient
   ) {
     self.anime365ApiClient = anime365ApiClient
     self.shikimoriApiClient = shikimoriApiClient

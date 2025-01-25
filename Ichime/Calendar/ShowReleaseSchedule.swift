@@ -2,7 +2,7 @@ import Foundation
 import ShikimoriApiClient
 
 struct ShowReleaseSchedule {
-  private var shikimoriApiClient: ShikimoriApiClient = ApplicationDependency.container.resolve()
+  private var shikimoriApiClient: ShikimoriApiClient.ApiClient = ApplicationDependency.container.resolve()
   private var shikimoriBaseUrl: URL = ServiceLocator.shikimoriBaseUrl
 
   func getSchedule() async throws -> [GroupedShowsFromCalendar] {

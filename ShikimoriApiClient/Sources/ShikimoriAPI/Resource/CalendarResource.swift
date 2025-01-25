@@ -1,4 +1,4 @@
-extension ShikimoriApiClient {
+extension ApiClient {
   public func getCalendar() async throws -> [CalendarEntry] {
     try await sendRequest(
       httpMethod: .GET,

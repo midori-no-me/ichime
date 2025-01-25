@@ -1,4 +1,4 @@
-extension ShikimoriApiClient {
+extension ApiClient {
   public func getAnimeById(
     animeId: Int
   ) async throws -> AnimeV1 {

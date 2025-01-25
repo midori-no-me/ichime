@@ -76,7 +76,7 @@ class ApplicationDependency: DIFramework {
     container.register { Anime365Client(apiClient: $0) }
 
     container.register {
-      ShikimoriApiClient(
+      ShikimoriApiClient.ApiClient(
         baseUrl: ServiceLocator.shikimoriBaseUrl,
         userAgent: ServiceLocator.shikimoriUserAgent
       )

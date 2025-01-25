@@ -8,13 +8,7 @@ enum HttpMethod: String {
   case DELETE
 }
 
-public enum ShikimoriApiClientError: Error {
-  case canNotDecodeResponseJson
-  case canNotEncodeRequestJson
-  case requestFailed
-}
-
-public class ShikimoriApiClient {
+public class ApiClient {
   public let baseUrl: URL
 
   private let userAgent: String
@@ -55,7 +49,7 @@ public class ShikimoriApiClient {
         httpRequest.httpBody = requestBodyJson
       }
       catch {
-        throw ShikimoriApiClientError.canNotEncodeRequestJson
+        throw ApiClientError.canNotEncodeRequestJson
       }
     }
 
@@ -91,7 +85,7 @@ public class ShikimoriApiClient {
         print("[ShikimoriAPIV1Client] Unable to convert response body to a string")
       }
 
-      throw ShikimoriApiClientError.canNotDecodeResponseJson
+      throw ApiClientError.canNotDecodeResponseJson
     }
   }
 }

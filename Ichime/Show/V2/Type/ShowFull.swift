@@ -91,8 +91,8 @@ struct ShowFull {
 
   static func create(
     anime365Series: Anime365ApiSeries,
-    shikimoriAnime: AnimeV1,
-    shikimoriScreenshots: [AnimeV1.Screenshot],
+    shikimoriAnime: ShikimoriApiClient.AnimeV1,
+    shikimoriScreenshots: [ShikimoriApiClient.AnimeV1.Screenshot],
     shikimoriBaseUrl: URL
   ) -> ShowFull {
     let score = Float(anime365Series.myAnimeListScore) ?? 0
