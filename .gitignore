@@ -1,11 +1,11 @@
+/.github/secrets
 /.idea/
 /.vscode/
 /Ichime.xcodeproj/
-/TopShelf.xcodeproj/
 .DS_Store
 *.app
 *.ipa
 *.entitlements
 *.plist
+*.xcscheme
 !Settings.bundle/Root.plist
-.github/secrets
