@@ -90,7 +90,7 @@ struct ShowFull {
   let nextEpisodeReleasesAt: Date?
 
   static func create(
-    anime365Series: Anime365ApiSeries,
+    anime365Series: Anime365ApiClient.Series,
     shikimoriAnime: ShikimoriApiClient.AnimeV1,
     shikimoriScreenshots: [ShikimoriApiClient.AnimeV1.Screenshot],
     shikimoriBaseUrl: URL
@@ -132,9 +132,9 @@ struct ShowFull {
           id: episode.id,
           title: episode.episodeTitle.isEmpty ? nil : episode.episodeTitle,
           typeAndNumber: episode.episodeFull,
-          uploadDate: episode
-            .firstUploadedDateTime == "2000-01-01 00:00:00"
-            ? nil : convertApiDateStringToDate(string: episode.firstUploadedDateTime)!,
+          uploadDate: Anime365ApiClient.ApiDateDecoder.isEmptyDate(episode.firstUploadedDateTime)
+            ? nil
+            : episode.firstUploadedDateTime,
           type: EpisodeType.createFromApiType(apiType: episode.episodeType),
           episodeNumber: Float(episode.episodeInt),
           isUnderProcessing: episode.isFirstUploaded == 0

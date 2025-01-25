@@ -100,7 +100,7 @@ struct Translation: Hashable, Identifiable {
   let isHidden: Bool
 
   static func createFromApiResponse(
-    translation: Anime365ApiTranslation
+    translation: Anime365ApiClient.Translation
   ) -> Translation {
     var sourceVideoQuality = SourceVideoQuality.other
 
@@ -140,11 +140,14 @@ struct Translation: Hashable, Identifiable {
     }
 
     let activeTime =
-      translation.activeDateTime == "2000-01-01 00:00:00"
+      Anime365ApiClient.ApiDateDecoder.isEmptyDate(translation.activeDateTime)
       ? nil
-      : convertApiDateStringToDate(string: translation.activeDateTime)!
+      : translation.activeDateTime
 
-    let addedTime = convertApiDateStringToDate(string: translation.addedDateTime)
+    let addedTime =
+      Anime365ApiClient.ApiDateDecoder.isEmptyDate(translation.addedDateTime)
+      ? nil
+      : translation.addedDateTime
 
     var addedTooLongAgo = true
 

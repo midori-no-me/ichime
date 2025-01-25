@@ -1,33 +1,17 @@
 import Anime365ApiClient
 import Foundation
 
-func convertApiDateStringToDate(string: String, withFormat format: String = "yyyy-MM-dd HH:mm:ss")
-  -> Date?
-{
-  let dateFormatter = DateFormatter()
-
-  dateFormatter.dateFormat = format
-
-  let date = dateFormatter.date(from: string)
-
-  return date
-}
-
 class Anime365Client {
-  private let apiClient: Anime365ApiClient
+  private let apiClient: Anime365ApiClient.ApiClient
 
   init(
-    apiClient: Anime365ApiClient
+    apiClient: Anime365ApiClient.ApiClient
   ) {
     self.apiClient = apiClient
   }
 
   public func getShow(seriesId: Int) async throws -> Show {
-    let apiResponse = try await apiClient.sendApiRequest(
-      GetSeriesRequest(
-        seriesId: seriesId
-      )
-    )
+    let apiResponse = try await apiClient.getSeries(seriesId: seriesId)
 
     return Show.createFromApiSeries(series: apiResponse)
   }
@@ -38,16 +22,14 @@ class Anime365Client {
   ) async throws -> [Show] {
     let airingSeason = ShowSeasonService().getRelativeSeason(shift: -4)
 
-    let apiResponse = try await apiClient.sendApiRequest(
-      ListSeriesRequest(
-        limit: limit,
-        offset: offset,
-        chips: [
-          "isAiring": "1",
-          "isActive": "1",
-          "yearseason": "\(airingSeason.calendarSeason.getApiName())_\(airingSeason.year)-",
-        ]
-      )
+    let apiResponse = try await apiClient.listSeries(
+      limit: limit,
+      offset: offset,
+      chips: [
+        "isAiring": "1",
+        "isActive": "1",
+        "yearseason": "\(airingSeason.calendarSeason.getApiName())_\(airingSeason.year)-",
+      ]
     )
 
     return apiResponse.map { series in
@@ -59,11 +41,9 @@ class Anime365Client {
     offset: Int,
     limit: Int
   ) async throws -> [Show] {
-    let apiResponse = try await apiClient.sendApiRequest(
-      ListSeriesRequest(
-        limit: limit,
-        offset: offset
-      )
+    let apiResponse = try await apiClient.listSeries(
+      limit: limit,
+      offset: offset
     )
 
     return apiResponse.map { series in
@@ -76,14 +56,12 @@ class Anime365Client {
     limit: Int,
     airingSeason: AiringSeason
   ) async throws -> [Show] {
-    let apiResponse = try await apiClient.sendApiRequest(
-      ListSeriesRequest(
-        limit: limit,
-        offset: offset,
-        chips: [
-          "yearseason": "\(airingSeason.calendarSeason.getApiName())_\(airingSeason.year)"
-        ]
-      )
+    let apiResponse = try await apiClient.listSeries(
+      limit: limit,
+      offset: offset,
+      chips: [
+        "yearseason": "\(airingSeason.calendarSeason.getApiName())_\(airingSeason.year)"
+      ]
     )
 
     return apiResponse.map { series in
@@ -96,17 +74,15 @@ class Anime365Client {
     limit: Int,
     genreIds: [Int]
   ) async throws -> [Show] {
-    let apiResponse = try await apiClient.sendApiRequest(
-      ListSeriesRequest(
-        limit: limit,
-        offset: offset,
-        chips: [
-          "genre@":
-            genreIds
-            .map { genreId in String(genreId) }
-            .joined(separator: ",")
-        ]
-      )
+    let apiResponse = try await apiClient.listSeries(
+      limit: limit,
+      offset: offset,
+      chips: [
+        "genre@":
+          genreIds
+          .map { genreId in String(genreId) }
+          .joined(separator: ",")
+      ]
     )
 
     return apiResponse.map { series in
@@ -117,10 +93,8 @@ class Anime365Client {
   public func getEpisodeTranslations(
     episodeId: Int
   ) async throws -> [Translation] {
-    let apiResponse = try await apiClient.sendApiRequest(
-      GetEpisodeRequest(
-        episodeId: episodeId
-      )
+    let apiResponse = try await apiClient.getEpisode(
+      episodeId: episodeId
     )
 
     return apiResponse.translations.map { translation in
@@ -129,9 +103,10 @@ class Anime365Client {
   }
 
   public func getShowByEpisodeId(episodeId: Int) async throws -> Show {
-    let episodeResponse = try await apiClient.sendApiRequest(
-      GetEpisodeRequest(episodeId: episodeId)
+    let episodeResponse = try await apiClient.getEpisode(
+      episodeId: episodeId
     )
+
     return try await self.getShow(seriesId: episodeResponse.seriesId)
   }
 
@@ -140,12 +115,10 @@ class Anime365Client {
     offset: Int,
     limit: Int
   ) async throws -> [Show] {
-    let apiResponse = try await apiClient.sendApiRequest(
-      ListSeriesRequest(
-        query: searchQuery,
-        limit: limit,
-        offset: offset
-      )
+    let apiResponse = try await apiClient.listSeries(
+      query: searchQuery,
+      limit: limit,
+      offset: offset
     )
 
     return apiResponse.map { series in
@@ -156,10 +129,8 @@ class Anime365Client {
   public func getEpisodeStreamingInfo(
     translationId: Int
   ) async throws -> EpisodeStreamingInfo {
-    let apiResponse = try await apiClient.sendApiRequest(
-      GetTranslationEmbed(
-        translationId: translationId
-      )
+    let apiResponse = try await apiClient.getTranslationEmbed(
+      translationId: translationId
     )
 
     return EpisodeStreamingInfo(apiResponse: apiResponse)

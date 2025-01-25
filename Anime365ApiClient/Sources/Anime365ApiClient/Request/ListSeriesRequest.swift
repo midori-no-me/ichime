@@ -1,30 +1,12 @@
 import Foundation
 
-public struct ListSeriesRequest: Anime365ApiRequest {
-  public typealias ResponseType = [Anime365ApiSeries]
-
-  private let query: String?
-  private let limit: Int?
-  private let offset: Int?
-  private let chips: [String: String]?
-
-  public init(
+extension ApiClient {
+  public func listSeries(
     query: String? = nil,
     limit: Int? = nil,
     offset: Int? = nil,
     chips: [String: String]? = nil
-  ) {
-    self.query = query
-    self.limit = limit
-    self.offset = offset
-    self.chips = chips
-  }
-
-  public func getEndpoint() -> String {
-    "/series"
-  }
-
-  public func getQueryItems() -> [URLQueryItem] {
+  ) async throws -> [Series] {
     var queryItems: [URLQueryItem] = []
 
     if let chips {
@@ -67,6 +49,9 @@ public struct ListSeriesRequest: Anime365ApiRequest {
       )
     }
 
-    return queryItems
+    return try await sendRequest(
+      endpoint: "/series",
+      queryItems: queryItems
+    )
   }
 }

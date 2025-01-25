@@ -2,11 +2,11 @@ import Anime365ApiClient
 import ShikimoriApiClient
 
 struct ShowService {
-  private let anime365ApiClient: Anime365ApiClient
+  private let anime365ApiClient: Anime365ApiClient.ApiClient
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
 
   init(
-    anime365ApiClient: Anime365ApiClient,
+    anime365ApiClient: Anime365ApiClient.ApiClient,
     shikimoriApiClient: ShikimoriApiClient.ApiClient
   ) {
     self.anime365ApiClient = anime365ApiClient
@@ -14,10 +14,8 @@ struct ShowService {
   }
 
   func getFullShow(showId: Int) async throws -> ShowFull {
-    let anime365Series = try await anime365ApiClient.sendApiRequest(
-      GetSeriesRequest(
-        seriesId: showId
-      )
+    let anime365Series = try await anime365ApiClient.getSeries(
+      seriesId: showId
     )
 
     async let shikimoriAnimeFuture = self.shikimoriApiClient.getAnimeById(

@@ -21,6 +21,5 @@ let package = Package(
     .target(
       name: "Anime365ApiClient"
     )
-  ],
-  swiftLanguageModes: [.v5]
+  ]
 )

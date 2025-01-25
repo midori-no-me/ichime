@@ -15,14 +15,14 @@ public struct EpisodeInfo {
   public let uploadedAt: Date
 
   static func createValid(
-    anime365EpisodePreview: Anime365ApiSeries.EpisodePreview,
+    anime365EpisodePreview: Anime365ApiClient.Series.EpisodePreview,
     jikanEpisode: JikanApiClient.Episode?
   ) -> Self? {
     if anime365EpisodePreview.isActive != 1 || anime365EpisodePreview.isFirstUploaded != 1 {
       return nil
     }
 
-    if anime365EpisodePreview.firstUploadedDateTime == "2000-01-01 00:00:00" {
+    if Anime365ApiClient.ApiDateDecoder.isEmptyDate(anime365EpisodePreview.firstUploadedDateTime) {
       return nil
     }
 
@@ -62,10 +62,6 @@ public struct EpisodeInfo {
       }
     }
 
-    guard let uploadedAt = convertApiDateStringToDate(string: anime365EpisodePreview.firstUploadedDateTime) else {
-      return nil
-    }
-
     return Self(
       anime365Id: anime365EpisodePreview.id,
       episodeNumber: isNonStandardEpisodeUploadedToAnime365 ? nil : anime365EpisodeNumber,
@@ -76,7 +72,7 @@ public struct EpisodeInfo {
       isFiller: isFiller,
       isRecap: isRecap,
       isTrailer: isTrailer,
-      uploadedAt: uploadedAt
+      uploadedAt: anime365EpisodePreview.firstUploadedDateTime
     )
   }
 }

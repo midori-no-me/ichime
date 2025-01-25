@@ -1,4 +1,4 @@
-public struct Anime365TranslationEmbed: Decodable {
+public struct TranslationEmbed: Decodable {
   public struct Download: Decodable {
     public let height: Int
     public let url: String

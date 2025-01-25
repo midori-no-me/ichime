@@ -65,7 +65,7 @@ struct Show: Hashable, Identifiable {
   let episodePreviews: [EpisodePreview]
 
   static func createFromApiSeries(
-    series: Anime365ApiSeries
+    series: Anime365ApiClient.Series
   ) -> Show {
     let score = Float(series.myAnimeListScore) ?? 0
 
@@ -105,9 +105,9 @@ struct Show: Hashable, Identifiable {
           id: episode.id,
           title: episode.episodeTitle.isEmpty ? nil : episode.episodeTitle,
           typeAndNumber: episode.episodeFull,
-          uploadDate: episode
-            .firstUploadedDateTime == "2000-01-01 00:00:00"
-            ? nil : convertApiDateStringToDate(string: episode.firstUploadedDateTime)!,
+          uploadDate: Anime365ApiClient.ApiDateDecoder.isEmptyDate(episode.firstUploadedDateTime)
+            ? nil
+            : episode.firstUploadedDateTime,
           type: EpisodeType.createFromApiType(apiType: episode.episodeType),
           episodeNumber: Float(episode.episodeInt),
           isUnderProcessing: episode.isFirstUploaded == 0

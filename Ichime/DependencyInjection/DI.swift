@@ -62,7 +62,7 @@ class ApplicationDependency: DIFramework {
       .lifetime(.single)
 
     container.register {
-      Anime365ApiClient(
+      Anime365ApiClient.ApiClient(
         baseURL: ServiceLocator.websiteBaseUrl,
         userAgent: ServiceLocator.userAgent,
         cookieStorage: $0

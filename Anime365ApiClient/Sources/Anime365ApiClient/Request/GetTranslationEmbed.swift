@@ -1,21 +1,12 @@
 import Foundation
 
-public struct GetTranslationEmbed: Anime365ApiRequest {
-  public typealias ResponseType = Anime365TranslationEmbed
-
-  private let translationId: Int
-
-  public init(
+extension ApiClient {
+  public func getTranslationEmbed(
     translationId: Int
-  ) {
-    self.translationId = translationId
-  }
-
-  public func getEndpoint() -> String {
-    "/translations/embed/\(self.translationId)"
-  }
-
-  public func getQueryItems() -> [URLQueryItem] {
-    []
+  ) async throws -> TranslationEmbed {
+    try await sendRequest(
+      endpoint: "/translations/embed/\(translationId)",
+      queryItems: []
+    )
   }
 }

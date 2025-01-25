@@ -1,4 +1,6 @@
-public struct Anime365ApiSeries: Decodable {
+import Foundation
+
+public struct Series: Decodable {
   public struct Titles: Decodable {
     public let ru: String?
     public let romaji: String?
@@ -15,7 +17,6 @@ public struct Anime365ApiSeries: Decodable {
   public struct Description: Decodable {
     public let source: String
     public let value: String
-    public let updatedDateTime: String
   }
 
   public struct EpisodePreview: Decodable {
@@ -24,7 +25,7 @@ public struct Anime365ApiSeries: Decodable {
     public let episodeInt: String
     public let episodeTitle: String
     public let episodeType: String
-    public let firstUploadedDateTime: String
+    public let firstUploadedDateTime: Date
     public let isActive: Int
     public let isFirstUploaded: Int
   }

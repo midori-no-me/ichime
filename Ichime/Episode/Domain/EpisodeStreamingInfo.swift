@@ -27,7 +27,7 @@ struct EpisodeStreamingInfo: Hashable, Identifiable {
   let streamQualityOptions: [StreamQualityOption]
   let subtitles: SubtitlesUrls?
 
-  init(apiResponse: Anime365TranslationEmbed) {
+  init(apiResponse: Anime365ApiClient.TranslationEmbed) {
     let websiteBaseUrl = ServiceLocator.websiteBaseUrl.absoluteString
     let cookies: HTTPCookieStorage = ApplicationDependency.container.resolve()
 

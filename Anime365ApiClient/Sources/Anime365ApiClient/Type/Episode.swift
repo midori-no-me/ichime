@@ -1,15 +1,19 @@
 import Foundation
 
-public struct Anime365ApiEpisode: Decodable {
+public struct Episode: Decodable {
   public let id: Int
-  public let episodeFull, episodeInt, episodeTitle: String
-  public let episodeType: Anime365ApiEpisodeTypeEnum
-  public let firstUploadedDateTime: String
-  public let isActive, isFirstUploaded, seriesId: Int
-  public let translations: [Anime365ApiTranslation]
+  public let episodeFull: String
+  public let episodeInt: String
+  public let episodeTitle: String
+  public let episodeType: EpisodeType
+  public let firstUploadedDateTime: Date
+  public let isActive: Int
+  public let isFirstUploaded: Int
+  public let seriesId: Int
+  public let translations: [Translation]
 }
 
-public enum Anime365ApiEpisodeTypeEnum: String, Codable {
+public enum EpisodeType: String, Codable {
   case bd
   case tv
   case ona

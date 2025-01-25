@@ -1,21 +1,12 @@
 import Foundation
 
-public struct GetEpisodeRequest: Anime365ApiRequest {
-  public typealias ResponseType = Anime365ApiEpisode
-
-  private let episodeId: Int
-
-  public init(
+extension ApiClient {
+  public func getEpisode(
     episodeId: Int
-  ) {
-    self.episodeId = episodeId
-  }
-
-  public func getEndpoint() -> String {
-    "/episodes/\(self.episodeId)"
-  }
-
-  public func getQueryItems() -> [URLQueryItem] {
-    []
+  ) async throws -> Episode {
+    try await sendRequest(
+      endpoint: "/episodes/\(episodeId)",
+      queryItems: []
+    )
   }
 }

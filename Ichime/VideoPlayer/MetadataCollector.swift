@@ -16,14 +16,14 @@ struct MetadataPlayer {
 }
 
 struct MetadataCollector {
-  let api: Anime365ApiClient
+  let api: Anime365ApiClient.ApiClient
   let episodeId: Int
   let translationId: Int
 
   init(
     episodeId: Int,
     translationId: Int,
-    api: Anime365ApiClient = ApplicationDependency.container.resolve()
+    api: Anime365ApiClient.ApiClient = ApplicationDependency.container.resolve()
   ) {
     self.episodeId = episodeId
     self.translationId = translationId
@@ -59,8 +59,8 @@ struct MetadataCollector {
 
   func getMetadata() async -> MetadataPlayer? {
     do {
-      let episodeData = try await api.sendApiRequest(GetEpisodeRequest(episodeId: self.episodeId))
-      let showData = try await api.sendApiRequest(GetSeriesRequest(seriesId: episodeData.seriesId))
+      let episodeData = try await api.getEpisode(episodeId: self.episodeId)
+      let showData = try await api.getSeries(seriesId: episodeData.seriesId)
       let translation = episodeData.translations.first(where: { $0.id == self.translationId })
 
       var description = ""

@@ -2,11 +2,11 @@ import Anime365ApiClient
 import JikanApiClient
 
 struct EpisodeService {
-  private let anime365ApiClient: Anime365ApiClient
+  private let anime365ApiClient: Anime365ApiClient.ApiClient
   private let jikanApiClient: JikanApiClient.ApiClient
 
   init(
-    anime365ApiClient: Anime365ApiClient,
+    anime365ApiClient: Anime365ApiClient.ApiClient,
     jikanApiClient: JikanApiClient.ApiClient
   ) {
     self.anime365ApiClient = anime365ApiClient
@@ -31,10 +31,10 @@ struct EpisodeService {
   }
 
   private static func mapAnime365EpisodesToJikanEpisodes(
-    anime365EpisodePreviews: [Anime365ApiSeries.EpisodePreview],
-    jikanEpisodes: [Episode]
+    anime365EpisodePreviews: [Anime365ApiClient.Series.EpisodePreview],
+    jikanEpisodes: [JikanApiClient.Episode]
   ) -> [EpisodeInfo] {
-    var jikanEpisodeNumberToEpisode: [Int: Episode] = [:]
+    var jikanEpisodeNumberToEpisode: [Int: JikanApiClient.Episode] = [:]
 
     for jikanEpisode in jikanEpisodes {
       jikanEpisodeNumberToEpisode[jikanEpisode.mal_id] = jikanEpisode
@@ -45,7 +45,7 @@ struct EpisodeService {
     for anime365EpisodePreview in anime365EpisodePreviews {
       let anime365EpisodeNumber = Int(anime365EpisodePreview.episodeInt)
 
-      var jikanEpisode: Episode? = nil
+      var jikanEpisode: JikanApiClient.Episode? = nil
 
       if let anime365EpisodeNumber {
         jikanEpisode = jikanEpisodeNumberToEpisode[anime365EpisodeNumber]
@@ -69,10 +69,8 @@ struct EpisodeService {
   func getEpisodeList(
     showId: Int
   ) async throws -> [EpisodeInfo] {
-    let anime365Series = try await anime365ApiClient.sendApiRequest(
-      GetSeriesRequest(
-        seriesId: showId
-      )
+    let anime365Series = try await anime365ApiClient.getSeries(
+      seriesId: showId
     )
 
     var jikanEpisodes: [JikanApiClient.Episode] = []
