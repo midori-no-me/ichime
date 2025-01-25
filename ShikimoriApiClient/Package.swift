@@ -21,6 +21,5 @@ let package = Package(
     .target(
       name: "ShikimoriApiClient"
     )
-  ],
-  swiftLanguageModes: [.v5]
+  ]
 )
