@@ -31,6 +31,7 @@ public struct ApiDateDecoder {
   private static func getDateFormatter() -> DateFormatter {
     let dateFormatter = DateFormatter()
 
+    dateFormatter.timeZone = .gmt  // Предположительно API отвечает в GMT (UTC+0), но наверняка не известно
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
     return dateFormatter
