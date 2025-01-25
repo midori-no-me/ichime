@@ -218,6 +218,12 @@ private struct TranslationRow: View {
       }
       .presentationDetents([.medium])
     }
+    .contextMenu(menuItems: {
+      Button(role: .destructive, action: {}) {
+        Label("Скрыть переводы от этой команды", systemImage: "eye.slash")
+      }
+
+    })
   }
 
   func updateLastSelectedTranslation() {

@@ -1,20 +1,24 @@
 import Foundation
+import OSLog
 
 public class ApiClient {
   private let baseURL: URL
   private let userAgent: String
   private let urlSession: URLSession
+  private let logger: Logger
 
   public init(
     baseURL: URL,
     userAgent: String,
-    cookieStorage: HTTPCookieStorage
+    cookieStorage: HTTPCookieStorage,
+    logger: Logger
   ) {
     self.baseURL = baseURL
     self.userAgent = userAgent
     let config = URLSessionConfiguration.default
     config.httpCookieStorage = cookieStorage
     self.urlSession = URLSession(configuration: config)
+    self.logger = logger
   }
 
   func sendRequest<T: Decodable>(
@@ -29,18 +33,19 @@ public class ApiClient {
     }
 
     var httpRequest = URLRequest(url: fullURL)
+
+    httpRequest.timeoutInterval = 5
+    httpRequest.httpMethod = "GET"
+
     httpRequest.setValue("application/json", forHTTPHeaderField: "Accept")
     httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
-    httpRequest.timeoutInterval = 3
 
     let (data, httpResponse) = try await self.urlSession.data(for: httpRequest)
 
     if let requestUrl = httpRequest.url?.absoluteString,
       let httpResponse = httpResponse as? HTTPURLResponse
     {
-      print(
-        "[Anime365ApiClient] API request: GET \(requestUrl) [\(httpResponse.statusCode)]"
-      )
+      self.logger.info("API request: GET \(requestUrl) [\(httpResponse.statusCode)]")
     }
     do {
       let jsonDecoder = JSONDecoder()
@@ -52,17 +57,11 @@ public class ApiClient {
       return apiResponse.data
     }
     catch {
-      print("[Anime365ApiClient] Decoding JSON error: \(error.localizedDescription)")
-      print("[Anime365ApiClient] JSON Decoder detailed error:")
-      print(error)
-      print("[Anime365ApiClient] API response:")
+      let debugApiResponse = String(data: data, encoding: .utf8) ?? "Unable to convert response body to a string"
 
-      if let responseBodyString = String(data: data, encoding: .utf8) {
-        print(responseBodyString)
-      }
-      else {
-        print("[Anime365ApiClient] Unable to convert response body to a string")
-      }
+      self.logger.error(
+        "Decoding JSON into \(ApiResponse<T>.self) error:\n\n\(error)\n\nAPI response:\n\n\(debugApiResponse)"
+      )
 
       throw ApiClientError.canNotDecodeResponseJson
     }

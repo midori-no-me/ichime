@@ -1,16 +1,20 @@
 import Foundation
+import OSLog
 
 public class ApiClient {
   public let baseUrl: URL
 
   private let userAgent: String
+  private let logger: Logger
 
   public init(
     baseUrl: URL,
-    userAgent: String
+    userAgent: String,
+    logger: Logger
   ) {
     self.baseUrl = baseUrl
     self.userAgent = userAgent
+    self.logger = logger
   }
 
   func sendRequest<T: Decodable>(
@@ -25,8 +29,8 @@ public class ApiClient {
 
     var httpRequest = URLRequest(url: fullURL)
 
+    httpRequest.timeoutInterval = 3
     httpRequest.httpMethod = "GET"
-
     httpRequest.setValue("application/json", forHTTPHeaderField: "Accept")
     httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
 
@@ -35,9 +39,7 @@ public class ApiClient {
     if let requestUrl = httpRequest.url?.absoluteString,
       let httpResponse = httpResponse as? HTTPURLResponse
     {
-      print(
-        "[JikanApiClient] API request: GET \(requestUrl) [\(httpResponse.statusCode)]"
-      )
+      self.logger.info("API request: GET \(requestUrl) [\(httpResponse.statusCode)]")
     }
 
     do {
@@ -50,17 +52,11 @@ public class ApiClient {
       return apiResponse.data
     }
     catch {
-      print("[JikanApiClient] Decoding JSON error: \(error.localizedDescription)")
-      print("[JikanApiClient] JSON Decoder detailed error:")
-      print(error)
-      print("[JikanApiClient] API response:")
+      let debugApiResponse = String(data: data, encoding: .utf8) ?? "Unable to convert response body to a string"
 
-      if let responseBodyString = String(data: data, encoding: .utf8) {
-        print(responseBodyString)
-      }
-      else {
-        print("[JikanApiClient] Unable to convert response body to a string")
-      }
+      self.logger.error(
+        "Decoding JSON into \(ApiResponse<T>.self) error:\n\n\(error)\n\nAPI response:\n\n\(debugApiResponse)"
+      )
 
       throw ApiClientError.canNotDecodeResponseJson
     }

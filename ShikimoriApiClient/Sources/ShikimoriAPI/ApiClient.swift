@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 enum HttpMethod: String {
   case GET
@@ -12,13 +13,16 @@ public class ApiClient {
   public let baseUrl: URL
 
   private let userAgent: String
+  private let logger: Logger
 
   public init(
     baseUrl: URL,
-    userAgent: String
+    userAgent: String,
+    logger: Logger
   ) {
     self.baseUrl = baseUrl
     self.userAgent = userAgent
+    self.logger = logger
   }
 
   func sendRequest<T: Decodable>(
@@ -35,6 +39,7 @@ public class ApiClient {
 
     var httpRequest = URLRequest(url: fullURL)
 
+    httpRequest.timeoutInterval = 3
     httpRequest.httpMethod = httpMethod.rawValue
 
     httpRequest.setValue("application/json", forHTTPHeaderField: "Accept")
@@ -58,9 +63,7 @@ public class ApiClient {
     if let requestUrl = httpRequest.url?.absoluteString,
       let httpResponse = httpResponse as? HTTPURLResponse
     {
-      print(
-        "[ShikimoriAPIV1Client] API request: \(httpMethod) \(requestUrl) [\(httpResponse.statusCode)]"
-      )
+      self.logger.info("API request: GET \(requestUrl) [\(httpResponse.statusCode)]")
     }
 
     do {
@@ -73,17 +76,9 @@ public class ApiClient {
       return apiResponse
     }
     catch {
-      print("[ShikimoriAPIV1Client] Decoding JSON error: \(error.localizedDescription)")
-      print("[ShikimoriAPIV1Client] JSON Decoder detailed error:")
-      print(error)
-      print("[ShikimoriAPIV1Client] API response:")
+      let debugApiResponse = String(data: data, encoding: .utf8) ?? "Unable to convert response body to a string"
 
-      if let responseBodyString = String(data: data, encoding: .utf8) {
-        print(responseBodyString)
-      }
-      else {
-        print("[ShikimoriAPIV1Client] Unable to convert response body to a string")
-      }
+      self.logger.error("Decoding JSON into \(T.self) error:\n\n\(error)\n\nAPI response:\n\n\(debugApiResponse)")
 
       throw ApiClientError.canNotDecodeResponseJson
     }

@@ -2,6 +2,7 @@ import Anime365ApiClient
 import DITranquillity
 import Foundation
 import JikanApiClient
+import OSLog
 import ScraperAPI
 import ShikimoriApiClient
 import SwiftData
@@ -65,7 +66,8 @@ class ApplicationDependency: DIFramework {
       Anime365ApiClient.ApiClient(
         baseURL: ServiceLocator.websiteBaseUrl,
         userAgent: ServiceLocator.userAgent,
-        cookieStorage: $0
+        cookieStorage: $0,
+        logger: Logger(subsystem: ServiceLocator.applicationId, category: "Anime365ApiClient")
       )
     }
 
@@ -78,14 +80,16 @@ class ApplicationDependency: DIFramework {
     container.register {
       ShikimoriApiClient.ApiClient(
         baseUrl: ServiceLocator.shikimoriBaseUrl,
-        userAgent: ServiceLocator.shikimoriUserAgent
+        userAgent: ServiceLocator.shikimoriUserAgent,
+        logger: Logger(subsystem: ServiceLocator.applicationId, category: "ShikimoriApiClient")
       )
     }
 
     container.register {
       JikanApiClient.ApiClient(
         baseUrl: ServiceLocator.jikanBaseUrl,
-        userAgent: ServiceLocator.jikanUserAgent
+        userAgent: ServiceLocator.jikanUserAgent,
+        logger: Logger(subsystem: ServiceLocator.applicationId, category: "JikanApiClient")
       )
     }
 
