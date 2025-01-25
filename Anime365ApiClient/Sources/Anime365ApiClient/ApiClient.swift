@@ -33,7 +33,7 @@ public class ApiClient {
     httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
     httpRequest.timeoutInterval = 3
 
-    let (data, httpResponse) = try await URLSession.shared.data(for: httpRequest)
+    let (data, httpResponse) = try await self.urlSession.data(for: httpRequest)
 
     if let requestUrl = httpRequest.url?.absoluteString,
       let httpResponse = httpResponse as? HTTPURLResponse
