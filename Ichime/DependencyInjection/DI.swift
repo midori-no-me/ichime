@@ -83,7 +83,7 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      JikanApiClient(
+      JikanApiClient.ApiClient(
         baseUrl: ServiceLocator.jikanBaseUrl,
         userAgent: ServiceLocator.jikanUserAgent
       )

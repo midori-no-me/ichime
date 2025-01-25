@@ -3,11 +3,11 @@ import JikanApiClient
 
 struct EpisodeService {
   private let anime365ApiClient: Anime365ApiClient
-  private let jikanApiClient: JikanApiClient
+  private let jikanApiClient: JikanApiClient.ApiClient
 
   init(
     anime365ApiClient: Anime365ApiClient,
-    jikanApiClient: JikanApiClient
+    jikanApiClient: JikanApiClient.ApiClient
   ) {
     self.anime365ApiClient = anime365ApiClient
     self.jikanApiClient = jikanApiClient
@@ -75,7 +75,7 @@ struct EpisodeService {
       )
     )
 
-    var jikanEpisodes: [Episode] = []
+    var jikanEpisodes: [JikanApiClient.Episode] = []
 
     // Jikan возвращает только 100 эпизодов за раз, поэтому пока не поддерживаем пагинацию
     if anime365Series.episodes?.count ?? 0 <= 100 {

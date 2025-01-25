@@ -1,4 +1,4 @@
-extension JikanApiClient {
+extension ApiClient {
   public func getAnimeEpisodes(
     id: Int
   ) async throws -> [Episode] {

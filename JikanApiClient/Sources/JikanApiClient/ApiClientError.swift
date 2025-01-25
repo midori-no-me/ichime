@@ -1,6 +1,6 @@
 import Foundation
 
-public enum JikanApiClientError: Error {
+public enum ApiClientError: Error {
   case canNotDecodeResponseJson
   case requestFailed
 }

@@ -1,6 +1,6 @@
 import Foundation
 
-public class JikanApiClient {
+public class ApiClient {
   public let baseUrl: URL
 
   private let userAgent: String
@@ -41,8 +41,11 @@ public class JikanApiClient {
     }
 
     do {
-      let apiResponse = try JSONDecoder()
-        .decode(JikanApiResponse<T>.self, from: data)
+      let jsonDecoder = JSONDecoder()
+
+      jsonDecoder.dateDecodingStrategy = .iso8601
+
+      let apiResponse = try jsonDecoder.decode(ApiResponse<T>.self, from: data)
 
       return apiResponse.data
     }
@@ -59,7 +62,7 @@ public class JikanApiClient {
         print("[JikanApiClient] Unable to convert response body to a string")
       }
 
-      throw JikanApiClientError.canNotDecodeResponseJson
+      throw ApiClientError.canNotDecodeResponseJson
     }
   }
 }

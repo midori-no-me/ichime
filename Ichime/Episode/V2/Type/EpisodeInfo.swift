@@ -16,7 +16,7 @@ public struct EpisodeInfo {
 
   static func createValid(
     anime365EpisodePreview: Anime365ApiSeries.EpisodePreview,
-    jikanEpisode: Episode?
+    jikanEpisode: JikanApiClient.Episode?
   ) -> Self? {
     if anime365EpisodePreview.isActive != 1 || anime365EpisodePreview.isFirstUploaded != 1 {
       return nil
@@ -43,13 +43,7 @@ public struct EpisodeInfo {
     if !isNonStandardEpisodeUploadedToAnime365 {
       title = jikanEpisode?.title
 
-      if let airedAtString = jikanEpisode?.aired {
-        officiallyAiredAt = JikanApiHelpers.convertApiDateStringToDate(airedAtString)
-
-        if officiallyAiredAt == nil {
-          return nil
-        }
-      }
+      officiallyAiredAt = jikanEpisode?.aired
 
       if let scoreString = jikanEpisode?.score {
         myAnimeListScore = Float(scoreString)
