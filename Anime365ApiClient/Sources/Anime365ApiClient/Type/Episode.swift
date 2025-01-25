@@ -19,4 +19,5 @@ public enum EpisodeType: String, Codable {
   case ona
   case ova
   case movie
+  case preview
 }
