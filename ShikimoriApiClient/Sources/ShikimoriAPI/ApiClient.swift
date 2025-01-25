@@ -21,26 +21,6 @@ public class ApiClient {
     self.userAgent = userAgent
   }
 
-  private static func getDateDecodingStrategy() -> JSONDecoder.DateDecodingStrategy {
-    .custom { decoder in
-      let dateString = try decoder.singleValueContainer().decode(String.self)
-      let customIsoFormatter = ISO8601DateFormatter()
-
-      customIsoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-
-      if let date = customIsoFormatter.date(from: dateString) {
-        return date
-      }
-
-      throw DecodingError.dataCorrupted(
-        DecodingError.Context(
-          codingPath: decoder.codingPath,
-          debugDescription: "Invalid date"
-        )
-      )
-    }
-  }
-
   func sendRequest<T: Decodable>(
     httpMethod: HttpMethod,
     endpoint: String,
@@ -86,7 +66,7 @@ public class ApiClient {
     do {
       let jsonDecoder = JSONDecoder()
 
-      jsonDecoder.dateDecodingStrategy = Self.getDateDecodingStrategy()
+      jsonDecoder.dateDecodingStrategy = ApiDateDecoder.getDateDecodingStrategy()
 
       let apiResponse = try jsonDecoder.decode(T.self, from: data)
 
