@@ -613,30 +613,23 @@ private struct StudioCard: View {
   var body: some View {
     Button(action: {}) {
       VStack(alignment: .leading, spacing: 16) {
-        Group {
-          if let cover {
-            AsyncImage(
-              url: cover,
-              transaction: .init(animation: .easeInOut(duration: 0.5))
-            ) { phase in
-              switch phase {
-              case .empty:
-                Color.clear
+        AsyncImage(
+          url: self.cover,
+          transaction: .init(animation: .easeInOut(duration: 0.5))
+        ) { phase in
+          switch phase {
+          case .empty:
+            Color.clear
 
-              case let .success(image):
-                image
-                  .resizable()
-                  .scaledToFit()
+          case let .success(image):
+            image
+              .resizable()
+              .scaledToFit()
 
-              case .failure:
-                Color.clear
+          case .failure:
+            Color.clear
 
-              @unknown default:
-                Color.clear
-              }
-            }
-          }
-          else {
+          @unknown default:
             Color.clear
           }
         }
