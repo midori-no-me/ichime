@@ -10,7 +10,12 @@ struct CharacterCard: View {
       imageUrl: self.character.image,
       action: { self.isSheetPresented = true },
       label: {
-        Text(self.character.name).lineLimit(1)
+        Text(self.character.name)
+          .lineLimit(1)
+
+        Text(self.character.role)
+          .foregroundStyle(.secondary)
+          .lineLimit(1)
       }
     )
     .sheet(isPresented: self.$isSheetPresented) {
