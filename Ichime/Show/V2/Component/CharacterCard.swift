@@ -26,12 +26,30 @@ private struct CharacterCardSheet: View {
 
   var body: some View {
     NavigationStack {
-      ScrollView(.vertical) {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 6), spacing: 64) {
-          ForEach(self.character.voiceActors) { voiceActor in
-            VoiceActorCard(voiceActor: voiceActor)
+      if !self.character.voiceActors.isEmpty {
+        ScrollView(.vertical) {
+          VStack(alignment: .leading) {
+            Section(
+              header: Text("Актеры лицензионной озвучки")
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundStyle(.secondary)
+            ) {
+              LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 6), spacing: 64) {
+                ForEach(self.character.voiceActors) { voiceActor in
+                  VoiceActorCard(voiceActor: voiceActor)
+                }
+              }
+            }
           }
         }
+      }
+      else {
+        ContentUnavailableView(
+          "Ничего не нашлось",
+          systemImage: "person.circle",
+          description: Text("У этого персонажа не указали актеров лицензионной озвучки, поэтому тут ничего нет")
+        )
       }
     }
   }
