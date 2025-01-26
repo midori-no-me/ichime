@@ -54,7 +54,7 @@ struct CircularPortraitButton<Label>: View where Label: View {
   }
 }
 
-#Preview {
+#Preview("Grid") {
   let verticalImage = URL(string: "https://cdn.myanimelist.net/images/characters/7/525105.jpg")!
   let horizontalImage = URL(
     string: "https://cdn.myanimelist.net/s/common/uploaded_files/1734408527-daf48cfe8b3e252e7191d1cb9f139e94.png"
@@ -77,8 +77,41 @@ struct CircularPortraitButton<Label>: View where Label: View {
               ).lineLimit(1)
             }
           )
-          .frame(height: 400)
         }
+      }
+    }
+    .background(Color.gray.ignoresSafeArea())
+  }
+}
+
+#Preview("Horizontal Row") {
+  let verticalImage = URL(string: "https://cdn.myanimelist.net/images/characters/7/525105.jpg")!
+  let horizontalImage = URL(
+    string: "https://cdn.myanimelist.net/s/common/uploaded_files/1734408527-daf48cfe8b3e252e7191d1cb9f139e94.png"
+  )!
+
+  NavigationStack {
+    ScrollView(.vertical) {
+      ScrollView(.horizontal) {
+        LazyHStack(alignment: .top, spacing: 64) {
+          ForEach(0..<100) { index in
+            CircularPortraitButton(
+              imageUrl: index % 2 == 0
+                ? verticalImage
+                : horizontalImage,
+              action: {},
+              label: {
+                Text(
+                  index % 2 == 0
+                    ? "Portrait \(index + 1)"
+                    : "Portrait \(index + 1) with very very long label"
+                ).lineLimit(1)
+              }
+            )
+            .containerRelativeFrame(.horizontal, count: 6, span: 1, spacing: 64)
+          }
+        }
+        .scrollClipDisabled()
       }
     }
     .background(Color.gray.ignoresSafeArea())
