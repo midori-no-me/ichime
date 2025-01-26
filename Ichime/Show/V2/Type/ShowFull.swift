@@ -1,5 +1,6 @@
 import Anime365ApiClient
 import Foundation
+import JikanApiClient
 import ShikimoriApiClient
 
 struct ShowFull {
@@ -88,12 +89,14 @@ struct ShowFull {
   let studios: [Studio]
   let screenshots: [URL]
   let nextEpisodeReleasesAt: Date?
+  let characters: [Character]
 
   static func create(
     anime365Series: Anime365ApiClient.Series,
     shikimoriAnime: ShikimoriApiClient.AnimeV1,
     shikimoriScreenshots: [ShikimoriApiClient.AnimeV1.Screenshot],
-    shikimoriBaseUrl: URL
+    shikimoriBaseUrl: URL,
+    jikanCharacterRoles: [JikanApiClient.CharacterRole]
   ) -> ShowFull {
     let score = Float(anime365Series.myAnimeListScore) ?? 0
 
@@ -157,7 +160,8 @@ struct ShowFull {
       screenshots: shikimoriScreenshots.map { screenshot in
         URL(string: shikimoriBaseUrl.absoluteString + screenshot.original)!
       },
-      nextEpisodeReleasesAt: shikimoriAnime.next_episode_at
+      nextEpisodeReleasesAt: shikimoriAnime.next_episode_at,
+      characters: jikanCharacterRoles.map { .create(jikanCharacterRole: $0) }
     )
   }
 }
