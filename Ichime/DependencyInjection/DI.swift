@@ -94,7 +94,7 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowService(anime365ApiClient: $0, shikimoriApiClient: $1)
+      ShowService(anime365ApiClient: $0, shikimoriApiClient: $1, jikanApiClient: $2)
     }
 
     container.register {

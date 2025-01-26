@@ -195,6 +195,10 @@ private struct ShowDetails: View {
       if !self.show.screenshots.isEmpty {
         Screenshots(screenshots: self.show.screenshots)
       }
+
+      if !self.show.characters.isEmpty {
+        CharactersSection(characters: self.show.characters)
+      }
     }
   }
 }
@@ -790,6 +794,33 @@ private struct Screenshot: View {
       )
     }
     .buttonStyle(.borderless)
+  }
+}
+
+private struct CharactersSection: View {
+  private static let SPACING: CGFloat = 64
+
+  let characters: [Character]
+
+  var body: some View {
+    VStack(alignment: .leading) {
+      Section(
+        header: Text("Персонажи")
+          .font(.headline)
+          .fontWeight(.bold)
+          .foregroundStyle(.secondary)
+      ) {
+        ScrollView(.horizontal) {
+          LazyHStack(alignment: .top, spacing: Self.SPACING) {
+            ForEach(self.characters) { character in
+              CharacterCard(character: character)
+                .containerRelativeFrame(.horizontal, count: 6, span: 1, spacing: Self.SPACING)
+            }
+          }
+        }
+        .scrollClipDisabled()
+      }
+    }
   }
 }
 
