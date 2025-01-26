@@ -30,7 +30,7 @@ private struct CharacterCardSheet: View {
         ScrollView(.vertical) {
           VStack(alignment: .leading) {
             Section(
-              header: Text("Актеры лицензионной озвучки")
+              header: Text("Актёры лицензионной озвучки")
                 .font(.headline)
                 .fontWeight(.bold)
                 .foregroundStyle(.secondary)
@@ -48,7 +48,7 @@ private struct CharacterCardSheet: View {
         ContentUnavailableView(
           "Ничего не нашлось",
           systemImage: "person.circle",
-          description: Text("У этого персонажа не указали актеров лицензионной озвучки, поэтому тут ничего нет")
+          description: Text("У этого персонажа не указали актёров лицензионной озвучки, поэтому тут ничего нет")
         )
       }
     }
