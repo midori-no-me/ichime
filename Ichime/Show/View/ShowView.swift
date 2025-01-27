@@ -199,6 +199,10 @@ private struct ShowDetails: View {
       if !self.show.characters.isEmpty {
         CharactersSection(characters: self.show.characters)
       }
+
+      if !self.show.staffMembers.isEmpty {
+        StaffMembersSection(staffMembers: self.show.staffMembers)
+      }
     }
   }
 }
@@ -807,6 +811,33 @@ private struct CharactersSection: View {
           LazyHStack(alignment: .top, spacing: Self.SPACING) {
             ForEach(self.characters) { character in
               CharacterCard(character: character)
+                .containerRelativeFrame(.horizontal, count: 6, span: 1, spacing: Self.SPACING)
+            }
+          }
+        }
+        .scrollClipDisabled()
+      }
+    }
+  }
+}
+
+private struct StaffMembersSection: View {
+  private static let SPACING: CGFloat = 64
+
+  let staffMembers: [StaffMember]
+
+  var body: some View {
+    VStack(alignment: .leading) {
+      Section(
+        header: Text("Авторы")
+          .font(.headline)
+          .fontWeight(.bold)
+          .foregroundStyle(.secondary)
+      ) {
+        ScrollView(.horizontal) {
+          LazyHStack(alignment: .top, spacing: Self.SPACING) {
+            ForEach(self.staffMembers) { staffMember in
+              StaffMemberCard(staffMember: staffMember)
                 .containerRelativeFrame(.horizontal, count: 6, span: 1, spacing: Self.SPACING)
             }
           }

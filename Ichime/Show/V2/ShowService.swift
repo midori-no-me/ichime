@@ -34,16 +34,22 @@ struct ShowService {
       id: anime365Series.myAnimeListId
     )
 
+    async let jikanStaffMembersFuture = self.jikanApiClient.getAnimeStaff(
+      id: anime365Series.myAnimeListId
+    )
+
     let shikimoriAnime = try await shikimoriAnimeFuture
     let shikimoriScreenshots = (try? await shikimoriScreenshotsFuture) ?? []
     let jikanCharacters = (try? await jikanCharactersFuture) ?? []
+    let jikanStaffMembers = (try? await jikanStaffMembersFuture) ?? []
 
     return ShowFull.create(
       anime365Series: anime365Series,
       shikimoriAnime: shikimoriAnime,
       shikimoriScreenshots: shikimoriScreenshots,
       shikimoriBaseUrl: self.shikimoriApiClient.baseUrl,
-      jikanCharacterRoles: jikanCharacters
+      jikanCharacterRoles: jikanCharacters,
+      jikanStaffMembers: jikanStaffMembers
     )
   }
 }

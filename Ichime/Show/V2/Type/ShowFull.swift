@@ -90,13 +90,15 @@ struct ShowFull {
   let screenshots: [URL]
   let nextEpisodeReleasesAt: Date?
   let characters: [Character]
+  let staffMembers: [StaffMember]
 
   static func create(
     anime365Series: Anime365ApiClient.Series,
     shikimoriAnime: ShikimoriApiClient.AnimeV1,
     shikimoriScreenshots: [ShikimoriApiClient.AnimeV1.Screenshot],
     shikimoriBaseUrl: URL,
-    jikanCharacterRoles: [JikanApiClient.CharacterRole]
+    jikanCharacterRoles: [JikanApiClient.CharacterRole],
+    jikanStaffMembers: [JikanApiClient.StaffMember]
   ) -> ShowFull {
     let score = Float(anime365Series.myAnimeListScore) ?? 0
 
@@ -161,7 +163,8 @@ struct ShowFull {
         URL(string: shikimoriBaseUrl.absoluteString + screenshot.original)!
       },
       nextEpisodeReleasesAt: shikimoriAnime.next_episode_at,
-      characters: jikanCharacterRoles.map { .create(jikanCharacterRole: $0) }
+      characters: jikanCharacterRoles.map { .create(jikanCharacterRole: $0) },
+      staffMembers: jikanStaffMembers.map { .create(jikanStaffMember: $0) }
     )
   }
 }
