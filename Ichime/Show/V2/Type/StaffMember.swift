@@ -10,9 +10,15 @@ public struct StaffMember: Identifiable {
   static func create(
     jikanStaffMember: JikanApiClient.StaffMember
   ) -> Self {
-    .init(
+    var imageUrl: URL? = jikanStaffMember.person.images.jpg.image_url
+
+    if let nonNilImageUrl = imageUrl, nonNilImageUrl.path().contains("questionmark") {
+      imageUrl = nil
+    }
+
+    return .init(
       id: jikanStaffMember.person.mal_id,
-      image: jikanStaffMember.person.images.jpg.image_url,
+      image: imageUrl,
       name: jikanStaffMember.person.name,
       roles: jikanStaffMember.positions
     )

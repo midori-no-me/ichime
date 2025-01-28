@@ -18,9 +18,15 @@ public struct Character: Identifiable {
   static func create(
     jikanCharacterRole: JikanApiClient.CharacterRole
   ) -> Self {
-    .init(
+    var imageUrl: URL? = jikanCharacterRole.character.images.jpg.image_url
+
+    if let nonNilImageUrl = imageUrl, nonNilImageUrl.path().contains("questionmark") {
+      imageUrl = nil
+    }
+
+    return .init(
       id: jikanCharacterRole.character.mal_id,
-      image: jikanCharacterRole.character.images.jpg.image_url,
+      image: imageUrl,
       name: jikanCharacterRole.character.name,
       role: jikanCharacterRole.role,
       voiceActors: jikanCharacterRole.voice_actors.map {

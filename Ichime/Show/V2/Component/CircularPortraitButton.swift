@@ -22,7 +22,7 @@ struct CircularPortraitButton<Label>: View where Label: View {
   var body: some View {
     Button(action: self.action) {
       Circle()
-        .foregroundColor(Color.gray)
+        .foregroundStyle(.regularMaterial)
         .overlay(
           AsyncImage(
             url: self.imageUrl,
@@ -30,17 +30,17 @@ struct CircularPortraitButton<Label>: View where Label: View {
           ) { phase in
             switch phase {
             case .empty:
-              Color.clear
+              PortraitNotLoadedPlaceholder()
 
             case let .success(image):
               image
                 .resizable()
                 .scaledToFill()
             case .failure:
-              Color.clear
+              PortraitNotLoadedPlaceholder()
 
             @unknown default:
-              Color.clear
+              PortraitNotLoadedPlaceholder()
             }
           },
           alignment: .top
@@ -54,20 +54,45 @@ struct CircularPortraitButton<Label>: View where Label: View {
   }
 }
 
+private struct PortraitNotLoadedPlaceholder: View {
+  var body: some View {
+    Image(systemName: "person.fill")
+      .foregroundStyle(.secondary)
+      .font(.title)
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+  }
+}
+
 #Preview("Grid") {
-  let verticalImage = URL(string: "https://cdn.myanimelist.net/images/characters/7/525105.jpg")!
-  let horizontalImage = URL(
-    string: "https://cdn.myanimelist.net/s/common/uploaded_files/1734408527-daf48cfe8b3e252e7191d1cb9f139e94.png"
-  )!
+  let image: (Int) -> URL? = { index in
+    if index % 4 == 0 {
+      // Small Landscape Image
+      return URL(
+        string:
+          "https://cdn.myanimelist.net/r/84x124/images/characters/16/371204.jpg?s=527c14ef55a9df04ba10c32936d573d0"
+      )!
+    }
+    else if index % 3 == 0 {
+      // Landscape Image
+      return URL(
+        string: "https://cdn.myanimelist.net/s/common/uploaded_files/1734408527-daf48cfe8b3e252e7191d1cb9f139e94.png"
+      )!
+    }
+    else if index % 2 == 0 {
+      // Portrait Image
+      return URL(string: "https://cdn.myanimelist.net/images/characters/7/525105.jpg")!
+    }
+    else {
+      return nil
+    }
+  }
 
   NavigationStack {
     ScrollView(.vertical) {
       LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 6), spacing: 64) {
         ForEach(0..<100) { index in
           CircularPortraitButton(
-            imageUrl: index % 2 == 0
-              ? verticalImage
-              : horizontalImage,
+            imageUrl: image(index + 1),
             action: {},
             label: {
               Text(
@@ -85,10 +110,28 @@ struct CircularPortraitButton<Label>: View where Label: View {
 }
 
 #Preview("Horizontal Row") {
-  let verticalImage = URL(string: "https://cdn.myanimelist.net/images/characters/7/525105.jpg")!
-  let horizontalImage = URL(
-    string: "https://cdn.myanimelist.net/s/common/uploaded_files/1734408527-daf48cfe8b3e252e7191d1cb9f139e94.png"
-  )!
+  let image: (Int) -> URL? = { index in
+    if index % 4 == 0 {
+      // Small Landscape Image
+      return URL(
+        string:
+          "https://cdn.myanimelist.net/r/84x124/images/characters/16/371204.jpg?s=527c14ef55a9df04ba10c32936d573d0"
+      )!
+    }
+    else if index % 3 == 0 {
+      // Landscape Image
+      return URL(
+        string: "https://cdn.myanimelist.net/s/common/uploaded_files/1734408527-daf48cfe8b3e252e7191d1cb9f139e94.png"
+      )!
+    }
+    else if index % 2 == 0 {
+      // Portrait Image
+      return URL(string: "https://cdn.myanimelist.net/images/characters/7/525105.jpg")!
+    }
+    else {
+      return nil
+    }
+  }
 
   NavigationStack {
     ScrollView(.vertical) {
@@ -96,9 +139,7 @@ struct CircularPortraitButton<Label>: View where Label: View {
         LazyHStack(alignment: .top, spacing: 64) {
           ForEach(0..<100) { index in
             CircularPortraitButton(
-              imageUrl: index % 2 == 0
-                ? verticalImage
-                : horizontalImage,
+              imageUrl: image(index + 1),
               action: {},
               label: {
                 Text(
