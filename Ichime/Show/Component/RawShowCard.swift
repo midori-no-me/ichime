@@ -17,7 +17,7 @@ struct RawShowCard: View {
   var body: some View {
     HStack(
       alignment: .top,
-      spacing: RawShowCard.SPACING_BETWEEN_IMAGE_AND_CONTENT
+      spacing: Self.SPACING_BETWEEN_IMAGE_AND_CONTENT
     ) {
       Group {
         if let cover {
@@ -47,8 +47,8 @@ struct RawShowCard: View {
         }
       }
       .frame(
-        width: RawShowCard.IMAGE_WIDTH,
-        height: RawShowCard.IMAGE_HEIGHT,
+        width: Self.IMAGE_WIDTH,
+        height: Self.IMAGE_HEIGHT,
         alignment: .top
       )
 

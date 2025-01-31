@@ -25,7 +25,7 @@ struct Translation: Hashable, Identifiable {
     case japanese = 3
     case other = 4
 
-    static func < (lhs: TranslatedToLanguage, rhs: TranslatedToLanguage) -> Bool {
+    static func < (lhs: Self, rhs: Self) -> Bool {
       lhs.rawValue < rhs.rawValue
     }
   }
@@ -36,7 +36,7 @@ struct Translation: Hashable, Identifiable {
     case raw = 3
     case other = 4
 
-    static func < (lhs: TranslationMethod, rhs: TranslationMethod) -> Bool {
+    static func < (lhs: Self, rhs: Self) -> Bool {
       lhs.rawValue < rhs.rawValue
     }
   }
@@ -66,7 +66,7 @@ struct Translation: Hashable, Identifiable {
       }
     }
 
-    static func < (lhs: CompositeType, rhs: CompositeType) -> Bool {
+    static func < (lhs: Self, rhs: Self) -> Bool {
       lhs.rawValue < rhs.rawValue
     }
 
@@ -101,7 +101,7 @@ struct Translation: Hashable, Identifiable {
 
   static func createFromApiResponse(
     translation: Anime365ApiClient.Translation
-  ) -> Translation {
+  ) -> Self {
     var sourceVideoQuality = SourceVideoQuality.other
 
     switch translation.qualityType {
@@ -155,7 +155,7 @@ struct Translation: Hashable, Identifiable {
       addedTooLongAgo = Date.now.addingTimeInterval(60 * 60 * 24 * -1) > addedTime  // 1 day ago
     }
 
-    return Translation(
+    return Self(
       id: translation.id,
       translationTeam: translation.authorsSummary == ""
         ? "???"
@@ -172,7 +172,7 @@ struct Translation: Hashable, Identifiable {
     )
   }
 
-  static func == (lhs: Translation, rhs: Translation) -> Bool {
+  static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }
 

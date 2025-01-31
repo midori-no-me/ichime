@@ -99,7 +99,7 @@ extension ScraperAPI.Types {
       }
     }
 
-    public static func == (lhs: Moment, rhs: Moment) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
       lhs.id == rhs.id
     }
 

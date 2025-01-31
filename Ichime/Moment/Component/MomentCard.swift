@@ -60,8 +60,8 @@ private struct MomentCardTv: View {
         .truncationMode(.tail)
     }
     .frame(
-      maxWidth: MomentCardTv.CARD_WIDTH,
-      maxHeight: MomentCardTv.CARD_HEIGHT,
+      maxWidth: Self.CARD_WIDTH,
+      maxHeight: Self.CARD_HEIGHT,
       alignment: .bottom
     )
     .buttonStyle(.borderless)
