@@ -1,1 +1,3 @@
 strict: true
+only_rules:
+  - modifier_order
