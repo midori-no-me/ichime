@@ -3,3 +3,4 @@ only_rules:
   - modifier_order
   - prefer_self_in_static_references
   - private_swiftui_state
+  - redundant_sendable
