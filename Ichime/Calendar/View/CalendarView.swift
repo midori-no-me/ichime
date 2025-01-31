@@ -64,7 +64,7 @@ class CalendarViewModel: ObservableObject {
 }
 
 struct CalendarView: View {
-  @StateObject public var viewModel: CalendarViewModel = CalendarViewModel(
+  @StateObject private var viewModel: CalendarViewModel = CalendarViewModel(
     schedule: ShowReleaseSchedule()
   )
 

@@ -185,8 +185,8 @@ private struct ShowsSection: View {
   public let sectionLoader: any ShowsSectionLoader
   public let onLoaded: () -> Void
 
-  @State var isLoading: Bool = true
-  @State var shows: [Show] = []
+  @State private var isLoading: Bool = true
+  @State private var shows: [Show] = []
   private let SPACING_BETWEEN_TITLE_CARD_CARDS: CGFloat = 50
 
   var body: some View {

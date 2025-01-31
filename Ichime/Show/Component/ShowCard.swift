@@ -39,7 +39,7 @@ private func formatMetadataLine(_ show: Show, displaySeason: Bool) -> [String] {
 
 struct IndependentShowCardContextMenuPreview: View {
   let showId: Int
-  @State var show: Show? = nil
+  @State private var show: Show? = nil
   var client: Anime365Client = ApplicationDependency.container.resolve()
 
   var body: some View {

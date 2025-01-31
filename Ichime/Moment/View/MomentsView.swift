@@ -135,6 +135,7 @@ class MomentsViewModel: ObservableObject {
 }
 
 struct MomentsView: View {
+  // swiftlint:disable private_swiftui_state
   @StateObject public var viewModel: MomentsViewModel
 
   public let title: String

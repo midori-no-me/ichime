@@ -5,9 +5,9 @@ import SwiftUI
 struct ContentViewWithTabBar: View {
   @Environment(\.modelContext) private var modelContext
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
-  @State var route: Route?
+  @State private var route: Route?
 
-  @State var viewModel: UserAnimeListCache = ApplicationDependency.container.resolve()
+  @State private var viewModel: UserAnimeListCache = ApplicationDependency.container.resolve()
 
   var body: some View {
     TabView(selection: self.$selectedTab) {

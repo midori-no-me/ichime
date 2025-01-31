@@ -98,7 +98,7 @@ struct ShowMomentsCardsView: View {
 
   let showId: Int
   let showName: String
-  @State var viewModel: ShowMomentsCardsViewModel = .init()
+  @State private var viewModel: ShowMomentsCardsViewModel = .init()
 
   var body: some View {
     VStack(alignment: .leading, spacing: Self.SPACING_BETWEEN_TITLE_AND_CARDS) {
