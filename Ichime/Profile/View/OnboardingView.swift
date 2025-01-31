@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct OnboardingView: View {
-  @State var showAuth = false
+  @State private var showAuth = false
 
   var body: some View {
     ScrollView([.vertical]) {

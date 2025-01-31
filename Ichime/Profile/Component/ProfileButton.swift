@@ -4,7 +4,7 @@ import SwiftUI
 struct ProfileButton: View {
   private var userManager: UserManager = ApplicationDependency.container.resolve()
 
-  @State var profileSheetPresented = false
+  @State private var profileSheetPresented = false
 
   var body: some View {
     Button(

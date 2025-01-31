@@ -325,7 +325,7 @@ private struct ShowPrimaryAndSecondaryTitles: View {
 private struct ShowActionButtons: View {
   let show: ShowFull
   var viewModel: ShowViewModel
-  @State var showEdit = false
+  @State private var showEdit = false
   private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
 
   var isInMyList: Bool {

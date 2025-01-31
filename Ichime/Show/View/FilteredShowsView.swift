@@ -108,6 +108,7 @@ class FilteredShowsViewModel: ObservableObject {
 }
 
 struct FilteredShowsView: View {
+  // swiftlint:disable private_swiftui_state
   @StateObject public var viewModel: FilteredShowsViewModel
 
   public let title: String

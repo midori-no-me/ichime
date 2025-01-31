@@ -54,7 +54,7 @@ struct AnimeList: View {
   let status: AnimeWatchStatus
   let animeList: [UserAnimeListModel]
 
-  @State var selectedShow: MyListShow?
+  @State private var selectedShow: MyListShow?
 
   var body: some View {
     List {
