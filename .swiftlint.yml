@@ -1,3 +1,4 @@
 strict: true
 only_rules:
   - modifier_order
+  - prefer_self_in_static_references

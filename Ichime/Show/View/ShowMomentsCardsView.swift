@@ -101,7 +101,7 @@ struct ShowMomentsCardsView: View {
   @State var viewModel: ShowMomentsCardsViewModel = .init()
 
   var body: some View {
-    VStack(alignment: .leading, spacing: ShowMomentsCardsView.SPACING_BETWEEN_TITLE_AND_CARDS) {
+    VStack(alignment: .leading, spacing: Self.SPACING_BETWEEN_TITLE_AND_CARDS) {
       SectionHeader(
         title: "Моменты",
         subtitle: nil

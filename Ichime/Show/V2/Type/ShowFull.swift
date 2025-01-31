@@ -24,20 +24,20 @@ struct ShowFull {
     let text: String
     let source: String
 
-    static func == (lhs: Description, rhs: Description) -> Bool {
+    static func == (lhs: Self, rhs: Self) -> Bool {
       lhs.text == rhs.text
     }
 
     static func createFiltered(
       text: String,
       source: String
-    ) -> Description {
+    ) -> Self {
       let filteredText = text.replacing(
         try! Regex(#"\n+"#),
         with: "\n\n"
       )
 
-      return Description(
+      return Self(
         text: filteredText,
         source: source
       )
@@ -99,14 +99,14 @@ struct ShowFull {
     shikimoriBaseUrl: URL,
     jikanCharacterRoles: [JikanApiClient.CharacterRole],
     jikanStaffMembers: [JikanApiClient.StaffMember]
-  ) -> ShowFull {
+  ) -> Self {
     let score = Float(anime365Series.myAnimeListScore) ?? 0
 
-    return ShowFull(
+    return Self(
       id: anime365Series.id,
-      title: ShowFull.Title(
+      title: Self.Title(
         full: anime365Series.title,
-        translated: ShowFull.Title.TranslatedTitles(
+        translated: Self.Title.TranslatedTitles(
           russian: anime365Series.titles.ru,
           english: anime365Series.titles.en,
           japanese: anime365Series.titles.ja,
@@ -114,7 +114,7 @@ struct ShowFull {
         )
       ),
       descriptions: (anime365Series.descriptions ?? []).map { description in
-        ShowFull.Description.createFiltered(
+        Self.Description.createFiltered(
           text: description.value,
           source: description.source
         )
@@ -126,7 +126,7 @@ struct ShowFull {
       typeTitle: anime365Series.typeTitle,
       broadcastType: .createFromApiType(apiType: anime365Series.type),
       genres: (anime365Series.genres ?? []).map { genre in
-        ShowFull.Genre(
+        Self.Genre(
           id: genre.id,
           title: genre.title
         )
@@ -153,7 +153,7 @@ struct ShowFull {
           imageUrl = URL(string: shikimoriBaseUrl.absoluteString + imagePath)
         }
 
-        return ShowFull.Studio(
+        return Self.Studio(
           id: studio.id,
           name: studio.name,
           image: imageUrl

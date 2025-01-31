@@ -39,7 +39,7 @@ struct ShowFromCalendar: Hashable, Identifiable {
   static func createFromShikimoriApi(
     shikimoriBaseUrl: URL,
     calendarEntry: CalendarEntry
-  ) -> ShowFromCalendar {
+  ) -> Self {
     let anime = calendarEntry.anime
 
     let score = Float(anime.score) ?? 0
@@ -67,7 +67,7 @@ struct ShowFromCalendar: Hashable, Identifiable {
     )
   }
 
-  static func == (lhs: ShowFromCalendar, rhs: ShowFromCalendar) -> Bool {
+  static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }
 

@@ -75,7 +75,7 @@ struct WatchCardModel: Equatable, Identifiable, Hashable {
     )
   }
 
-  static func == (lhs: WatchCardModel, rhs: WatchCardModel) -> Bool {
+  static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }
 }

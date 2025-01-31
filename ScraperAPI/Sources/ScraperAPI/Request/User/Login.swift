@@ -39,12 +39,12 @@ extension ScraperAPI.Request {
       guard let document = try? SwiftSoup.parseBodyFragment(html),
         let content = try? document.select("content").first()
       else {
-        logger.error("\(String(describing: Login.self)): cannot parse document")
+        logger.error("\(String(describing: Self.self)): cannot parse document")
         throw ScraperAPI.APIClientError.parseError
       }
 
       guard let user = try? ScraperAPI.Types.User(from: content, baseURL: baseURL) else {
-        logger.error("\(String(describing: Login.self)): cannot parse user")
+        logger.error("\(String(describing: Self.self)): cannot parse user")
         throw ScraperAPI.APIClientError.parseError
       }
 

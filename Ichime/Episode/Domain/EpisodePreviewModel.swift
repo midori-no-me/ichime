@@ -9,7 +9,7 @@ struct EpisodePreview: Hashable, Identifiable {
   let episodeNumber: Float?
   let isUnderProcessing: Bool
 
-  static func == (lhs: EpisodePreview, rhs: EpisodePreview) -> Bool {
+  static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }
 

@@ -37,7 +37,7 @@ extension ScraperAPI.Request {
       catch {
         logger
           .error(
-            "\(String(describing: GetNotifications.self)): cannot parse, \(error.localizedDescription, privacy: .public)"
+            "\(String(describing: Self.self)): cannot parse, \(error.localizedDescription, privacy: .public)"
           )
         return []
       }

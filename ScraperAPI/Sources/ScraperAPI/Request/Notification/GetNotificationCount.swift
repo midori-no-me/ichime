@@ -34,7 +34,7 @@ extension ScraperAPI.Request {
       catch {
         logger
           .error(
-            "\(String(describing: GetNotificationCount.self)): cannot parse or get counter, \(error.localizedDescription, privacy: .public)"
+            "\(String(describing: Self.self)): cannot parse or get counter, \(error.localizedDescription, privacy: .public)"
           )
         return 0
       }

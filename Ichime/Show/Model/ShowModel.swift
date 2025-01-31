@@ -22,7 +22,7 @@ struct Show: Hashable, Identifiable {
     let text: String
     let source: String
 
-    static func == (lhs: Description, rhs: Description) -> Bool {
+    static func == (lhs: Self, rhs: Self) -> Bool {
       lhs.text == rhs.text
     }
 
@@ -66,14 +66,14 @@ struct Show: Hashable, Identifiable {
 
   static func createFromApiSeries(
     series: Anime365ApiClient.Series
-  ) -> Show {
+  ) -> Self {
     let score = Float(series.myAnimeListScore) ?? 0
 
-    return Show(
+    return Self(
       id: series.id,
-      title: Show.Title(
+      title: Self.Title(
         full: series.title,
-        translated: Show.Title.TranslatedTitles(
+        translated: Self.Title.TranslatedTitles(
           russian: series.titles.ru,
           english: series.titles.en,
           japanese: series.titles.ja,
@@ -81,7 +81,7 @@ struct Show: Hashable, Identifiable {
         )
       ),
       descriptions: (series.descriptions ?? []).map { description in
-        Show.Description(
+        Self.Description(
           text: description.value,
           source: description.source
         )
@@ -94,7 +94,7 @@ struct Show: Hashable, Identifiable {
       typeTitle: series.typeTitle,
       broadcastType: .createFromApiType(apiType: series.type),
       genres: (series.genres ?? []).map { genre in
-        Show.Genre(
+        Self.Genre(
           id: genre.id,
           title: genre.title
         )
@@ -116,7 +116,7 @@ struct Show: Hashable, Identifiable {
     )
   }
 
-  static func == (lhs: Show, rhs: Show) -> Bool {
+  static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }
 

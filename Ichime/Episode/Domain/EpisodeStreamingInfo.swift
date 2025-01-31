@@ -9,7 +9,7 @@ struct EpisodeStreamingInfo: Hashable, Identifiable {
     let height: Int
     let urls: [URL]
 
-    static func == (lhs: StreamQualityOption, rhs: StreamQualityOption) -> Bool {
+    static func == (lhs: Self, rhs: Self) -> Bool {
       lhs.id == rhs.id
     }
 
@@ -35,13 +35,13 @@ struct EpisodeStreamingInfo: Hashable, Identifiable {
       websiteBaseUrl: websiteBaseUrl,
       cookies: cookies
     )
-    var subtitles: EpisodeStreamingInfo.SubtitlesUrls? = nil
+    var subtitles: Self.SubtitlesUrls? = nil
 
     if let vttUrlString = apiResponse.subtitlesVttUrl, let vttUrl = URL(string: vttUrlString),
       let subtitleUrl = subtitleUrlGenerator.generateSubtitleUrl(for: apiResponse.subtitlesUrl),
       let subsUrl = URL(string: subtitleUrl)
     {
-      subtitles = EpisodeStreamingInfo.SubtitlesUrls(
+      subtitles = Self.SubtitlesUrls(
         vtt: vttUrl,
         base: subsUrl
       )
@@ -60,7 +60,7 @@ struct EpisodeStreamingInfo: Hashable, Identifiable {
     self.subtitles = subtitles
   }
 
-  static func == (lhs: EpisodeStreamingInfo, rhs: EpisodeStreamingInfo) -> Bool {
+  static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }
 
