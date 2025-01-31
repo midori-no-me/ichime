@@ -24,3 +24,17 @@ jobs:
 
       - name: Check Code Formatting
         run: swiftformat --lint .
+
+  swiftlint:
+    name: SwiftLint
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: Check Code Formatting
+        run: swiftlint --strict

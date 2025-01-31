@@ -5,6 +5,7 @@ fileGroups:
 - .github/
 - .swift-format
 - .swiftformat
+- .swiftlint.yml
 - Makefile
 - project.yml
 - README.md
