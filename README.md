@@ -64,9 +64,7 @@
 
 ### Кодстайл
 
-Мы используем официальный форматтер кодстайла для Swift: [swift-format](https://github.com/swiftlang/swift-format). Убедитесь, что у вас Swift 6.0 или новее.
-
-А также используем [SwiftFormat](https://github.com/nicklockwood/SwiftFormat).
+Мы используем официальный форматтер кодстайла для Swift: [swift-format](https://github.com/swiftlang/swift-format). Убедитесь, что у вас Swift 6.0 или новее. Также мы используем [SwiftFormat](https://github.com/nicklockwood/SwiftFormat) и [SwiftLint](https://github.com/realm/SwiftLint).
 
 Перед коммитом не забудьте запустить автоматическое исправление кодстайла:
 
@@ -76,9 +74,9 @@ make format
 
 ### Git Hooks
 
-Запускать XcodeGen и swift-format можно автоматически с помощью Git Hooks.
+Запускать XcodeGen и команды для исправления кодстайда можно автоматически с помощью Git Hooks.
 
-Установите их с помощью команды:
+Установите хуки с помощью команды:
 
 ```bash
 make hooks

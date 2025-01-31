@@ -1,17 +1,18 @@
 format:
 	swiftformat .
 	swift format . --recursive --in-place
+	swiftlint --fix --quiet
 
 lint:
 	swiftformat --lint .
 	swift format lint . --recursive --strict
+	swiftlint --strict
 
 hooks:
 	echo "#!/bin/sh" > $$(git rev-parse --show-toplevel)/.git/hooks/pre-commit
-	echo "Running SwiftFormat..." >> $$(git rev-parse --show-toplevel)/.git/hooks/pre-commit
 	echo "swiftformat ." >> $$(git rev-parse --show-toplevel)/.git/hooks/pre-commit
-	echo "Running swift-format..." >> $$(git rev-parse --show-toplevel)/.git/hooks/pre-commit
 	echo "swift format . --recursive --in-place" >> $$(git rev-parse --show-toplevel)/.git/hooks/pre-commit
+	echo "swiftlint --fix --quiet" >> $$(git rev-parse --show-toplevel)/.git/hooks/pre-commit
 	chmod +x $$(git rev-parse --show-toplevel)/.git/hooks/pre-commit
 
 	echo "#!/bin/sh" > $$(git rev-parse --show-toplevel)/.git/hooks/post-checkout
