@@ -76,7 +76,7 @@ struct ContentViewWithSideBar: View {
           ShowView(showId: route.id)
         }
       case .episode:
-        EpisodeTranslationsView(episodeId: route.id, episodeTitle: route.title ?? "No name")
+        EpisodeTranslationListView(episodeId: route.id)
       }
     }
     .onOpenURL(perform: { url in

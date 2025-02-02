@@ -8,6 +8,7 @@ private class EpisodeListViewModel {
     case idle
     case loading
     case loadingFailed(Error)
+    case loadedButEmpty
     case loaded([EpisodeInfo])
   }
 
@@ -29,7 +30,12 @@ private class EpisodeListViewModel {
         showId: showId
       )
 
-      self.state = .loaded(episodeInfos)
+      if episodeInfos.isEmpty {
+        self.state = .loadedButEmpty
+      }
+      else {
+        self.state = .loaded(episodeInfos)
+      }
     }
     catch {
       self.state = .loadingFailed(error)
@@ -67,6 +73,14 @@ struct EpisodeListView: View {
       }
       .focusable()
 
+    case .loadedButEmpty:
+      ContentUnavailableView {
+        Label("Список серий пустой", systemImage: "list.bullet")
+      } description: {
+        Text("У этого тайтла ещё нет загруженных серий")
+      }
+      .focusable()
+
     case let .loaded(episodeInfos):
       EpisodePreviews(
         episodeInfos: episodeInfos,
@@ -86,6 +100,8 @@ private struct EpisodePreviews: View {
         ForEach(self.episodeInfos, id: \.anime365Id) { episodeInfo in
           EpisodePreviewRow(episodeInfo: episodeInfo)
         }
+      } header: {
+        Text("Серии")
       } footer: {
         if let nextEpisodeReleasesAt {
           Text(
@@ -105,15 +121,14 @@ private struct EpisodePreviewRow: View {
 
   var body: some View {
     NavigationLink(
-      destination: EpisodeTranslationsView(
-        episodeId: self.episodeInfo.anime365Id,
-        episodeTitle: self.formatTitleLine()
+      destination: EpisodeTranslationListView(
+        episodeId: self.episodeInfo.anime365Id
       )
     ) {
       HStack(spacing: 32) {
         Group {
           if let episodeNumber = episodeInfo.episodeNumber {
-            Text(episodeNumber.formatted(.number))
+            Text(episodeNumber.formatted(EpisodeNumberFormatter()))
           }
           else {
             Text("")

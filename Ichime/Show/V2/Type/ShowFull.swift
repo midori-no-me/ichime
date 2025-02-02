@@ -93,7 +93,7 @@ struct ShowFull {
   let staffMembers: [StaffMember]
 
   static func create(
-    anime365Series: Anime365ApiClient.Series,
+    anime365Series: Anime365ApiClient.SeriesFull,
     shikimoriAnime: ShikimoriApiClient.AnimeV1,
     shikimoriScreenshots: [ShikimoriApiClient.AnimeV1.Screenshot],
     shikimoriBaseUrl: URL,

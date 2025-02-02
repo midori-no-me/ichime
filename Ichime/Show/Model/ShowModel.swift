@@ -65,7 +65,7 @@ struct Show: Hashable, Identifiable {
   let episodePreviews: [EpisodePreview]
 
   static func createFromApiSeries(
-    series: Anime365ApiClient.Series
+    series: Anime365ApiClient.SeriesFull
   ) -> Self {
     let score = Float(series.myAnimeListScore) ?? 0
 

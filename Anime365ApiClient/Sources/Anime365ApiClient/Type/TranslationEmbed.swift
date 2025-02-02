@@ -1,17 +1,12 @@
-public struct TranslationEmbed: Decodable {
-  public struct Download: Decodable {
-    public let height: Int
-    public let url: String
-  }
+import Foundation
 
+public struct TranslationEmbed: Decodable {
   public struct Stream: Decodable {
     public let height: Int
-    public let urls: [String]
+    public let urls: [URL]
   }
 
-  public let embedUrl: String
-  public let download: [Download]
   public let stream: [Stream]
   public let subtitlesUrl: String?
-  public let subtitlesVttUrl: String?
+  public let subtitlesVttUrl: URL?
 }

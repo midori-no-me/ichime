@@ -2,7 +2,8 @@ import Foundation
 import OSLog
 
 public class ApiClient {
-  private let baseURL: URL
+  public let baseURL: URL
+
   private let userAgent: String
   private let urlSession: URLSession
   private let logger: Logger

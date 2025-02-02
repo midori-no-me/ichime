@@ -38,28 +38,6 @@
 			<key>File</key>
 			<string>HiddenTranslations</string>
 		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
-			<string>Настройки плеера</string>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSMultiValueSpecifier</string>
-			<key>Title</key>
-			<string>Плеер по умолчанию</string>
-			<key>Key</key>
-			<string>defaultPlayer</string>
-			<key>DefaultValue</key>
-			<string>Infuse</string>
-			<key>Values</key>
-			<array>
-				<string>Infuse</string>
-				<string>VLC</string>
-				<string>SVPlayer</string>
-			</array>
-		</dict>
 	</array>
 </dict>
 </plist>

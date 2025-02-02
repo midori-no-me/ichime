@@ -20,3 +20,9 @@ public struct Translation: Decodable {
   public let seriesId: Int
   public let episodeId: Int
 }
+
+public struct TranslationFull: Decodable {
+  public let id: Int
+  public let episode: Episode
+  public let series: Series
+}

@@ -15,7 +15,7 @@ public struct EpisodeInfo {
   public let uploadedAt: Date
 
   static func createValid(
-    anime365EpisodePreview: Anime365ApiClient.Series.EpisodePreview,
+    anime365EpisodePreview: Anime365ApiClient.Episode,
     jikanEpisode: JikanApiClient.Episode?
   ) -> Self? {
     if anime365EpisodePreview.isActive != 1 || anime365EpisodePreview.isFirstUploaded != 1 {
