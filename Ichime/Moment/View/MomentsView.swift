@@ -136,10 +136,10 @@ class MomentsViewModel: ObservableObject {
 
 struct MomentsView: View {
   // swiftlint:disable private_swiftui_state
-  @StateObject public var viewModel: MomentsViewModel
+  @StateObject var viewModel: MomentsViewModel
 
-  public let title: String
-  public let description: String?
+  let title: String
+  let description: String?
 
   var body: some View {
     Group {
@@ -198,9 +198,7 @@ struct MomentsView: View {
             ForEach(moments) { moment in
               MomentCard(
                 title: moment.title,
-                cover: moment.preview,
-                websiteUrl: URL(string: "https://anime365.ru/moments/219167")!,
-                id: moment.id
+                cover: moment.preview
               ) {
                 Task {
                   await self.viewModel.showMoment(id: moment.id, showName: "show name")

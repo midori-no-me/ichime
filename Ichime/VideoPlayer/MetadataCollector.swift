@@ -1,5 +1,4 @@
 import AVFoundation
-import Anime365ApiClient
 import Foundation
 import UIKit
 
@@ -16,20 +15,6 @@ struct MetadataPlayer {
 }
 
 struct MetadataCollector {
-  let api: Anime365ApiClient.ApiClient
-  let episodeId: Int
-  let translationId: Int
-
-  init(
-    episodeId: Int,
-    translationId: Int,
-    api: Anime365ApiClient.ApiClient = ApplicationDependency.container.resolve()
-  ) {
-    self.episodeId = episodeId
-    self.translationId = translationId
-    self.api = api
-  }
-
   static func createMetadataItems(for metadata: MetadataPlayer) -> [AVMetadataItem] {
     let mapping: [AVMetadataIdentifier: Any?] = [
       .commonIdentifierTitle: metadata.title,
@@ -55,59 +40,5 @@ struct MetadataCollector {
     // Specify "und" to indicate an undefined language.
     item.extendedLanguageTag = "und"
     return item.copy() as! AVMetadataItem
-  }
-
-  func getMetadata() async -> MetadataPlayer? {
-    do {
-      let episodeData = try await api.getEpisode(episodeId: self.episodeId)
-      let showData = try await api.getSeries(seriesId: episodeData.seriesId)
-      let translation = episodeData.translations.first(where: { $0.id == self.translationId })
-
-      var description = ""
-
-      if let translation {
-        if let desc = showData.descriptions?.first {
-          description = "\(desc.value)\n\n© \(desc.source)"
-        }
-        description += "\n\nПереведено командой: \(translation.authorsSummary)"
-      }
-
-      var image: Data?
-
-      if let imageURL = URL(string: showData.posterUrl) {
-        do {
-          let (data, _) = try await URLSession.shared.data(from: imageURL)
-          image = data
-        }
-        catch {
-          print("cannot download image for meta \(error)")
-        }
-      }
-
-      return .init(
-        title: episodeData.episodeFull,
-        subtitle: showData.titles.romaji ?? showData.title,
-        description: description,
-        genre: showData.genres?.map { $0.title }.joined(separator: ", "),
-        image: image,
-        year: showData.year
-      )
-    }
-    catch {
-      print("Cannot download metadata \(error)")
-      return nil
-    }
-  }
-
-  private func getRating(malScore: String, worldartScore: String) -> String? {
-    if malScore != "-1" {
-      return "MAL: \(malScore)"
-    }
-
-    if worldartScore != "-1" {
-      return "WorldART: \(worldartScore)"
-    }
-
-    return nil
   }
 }

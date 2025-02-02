@@ -1,17 +1,10 @@
-import ScraperAPI
 import SwiftUI
 
-extension ScraperAPI.Types.Show {
-  public var websiteUrl: URL {
-    getWebsiteUrlByShowId(showId: id)
-  }
-}
-
 private struct MyListEntry: View {
-  public let primaryTitle: String
-  public let secondaryTitle: String?
-  public let currentEpisodeProgress: Int
-  public let totalEpisodes: Int?
+  let primaryTitle: String
+  let secondaryTitle: String?
+  let currentEpisodeProgress: Int
+  let totalEpisodes: Int?
 
   var body: some View {
     HStack {

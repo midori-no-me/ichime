@@ -22,8 +22,6 @@ extension ScraperAPI.Types.WatchShow.UpdateType {
 struct WatchCardModel: Equatable, Identifiable, Hashable {
   struct WatchData: Hashable {
     let episode: Int
-    let title: String
-    let translation: Int?
   }
 
   let id: Int
@@ -56,7 +54,7 @@ struct WatchCardModel: Equatable, Identifiable, Hashable {
       name: show.name,
       title: show.episode.displayName,
       sideText: show.update.displayName,
-      data: .init(episode: show.episode.id, title: show.episode.displayName, translation: nil)
+      data: .init(episode: show.episode.id)
     )
   }
 
@@ -68,9 +66,7 @@ struct WatchCardModel: Equatable, Identifiable, Hashable {
       title: notification.episode.displayName,
       sideText: notification.translation.type,
       data: .init(
-        episode: notification.episode.id,
-        title: notification.episode.displayName,
-        translation: notification.translation.id
+        episode: notification.episode.id
       )
     )
   }

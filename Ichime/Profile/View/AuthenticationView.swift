@@ -17,17 +17,12 @@ class AuthenticationViewModel {
     self.userManager = userManager
   }
 
-  public func getProfileSettingsUrl() -> URL {
+  func getProfileSettingsUrl() -> URL {
     self.baseUrlPreference.url
       .appendingPathComponent("/users/profile")
   }
 
-  public func getPasswordResetUrl() -> URL {
-    self.baseUrlPreference.url
-      .appendingPathComponent("/users/forgotPassword")
-  }
-
-  public func performAuthentication() async {
+  func performAuthentication() async {
     self.isLoadingAuthentication = true
 
     do {

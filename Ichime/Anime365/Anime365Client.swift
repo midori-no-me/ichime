@@ -10,13 +10,13 @@ class Anime365Client {
     self.apiClient = apiClient
   }
 
-  public func getShow(seriesId: Int) async throws -> Show {
+  func getShow(seriesId: Int) async throws -> Show {
     let apiResponse = try await apiClient.getSeries(seriesId: seriesId)
 
     return Show.createFromApiSeries(series: apiResponse)
   }
 
-  public func getOngoings(
+  func getOngoings(
     offset: Int,
     limit: Int
   ) async throws -> [Show] {
@@ -37,7 +37,7 @@ class Anime365Client {
     }
   }
 
-  public func getTop(
+  func getTop(
     offset: Int,
     limit: Int
   ) async throws -> [Show] {
@@ -51,7 +51,7 @@ class Anime365Client {
     }
   }
 
-  public func getSeason(
+  func getSeason(
     offset: Int,
     limit: Int,
     airingSeason: AiringSeason
@@ -69,7 +69,7 @@ class Anime365Client {
     }
   }
 
-  public func getByGenre(
+  func getByGenre(
     offset: Int,
     limit: Int,
     genreIds: [Int]
@@ -90,7 +90,7 @@ class Anime365Client {
     }
   }
 
-  public func getShowByEpisodeId(episodeId: Int) async throws -> Show {
+  func getShowByEpisodeId(episodeId: Int) async throws -> Show {
     let episodeResponse = try await apiClient.getEpisode(
       episodeId: episodeId
     )
@@ -98,7 +98,7 @@ class Anime365Client {
     return try await self.getShow(seriesId: episodeResponse.seriesId)
   }
 
-  public func searchShows(
+  func searchShows(
     searchQuery: String,
     offset: Int,
     limit: Int

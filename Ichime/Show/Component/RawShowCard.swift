@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct RawShowCard: View {
-  public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = IMAGE_WIDTH * 3
-  public static let RECOMMENDED_SPACING: CGFloat = 60
+  static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = IMAGE_WIDTH * 3
+  static let RECOMMENDED_SPACING: CGFloat = 60
 
   private static let IMAGE_WIDTH: CGFloat = 250
 

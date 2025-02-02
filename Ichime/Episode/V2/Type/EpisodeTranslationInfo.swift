@@ -115,28 +115,4 @@ struct EpisodeTranslationInfo: Identifiable {
       isUnderProcessing: anime365ApiTranslation.isActive == 0 && activatedOnAnime365At == nil
     )
   }
-
-  func getGroupType() -> EpisodeTranslationGroupType {
-    if self.translatedToLanguage == .russian && self.translationMethod == .subtitles {
-      return .russianSubtitles
-    }
-
-    if self.translatedToLanguage == .russian && self.translationMethod == .voiceover {
-      return .russianVoiceOver
-    }
-
-    if self.translatedToLanguage == .english && self.translationMethod == .subtitles {
-      return .englishSubtitles
-    }
-
-    if self.translatedToLanguage == .english && self.translationMethod == .voiceover {
-      return .englishVoiceOver
-    }
-
-    if self.translatedToLanguage == .japanese {
-      return .japanese
-    }
-
-    return .other
-  }
 }

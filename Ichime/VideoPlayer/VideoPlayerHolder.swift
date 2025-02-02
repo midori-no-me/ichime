@@ -4,7 +4,6 @@ class VideoPlayerHolder {
   private var videoPlayerController: VideoPlayerController = .init()
   private var player: VideoPlayer = .init()
   private var isBusy = false
-  private var hasSubsLastTime: Bool = false
 
   func play(video: VideoModel, onDismiss dismiss: @escaping () -> Void = {}) async {
     if self.isBusy {
@@ -48,11 +47,5 @@ class VideoPlayerHolder {
   @MainActor
   private func pause() {
     self.videoPlayerController.pausePlayer()
-  }
-
-  @MainActor
-  private func recreate() {
-    self.videoPlayerController.dispose()
-    self.videoPlayerController = .init()
   }
 }

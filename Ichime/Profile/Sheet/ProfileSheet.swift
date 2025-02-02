@@ -3,7 +3,6 @@ import SwiftUI
 
 struct ProfileSheet: View {
   private var userManager: UserManager = ApplicationDependency.container.resolve()
-  @Environment(\.dismiss) private var dismiss
   @StateObject private var baseUrlPreference: BaseUrlPreference = .init()
 
   private let appName =

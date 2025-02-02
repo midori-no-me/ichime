@@ -1,5 +1,4 @@
 import Foundation
-import ScraperAPI
 
 struct SubtitlesProxyUrlGenerator {
   private let anime365BaseUrl: URL

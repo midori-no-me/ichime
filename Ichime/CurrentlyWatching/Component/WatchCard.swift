@@ -1,8 +1,6 @@
 import SwiftUI
 
 struct WatchCard: View {
-  private let ROW_PADDING: CGFloat = 4
-
   let data: WatchCardModel
 
   var body: some View {
@@ -25,7 +23,7 @@ struct WatchCard: View {
           name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
           title: "2 серия",
           sideText: "Русские субтитры",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -35,7 +33,7 @@ struct WatchCard: View {
           name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
           title: "OVA 2 серия",
           sideText: "Русская озвучка",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -45,7 +43,7 @@ struct WatchCard: View {
           name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
           title: "Фильм",
           sideText: "RAW",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -55,7 +53,7 @@ struct WatchCard: View {
           name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
           title: "Фильм",
           sideText: "RAW",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -70,7 +68,7 @@ struct WatchCard: View {
           ),
           title: "Фильм",
           sideText: "RAW",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -80,7 +78,7 @@ struct WatchCard: View {
           name: .init(ru: "Братик-братик 2", romaji: "Shixiong A Shixiong 2nd Season"),
           title: "Фильм",
           sideText: "RAW",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
     }
@@ -99,7 +97,7 @@ struct WatchCard: View {
           name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
           title: "2 серия",
           sideText: "Вышло сегодня",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -109,7 +107,7 @@ struct WatchCard: View {
           name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
           title: "2 серия",
           sideText: "Вышло 18.01.24",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -119,7 +117,7 @@ struct WatchCard: View {
           name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
           title: "OVA 2 серия",
           sideText: "Смотрели вчера",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -129,7 +127,7 @@ struct WatchCard: View {
           name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
           title: "Фильм",
           sideText: "В плане с 18.01.24",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -139,7 +137,7 @@ struct WatchCard: View {
           name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
           title: "4000 серия",
           sideText: "В плане сегодня",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -149,7 +147,7 @@ struct WatchCard: View {
           name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
           title: "4000 серия",
           sideText: "Запланировали 18.01.24",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -159,7 +157,7 @@ struct WatchCard: View {
           name: .init(ru: "Взрывной храбрец Брейверн", romaji: "Yuuki Bakuhatsu Bang Bravern"),
           title: "Фильм",
           sideText: "Запланировали 18.01.24",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -174,7 +172,7 @@ struct WatchCard: View {
           ),
           title: "Фильм",
           sideText: "Запланировали 18.01.24",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
       WatchCard(
@@ -184,7 +182,7 @@ struct WatchCard: View {
           name: .init(ru: "Братик-братик 2", romaji: "Shixiong A Shixiong 2nd Season"),
           title: "Фильм",
           sideText: "Запланировали 18.01.24",
-          data: .init(episode: 1, title: "2 серия", translation: 1)
+          data: .init(episode: 1)
         )
       )
     }

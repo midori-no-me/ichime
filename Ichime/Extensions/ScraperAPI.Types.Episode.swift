@@ -2,7 +2,7 @@ import Foundation
 import ScraperAPI
 
 extension ScraperAPI.Types.Episode {
-  public var displayName: String {
+  var displayName: String {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
     formatter.locale = Locale(identifier: "en_US")

@@ -1,11 +1,4 @@
-//
-//  IchimeApp.swift
-//  Ichime
-//
-//  Created by p.flaks on 01.01.2024.
-//
 import DITranquillity
-import ScraperAPI
 import SwiftData
 import SwiftUI
 

@@ -3,6 +3,28 @@ name: Code Quality
 on: pull_request
 
 jobs:
+  xcodegen:
+    name: XcodeGen
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Configs
+        run: xcodegen generate
+
+      - name: Upload Ichime.xcodeproj Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ichime
+          path: ./
+          retention-days: 7
+          include-hidden-files: true
+
   swift_format:
     name: swift-format
     runs-on: macos-15
@@ -38,3 +60,21 @@ jobs:
 
       - name: Check Code Formatting
         run: swiftlint --strict
+
+  periphery:
+    name: Periphery
+    runs-on: macos-15
+    needs: [xcodegen]
+
+    steps:
+      - name: Download Repository w/ Xcode Configs Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ichime
+          path: ./
+
+      - name: Install Periphery
+        run: brew install periphery
+
+      - name: Check For Unused Code
+        run: periphery scan

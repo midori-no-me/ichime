@@ -1,6 +1,4 @@
-import Anime365ApiClient
 import Foundation
-import ScraperAPI
 
 enum ServiceLocator {
   static let appGroup = "group.dev.midorinome.ichime.group"
@@ -32,18 +30,6 @@ enum ServiceLocator {
       fatalError("Cannot get App Name")
     }
     return appName
-  }
-
-  static var permittedScheduleBGTaskName: String {
-    guard
-      let tasks = Bundle.main.object(forInfoDictionaryKey: "BGTaskSchedulerPermittedIdentifiers")
-        as? [String],
-      let task = tasks.first
-    else {
-      fatalError("Cannot get bg task name")
-    }
-
-    return task
   }
 
   static var applicationVersion: String {

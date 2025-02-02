@@ -16,10 +16,6 @@ class UserAnimeListModel {
   var score: Int
   var progress: UserAnimeProgress
 
-  var status: AnimeWatchStatus {
-    AnimeWatchStatus(rawValue: self.statusRaw) ?? .planned
-  }
-
   init(id: Int, name: UserAnimeListName, status: AnimeWatchStatus, score: Int, progress: UserAnimeProgress) {
     self.id = id
     self.name = name

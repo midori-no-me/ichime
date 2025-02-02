@@ -36,12 +36,6 @@ actor WatchChecker: VideoPlayerObserver {
     }
   }
 
-  nonisolated func destroy() {
-    Task {
-      await self.removeObserver()
-    }
-  }
-
   // Set up an observer to track changes in the current time
   func addObserver(_ player: AVPlayer) {
     var times: [NSValue] = []

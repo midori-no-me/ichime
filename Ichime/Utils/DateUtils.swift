@@ -1,6 +1,6 @@
 import Foundation
 
-public func formatRelativeDate(_ releaseDate: Date?) -> String {
+func formatRelativeDate(_ releaseDate: Date?) -> String {
   guard let releaseDate = releaseDate else {
     return "???"
   }
@@ -26,7 +26,7 @@ public func formatRelativeDate(_ releaseDate: Date?) -> String {
   }
 }
 
-public func formatRelativeDateDay(_ releaseDate: Date) -> String {
+func formatRelativeDateDay(_ releaseDate: Date) -> String {
   let calendar = Calendar.current
 
   if calendar.isDateInToday(releaseDate) || calendar.isDateInTomorrow(releaseDate) {
@@ -41,7 +41,7 @@ public func formatRelativeDateDay(_ releaseDate: Date) -> String {
   return formatRelativeDate(releaseDate)
 }
 
-public func formatTime(_ releaseDate: Date) -> String {
+func formatTime(_ releaseDate: Date) -> String {
   let relativeDateFormatter = DateFormatter()
   relativeDateFormatter.timeStyle = .short
   relativeDateFormatter.dateStyle = .none

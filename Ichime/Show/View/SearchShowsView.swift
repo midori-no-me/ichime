@@ -10,7 +10,7 @@ class SearchShowsViewModel {
     case loaded([Show])
   }
 
-  public var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
+  var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
 
   private(set) var state: State = .idle
   var currentlyTypedSearchQuery = ""
@@ -59,14 +59,6 @@ class SearchShowsViewModel {
     catch {
       self.state = .loadingFailed(error)
     }
-  }
-
-  func performInitialSearchFromRecentSearch(
-    searchQuery: String
-  ) async {
-    self.currentlyTypedSearchQuery = searchQuery
-
-    await self.performInitialSearch()
   }
 
   func performLazyLoading() async {

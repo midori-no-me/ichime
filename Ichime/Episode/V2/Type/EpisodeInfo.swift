@@ -2,17 +2,16 @@ import Anime365ApiClient
 import Foundation
 import JikanApiClient
 
-public struct EpisodeInfo {
-  public let anime365Id: Int
-  public let episodeNumber: Int?
-  public let anime365Title: String
-  public let officialTitle: String?
-  public let officiallyAiredAt: Date?
-  public let myAnimeListScore: Float?
-  public let isFiller: Bool
-  public let isRecap: Bool
-  public let isTrailer: Bool
-  public let uploadedAt: Date
+struct EpisodeInfo {
+  let anime365Id: Int
+  let episodeNumber: Int?
+  let anime365Title: String
+  let officialTitle: String?
+  let officiallyAiredAt: Date?
+  let myAnimeListScore: Float?
+  let isFiller: Bool
+  let isRecap: Bool
+  let uploadedAt: Date
 
   static func createValid(
     anime365EpisodePreview: Anime365ApiClient.Episode,
@@ -71,7 +70,6 @@ public struct EpisodeInfo {
       myAnimeListScore: myAnimeListScore,
       isFiller: isFiller,
       isRecap: isRecap,
-      isTrailer: isTrailer,
       uploadedAt: anime365EpisodePreview.firstUploadedDateTime
     )
   }
