@@ -1,6 +1,11 @@
 import Foundation
 
 public struct Series: Decodable {
+  public let id: Int
+  public let title: String
+}
+
+public struct SeriesFull: Decodable {
   public struct Titles: Decodable {
     public let ru: String?
     public let romaji: String?
@@ -17,17 +22,6 @@ public struct Series: Decodable {
   public struct Description: Decodable {
     public let source: String
     public let value: String
-  }
-
-  public struct EpisodePreview: Decodable {
-    public let id: Int
-    public let episodeFull: String
-    public let episodeInt: String
-    public let episodeTitle: String
-    public let episodeType: String
-    public let firstUploadedDateTime: Date
-    public let isActive: Int
-    public let isFirstUploaded: Int
   }
 
   public let id: Int
@@ -47,5 +41,5 @@ public struct Series: Decodable {
   public let titles: Titles
   public let genres: [Genre]?
   public let descriptions: [Description]?
-  public let episodes: [EpisodePreview]?
+  public let episodes: [Episode]?
 }

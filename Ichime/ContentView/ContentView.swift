@@ -23,8 +23,10 @@ struct ContentView: View {
       switch self.navigationStyle {
       case .tabBar:
         ContentViewWithTabBar()
+          .markEpisodeAsWatchedAlert()
       case .sideBar:
         ContentViewWithSideBar()
+          .markEpisodeAsWatchedAlert()
       }
     case .isAnonym:
       NavigationStack {
@@ -36,10 +38,7 @@ struct ContentView: View {
 
 @ViewBuilder
 func viewEpisodes(show: WatchCardModel) -> some View {
-  EpisodeTranslationsView(
-    episodeId: show.data.episode,
-    episodeTitle: show.data.title
-  )
+  EpisodeTranslationListView(episodeId: show.data.episode)
 }
 
 #Preview {

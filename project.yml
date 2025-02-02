@@ -16,6 +16,8 @@ options:
 packages:
   Anime365ApiClient:
     path: ./Anime365ApiClient
+  ThirdPartyVideoPlayer:
+    path: ./ThirdPartyVideoPlayer
   JikanApiClient:
     path: ./JikanApiClient
   ScraperAPI:
@@ -36,6 +38,12 @@ targets:
     sources:
       - path: Ichime
       - path: Settings.bundle # Явно добавляем папку Settings.bundle в билд таргета, чтобы наше приложение отобразилось в системных настройках
+    info:
+      path: Ichime/Info.plist
+      properties:
+        LSApplicationQueriesSchemes: # Нужно для проверок UIApplication.shared.canOpenURL() в коде
+          - infuse
+          - vlc-x-callback
     entitlements:
       path: Ichime/Ichime.entitlements
       properties:
@@ -43,6 +51,7 @@ targets:
     dependencies:
       - package: DITranquillity
       - package: Anime365ApiClient
+      - package: ThirdPartyVideoPlayer
       - package: JikanApiClient
       - package: ScraperAPI
       - package: ShikimoriApiClient

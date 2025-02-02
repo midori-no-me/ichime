@@ -101,6 +101,12 @@ class ApplicationDependency: DIFramework {
       EpisodeService(anime365ApiClient: $0, jikanApiClient: $1)
     }
 
+    container.register {
+      SubtitlesProxyUrlGenerator(
+        anime365BaseUrl: ServiceLocator.websiteBaseUrl
+      )
+    }
+
     if !container.makeGraph().checkIsValid() {
       fatalError("Граф зависимостей не валиден")
     }

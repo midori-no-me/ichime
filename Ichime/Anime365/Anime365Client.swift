@@ -90,18 +90,6 @@ class Anime365Client {
     }
   }
 
-  public func getEpisodeTranslations(
-    episodeId: Int
-  ) async throws -> [Translation] {
-    let apiResponse = try await apiClient.getEpisode(
-      episodeId: episodeId
-    )
-
-    return apiResponse.translations.map { translation in
-      Translation.createFromApiResponse(translation: translation)
-    }
-  }
-
   public func getShowByEpisodeId(episodeId: Int) async throws -> Show {
     let episodeResponse = try await apiClient.getEpisode(
       episodeId: episodeId
@@ -124,15 +112,5 @@ class Anime365Client {
     return apiResponse.map { series in
       Show.createFromApiSeries(series: series)
     }
-  }
-
-  public func getEpisodeStreamingInfo(
-    translationId: Int
-  ) async throws -> EpisodeStreamingInfo {
-    let apiResponse = try await apiClient.getTranslationEmbed(
-      translationId: translationId
-    )
-
-    return EpisodeStreamingInfo(apiResponse: apiResponse)
   }
 }
