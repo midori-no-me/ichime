@@ -88,6 +88,4 @@ class UserManager {
       self.subscribed = decodedUser.subscribed
     }
   }
-
-  private func syncStorageCookie() {}
 }

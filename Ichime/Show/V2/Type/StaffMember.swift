@@ -1,11 +1,11 @@
 import Foundation
 import JikanApiClient
 
-public struct StaffMember: Identifiable {
-  public let id: Int
-  public let image: URL?
-  public let name: String
-  public let roles: [String]
+struct StaffMember: Identifiable {
+  let id: Int
+  let image: URL?
+  let name: String
+  let roles: [String]
 
   static func create(
     jikanStaffMember: JikanApiClient.StaffMember

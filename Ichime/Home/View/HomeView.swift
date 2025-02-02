@@ -182,8 +182,8 @@ struct HomeView: View {
 }
 
 private struct ShowsSection: View {
-  public let sectionLoader: any ShowsSectionLoader
-  public let onLoaded: () -> Void
+  let sectionLoader: any ShowsSectionLoader
+  let onLoaded: () -> Void
 
   @State private var isLoading: Bool = true
   @State private var shows: [Show] = []

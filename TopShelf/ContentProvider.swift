@@ -1,8 +1,5 @@
-import OSLog
 import ScraperAPI
 import TVServices
-
-let logger: Logger = .init(subsystem: "dev.midorinome.ichime.topshelf", category: "contentProvider")
 
 class ContentProvider: TVTopShelfContentProvider {
   let cookieStorage: HTTPCookieStorage = .sharedCookieStorage(

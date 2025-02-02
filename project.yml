@@ -3,6 +3,7 @@ fileGroups:
 - .editorconfig
 - .gitignore
 - .github/
+- .periphery.yml
 - .swift-format
 - .swiftformat
 - .swiftlint.yml

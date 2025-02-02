@@ -27,8 +27,6 @@ struct CharacterCard: View {
 private struct CharacterCardSheet: View {
   let character: Character
 
-  @Environment(\.dismiss) private var dismiss
-
   var body: some View {
     NavigationStack {
       if !self.character.voiceActors.isEmpty {

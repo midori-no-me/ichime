@@ -1,4 +1,3 @@
-import ScraperAPI
 import SwiftUI
 
 private enum NavigationStyle: String {

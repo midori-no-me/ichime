@@ -20,10 +20,6 @@ struct SceneController {
     view === self.rootViewController?.presentedViewController
   }
 
-  func dismiss() {
-    self.rootViewController?.dismiss(animated: false, completion: nil)
-  }
-
   func present(_ view: UIViewController, _ onPresent: @escaping () -> Void) {
     if view.presentingViewController != nil {
       onPresent()

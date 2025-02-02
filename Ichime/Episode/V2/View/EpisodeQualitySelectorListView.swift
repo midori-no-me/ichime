@@ -1,4 +1,3 @@
-import ScraperAPI
 import SwiftData
 import SwiftUI
 import ThirdPartyVideoPlayer
@@ -99,6 +98,8 @@ private struct EpisodeTranslationsStreamingQualities: View {
   private let subtitlesProxyUrlGenerator: SubtitlesProxyUrlGenerator = ApplicationDependency.container.resolve()
 
   @AppStorage("defaultPlayer") private var selectedPlayer: ThirdPartyVideoPlayerType = .infuse
+
+  // periphery:ignore
   @AppStorage("last_watched_translation_id") private var lastWatchedTranslationId: Int = 0
 
   var body: some View {

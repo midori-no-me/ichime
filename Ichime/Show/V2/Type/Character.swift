@@ -1,19 +1,19 @@
 import Foundation
 import JikanApiClient
 
-public struct Character: Identifiable {
-  public struct VoiceActor: Identifiable {
-    public let id: Int
-    public let name: String
-    public let image: URL?
-    public let language: String
+struct Character: Identifiable {
+  struct VoiceActor: Identifiable {
+    let id: Int
+    let name: String
+    let image: URL?
+    let language: String
   }
 
-  public let id: Int
-  public let image: URL?
-  public let name: String
-  public let role: String
-  public let voiceActors: [VoiceActor]
+  let id: Int
+  let image: URL?
+  let name: String
+  let role: String
+  let voiceActors: [VoiceActor]
 
   static func create(
     jikanCharacterRole: JikanApiClient.CharacterRole

@@ -1,21 +1,8 @@
 import Foundation
-import ScraperAPI
 import SwiftData
 
 @ModelActor
 actor UserAnimeListManager {
-  func getById(id: Int) -> UserAnimeListModel? {
-    do {
-      let descriptor =
-        FetchDescriptor<UserAnimeListModel>(predicate: #Predicate<UserAnimeListModel> { $0.id == id })
-      let result = try modelExecutor.modelContext.fetch(descriptor)
-      return result.first
-    }
-    catch {
-      return nil
-    }
-  }
-
   func updateStatusById(id: Int, status: AnimeWatchStatus) {
     do {
       let descriptor =
@@ -30,27 +17,6 @@ actor UserAnimeListManager {
     }
   }
 
-  func getByStatus(status: AnimeWatchStatus) -> [UserAnimeListModel] {
-    do {
-      let descriptor =
-        FetchDescriptor<UserAnimeListModel>(predicate: #Predicate<UserAnimeListModel> { $0.status == status })
-      return try modelExecutor.modelContext.fetch(descriptor)
-    }
-    catch {
-      return []
-    }
-  }
-
-  func getAll() -> [UserAnimeListModel] {
-    do {
-      let descriptor = FetchDescriptor<UserAnimeListModel>()
-      return try modelExecutor.modelContext.fetch(descriptor)
-    }
-    catch {
-      return []
-    }
-  }
-
   func getAllCount() -> Int {
     do {
       let descriptor = FetchDescriptor<UserAnimeListModel>()
@@ -59,12 +25,6 @@ actor UserAnimeListManager {
     catch {
       return 0
     }
-  }
-
-  func insert(id: Int, name: UserAnimeListName, status: AnimeWatchStatus, score: Int, progress: UserAnimeProgress) {
-    let status = UserAnimeListModel(id: id, name: name, status: status, score: score, progress: progress)
-    modelExecutor.modelContext.insert(status)
-    try? modelExecutor.modelContext.save()
   }
 
   func insertMany(

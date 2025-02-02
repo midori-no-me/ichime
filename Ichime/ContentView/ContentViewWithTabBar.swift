@@ -1,9 +1,7 @@
-import ScraperAPI
 import SwiftData
 import SwiftUI
 
 struct ContentViewWithTabBar: View {
-  @Environment(\.modelContext) private var modelContext
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
   @State private var route: Route?
 
@@ -103,10 +101,10 @@ struct ContentViewWithTabBar: View {
       switch action {
       case URLActions.show.rawValue:
         print("its show \(id)")
-        self.route = Route(id: id, type: .show, title: nil)
+        self.route = Route(id: id, type: .show)
       case URLActions.episode.rawValue:
         print("its episode \(id)")
-        self.route = Route(id: id, type: .episode, title: episodeTitle)
+        self.route = Route(id: id, type: .episode)
       default:
         print("idk")
       }

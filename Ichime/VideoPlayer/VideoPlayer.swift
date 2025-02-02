@@ -8,7 +8,6 @@ import AVFoundation
 
 protocol VideoPlayerObserver: AnyObject {
   func create(player: AVPlayer)
-  func destroy()
 }
 
 final class VideoPlayer {

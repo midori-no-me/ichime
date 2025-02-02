@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HeadingSectionWithBackground<Content: View>: View {
-  public let imageUrl: URL?
+  let imageUrl: URL?
 
   @ViewBuilder let content: Content
 

@@ -24,7 +24,7 @@ class ShowMomentsCardsViewModel {
     self.videoHolder = videoPlayerHolder
   }
 
-  public func getShowMomentsFetchFunction(showId: Int) -> (_ page: Int) async throws -> [ScraperAPI
+  func getShowMomentsFetchFunction(showId: Int) -> (_ page: Int) async throws -> [ScraperAPI
     .Types.Moment]
   {
     func fetchFunction(_ page: Int) async throws -> [ScraperAPI.Types.Moment] {
@@ -149,9 +149,7 @@ struct ShowMomentsCardsView: View {
               ForEach(moments) { moment in
                 MomentCard(
                   title: moment.title,
-                  cover: moment.preview,
-                  websiteUrl: URL(string: "https://anime365.ru/moments/219167")!,
-                  id: moment.id
+                  cover: moment.preview
                 ) {
                   Task {
                     await self.viewModel.showMoment(id: moment.id, showName: self.showName)

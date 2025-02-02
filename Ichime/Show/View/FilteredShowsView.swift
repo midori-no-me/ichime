@@ -109,11 +109,11 @@ class FilteredShowsViewModel: ObservableObject {
 
 struct FilteredShowsView: View {
   // swiftlint:disable private_swiftui_state
-  @StateObject public var viewModel: FilteredShowsViewModel
+  @StateObject var viewModel: FilteredShowsViewModel
 
-  public let title: String
-  public let description: String?
-  public let displaySeason: Bool
+  let title: String
+  let description: String?
+  let displaySeason: Bool
 
   var body: some View {
     Group {

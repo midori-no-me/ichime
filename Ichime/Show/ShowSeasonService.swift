@@ -1,6 +1,6 @@
 import Foundation
 
-public enum CalendarSeason: String {
+enum CalendarSeason: String {
   case winter
   case spring
   case summer
@@ -33,9 +33,9 @@ public enum CalendarSeason: String {
   }
 }
 
-public struct AiringSeason {
-  public let calendarSeason: CalendarSeason
-  public let year: Int
+struct AiringSeason {
+  let calendarSeason: CalendarSeason
+  let year: Int
 
   init(
     calendarSeason: CalendarSeason,
@@ -97,9 +97,9 @@ public struct AiringSeason {
 }
 
 struct ShowSeasonService {
-  public static let NEXT_SEASON = 1
-  public static let CURRENT_SEASON = 0
-  public static let PREVIOUS_SEASON = -1
+  static let NEXT_SEASON = 1
+  static let CURRENT_SEASON = 0
+  static let PREVIOUS_SEASON = -1
 
   private let currentDate: Date
 

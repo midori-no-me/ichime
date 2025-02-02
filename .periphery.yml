@@ -1,0 +1,4 @@
+project: Ichime.xcodeproj
+retain_public: true
+schemes:
+- Ichime_tvOS

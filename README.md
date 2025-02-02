@@ -62,7 +62,7 @@
 
 6. Соберите приложение через Xcode.
 
-### Кодстайл
+### Кодстайл и линтеры
 
 Мы используем официальный форматтер кодстайла для Swift: [swift-format](https://github.com/swiftlang/swift-format). Убедитесь, что у вас Swift 6.0 или новее. Также мы используем [SwiftFormat](https://github.com/nicklockwood/SwiftFormat) и [SwiftLint](https://github.com/realm/SwiftLint).
 
@@ -70,6 +70,14 @@
 
 ```bash
 make format
+```
+
+В качестве линтера мы используем только [Periphery](https://github.com/peripheryapp/periphery) — он позволяет находить мертвый код.
+
+Линтеры можно запустить командой:
+
+```bash
+make lint
 ```
 
 ### Git Hooks

@@ -9,7 +9,7 @@ struct CircularPortraitButton<Label>: View where Label: View {
   private let action: () -> Void
   private let label: () -> Label
 
-  @preconcurrency public init(
+  @preconcurrency init(
     imageUrl: URL?,
     action: @escaping @MainActor () -> Void,
     @ViewBuilder label: @escaping () -> Label

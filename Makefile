@@ -7,6 +7,7 @@ lint:
 	swiftformat --lint .
 	swift format lint . --recursive --strict
 	swiftlint --strict
+	periphery scan
 
 hooks:
 	echo "#!/bin/sh" > $$(git rev-parse --show-toplevel)/.git/hooks/pre-commit

@@ -4,17 +4,6 @@ import SwiftUI
 
 typealias UserRateStatus = ScraperAPI.Types.UserRateStatus
 extension ScraperAPI.Types.UserRateStatus {
-  var imageInDropdown: String {
-    switch self {
-    case .deleted: return "trash"
-    case .planned: return "hourglass"
-    case .watching: return "eye.fill"
-    case .completed: return "checkmark"
-    case .onHold: return "pause.fill"
-    case .dropped: return "archivebox.fill"
-    }
-  }
-
   var imageInToolbar: String {
     switch self {
     case .deleted: return "plus.circle"
@@ -50,14 +39,6 @@ class ShowViewModel {
     else {
       return .deleted
     }
-  }
-
-  var statusReady: Bool {
-    self.userRate != nil
-  }
-
-  var shareUrl: URL {
-    getWebsiteUrlByShowId(showId: self.showId)
   }
 
   init(
@@ -229,14 +210,12 @@ private struct ShowKeyDetailsSection: View {
               label: "Рейтинг",
               value: self.show
                 .score != nil
-                ? "★ \(self.show.score!.formatted(.number.precision(.fractionLength(2))))" : "???",
-              isInteractive: false
+                ? "★ \(self.show.score!.formatted(.number.precision(.fractionLength(2))))" : "???"
             )
 
             ShowProperty(
               label: "Тип",
-              value: self.show.typeTitle,
-              isInteractive: false
+              value: self.show.typeTitle
             )
 
             EpisodesShowProperty(
@@ -251,13 +230,12 @@ private struct ShowKeyDetailsSection: View {
             else {
               ShowProperty(
                 label: "Сезон",
-                value: "???",
-                isInteractive: false
+                value: "???"
               )
             }
 
             if !self.show.genres.isEmpty {
-              GenresShowProperty(showTitle: self.show.title, genres: self.show.genres)
+              GenresShowProperty(genres: self.show.genres)
             }
           }
         }
@@ -423,7 +401,6 @@ private struct ShowActionButtons: View {
 private struct ShowProperty: View {
   let label: String
   let value: String
-  let isInteractive: Bool
 
   var body: some View {
     VStack(alignment: .leading) {
@@ -463,8 +440,7 @@ private struct SeasonShowProperty: View {
     ) {
       ShowProperty(
         label: "Сезон",
-        value: self.airingSeason.getLocalizedTranslation(),
-        isInteractive: true
+        value: self.airingSeason.getLocalizedTranslation()
       )
     }
     .buttonStyle(.plain)
@@ -484,13 +460,11 @@ private struct SeasonShowProperty: View {
 }
 
 private struct GenresShowProperty: View {
-  let showTitle: ShowFull.Title
   let genres: [ShowFull.Genre]
 
   var body: some View {
     NavigationLink(
       destination: ShowGenreListView(
-        showTitle: self.showTitle,
         genres: self.genres
       )
     ) {
@@ -499,8 +473,7 @@ private struct GenresShowProperty: View {
         value:
           self.genres
           .map { genre in genre.title }
-          .formatted(.list(type: .and, width: .narrow)),
-        isInteractive: true
+          .formatted(.list(type: .and, width: .narrow))
       )
     }
     .buttonStyle(.plain)
@@ -515,8 +488,7 @@ private struct EpisodesShowProperty: View {
   var body: some View {
     ShowProperty(
       label: "Количество эпизодов",
-      value: self.formatString(),
-      isInteractive: false
+      value: self.formatString()
     )
   }
 
@@ -573,8 +545,7 @@ private struct ShowStudiosAndDescriptions: View {
                 ForEach(self.studios) { studio in
                   StudioCard(
                     title: studio.name,
-                    cover: studio.image,
-                    id: studio.id
+                    cover: studio.image
                   )
                   .frame(width: 300, height: 300)
                 }
@@ -610,9 +581,8 @@ private struct ShowStudiosAndDescriptions: View {
 }
 
 private struct StudioCard: View {
-  public let title: String
-  public let cover: URL?
-  public let id: Int
+  let title: String
+  let cover: URL?
 
   var body: some View {
     Button(action: {}) {
@@ -660,8 +630,8 @@ private struct StudioCard: View {
 }
 
 private struct ShowDescriptionCard: View {
-  public let title: String
-  public let text: String
+  let title: String
+  let text: String
 
   @State private var isSheetPresented = false
 
@@ -693,17 +663,14 @@ private struct ShowDescriptionCard: View {
       )
     }
     .sheet(isPresented: self.$isSheetPresented) {
-      ShowDescriptionCardSheet(title: self.title, text: self.text)
+      ShowDescriptionCardSheet(text: self.text)
     }
     .buttonStyle(.card)
   }
 }
 
 private struct ShowDescriptionCardSheet: View {
-  let title: String
   let text: String
-
-  @Environment(\.dismiss) private var dismiss
 
   var body: some View {
     NavigationStack {
@@ -720,14 +687,6 @@ private struct ShowDescriptionCardSheet: View {
         .frame(maxWidth: 1000, alignment: .center)
       }
     }
-  }
-}
-
-private struct ImagePlaceholder: View {
-  var body: some View {
-    Image(systemName: "photo")
-      .resizable()
-      .aspectRatio(contentMode: .fit)
   }
 }
 

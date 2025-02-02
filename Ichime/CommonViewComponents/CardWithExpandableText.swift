@@ -1,11 +1,10 @@
 import SwiftUI
 
 struct CardWithExpandableText: View {
-  public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 450
-  public static let RECOMMENDED_SPACING: CGFloat = 40
+  static let RECOMMENDED_SPACING: CGFloat = 40
 
-  public let title: String
-  public let text: String
+  let title: String
+  let text: String
 
   @State private var isSheetPresented = false
 

@@ -1,22 +1,18 @@
 import SwiftUI
 
 struct MomentCard: View {
-  public static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 500
+  static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 500
 
-  public static let RECOMMENDED_SPACING: CGFloat = 60
+  static let RECOMMENDED_SPACING: CGFloat = 60
 
-  public let title: String
-  public let cover: URL
-  public let websiteUrl: URL
-  public let id: Int
-  public let action: () -> Void
+  let title: String
+  let cover: URL
+  let action: () -> Void
 
   var body: some View {
     MomentCardTv(
       title: self.title,
       cover: self.cover,
-      websiteUrl: self.websiteUrl,
-      id: self.id,
       action: self.action
     )
   }
@@ -26,11 +22,9 @@ private struct MomentCardTv: View {
   private static let CARD_WIDTH: CGFloat = 350
   private static let CARD_HEIGHT: CGFloat = 250
 
-  public let title: String
-  public let cover: URL
-  public let websiteUrl: URL
-  public let id: Int
-  public let action: () -> Void
+  let title: String
+  let cover: URL
+  let action: () -> Void
 
   var body: some View {
     Button(action: self.action) {
@@ -80,8 +74,6 @@ private struct ImagePlaceholder: View {
   MomentCard(
     title: "Воздушный поцелуй",
     cover: URL(string: "https://anime365.ru/moments/thumbnail/219167.320x180.jpg?5")!,
-    websiteUrl: URL(string: "https://anime365.ru/moments/219167")!,
-    id: 219_167,
     action: {}
   )
 }

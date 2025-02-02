@@ -49,13 +49,6 @@ final class VideoPlayerController: NSObject {
     player.play()
   }
 
-  func dispose() {
-    self.pausePlayer()
-    self.playerViewController.player = nil
-    self.player = nil
-    self.sceneController.dismiss()
-  }
-
   func pausePlayer() {
     self.logger.info("pause player")
     self.player?.pause()
