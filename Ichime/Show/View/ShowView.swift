@@ -174,7 +174,7 @@ private struct ShowDetails: View {
       }
 
       if !self.show.screenshots.isEmpty {
-        Screenshots(screenshots: self.show.screenshots)
+        ScreenshotsSection(screenshots: self.show.screenshots)
       }
 
       if !self.show.characters.isEmpty {
@@ -690,8 +690,11 @@ private struct ShowDescriptionCardSheet: View {
   }
 }
 
-private struct Screenshots: View {
+private struct ScreenshotsSection: View {
   private static let SPACING: CGFloat = 64
+
+  @State private var selectedScreenshot: URL? = nil
+  @State private var showSheet: Bool = false
 
   let screenshots: [URL]
 
@@ -706,50 +709,84 @@ private struct Screenshots: View {
         ScrollView(.horizontal) {
           LazyHStack(alignment: .top, spacing: Self.SPACING) {
             ForEach(self.screenshots, id: \.self) { screenshot in
-              Screenshot(url: screenshot)
-                .containerRelativeFrame(.horizontal, count: 3, span: 1, spacing: Self.SPACING)
+              Button(action: {
+                self.selectedScreenshot = screenshot
+                self.showSheet = true
+              }) {
+                AsyncImage(
+                  url: screenshot,
+                  transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
+                ) { phase in
+                  switch phase {
+                  case .empty:
+                    Color.clear
+
+                  case let .success(image):
+                    image
+                      .resizable()
+                      .scaledToFit()
+
+                  case .failure:
+                    Color.clear
+
+                  @unknown default:
+                    Color.clear
+                  }
+                }
+                .frame(
+                  maxWidth: .infinity,
+                  maxHeight: .infinity
+                )
+                .aspectRatio(16 / 9, contentMode: .fit)
+                .background(Color.black)
+                .hoverEffect(.highlight)
+              }
+              .buttonStyle(.borderless)
+              .containerRelativeFrame(.horizontal, count: 3, span: 1, spacing: Self.SPACING)
             }
           }
         }
         .scrollClipDisabled()
-      }
-    }
-  }
-}
+        .sheet(isPresented: self.$showSheet) {
+          NavigationStack {
+            TabView(selection: self.$selectedScreenshot) {
+              ForEach(self.screenshots, id: \.self) { screenshot in
+                AsyncImage(
+                  url: screenshot,
+                  transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
+                ) { phase in
+                  switch phase {
+                  case .empty:
+                    ProgressView()
 
-private struct Screenshot: View {
-  let url: URL
+                  case let .success(image):
+                    image
+                      .resizable()
+                      .scaledToFit()
 
-  var body: some View {
-    Button(action: {}) {
-      AsyncImage(
-        url: self.url,
-        transaction: .init(animation: .easeInOut(duration: 0.5))
-      ) { phase in
-        switch phase {
-        case .empty:
-          Color.clear
+                  case .failure:
+                    Image(systemName: "photo.badge.exclamationmark")
+                      .font(.title)
+                      .foregroundColor(.secondary)
 
-        case let .success(image):
-          image
-            .resizable()
-            .scaledToFit()
-
-        case .failure:
-          Color.clear
-
-        @unknown default:
-          Color.clear
+                  @unknown default:
+                    Color.clear
+                  }
+                }
+                .focusable()
+                .frame(
+                  maxWidth: .infinity,
+                  maxHeight: .infinity
+                )
+                .ignoresSafeArea()
+                .tag(screenshot)
+              }
+            }
+            .tabViewStyle(.page)
+          }
         }
       }
-      .aspectRatio(16 / 9, contentMode: .fit)
-      .frame(
-        maxWidth: .infinity,
-        maxHeight: .infinity,
-        alignment: .leading
-      )
     }
-    .buttonStyle(.borderless)
   }
 }
 
