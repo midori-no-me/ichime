@@ -39,10 +39,6 @@ class ApplicationDependency: DIFramework {
       }
 
     container
-      .register { VideoPlayerHolder() }
-      .lifetime(.single)
-
-    container
       .register {
         ScraperAPI.Session(
           cookieStorage: $0,
@@ -94,7 +90,7 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowService(anime365ApiClient: $0, shikimoriApiClient: $1, jikanApiClient: $2)
+      ShowService(anime365ApiClient: $0, shikimoriApiClient: $1, jikanApiClient: $2, scraperApi: $3)
     }
 
     container.register {

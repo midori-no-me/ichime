@@ -9,9 +9,6 @@ struct IchimeApp: App {
   var body: some Scene {
     WindowGroup {
       ContentView()
-        .onAppear {
-          VideoPlayerController.enableBackgroundMode()
-        }
     }
     .modelContainer(self.container)
   }

@@ -1,79 +1,98 @@
+import ScraperAPI
 import SwiftUI
+import ThirdPartyVideoPlayer
 
 struct MomentCard: View {
-  static let RECOMMENDED_MINIMUM_WIDTH: CGFloat = 500
+  let moment: Moment
 
-  static let RECOMMENDED_SPACING: CGFloat = 60
+  private let scraperApi: ScraperAPI.APIClient = ApplicationDependency.container.resolve()
 
-  let title: String
-  let cover: URL
-  let action: () -> Void
+  @AppStorage("defaultPlayer") private var selectedPlayer: ThirdPartyVideoPlayerType = .infuse
 
-  var body: some View {
-    MomentCardTv(
-      title: self.title,
-      cover: self.cover,
-      action: self.action
-    )
-  }
-}
-
-private struct MomentCardTv: View {
-  private static let CARD_WIDTH: CGFloat = 350
-  private static let CARD_HEIGHT: CGFloat = 250
-
-  let title: String
-  let cover: URL
-  let action: () -> Void
+  @State private var showErrorAlert: Bool = false
+  @State private var error: Error? = nil
 
   var body: some View {
-    Button(action: self.action) {
-      AsyncImage(
-        url: self.cover,
-        transaction: .init(animation: .easeInOut(duration: 0.5))
-      ) { phase in
-        switch phase {
-        case .empty:
-          EmptyView()
+    Button(action: {
+      Task {
+        do {
+          let momentEmbed = try await scraperApi.sendAPIRequest(
+            ScraperAPI.Request.GetMomentEmbed(momentId: self.moment.id)
+          )
 
-        case let .success(image):
-          image
-            .resizable()
-            .scaledToFit()
+          guard let video = momentEmbed.video.first,
+            let videoHref = video.urls.first,
+            let videoURL = URL(string: videoHref)
+          else {
+            return
+          }
 
-        case .failure:
-          ImagePlaceholder()
+          let externalPlayerUniversalLink = DeepLinkFactory.buildUniversalLinkUrl(
+            externalPlayerType: self.selectedPlayer,
+            videoUrl: videoURL,
+            subtitlesUrl: nil
+          )
 
-        @unknown default:
-          EmptyView()
+          if !UIApplication.shared.canOpenURL(externalPlayerUniversalLink) {
+            print("Opening App Store: \(self.selectedPlayer.appStoreUrl)")
+
+            await UIApplication.shared.open(self.selectedPlayer.appStoreUrl)
+
+            return
+          }
+
+          print("Opening external player: \(externalPlayerUniversalLink.absoluteString)")
+
+          await UIApplication.shared.open(externalPlayerUniversalLink)
+        }
+        catch {
+          self.error = error
+          self.showErrorAlert = true
         }
       }
+    }) {
+      VStack {
+        AsyncImage(
+          url: self.moment.thumbnailUrl,
+          transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
+        ) { phase in
+          switch phase {
+          case .empty:
+            Color.clear
 
-      Text(self.title)
-        .lineLimit(2, reservesSpace: true)
-        .truncationMode(.tail)
+          case let .success(image):
+            image
+              .resizable()
+              .scaledToFit()
+
+          case .failure:
+            Color.clear
+
+          @unknown default:
+            Color.clear
+          }
+        }
+        .frame(
+          maxWidth: .infinity,
+          maxHeight: .infinity
+        )
+        .aspectRatio(16 / 9, contentMode: .fit)
+        .background(Color.black)
+        .hoverEffect(.highlight)
+      }
+
+      Text(self.moment.title)
+        .lineLimit(1)
     }
-    .frame(
-      maxWidth: Self.CARD_WIDTH,
-      maxHeight: Self.CARD_HEIGHT,
-      alignment: .bottom
-    )
     .buttonStyle(.borderless)
+    .alert("Ошибка при открытии момента", isPresented: self.$showErrorAlert, presenting: self.error) { _ in
+      Button(action: {
+        self.error = nil
+      }) {
+        Text("ОК")
+      }
+    } message: { error in
+      Text(error.localizedDescription)
+    }
   }
-}
-
-private struct ImagePlaceholder: View {
-  var body: some View {
-    Image(systemName: "photo")
-      .resizable()
-      .aspectRatio(contentMode: .fit)
-  }
-}
-
-#Preview {
-  MomentCard(
-    title: "Воздушный поцелуй",
-    cover: URL(string: "https://anime365.ru/moments/thumbnail/219167.320x180.jpg?5")!,
-    action: {}
-  )
 }
