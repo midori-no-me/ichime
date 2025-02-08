@@ -221,7 +221,7 @@ private struct ShowKeyDetailsSection: View {
 
             EpisodesShowProperty(
               totalEpisodes: self.show.numberOfEpisodes,
-              episodePreviews: self.show.episodePreviews,
+              latestAiredEpisodeNumber: self.show.latestAiredEpisodeNumber,
               isOngoing: self.show.isOngoing
             )
 
@@ -314,13 +314,13 @@ private struct ShowActionButtons: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
       HStack(alignment: .center, spacing: self.SPACING_BETWEEN_BUTTONS) {
-        if !self.show.episodePreviews.isEmpty {
+        if self.show.hasEpisodes {
           NavigationLink(
             destination: EpisodeListView(showId: self.show.id, nextEpisodeReleasesAt: self.show.nextEpisodeReleasesAt)
           ) {
             Label(
               "Смотреть",
-              systemImage: self.show.episodePreviews.isEmpty ? "play.slash.fill" : "play.fill"
+              systemImage: "play.fill"
             )
             .font(.headline)
             .fontWeight(.semibold)
@@ -369,7 +369,7 @@ private struct ShowActionButtons: View {
             "Следующая серия: \(formatRelativeDateWithWeekdayNameAndDateAndTime(nextEpisodeReleasesAt).lowercased())."
           )
         }
-        else if self.show.episodePreviews.isEmpty {
+        else if !self.show.hasEpisodes {
           Text(
             "У этого тайтла пока что нет загруженных серий."
           )
@@ -483,7 +483,7 @@ private struct GenresShowProperty: View {
 
 private struct EpisodesShowProperty: View {
   let totalEpisodes: Int?
-  let episodePreviews: [EpisodePreview]
+  let latestAiredEpisodeNumber: Int?
   let isOngoing: Bool
 
   var body: some View {
@@ -494,11 +494,9 @@ private struct EpisodesShowProperty: View {
   }
 
   private func formatString() -> String {
-    let latestEpisodeNumber = self.getLatestEpisodeNumber()
-
-    if self.isOngoing {
+    if let latestAiredEpisodeNumber, self.isOngoing {
       return
-        "Вышло \(latestEpisodeNumber.formatted()) из \(totalEpisodes?.formatted() ?? EpisodeService.formatUnknownEpisodeCountBasedOnAlreadyAiredEpisodeCount(Int(latestEpisodeNumber)))"
+        "Вышло \(latestAiredEpisodeNumber.formatted()) из \(totalEpisodes?.formatted() ?? EpisodeService.formatUnknownEpisodeCountBasedOnAlreadyAiredEpisodeCount(latestAiredEpisodeNumber))"
     }
 
     if let totalEpisodes {
@@ -506,24 +504,6 @@ private struct EpisodesShowProperty: View {
     }
 
     return "???"
-  }
-
-  private func getLatestEpisodeNumber() -> Float {
-    let filteredAndSortedEpisodes =
-      self.episodePreviews
-      .filter { episodePreview in episodePreview.type != .trailer }
-      .filter { episodePreview in episodePreview.episodeNumber != nil }
-      .filter { episodePreview in episodePreview.episodeNumber! > 0 }
-      .filter { episodePreview in
-        episodePreview.episodeNumber!.truncatingRemainder(dividingBy: 1) == 0
-      }  // remove episodes with non-round number like 35.5
-      .sorted(by: { $0.episodeNumber! > $1.episodeNumber! })
-
-    if filteredAndSortedEpisodes.isEmpty {
-      return 0
-    }
-
-    return filteredAndSortedEpisodes[0].episodeNumber ?? 0
   }
 }
 
