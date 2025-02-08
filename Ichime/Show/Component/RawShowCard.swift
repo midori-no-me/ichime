@@ -23,7 +23,7 @@ struct RawShowCard: View {
         if let cover {
           AsyncImage(
             url: cover,
-            transaction: .init(animation: .easeInOut(duration: 0.5))
+            transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
           ) { phase in
             switch phase {
             case .empty:

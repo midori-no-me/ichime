@@ -73,7 +73,7 @@ private struct ShowCardContextMenuPreview: View {
     VStack(alignment: .center) {
       AsyncImage(
         url: self.posterUrl,
-        transaction: .init(animation: .easeInOut),
+        transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION)),
         content: { phase in
           switch phase {
           case .empty:

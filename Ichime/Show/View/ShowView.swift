@@ -246,7 +246,7 @@ private struct ShowKeyDetailsSection: View {
             GeometryReader { geometry in
               AsyncImage(
                 url: posterUrl,
-                transaction: .init(animation: .easeInOut(duration: 0.5)),
+                transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION)),
                 content: { phase in
                   switch phase {
                   case .empty:
@@ -590,7 +590,7 @@ private struct StudioCard: View {
       VStack(alignment: .leading, spacing: 16) {
         AsyncImage(
           url: self.cover,
-          transaction: .init(animation: .easeInOut(duration: 0.5))
+          transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
         ) { phase in
           switch phase {
           case .empty:
