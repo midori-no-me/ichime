@@ -229,9 +229,3 @@ private struct ShowsSection: View {
     }
   }
 }
-
-#Preview {
-  NavigationStack {
-    HomeView()
-  }
-}

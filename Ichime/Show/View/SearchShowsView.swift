@@ -183,9 +183,3 @@ private struct ShowsGrid: View {
     }
   }
 }
-
-#Preview {
-  NavigationStack {
-    SearchShowsView()
-  }
-}

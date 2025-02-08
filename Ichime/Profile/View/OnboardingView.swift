@@ -162,9 +162,3 @@ struct AuthenticationTextParagraph: View {
       .padding(.top)
   }
 }
-
-#Preview {
-  NavigationStack {
-    OnboardingView()
-  }
-}

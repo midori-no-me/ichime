@@ -162,9 +162,3 @@ struct LoadedNotificationCenter: View {
     }
   }
 }
-
-#Preview {
-  NavigationStack {
-    NotificationCenterView()
-  }
-}

@@ -46,14 +46,3 @@ struct ShowGenreListView: View {
     return fetchFunction
   }
 }
-
-#Preview {
-  NavigationStack {
-    ShowGenreListView(
-      genres: [
-        ShowFull.Genre(id: 22, title: "Романтика"),
-        ShowFull.Genre(id: 23, title: "Школа"),
-      ]
-    )
-  }
-}

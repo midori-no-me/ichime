@@ -851,9 +851,3 @@ private struct MomentsSection: View {
     }
   }
 }
-
-#Preview {
-  NavigationStack {
-    ShowView(showId: 8762)
-  }
-}

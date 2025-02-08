@@ -133,9 +133,3 @@ struct AuthenticationView: View {
     .navigationTitle("Авторизация")
   }
 }
-
-#Preview {
-  NavigationStack {
-    AuthenticationView()
-  }
-}

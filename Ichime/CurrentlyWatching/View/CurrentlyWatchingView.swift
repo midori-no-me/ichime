@@ -90,10 +90,6 @@ class CurrentlyWatchingViewModel {
 }
 
 struct CurrentlyWatchingView: View {
-  enum Navigation: Hashable {
-    case notifications
-  }
-
   @State private var viewModel: CurrentlyWatchingViewModel = .init()
 
   var body: some View {
@@ -207,22 +203,4 @@ struct LoadedCurrentlyWatching: View {
       }
     }
   }
-}
-
-#Preview {
-  NavigationStack {
-    CurrentlyWatchingView()
-      .navigationDestination(for: CurrentlyWatchingView.Navigation.self) { route in
-        if route == .notifications {
-          NotificationCenterView()
-        }
-      }
-      .navigationDestination(for: WatchCardModel.self) {
-        viewEpisodes(show: $0)
-      }
-  }
-}
-
-#Preview("No navigation") {
-  CurrentlyWatchingView()
 }

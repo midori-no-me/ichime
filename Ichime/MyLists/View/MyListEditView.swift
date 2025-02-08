@@ -169,10 +169,3 @@ struct MyListEditView: View {
     }.presentationDetents([.medium, .large])
   }
 }
-
-#Preview {
-  MyListEditView(
-    show: .init(id: 21587, name: "Благословение небожителей", totalEpisodes: 11),
-    onUpdate: {}
-  )
-}

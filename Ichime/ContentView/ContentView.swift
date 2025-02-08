@@ -39,7 +39,3 @@ struct ContentView: View {
 func viewEpisodes(show: WatchCardModel) -> some View {
   EpisodeTranslationListView(episodeId: show.data.episode)
 }
-
-#Preview {
-  ContentView()
-}

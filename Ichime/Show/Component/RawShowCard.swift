@@ -84,10 +84,3 @@ private struct ImagePlaceholder: View {
       .aspectRatio(contentMode: .fit)
   }
 }
-
-//
-//#Preview {
-//    NavigationStack {
-//        OngoingsView()
-//    }
-//}

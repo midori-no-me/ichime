@@ -178,20 +178,3 @@ struct UserRateForm: View {
     }
   }
 }
-
-#Preview {
-  NavigationStack {
-    UserRateForm(
-      .init(
-        score: 6,
-        currentEpisode: 3,
-        status: .watching,
-        comment:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas id felis ut lorem tempus ornare. Morbi nec enim vel ex lobortis blandit quis ut lectus. Nam gravida mi eu elit posuere tincidunt."
-      ),
-      totalEpisodes: "??",
-      onSubmit: { print($0) },
-      onRemove: {}
-    )
-  }
-}

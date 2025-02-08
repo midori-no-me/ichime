@@ -28,9 +28,3 @@ struct MyListsView: View {
     }
   }
 }
-
-#Preview {
-  NavigationStack {
-    MyListsView(status: .watching)
-  }
-}
