@@ -150,9 +150,6 @@ struct ShowView: View {
         }
       }
     }
-    .refreshable {
-      await self.viewModel.performPullToRefresh()
-    }
   }
 }
 

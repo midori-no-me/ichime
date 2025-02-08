@@ -44,23 +44,6 @@ class CalendarViewModel: ObservableObject {
       await self.updateState(.loadingFailed(error))
     }
   }
-
-  func performPullToRefresh() async {
-    do {
-      let shows = try await schedule.getSchedule()
-
-      if shows.isEmpty {
-        await self.updateState(.loadedButEmpty)
-      }
-      else {
-        self.shows = shows
-        await self.updateState(.loaded(self.shows))
-      }
-    }
-    catch {
-      await self.updateState(.loadingFailed(error))
-    }
-  }
 }
 
 struct CalendarView: View {
@@ -128,10 +111,6 @@ struct CalendarView: View {
           }
         }
       }
-    }
-
-    .refreshable {
-      await self.viewModel.performPullToRefresh()
     }
   }
 }

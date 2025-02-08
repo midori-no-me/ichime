@@ -82,29 +82,6 @@ class FilteredShowsViewModel: ObservableObject {
       self.stopLazyLoading = true
     }
   }
-
-  func performPullToRefresh() async {
-    do {
-      let shows = try await fetchShows(
-        0,
-        SHOWS_PER_PAGE
-      )
-
-      if shows.isEmpty {
-        await self.updateState(.loadedButEmpty)
-      }
-      else {
-        self.currentOffset = self.SHOWS_PER_PAGE
-        self.shows = shows
-        await self.updateState(.loaded(self.shows))
-      }
-    }
-    catch {
-      await self.updateState(.loadingFailed(error))
-    }
-
-    self.stopLazyLoading = false
-  }
 }
 
 struct FilteredShowsView: View {
@@ -184,14 +161,5 @@ struct FilteredShowsView: View {
         }
       }
     }
-    .refreshable {
-      await self.viewModel.performPullToRefresh()
-    }
   }
 }
-
-// #Preview {
-//    NavigationStack {
-//        FilteredShowsView()
-//    }
-// }

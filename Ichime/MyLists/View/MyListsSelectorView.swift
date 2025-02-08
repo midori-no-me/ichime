@@ -118,8 +118,5 @@ struct MyListsSelectorView: View {
         .listStyle(.grouped)
       }
     }
-    .refreshable {
-      await self.viewModel.performLoad()
-    }
   }
 }

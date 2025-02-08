@@ -128,9 +128,6 @@ struct NotificationCenterView: View {
         return
       }
     }
-    .refreshable {
-      await self.viewModel.performRefresh()
-    }
   }
 }
 

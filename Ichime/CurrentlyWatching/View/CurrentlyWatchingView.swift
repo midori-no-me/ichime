@@ -148,9 +148,6 @@ struct CurrentlyWatchingView: View {
         return
       }
     }
-    .refreshable {
-      await self.viewModel.performRefresh()
-    }
   }
 }
 
