@@ -51,7 +51,7 @@ struct ContentViewWithSideBar: View {
       }
       Tab("Профиль", systemImage: "person.circle", value: .profile) {
         NavigationStack {
-          ProfileSheet()
+          ProfileView()
         }
       }
 

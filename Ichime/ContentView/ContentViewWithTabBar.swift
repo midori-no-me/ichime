@@ -48,7 +48,7 @@ struct ContentViewWithTabBar: View {
 
       Tab(value: .profile) {
         NavigationStack {
-          ProfileSheet()
+          ProfileView()
         }
       } label: {
         Text("Профиль")
