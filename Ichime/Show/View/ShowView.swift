@@ -162,12 +162,14 @@ private struct ShowDetails: View {
   var body: some View {
     VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
       HeadingSectionWithBackground(imageUrl: self.show.posterUrl) {
-        ShowKeyDetailsSection(show: self.show, viewModel: self.viewModel)
-          .padding(.bottom, SPACING_BETWEEN_SECTIONS)
-      }
+        VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
+          ShowKeyDetailsSection(show: self.show, viewModel: self.viewModel)
 
-      if !self.show.studios.isEmpty || !self.show.descriptions.isEmpty {
-        ShowStudiosAndDescriptions(studios: self.show.studios, descriptions: self.show.descriptions)
+          if !self.show.studios.isEmpty || !self.show.descriptions.isEmpty {
+            ShowStudiosAndDescriptions(studios: self.show.studios, descriptions: self.show.descriptions)
+          }
+        }
+        .padding(.bottom, SPACING_BETWEEN_SECTIONS)
       }
 
       if !self.show.screenshots.isEmpty {
