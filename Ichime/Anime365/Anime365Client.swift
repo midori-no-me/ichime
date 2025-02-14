@@ -20,15 +20,12 @@ class Anime365Client {
     offset: Int,
     limit: Int
   ) async throws -> [Show] {
-    let airingSeason = ShowSeasonService().getRelativeSeason(shift: -4)
-
     let apiResponse = try await apiClient.listSeries(
       limit: limit,
       offset: offset,
       chips: [
         "isAiring": "1",
         "isActive": "1",
-        "yearseason": "\(airingSeason.calendarSeason.getApiName())_\(airingSeason.year)-",
       ]
     )
 
