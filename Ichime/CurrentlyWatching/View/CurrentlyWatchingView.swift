@@ -165,40 +165,29 @@ struct LoadedCurrentlyWatching: View {
 
   var body: some View {
     ScrollView(.vertical) {
-      LazyVGrid(
-        columns: [
-          GridItem(
-            .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-            spacing: RawShowCard.RECOMMENDED_SPACING,
-            alignment: .topLeading
-          )
-        ],
-        spacing: RawShowCard.RECOMMENDED_SPACING
-      ) {
+      LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
         ForEach(self.shows) { show in
-          NavigationLink(value: show) {
-            WatchCard(data: show)
-          }
-          .contextMenu(menuItems: {
-            Group {
-              if let contextShow {
-                NavigationLink(destination: ShowView(showId: contextShow.id)) {
-                  Text("Открыть")
+          WatchCard(data: show)
+            .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+            .contextMenu(menuItems: {
+              Group {
+                if let contextShow {
+                  NavigationLink(destination: ShowView(showId: contextShow.id)) {
+                    Text("Открыть")
+                  }
                 }
+                else {
+                  ProgressView()
+                }
+              }.task {
+                await self.fetchShowForContext(episode: show.id)
               }
-              else {
-                ProgressView()
+            })
+            .task {
+              if show == self.shows.last {
+                await self.loadMore()
               }
-            }.task {
-              await self.fetchShowForContext(episode: show.id)
             }
-          })
-          .buttonStyle(.borderless)
-          .task {
-            if show == self.shows.last {
-              await self.loadMore()
-            }
-          }
         }
       }
     }

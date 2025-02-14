@@ -92,18 +92,10 @@ struct CalendarView: View {
                   subtitle: nil
                 )
 
-                LazyVGrid(
-                  columns: [
-                    GridItem(
-                      .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-                      spacing: RawShowCard.RECOMMENDED_SPACING,
-                      alignment: .topLeading
-                    )
-                  ],
-                  spacing: RawShowCard.RECOMMENDED_SPACING
-                ) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
                   ForEach(groupOfShows.shows) { show in
                     ShowFromCalendarCard(show: show)
+                      .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
                   }
                 }
               }

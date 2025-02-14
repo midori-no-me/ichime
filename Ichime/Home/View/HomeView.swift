@@ -217,10 +217,11 @@ private struct ShowsSection: View {
         }
 
         ScrollView(.horizontal) {
-          LazyHStack(spacing: RawShowCard.RECOMMENDED_SPACING) {
+          LazyHStack(spacing: 64) {
             ForEach(self.shows) { show in
               ShowCard(show: show, displaySeason: self.sectionLoader.displaySeason())
-                .frame(width: RawShowCard.RECOMMENDED_MINIMUM_WIDTH)
+                .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+                .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
             }
           }
         }

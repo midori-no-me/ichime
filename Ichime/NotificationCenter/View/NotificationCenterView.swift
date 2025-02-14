@@ -137,26 +137,15 @@ struct LoadedNotificationCenter: View {
 
   var body: some View {
     ScrollView(.vertical) {
-      LazyVGrid(
-        columns: [
-          GridItem(
-            .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-            spacing: RawShowCard.RECOMMENDED_SPACING,
-            alignment: .topLeading
-          )
-        ],
-        spacing: RawShowCard.RECOMMENDED_SPACING
-      ) {
+      LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
         ForEach(self.shows) { show in
-          NavigationLink(value: show) {
-            WatchCard(data: show)
-          }
-          .buttonStyle(.borderless)
-          .task {
-            if show == self.shows.last {
-              await self.loadMore()
+          WatchCard(data: show)
+            .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+            .task {
+              if show == self.shows.last {
+                await self.loadMore()
+              }
             }
-          }
         }
       }
     }

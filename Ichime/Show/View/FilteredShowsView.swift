@@ -138,18 +138,10 @@ struct FilteredShowsView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            LazyVGrid(
-              columns: [
-                GridItem(
-                  .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-                  spacing: RawShowCard.RECOMMENDED_SPACING,
-                  alignment: .topLeading
-                )
-              ],
-              spacing: RawShowCard.RECOMMENDED_SPACING
-            ) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
               ForEach(shows) { show in
                 ShowCard(show: show, displaySeason: self.displaySeason)
+                  .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
                   .task {
                     if show == shows.last {
                       await self.viewModel.performLazyLoading()

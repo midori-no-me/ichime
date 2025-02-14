@@ -162,18 +162,10 @@ private struct ShowsGrid: View {
   let loadMore: () async -> Void
 
   var body: some View {
-    LazyVGrid(
-      columns: [
-        GridItem(
-          .adaptive(minimum: RawShowCard.RECOMMENDED_MINIMUM_WIDTH),
-          spacing: RawShowCard.RECOMMENDED_SPACING,
-          alignment: .topLeading
-        )
-      ],
-      spacing: RawShowCard.RECOMMENDED_SPACING
-    ) {
+    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
       ForEach(self.shows) { show in
         ShowCard(show: show, displaySeason: true)
+          .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
           .task {
             if show == self.shows.last {
               await self.loadMore()
