@@ -21,4 +21,13 @@ public enum ThirdPartyVideoPlayerType: String, CaseIterable {
       "VLC"
     }
   }
+
+  public var supportsExternalSubtitlesPlayback: Bool {
+    switch self {
+    case .infuse:
+      true
+    case .vlc:
+      false
+    }
+  }
 }

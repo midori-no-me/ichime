@@ -142,8 +142,12 @@ private struct EpisodeTranslationsStreamingQualities: View {
       } header: {
         Text("Качество видео")
       } footer: {
-        if self.episodeTranslationStreamingInfo.subtitlesUrl != nil {
-          Text("Этот перевод использует внешние субтитры.")
+        if self.episodeTranslationStreamingInfo.subtitlesUrl != nil
+          && !self.selectedPlayer.supportsExternalSubtitlesPlayback
+        {
+          Text(
+            "⚠️ \(self.selectedPlayer.name) не поддерживает воспроизведение внешних субтитров, которые присутствуют в этом переводе."
+          )
         }
       }
 
