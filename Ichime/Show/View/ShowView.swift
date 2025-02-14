@@ -187,6 +187,10 @@ private struct ShowDetails: View {
       if !self.show.staffMembers.isEmpty {
         StaffMembersSection(staffMembers: self.show.staffMembers)
       }
+
+      if !self.show.relatedShows.isEmpty {
+        RelatedShowsSection(relatedShowsGroups: self.show.relatedShows)
+      }
     }
   }
 }
@@ -851,5 +855,35 @@ private struct MomentsSection: View {
         .scrollClipDisabled()
       }
     }
+  }
+}
+
+private struct RelatedShowsSection: View {
+  let relatedShowsGroups: [GroupedRelatedShows]
+
+  var body: some View {
+    ScrollView(.horizontal) {
+      LazyHStack(alignment: .top) {
+        ForEach(self.relatedShowsGroups, id: \.relationTitle) { relatedShowGroup in
+          VStack(alignment: .leading) {
+            Section(
+              header: Text(relatedShowGroup.relationTitle)
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundStyle(.secondary)
+            ) {
+              LazyHStack(alignment: .top) {
+                ForEach(relatedShowGroup.relatedShows, id: \.myAnimeListId) { relatedShow in
+                  RelatedShowCard(relatedShow: relatedShow)
+                    .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+                    .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .scrollClipDisabled()
   }
 }

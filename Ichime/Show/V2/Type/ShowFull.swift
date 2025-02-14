@@ -77,6 +77,7 @@ struct ShowFull {
   let characters: [Character]
   let staffMembers: [StaffMember]
   let moments: [Moment]
+  let relatedShows: [GroupedRelatedShows]
 
   static func create(
     anime365Series: Anime365ApiClient.SeriesFull,
@@ -85,7 +86,8 @@ struct ShowFull {
     shikimoriBaseUrl: URL,
     jikanCharacterRoles: [JikanApiClient.CharacterRole],
     jikanStaffMembers: [JikanApiClient.StaffMember],
-    anime365Moments: [ScraperAPI.Types.Moment]
+    anime365Moments: [ScraperAPI.Types.Moment],
+    relatedShows: [GroupedRelatedShows]
   ) -> Self {
     let score = Float(anime365Series.myAnimeListScore) ?? 0
     let totalEpisodes = anime365Series.numberOfEpisodes <= 0 ? nil : anime365Series.numberOfEpisodes
@@ -145,7 +147,8 @@ struct ShowFull {
       nextEpisodeReleasesAt: shikimoriAnime.next_episode_at,
       characters: jikanCharacterRoles.map { .create(jikanCharacterRole: $0) },
       staffMembers: jikanStaffMembers.map { .create(jikanStaffMember: $0) },
-      moments: anime365Moments.map { .create(anime365Moment: $0) }
+      moments: anime365Moments.map { .create(anime365Moment: $0) },
+      relatedShows: relatedShows
     )
   }
 

@@ -3,6 +3,10 @@ import JikanApiClient
 import ScraperAPI
 import ShikimoriApiClient
 
+enum ShowNotFoundError: Error {
+  case notFoundByMyAnimeListId
+}
+
 struct ShowService {
   private let anime365ApiClient: Anime365ApiClient.ApiClient
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
@@ -19,6 +23,16 @@ struct ShowService {
     self.shikimoriApiClient = shikimoriApiClient
     self.jikanApiClient = jikanApiClient
     self.scraperApi = scraperApi
+  }
+
+  func getShowIdByMyAnimeListId(_ myAnimeListId: Int) async throws -> Int {
+    let seriesItems = try await anime365ApiClient.listSeries(myAnimeListId: myAnimeListId)
+
+    guard let series = seriesItems.first else {
+      throw ShowNotFoundError.notFoundByMyAnimeListId
+    }
+
+    return series.id
   }
 
   func getFullShow(showId: Int) async throws -> ShowFull {
@@ -38,6 +52,10 @@ struct ShowService {
       animeId: anime365Series.myAnimeListId
     )
 
+    async let shikimoriRelationsFuture = self.shikimoriApiClient.getAnimeRelatedById(
+      animeId: anime365Series.myAnimeListId
+    )
+
     async let jikanCharactersFuture = self.jikanApiClient.getAnimeCharacters(
       id: anime365Series.myAnimeListId
     )
@@ -49,6 +67,7 @@ struct ShowService {
     let anime365Moments = (try? await anime365MomentsFuture) ?? []
     let shikimoriAnime = try await shikimoriAnimeFuture
     let shikimoriScreenshots = (try? await shikimoriScreenshotsFuture) ?? []
+    let shikimoriRelations = (try? await shikimoriRelationsFuture) ?? []
     let jikanCharacters = (try? await jikanCharactersFuture) ?? []
     let jikanStaffMembers = (try? await jikanStaffMembersFuture) ?? []
 
@@ -59,7 +78,40 @@ struct ShowService {
       shikimoriBaseUrl: self.shikimoriApiClient.baseUrl,
       jikanCharacterRoles: jikanCharacters,
       jikanStaffMembers: jikanStaffMembers,
-      anime365Moments: anime365Moments
+      anime365Moments: anime365Moments,
+      relatedShows: self.convertShikimoriRelationsToGroupedRelatedShows(shikimoriRelations)
     )
+  }
+
+  private func convertShikimoriRelationsToGroupedRelatedShows(
+    _ shikimoriRelations: [ShikimoriApiClient.Relation]
+  ) -> [GroupedRelatedShows] {
+    var relationTitleToRelatedShows: [String: [RelatedShow]] = [:]
+
+    for shikimoriRelation in shikimoriRelations {
+      guard
+        let relatedShow = RelatedShow.createValid(
+          shikimoriRelation: shikimoriRelation,
+          shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
+        )
+      else {
+        continue
+      }
+
+      relationTitleToRelatedShows[relatedShow.relationTitle, default: []].append(relatedShow)
+    }
+
+    var relatedShowsGroups: [GroupedRelatedShows] = []
+
+    for (relationType, relatedShows) in relationTitleToRelatedShows {
+      relatedShowsGroups.append(
+        .init(
+          relationTitle: relationType,
+          relatedShows: relatedShows
+        )
+      )
+    }
+
+    return relatedShowsGroups
   }
 }

@@ -91,6 +91,24 @@ struct AiringSeason {
     self.year = year
   }
 
+  init?(fromDate: Date) {
+    let year = Calendar.current.component(.year, from: fromDate)
+    let monthNumber = Calendar.current.component(.month, from: fromDate)
+
+    switch monthNumber {
+    case 1, 2, 3:  // January, February, March
+      self.calendarSeason = .winter
+    case 4, 5, 6:  // April, May, June
+      self.calendarSeason = .spring
+    case 7, 8, 9:  // July, August, September
+      self.calendarSeason = .summer
+    default:  // October, November, December
+      self.calendarSeason = .autumn
+    }
+
+    self.year = year
+  }
+
   func getLocalizedTranslation() -> String {
     "\(self.calendarSeason.getLocalizedTranslation()) \(self.year)"
   }
