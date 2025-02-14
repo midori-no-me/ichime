@@ -28,7 +28,7 @@ public struct AnimeV1: Decodable {
   public let status: String
   public let episodes: Int
   public let episodes_aired: Int
-  public let aired_on: String
+  public let aired_on: String?
   public let released_on: String?
   public let studios: [Studio]
   public let screenshots: [Screenshot]
