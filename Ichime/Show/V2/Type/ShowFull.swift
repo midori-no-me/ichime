@@ -68,7 +68,7 @@ struct ShowFull {
   let numberOfEpisodes: Int?
   let latestAiredEpisodeNumber: Int?
   let hasEpisodes: Bool
-  let typeTitle: String
+  let typeTitle: String  // TODO: Поменять на ShowKind
   let genres: [Genre]
   let isOngoing: Bool
   let studios: [Studio]

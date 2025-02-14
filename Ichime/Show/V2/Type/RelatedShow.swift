@@ -12,7 +12,8 @@ struct RelatedShow {
   let posterUrl: URL?
   let score: Float?
   let airingSeason: AiringSeason?
-  let relationTitle: String
+  let relationKind: ShowRelationKind
+  let kind: ShowKind?
 
   static func createValid(
     shikimoriRelation: ShikimoriApiClient.Relation,
@@ -44,6 +45,12 @@ struct RelatedShow {
       }
     }
 
+    var kind: ShowKind? = nil
+
+    if let shikimoriAnimeKind = anime.kind {
+      kind = .create(shikimoriAnimeKind)
+    }
+
     return Self(
       myAnimeListId: anime.id,
       title: .init(
@@ -53,7 +60,8 @@ struct RelatedShow {
       posterUrl: posterUrl,
       score: score,
       airingSeason: airingSeason,
-      relationTitle: shikimoriRelation.relation_russian
+      relationKind: .create(shikimoriRelation.relation_russian),
+      kind: kind
     )
   }
 }

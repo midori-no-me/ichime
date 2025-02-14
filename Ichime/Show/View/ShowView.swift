@@ -864,10 +864,10 @@ private struct RelatedShowsSection: View {
   var body: some View {
     ScrollView(.horizontal) {
       LazyHStack(alignment: .top) {
-        ForEach(self.relatedShowsGroups, id: \.relationTitle) { relatedShowGroup in
+        ForEach(self.relatedShowsGroups, id: \.relationKind) { relatedShowGroup in
           VStack(alignment: .leading) {
             Section(
-              header: Text(relatedShowGroup.relationTitle)
+              header: Text(relatedShowGroup.relationKind.title)
                 .font(.headline)
                 .fontWeight(.bold)
                 .foregroundStyle(.secondary)

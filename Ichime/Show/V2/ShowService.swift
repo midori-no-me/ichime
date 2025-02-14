@@ -86,7 +86,7 @@ struct ShowService {
   private func convertShikimoriRelationsToGroupedRelatedShows(
     _ shikimoriRelations: [ShikimoriApiClient.Relation]
   ) -> [GroupedRelatedShows] {
-    var relationTitleToRelatedShows: [String: [RelatedShow]] = [:]
+    var relationTitleToRelatedShows: [ShowRelationKind: [RelatedShow]] = [:]
 
     for shikimoriRelation in shikimoriRelations {
       guard
@@ -98,7 +98,7 @@ struct ShowService {
         continue
       }
 
-      relationTitleToRelatedShows[relatedShow.relationTitle, default: []].append(relatedShow)
+      relationTitleToRelatedShows[relatedShow.relationKind, default: []].append(relatedShow)
     }
 
     var relatedShowsGroups: [GroupedRelatedShows] = []
@@ -106,11 +106,13 @@ struct ShowService {
     for (relationType, relatedShows) in relationTitleToRelatedShows {
       relatedShowsGroups.append(
         .init(
-          relationTitle: relationType,
+          relationKind: relationType,
           relatedShows: relatedShows
         )
       )
     }
+
+    relatedShowsGroups.sort(by: { $0.relationKind.priority > $1.relationKind.priority })
 
     return relatedShowsGroups
   }

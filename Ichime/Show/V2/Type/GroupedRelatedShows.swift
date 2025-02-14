@@ -1,4 +1,4 @@
 struct GroupedRelatedShows {
-  let relationTitle: String
+  let relationKind: ShowRelationKind
   let relatedShows: [RelatedShow]
 }

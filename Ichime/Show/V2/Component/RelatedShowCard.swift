@@ -28,6 +28,10 @@ struct RelatedShowCard: View {
       metadataLineComponents.append(airingSeason.getLocalizedTranslation())
     }
 
+    if let kind = relatedShow.kind {
+      metadataLineComponents.append(kind.title)
+    }
+
     return metadataLineComponents
   }
 }
