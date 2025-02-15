@@ -1,4 +1,5 @@
 import Anime365ApiClient
+import Foundation
 import JikanApiClient
 import ScraperAPI
 import ShikimoriApiClient
@@ -33,6 +34,22 @@ struct ShowService {
     }
 
     return series.id
+  }
+
+  func getAllShowCovers(_ myAnimeListId: Int) async throws -> [URL] {
+    let pictures = try await jikanApiClient.getAnimePictures(id: myAnimeListId)
+
+    var coverUrls: [URL] = []
+
+    for picture in pictures {
+      guard let coverUrl = picture.jpg.image_url else {
+        continue
+      }
+
+      coverUrls.append(coverUrl)
+    }
+
+    return coverUrls
   }
 
   func getFullShow(showId: Int) async throws -> ShowFull {

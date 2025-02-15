@@ -199,81 +199,86 @@ private struct ShowKeyDetailsSection: View {
   let show: ShowFull
   var viewModel: ShowViewModel
 
+  @State private var displayShowCoversSheet: Bool = false
+
   var body: some View {
-    VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-      HStack(alignment: .top, spacing: SPACING_BETWEEN_SECTIONS) {
-        VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-          ShowPrimaryAndSecondaryTitles(title: self.show.title)
+    HStack(alignment: .top, spacing: SPACING_BETWEEN_SECTIONS) {
+      VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
+        ShowPrimaryAndSecondaryTitles(title: self.show.title)
 
-          ShowActionButtons(show: self.show, viewModel: self.viewModel)
+        ShowActionButtons(show: self.show, viewModel: self.viewModel)
 
-          LazyVGrid(
-            columns: [
-              GridItem(.flexible(), spacing: 18, alignment: .topLeading)
-            ],
-            spacing: 18
-          ) {
+        VStack(alignment: .leading, spacing: 16) {
+          ShowProperty(
+            label: "Рейтинг",
+            value: self.show
+              .score != nil
+              ? "★ \(self.show.score!.formatted(.number.precision(.fractionLength(2))))" : "???"
+          )
+
+          ShowProperty(
+            label: "Тип",
+            value: self.show.typeTitle
+          )
+
+          EpisodesShowProperty(
+            totalEpisodes: self.show.numberOfEpisodes,
+            latestAiredEpisodeNumber: self.show.latestAiredEpisodeNumber,
+            isOngoing: self.show.isOngoing
+          )
+
+          if let airingSeason = self.show.airingSeason {
+            SeasonShowProperty(airingSeason: airingSeason)
+          }
+          else {
             ShowProperty(
-              label: "Рейтинг",
-              value: self.show
-                .score != nil
-                ? "★ \(self.show.score!.formatted(.number.precision(.fractionLength(2))))" : "???"
+              label: "Сезон",
+              value: "???"
             )
+          }
 
-            ShowProperty(
-              label: "Тип",
-              value: self.show.typeTitle
-            )
+          if !self.show.genres.isEmpty {
+            GenresShowProperty(genres: self.show.genres)
+          }
+        }
+      }
+      .frame(maxHeight: .infinity)
 
-            EpisodesShowProperty(
-              totalEpisodes: self.show.numberOfEpisodes,
-              latestAiredEpisodeNumber: self.show.latestAiredEpisodeNumber,
-              isOngoing: self.show.isOngoing
-            )
+      if let coverUrl = self.show.posterUrl {
+        Button(action: {
+          self.displayShowCoversSheet = true
+        }) {
+          AsyncImage(
+            url: coverUrl,
+            transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
+          ) { phase in
+            switch phase {
+            case .empty:
+              Color.clear
 
-            if let airingSeason = self.show.airingSeason {
-              SeasonShowProperty(airingSeason: airingSeason)
-            }
-            else {
-              ShowProperty(
-                label: "Сезон",
-                value: "???"
-              )
-            }
+            case let .success(image):
+              image
+                .resizable()
+                .scaledToFit()
 
-            if !self.show.genres.isEmpty {
-              GenresShowProperty(genres: self.show.genres)
+            case .failure:
+              Color.clear
+
+            @unknown default:
+              Color.clear
             }
           }
         }
-
-        if let posterUrl = self.show.posterUrl {
-          Button(action: {}) {
-            GeometryReader { geometry in
-              AsyncImage(
-                url: posterUrl,
-                transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION)),
-                content: { phase in
-                  switch phase {
-                  case .empty:
-                    EmptyView()
-                  case let .success(image):
-                    image.resizable()
-                      .aspectRatio(contentMode: .fit)
-                  case .failure:
-                    EmptyView()
-                  @unknown default:
-                    EmptyView()
-                  }
-                }
-              )
-              .frame(width: geometry.size.width, height: geometry.size.height, alignment: .trailing)
-            }
-          }
-          .buttonStyle(.borderless)
+        .buttonStyle(.borderless)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+        .aspectRatio(425 / 600, contentMode: .fit)
+        .frame(width: 500)
+        .sheet(isPresented: self.$displayShowCoversSheet) {
+          CoverGallerySheet(myAnimeListId: self.show.myAnimeListId)
         }
       }
     }
+    .fixedSize(horizontal: false, vertical: true)
     .focusSection()
   }
 }

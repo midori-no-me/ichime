@@ -60,6 +60,7 @@ struct ShowFull {
   }
 
   let id: Int
+  let myAnimeListId: Int
   let title: Title
   let descriptions: [Description]
   let posterUrl: URL?
@@ -94,6 +95,7 @@ struct ShowFull {
 
     return Self(
       id: anime365Series.id,
+      myAnimeListId: anime365Series.myAnimeListId,
       title: Self.Title(
         full: anime365Series.title,
         translated: Self.Title.TranslatedTitles(
