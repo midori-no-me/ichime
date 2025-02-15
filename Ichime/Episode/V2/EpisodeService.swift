@@ -197,11 +197,14 @@ struct EpisodeService {
 
   func getTranslationInfoForMarkingEpisodeAsWatchedAlert(
     translationId: Int
-  ) async throws -> (String, String) {
+  ) async throws -> (String, String?, String?) {
     let anime365Translation = try await anime365ApiClient.getTranslation(
       translationId: translationId
     )
 
-    return (anime365Translation.episode.episodeFull, anime365Translation.series.title)
+    return (
+      anime365Translation.episode.episodeFull, anime365Translation.series.titles.romaji,
+      anime365Translation.series.titles.ru
+    )
   }
 }

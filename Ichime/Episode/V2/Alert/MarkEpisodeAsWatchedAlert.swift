@@ -3,7 +3,8 @@ import SwiftUI
 
 private struct MarkEpisodeAsWatchedAlert: ViewModifier {
   @State private var showAlert: Bool = false
-  @State private var showTitle: String? = nil
+  @State private var showTitleRomaji: String? = nil
+  @State private var showTitleRussian: String? = nil
   @State private var episodeTitle: String? = nil
 
   @AppStorage("last_watched_translation_id") private var lastWatchedTranslationId: Int = 0
@@ -17,16 +18,18 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
         if self.lastWatchedTranslationId != 0 {
           Task {
             do {
-              let (episodeTitle, showTitle) =
+              let (episodeTitle, showTitleRomaji, showTitleRussian) =
                 try await episodeService.getTranslationInfoForMarkingEpisodeAsWatchedAlert(
                   translationId: self.lastWatchedTranslationId
                 )
 
-              self.showTitle = showTitle
+              self.showTitleRomaji = showTitleRomaji
+              self.showTitleRussian = showTitleRussian
               self.episodeTitle = episodeTitle
             }
             catch {
-              self.showTitle = nil
+              self.showTitleRomaji = nil
+              self.showTitleRussian = nil
               self.episodeTitle = nil
             }
 
@@ -39,16 +42,18 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
         if self.lastWatchedTranslationId != 0 {
           Task {
             do {
-              let (episodeTitle, showTitle) =
+              let (episodeTitle, showTitleRomaji, showTitleRussian) =
                 try await episodeService.getTranslationInfoForMarkingEpisodeAsWatchedAlert(
                   translationId: self.lastWatchedTranslationId
                 )
 
-              self.showTitle = showTitle
+              self.showTitleRomaji = showTitleRomaji
+              self.showTitleRussian = showTitleRussian
               self.episodeTitle = episodeTitle
             }
             catch {
-              self.showTitle = nil
+              self.showTitleRomaji = nil
+              self.showTitleRussian = nil
               self.episodeTitle = nil
             }
 
@@ -80,10 +85,28 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
           Text("Закрыть")
         }
       } message: { _ in
-        if let showTitle {
+        if let showTitle = getShowTitleForAlert() {
           Text(showTitle)
         }
       }
+  }
+
+  private func getShowTitleForAlert() -> String? {
+    var titles: [String] = []
+
+    if let showTitleRomaji {
+      titles.append(showTitleRomaji)
+    }
+
+    if let showTitleRussian {
+      titles.append(showTitleRussian)
+    }
+
+    if titles.isEmpty {
+      return nil
+    }
+
+    return titles.joined(separator: "\n")
   }
 }
 

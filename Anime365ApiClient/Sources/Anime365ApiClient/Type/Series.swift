@@ -1,16 +1,16 @@
 import Foundation
 
+public struct Titles: Decodable {
+  public let ru: String?
+  public let romaji: String?
+  public let en: String?
+}
+
 public struct Series: Decodable {
-  public let title: String
+  public let titles: Titles
 }
 
 public struct SeriesFull: Decodable {
-  public struct Titles: Decodable {
-    public let ru: String?
-    public let romaji: String?
-    public let en: String?
-  }
-
   public struct Genre: Decodable {
     public let id: Int
     public let title: String
