@@ -12,7 +12,7 @@ extension ApiClient {
 
   public func getAnimeScreenshotsById(
     animeId: Int
-  ) async throws -> [AnimeV1.Screenshot] {
+  ) async throws -> [ImageVariants] {
     try await sendRequest(
       httpMethod: .GET,
       endpoint: "/api/animes/\(animeId)/screenshots",
