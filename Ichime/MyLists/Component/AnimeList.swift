@@ -11,7 +11,7 @@ private struct MyListEntry: View {
       VStack(alignment: .leading) {
         Text(self.primaryTitle)
 
-        if let secondaryTitle {
+        if let secondaryTitle, !secondaryTitle.isEmpty {
           Text(secondaryTitle)
             .font(.caption)
             .foregroundStyle(Color.secondary)
@@ -57,7 +57,7 @@ struct AnimeList: View {
             self.selectedShow = .init(id: show.id, name: show.name.ru, totalEpisodes: show.progress.total)
           }) {
             MyListEntry(
-              primaryTitle: show.name.ru,  // TODO: сделать romaji primary
+              primaryTitle: show.name.ru,
               secondaryTitle: show.name.romaji,
               currentEpisodeProgress: show.progress.watched,
               totalEpisodes: show.progress.total

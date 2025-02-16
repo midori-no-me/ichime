@@ -23,7 +23,7 @@ struct MyListsView: View {
         .focusable()
       }
       else {
-        AnimeList(status: self.status, animeList: self.userAnimeList)
+        AnimeList(status: self.status, animeList: self.userAnimeList.sorted(by: { $0.name.ru < $1.name.ru }))
       }
     }
   }
