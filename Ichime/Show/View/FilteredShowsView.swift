@@ -93,61 +93,59 @@ struct FilteredShowsView: View {
   let displaySeason: Bool
 
   var body: some View {
-    Group {
-      switch self.viewModel.state {
-      case .idle:
-        Color.clear.onAppear {
-          Task {
-            await self.viewModel.performInitialLoad()
-          }
+    switch self.viewModel.state {
+    case .idle:
+      Color.clear.onAppear {
+        Task {
+          await self.viewModel.performInitialLoad()
         }
+      }
 
-      case .loading:
-        ProgressView()
-          .focusable()
-          .centeredContentFix()
-
-      case let .loadingFailed(error):
-        ContentUnavailableView {
-          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-        } description: {
-          Text(error.localizedDescription)
-        }
+    case .loading:
+      ProgressView()
         .focusable()
+        .centeredContentFix()
 
-      case .loadedButEmpty:
-        ContentUnavailableView {
-          Label("Ничего не нашлось", systemImage: "list.bullet")
-        } description: {
-          Text("Возможно, это баг")
-        }
-        .focusable()
+    case let .loadingFailed(error):
+      ContentUnavailableView {
+        Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+      } description: {
+        Text(error.localizedDescription)
+      }
+      .focusable()
 
-      case let .loaded(shows):
-        ScrollView([.vertical]) {
-          VStack(alignment: .leading, spacing: 40) {
-            VStack(alignment: .leading) {
-              Text(self.title)
-                .font(.title2)
+    case .loadedButEmpty:
+      ContentUnavailableView {
+        Label("Ничего не нашлось", systemImage: "list.bullet")
+      } description: {
+        Text("Возможно, это баг")
+      }
+      .focusable()
 
-              if let description {
-                Text(description)
-                  .font(.title3)
-                  .foregroundStyle(.secondary)
-              }
+    case let .loaded(shows):
+      ScrollView([.vertical]) {
+        VStack(alignment: .leading, spacing: 40) {
+          VStack(alignment: .leading) {
+            Text(self.title)
+              .font(.title2)
+
+            if let description {
+              Text(description)
+                .font(.title3)
+                .foregroundStyle(.secondary)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+          }
+          .frame(maxWidth: .infinity, alignment: .leading)
 
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
-              ForEach(shows) { show in
-                ShowCard(show: show, displaySeason: self.displaySeason)
-                  .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-                  .task {
-                    if show == shows.last {
-                      await self.viewModel.performLazyLoading()
-                    }
+          LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
+            ForEach(shows) { show in
+              ShowCard(show: show, displaySeason: self.displaySeason)
+                .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+                .task {
+                  if show == shows.last {
+                    await self.viewModel.performLazyLoading()
                   }
-              }
+                }
             }
           }
         }

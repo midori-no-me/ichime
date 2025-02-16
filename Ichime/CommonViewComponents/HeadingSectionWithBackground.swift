@@ -22,32 +22,25 @@ struct HeadingSectionWithBackground<Content: View>: View {
         let imageOffset = -distanceToScreenTop + min(0, scrollDistance)
         let backgroundImageHeight = contentHeight + max(distanceToScreenTop, navigationBarHeight)
 
-        Group {
-          if let imageUrl {
-            AsyncImage(
-              url: imageUrl,
-              transaction: .init(animation: .easeInOut(duration: 0.8)),
-              content: { phase in
-                switch phase {
-                case .empty:
-                  EmptyView()
-                case let .success(image):
-                  image
-                    .resizable()
-                    .scaledToFill()
+        AsyncImage(
+          url: self.imageUrl,
+          transaction: .init(animation: .easeInOut(duration: 0.8)),
+          content: { phase in
+            switch phase {
+            case .empty:
+              EmptyView()
+            case let .success(image):
+              image
+                .resizable()
+                .scaledToFill()
 
-                case .failure:
-                  EmptyView()
-                @unknown default:
-                  EmptyView()
-                }
-              }
-            )
+            case .failure:
+              EmptyView()
+            @unknown default:
+              EmptyView()
+            }
           }
-          else {
-            Color.clear
-          }
-        }
+        )
         .frame(
           width: contentWidth,
           height: backgroundImageHeight,

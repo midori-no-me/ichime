@@ -52,51 +52,49 @@ struct CalendarView: View {
   )
 
   var body: some View {
-    Group {
-      switch self.viewModel.state {
-      case .idle:
-        Color.clear.onAppear {
-          Task {
-            await self.viewModel.performInitialLoad()
-          }
+    switch self.viewModel.state {
+    case .idle:
+      Color.clear.onAppear {
+        Task {
+          await self.viewModel.performInitialLoad()
         }
+      }
 
-      case .loading:
-        ProgressView()
-          .focusable()
-          .centeredContentFix()
-
-      case let .loadingFailed(error):
-        ContentUnavailableView {
-          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-        } description: {
-          Text(error.localizedDescription)
-        }
+    case .loading:
+      ProgressView()
         .focusable()
+        .centeredContentFix()
 
-      case .loadedButEmpty:
-        ContentUnavailableView {
-          Label("Ничего не нашлось", systemImage: "list.bullet")
-        } description: {
-          Text("Возможно, это баг")
-        }
-        .focusable()
+    case let .loadingFailed(error):
+      ContentUnavailableView {
+        Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+      } description: {
+        Text(error.localizedDescription)
+      }
+      .focusable()
 
-      case let .loaded(groupsOfShows):
-        ScrollView([.vertical]) {
-          VStack(alignment: .leading, spacing: 70) {
-            ForEach(groupsOfShows, id: \.self) { groupOfShows in
-              VStack(alignment: .leading, spacing: 50) {
-                SectionHeaderRaw(
-                  title: formatRelativeDateDay(groupOfShows.date),
-                  subtitle: nil
-                )
+    case .loadedButEmpty:
+      ContentUnavailableView {
+        Label("Ничего не нашлось", systemImage: "list.bullet")
+      } description: {
+        Text("Возможно, это баг")
+      }
+      .focusable()
 
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
-                  ForEach(groupOfShows.shows) { show in
-                    ShowFromCalendarCard(show: show)
-                      .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-                  }
+    case let .loaded(groupsOfShows):
+      ScrollView([.vertical]) {
+        VStack(alignment: .leading, spacing: 70) {
+          ForEach(groupsOfShows, id: \.self) { groupOfShows in
+            VStack(alignment: .leading, spacing: 50) {
+              SectionHeaderRaw(
+                title: formatRelativeDateDay(groupOfShows.date),
+                subtitle: nil
+              )
+
+              LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
+                ForEach(groupOfShows.shows) { show in
+                  ShowFromCalendarCard(show: show)
+                    .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
                 }
               }
             }

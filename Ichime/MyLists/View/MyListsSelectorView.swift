@@ -65,58 +65,56 @@ struct MyListsSelectorView: View {
   @State private var viewModel: MyListsSelectorViewModel = .init()
 
   var body: some View {
-    Group {
-      switch self.viewModel.state {
-      case .idle:
-        Color.clear.onAppear {
-          Task {
-            await self.viewModel.performLoad()
-          }
+    switch self.viewModel.state {
+    case .idle:
+      Color.clear.onAppear {
+        Task {
+          await self.viewModel.performLoad()
         }
-
-      case .loading:
-        ProgressView()
-          .focusable()
-
-      case .needSubscribe:
-        ContentUnavailableView {
-          Label("Нужна подписка", systemImage: "person.fill.badge.plus")
-        } description: {
-          Text("Подпишись чтоб получить все возможности приложения")
-        }
-        .focusable()
-
-      case let .loadingFailed(error):
-        ContentUnavailableView {
-          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-        } description: {
-          Text(error.localizedDescription)
-        }
-        .focusable()
-
-      case .loadedButEmpty:
-        ContentUnavailableView {
-          Label("Ничего не нашлось", systemImage: "list.bullet")
-        } description: {
-          Text("Вы еще ничего не добавили в свой список")
-        }
-        .focusable()
-
-      case .loaded:
-        List {
-          ForEach(AnimeWatchStatus.allCases, id: \.rawValue) { status in
-            NavigationLink(destination: {
-              MyListsView(status: status)
-            }) {
-              Label(
-                status.title,
-                systemImage: status.imageInToolbarNotFilled
-              )
-            }
-          }
-        }
-        .listStyle(.grouped)
       }
+
+    case .loading:
+      ProgressView()
+        .focusable()
+
+    case .needSubscribe:
+      ContentUnavailableView {
+        Label("Нужна подписка", systemImage: "person.fill.badge.plus")
+      } description: {
+        Text("Подпишись чтоб получить все возможности приложения")
+      }
+      .focusable()
+
+    case let .loadingFailed(error):
+      ContentUnavailableView {
+        Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+      } description: {
+        Text(error.localizedDescription)
+      }
+      .focusable()
+
+    case .loadedButEmpty:
+      ContentUnavailableView {
+        Label("Ничего не нашлось", systemImage: "list.bullet")
+      } description: {
+        Text("Вы еще ничего не добавили в свой список")
+      }
+      .focusable()
+
+    case .loaded:
+      List {
+        ForEach(AnimeWatchStatus.allCases, id: \.rawValue) { status in
+          NavigationLink(destination: {
+            MyListsView(status: status)
+          }) {
+            Label(
+              status.title,
+              systemImage: status.imageInToolbarNotFilled
+            )
+          }
+        }
+      }
+      .listStyle(.grouped)
     }
   }
 }

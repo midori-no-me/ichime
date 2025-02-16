@@ -13,18 +13,16 @@ struct MyListsView: View {
   }
 
   var body: some View {
-    Group {
-      if self.userAnimeList.isEmpty {
-        ContentUnavailableView {
-          Label("Ничего не нашлось", systemImage: "list.bullet")
-        } description: {
-          Text("В этой категории пока нет аниме")
-        }
-        .focusable()
+    if self.userAnimeList.isEmpty {
+      ContentUnavailableView {
+        Label("Ничего не нашлось", systemImage: "list.bullet")
+      } description: {
+        Text("В этой категории пока нет аниме")
       }
-      else {
-        AnimeList(status: self.status, animeList: self.userAnimeList.sorted(by: { $0.name.ru < $1.name.ru }))
-      }
+      .focusable()
+    }
+    else {
+      AnimeList(status: self.status, animeList: self.userAnimeList.sorted(by: { $0.name.ru < $1.name.ru }))
     }
   }
 }

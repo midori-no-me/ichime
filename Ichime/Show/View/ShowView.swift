@@ -120,34 +120,32 @@ struct ShowView: View {
   @State private var viewModel: ShowViewModel = .init()
 
   var body: some View {
-    Group {
-      switch self.viewModel.state {
-      case .idle:
-        Color.clear.onAppear {
-          Task {
-            await self.viewModel.performInitialLoad(
-              showId: self.showId
-            )
-          }
+    switch self.viewModel.state {
+    case .idle:
+      Color.clear.onAppear {
+        Task {
+          await self.viewModel.performInitialLoad(
+            showId: self.showId
+          )
         }
+      }
 
-      case .loading:
-        ProgressView()
-          .focusable()
-          .centeredContentFix()
-
-      case let .loadingFailed(error):
-        ContentUnavailableView {
-          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-        } description: {
-          Text(error.localizedDescription)
-        }
+    case .loading:
+      ProgressView()
         .focusable()
+        .centeredContentFix()
 
-      case let .loaded(show):
-        ScrollView(.vertical) {
-          ShowDetails(show: show, viewModel: self.viewModel)
-        }
+    case let .loadingFailed(error):
+      ContentUnavailableView {
+        Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+      } description: {
+        Text(error.localizedDescription)
+      }
+      .focusable()
+
+    case let .loaded(show):
+      ScrollView(.vertical) {
+        ShowDetails(show: show, viewModel: self.viewModel)
       }
     }
   }
