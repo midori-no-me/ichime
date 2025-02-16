@@ -57,7 +57,7 @@ struct ShowService {
       seriesId: showId
     )
 
-    async let anime365MomentsFuture = try await self.scraperApi.sendAPIRequest(
+    async let anime365MomentsFuture = self.scraperApi.sendAPIRequest(
       ScraperAPI.Request.GetMomentsByShow(showId: showId, page: 0)
     )
 
@@ -82,7 +82,7 @@ struct ShowService {
     )
 
     let anime365Moments = (try? await anime365MomentsFuture) ?? []
-    let shikimoriAnime = try await shikimoriAnimeFuture
+    let shikimoriAnime = try? await shikimoriAnimeFuture
     let shikimoriScreenshots = (try? await shikimoriScreenshotsFuture) ?? []
     let shikimoriRelations = (try? await shikimoriRelationsFuture) ?? []
     let jikanCharacters = (try? await jikanCharactersFuture) ?? []

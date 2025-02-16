@@ -82,7 +82,7 @@ struct ShowFull {
 
   static func create(
     anime365Series: Anime365ApiClient.SeriesFull,
-    shikimoriAnime: ShikimoriApiClient.AnimeV1,
+    shikimoriAnime: ShikimoriApiClient.AnimeV1?,
     shikimoriScreenshots: [ShikimoriApiClient.ImageVariants],
     shikimoriBaseUrl: URL,
     jikanCharacterRoles: [JikanApiClient.CharacterRole],
@@ -130,7 +130,7 @@ struct ShowFull {
         )
       },
       isOngoing: anime365Series.isAiring == 1,
-      studios: shikimoriAnime.studios.map { studio in
+      studios: (shikimoriAnime?.studios ?? []).map { studio in
         var imageUrl: URL? = nil
 
         if let imagePath = studio.image {
@@ -146,7 +146,7 @@ struct ShowFull {
       screenshots: shikimoriScreenshots.map { screenshot in
         URL(string: shikimoriBaseUrl.absoluteString + screenshot.original)!
       },
-      nextEpisodeReleasesAt: shikimoriAnime.next_episode_at,
+      nextEpisodeReleasesAt: shikimoriAnime?.next_episode_at,
       characters: jikanCharacterRoles.map { .create(jikanCharacterRole: $0) },
       staffMembers: jikanStaffMembers.map { .create(jikanStaffMember: $0) },
       moments: anime365Moments.map { .create(anime365Moment: $0) },
