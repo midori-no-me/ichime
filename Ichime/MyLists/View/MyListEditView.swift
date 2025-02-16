@@ -118,54 +118,44 @@ struct MyListEditView: View {
 
   var body: some View {
     NavigationStack {
-      Group {
-        switch self.viewModel.state {
-        case .idle:
-          Color.clear.onAppear {
-            Task {
-              await self.viewModel.performInitialLoad(self.show.id)
-            }
+      switch self.viewModel.state {
+      case .idle:
+        Color.clear.onAppear {
+          Task {
+            await self.viewModel.performInitialLoad(self.show.id)
           }
+        }
 
-        case .loading:
-          ProgressView()
-            .focusable()
-
-        case let .loadingFailed(error):
-          ContentUnavailableView {
-            Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-          } description: {
-            Text(error.localizedDescription)
-          }
+      case .loading:
+        ProgressView()
           .focusable()
 
-        case let .loaded(userRate):
-          UserRateForm(userRate, totalEpisodes: self.totalEpisodes) { newUserRate in
-            Task {
-              await self.viewModel.performUpdate(self.show.id, newUserRate)
-            }
-          } onRemove: {
-            Task {
-              await self.viewModel.performDelete(self.show.id)
-            }
-          }
+      case let .loadingFailed(error):
+        ContentUnavailableView {
+          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+        } description: {
+          Text(error.localizedDescription)
+        }
+        .focusable()
 
-        case .formSended:
-          Color.clear.onAppear {
-            self.dismiss()
-            self.onUpdate?()
+      case let .loaded(userRate):
+        UserRateForm(userRate, totalEpisodes: self.totalEpisodes) { newUserRate in
+          Task {
+            await self.viewModel.performUpdate(self.show.id, newUserRate)
+          }
+        } onRemove: {
+          Task {
+            await self.viewModel.performDelete(self.show.id)
           }
         }
-      }
-      .toolbar {
-        ToolbarItem(placement: .cancellationAction) {
-          Button("Закрыть") {
-            self.dismiss()
-          }
+        .navigationTitle(self.show.name)
+
+      case .formSended:
+        Color.clear.onAppear {
+          self.dismiss()
+          self.onUpdate?()
         }
       }
-      .navigationTitle(self.show.name)
-
-    }.presentationDetents([.medium, .large])
+    }
   }
 }

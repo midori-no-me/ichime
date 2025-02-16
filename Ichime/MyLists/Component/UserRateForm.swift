@@ -108,40 +108,40 @@ struct UserRateForm: View {
   }
 
   var body: some View {
-    VStack {
-      Form {
-        Picker("Оценка", selection: self.$score) {
-          ForEach(Score.allCases, id: \.self) { score in
-            Text(score.description)
-              .tag(score.rawValue)
-          }
+    Form {
+      Picker("Оценка", selection: self.$score) {
+        ForEach(Score.allCases, id: \.self) { score in
+          Text(score.description)
+            .tag(score.rawValue)
         }
-        Picker("Статус", selection: self.$status) {
-          ForEach(ScraperAPI.Types.UserRateStatus.allCases, id: \.self) { status in
-            Text(status.displayName)
-          }
+      }
+      Picker("Статус", selection: self.$status) {
+        ForEach(ScraperAPI.Types.UserRateStatus.allCases, id: \.self) { status in
+          Text(status.displayName)
         }
-        LabeledContent("Текущий эпизод") {
-          HStack {
-            TextField("Текущий эпизод", text: self.$currentEpisode).keyboardType(.numberPad)
-              .multilineTextAlignment(.trailing)
-              .focused(self.$isFocused)
-              .onChange(of: self.isFocused) {
-                if self.isFocused {
-                  DispatchQueue.main.async {
-                    UIApplication.shared.sendAction(
-                      #selector(UIResponder.selectAll(_:)),
-                      to: nil,
-                      from: nil,
-                      for: nil
-                    )
-                  }
+      }
+      LabeledContent("Текущий эпизод") {
+        HStack {
+          TextField("Текущий эпизод", text: self.$currentEpisode).keyboardType(.numberPad)
+            .multilineTextAlignment(.trailing)
+            .focused(self.$isFocused)
+            .onChange(of: self.isFocused) {
+              if self.isFocused {
+                DispatchQueue.main.async {
+                  UIApplication.shared.sendAction(
+                    #selector(UIResponder.selectAll(_:)),
+                    to: nil,
+                    from: nil,
+                    for: nil
+                  )
                 }
               }
-            Text("/ \(self.totalEpisodes)")
-          }
+            }
+          Text("/ \(self.totalEpisodes)")
         }
+      }
 
+      Section {
         Button("Удалить из списка", role: .destructive) {
           self.isDeleteDialogOpen = true
         }
@@ -156,25 +156,25 @@ struct UserRateForm: View {
             self.isDeleteDialogOpen = false
           }
         }
-      }.toolbar {
-        ToolbarItem(
-          placement: .confirmationAction,
-          content: {
-            Button(action: {
-              self.onSubmit(
-                .init(
-                  score: self.score,
-                  currentEpisode: Int(self.currentEpisode) ?? 0,
-                  status: self.status,
-                  comment: self.comment
-                )
-              )
-            }) {
-              Text("Сохранить")
-            }
-          }
-        )
       }
+    }.toolbar {
+      ToolbarItem(
+        placement: .confirmationAction,
+        content: {
+          Button(action: {
+            self.onSubmit(
+              .init(
+                score: self.score,
+                currentEpisode: Int(self.currentEpisode) ?? 0,
+                status: self.status,
+                comment: self.comment
+              )
+            )
+          }) {
+            Text("Сохранить")
+          }
+        }
+      )
     }
   }
 }
