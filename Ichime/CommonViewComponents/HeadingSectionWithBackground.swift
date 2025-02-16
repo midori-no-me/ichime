@@ -24,20 +24,20 @@ struct HeadingSectionWithBackground<Content: View>: View {
 
         AsyncImage(
           url: self.imageUrl,
-          transaction: .init(animation: .easeInOut(duration: 0.8)),
+          transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION)),
           content: { phase in
             switch phase {
             case .empty:
-              EmptyView()
+              Color.clear
             case let .success(image):
               image
                 .resizable()
                 .scaledToFill()
 
             case .failure:
-              EmptyView()
+              Color.clear
             @unknown default:
-              EmptyView()
+              Color.clear
             }
           }
         )

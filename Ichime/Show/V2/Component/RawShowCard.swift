@@ -20,7 +20,7 @@ struct RawShowCard: View {
       ) { phase in
         switch phase {
         case .empty:
-          EmptyView()
+          Color.clear
 
         case let .success(image):
           image
@@ -31,7 +31,7 @@ struct RawShowCard: View {
           ImagePlaceholder()
 
         @unknown default:
-          EmptyView()
+          Color.clear
         }
       }
       .frame(
