@@ -48,7 +48,7 @@ class CalendarViewModel: ObservableObject {
 
 struct CalendarView: View {
   @StateObject private var viewModel: CalendarViewModel = CalendarViewModel(
-    schedule: ShowReleaseSchedule()
+    schedule: ShowReleaseSchedule(shikimoriApiClient: ApplicationDependency.container.resolve())
   )
 
   var body: some View {

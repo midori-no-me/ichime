@@ -1,4 +1,6 @@
+import OSLog
 import ScraperAPI
+import ShikimoriApiClient
 import TVServices
 
 class ContentProvider: TVTopShelfContentProvider {
@@ -10,7 +12,7 @@ class ContentProvider: TVTopShelfContentProvider {
     .init(cookieStorage: self.cookieStorage, baseURL: ServiceLocator.websiteBaseUrl)
   }
 
-  var api: ScraperAPI.APIClient {
+  var scraperApiClient: ScraperAPI.APIClient {
     .init(
       baseURL: ServiceLocator.websiteBaseUrl,
       userAgent: ServiceLocator.userAgent,
@@ -18,40 +20,89 @@ class ContentProvider: TVTopShelfContentProvider {
     )
   }
 
+  var shikimoriApiClient: ShikimoriApiClient.ApiClient {
+    .init(
+      baseUrl: ServiceLocator.shikimoriBaseUrl,
+      userAgent: ServiceLocator.shikimoriUserAgent,
+      logger: Logger(subsystem: ServiceLocator.applicationId, category: "ShikimoriApiClient")
+    )
+  }
+
+  var showReleaseSchedule: ShowReleaseSchedule {
+    .init(
+      shikimoriApiClient: self.shikimoriApiClient
+    )
+  }
+
+  var currentlyWatchingService: CurrentlyWatchingService {
+    .init(
+      scraperApi: self.scraperApiClient
+    )
+  }
+
   override func loadTopShelfContent(completionHandler: @escaping (TVTopShelfContent?) -> Void) {
     Task {
-      do {
-        let nextToWatch = try await api.sendAPIRequest(ScraperAPI.Request.GetNextToWatch())
+      async let currentlyWatchingSectionFuture = self.getCurrentlyWatchingSection()
+      async let calendarSectionsFuture = self.getCalendarSection()
 
-        let schema = ServiceLocator.topShellSchema
-        // Reply with a content object.
-        let items = nextToWatch.map({
-          let item = TVTopShelfSectionedItem(identifier: String($0.id))
-          item.title = "\($0.episode.displayName) — \($0.name.romaji)"
-          item.setImageURL($0.imageURL, for: .screenScale1x)
-          item.setImageURL($0.imageURL, for: .screenScale2x)
-          item.imageShape = .poster
-          item.playAction = URL(
-            string: "\(schema)://episode?id=\($0.episode.id)&title=\($0.episode.displayName)"
-          ).map { TVTopShelfAction(url: $0) }
-          item.displayAction = URL(string: "\(schema)://show?id=\($0.id)").map {
-            TVTopShelfAction(url: $0)
-          }
-          return item
-        })
+      let currentlyWatchingSection = await currentlyWatchingSectionFuture
+      let calendarSections = await calendarSectionsFuture
 
-        let section = TVTopShelfItemCollection(items: items)
-        section.title = "Серии к просмотру"
-        let sections = [section]
+      let content = TVTopShelfSectionedContent(sections: [currentlyWatchingSection] + calendarSections)
 
-        let content = TVTopShelfSectionedContent(sections: sections)
-
-        completionHandler(content)
-      }
-      catch {
-        print(error)
-        completionHandler(nil)
-      }
+      completionHandler(content)
     }
+  }
+
+  private func getCurrentlyWatchingSection() async -> TVTopShelfItemCollection<TVTopShelfSectionedItem> {
+    let episodes = (try? await currentlyWatchingService.getEpisodesToWatch(page: 1)) ?? []
+
+    let topShelfItems = episodes.map {
+      let topShelfItem = TVTopShelfSectionedItem(identifier: String($0.episodeId))
+
+      topShelfItem.title = "\($0.episodeTitle) — \(self.romajiShowTitle($0.showName))"
+      topShelfItem.setImageURL($0.coverUrl, for: .screenScale1x)
+      topShelfItem.setImageURL($0.coverUrl, for: .screenScale2x)
+      topShelfItem.imageShape = .poster
+
+      return topShelfItem
+    }
+
+    let section = TVTopShelfItemCollection(items: topShelfItems)
+    section.title = "Серии к просмотру"
+
+    return section
+  }
+
+  private func getCalendarSection() async -> [TVTopShelfItemCollection<TVTopShelfSectionedItem>] {
+    let scheduleDays = (try? await showReleaseSchedule.getSchedule()) ?? []
+
+    let sections: [TVTopShelfItemCollection<TVTopShelfSectionedItem>] = scheduleDays.map { scheduleDay in
+      let topShelfItems = scheduleDay.shows.map {
+        let topShelfItem = TVTopShelfSectionedItem(identifier: String($0.id))
+
+        topShelfItem.title = "\(formatTime($0.nextEpisodeReleaseDate)) — \($0.title.translated.japaneseRomaji)"
+        topShelfItem.setImageURL($0.posterUrl, for: .screenScale1x)
+        topShelfItem.setImageURL($0.posterUrl, for: .screenScale2x)
+        topShelfItem.imageShape = .poster
+
+        return topShelfItem
+      }
+
+      let section = TVTopShelfItemCollection(items: topShelfItems)
+      section.title = formatRelativeDateWithWeekdayNameAndDate(scheduleDay.date)
+
+      return section
+    }
+
+    return sections
+  }
+
+  private func romajiShowTitle(_ showName: ShowName) -> String {
+    if let parsedShowName = showName as? ParsedShowName {
+      return parsedShowName.romaji
+    }
+
+    return showName.getFullName()
   }
 }

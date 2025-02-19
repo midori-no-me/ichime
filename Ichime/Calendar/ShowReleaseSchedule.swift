@@ -2,14 +2,19 @@ import Foundation
 import ShikimoriApiClient
 
 struct ShowReleaseSchedule {
-  private var shikimoriApiClient: ShikimoriApiClient.ApiClient = ApplicationDependency.container.resolve()
-  private var shikimoriBaseUrl: URL = ServiceLocator.shikimoriBaseUrl
+  private let shikimoriApiClient: ShikimoriApiClient.ApiClient
+
+  init(
+    shikimoriApiClient: ShikimoriApiClient.ApiClient
+  ) {
+    self.shikimoriApiClient = shikimoriApiClient
+  }
 
   func getSchedule() async throws -> [GroupedShowsFromCalendar] {
     let calendarEntries = try await shikimoriApiClient.getCalendar()
     let showsFromCalendar = calendarEntries.map {
       ShowFromCalendar.createFromShikimoriApi(
-        shikimoriBaseUrl: self.shikimoriBaseUrl,
+        shikimoriBaseUrl: self.shikimoriApiClient.baseUrl,
         calendarEntry: $0
       )
     }

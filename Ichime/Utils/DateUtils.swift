@@ -59,11 +59,11 @@ func formatTime(_ releaseDate: Date) -> String {
 ///
 /// Дата в этом году:
 ///
-/// - Четверг, 18 января в 17:00
+/// - четверг, 18 января в 17:00
 ///
 /// Дата в году, номер которого отличается от текущего:
 ///
-/// - Четверг, 18 января 2024 г. в 17:00
+/// - четверг, 18 января 2024 г. в 17:00
 func formatRelativeDateWithWeekdayNameAndDateAndTime(_ date: Date) -> String {
   let calendar = Calendar.current
   let now = Date.now
@@ -76,12 +76,49 @@ func formatRelativeDateWithWeekdayNameAndDateAndTime(_ date: Date) -> String {
     formatter.doesRelativeDateFormatting = true
   }
   else if calendar.isDate(date, equalTo: now, toGranularity: .year) {
-    // Пример: Четверг, 18 января в 17:00
+    // Пример: четверг, 18 января в 17:00
     formatter.setLocalizedDateFormatFromTemplate("EEEE d MMMM HH mm")
   }
   else {
-    // Пример: Четверг, 18 января 2024 г. в 17:00
+    // Пример: четверг, 18 января 2024 г. в 17:00
     formatter.setLocalizedDateFormatFromTemplate("EEEE d MMMM yyyy HH mm")
+  }
+  return formatter.string(from: date)
+}
+
+/// Примеры:
+///
+/// Соседние с текущим дни:
+///
+/// - Вчера
+/// - Сегодня
+/// - Завтра
+///
+/// Дата в этом году:
+///
+/// - четверг, 18 января
+///
+/// Дата в году, номер которого отличается от текущего:
+///
+/// - четверг, 18 января 2024 г.
+func formatRelativeDateWithWeekdayNameAndDate(_ date: Date) -> String {
+  let calendar = Calendar.current
+  let now = Date.now
+  let formatter = DateFormatter()
+
+  if calendar.isDateInYesterday(date) || calendar.isDateInToday(date) || calendar.isDateInTomorrow(date) {
+    // Пример: Завтра
+    formatter.dateStyle = .full
+    formatter.timeStyle = .none
+    formatter.doesRelativeDateFormatting = true
+  }
+  else if calendar.isDate(date, equalTo: now, toGranularity: .year) {
+    // Пример: четверг, 18 января
+    formatter.setLocalizedDateFormatFromTemplate("EEEE d MMMM")
+  }
+  else {
+    // Пример: четверг, 18 января 2024 г.
+    formatter.setLocalizedDateFormatFromTemplate("EEEE d MMMM yyyy")
   }
   return formatter.string(from: date)
 }

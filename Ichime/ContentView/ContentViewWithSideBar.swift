@@ -17,30 +17,12 @@ struct ContentViewWithSideBar: View {
       Tab("К просмотру", systemImage: "play.square.stack", value: .currentlyWatching) {
         NavigationStack {
           CurrentlyWatchingView()
-            .navigationDestination(
-              for: WatchCardModel.self,
-              destination: { viewEpisodes(show: $0) }
-            )
         }
       }
 
       Tab("Мой список", systemImage: "film.stack", value: .myLists) {
         NavigationStack {
           MyListsSelectorView()
-        }
-      }
-
-      Tab(
-        "Уведомления",
-        systemImage: "bell",
-        value: .notifications
-      ) {
-        NavigationStack {
-          NotificationCenterView()
-            .navigationDestination(
-              for: WatchCardModel.self,
-              destination: { viewEpisodes(show: $0) }
-            )
         }
       }
 

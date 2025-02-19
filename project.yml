@@ -69,8 +69,14 @@ targets:
     deploymentTarget:
       tvOS: "18.0"
     sources:
-      - path: Ichime/Extensions/ScraperAPI.Types.Episode.swift
       - path: Ichime/DependencyInjection/ServiceLocator.swift
+      - path: Ichime/CurrentlyWatching/Type/EpisodeFromCurrentlyWatchingList.swift
+      - path: Ichime/CurrentlyWatching/CurrentlyWatchingService.swift
+      - path: Ichime/Show/V2/Type/ShowName.swift
+      - path: Ichime/Calendar/ShowReleaseSchedule.swift
+      - path: Ichime/Calendar/Model/GroupedShowsFromCalendar.swift
+      - path: Ichime/Calendar/Model/ShowFromCalendar.swift
+      - path: Ichime/Utils/DateUtils.swift
       - path: TopShelf
     info:
       path: TopShelf/Info.plist
@@ -87,6 +93,7 @@ targets:
     dependencies:
       - package: Anime365ApiClient
       - package: ScraperAPI
+      - package: ShikimoriApiClient
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime.TopShelf # Bundle ID этого таргета

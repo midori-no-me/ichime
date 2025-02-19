@@ -34,8 +34,3 @@ struct ContentView: View {
     }
   }
 }
-
-@ViewBuilder
-func viewEpisodes(show: WatchCardModel) -> some View {
-  EpisodeTranslationListView(episodeId: show.data.episode)
-}

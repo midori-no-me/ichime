@@ -1,91 +1,99 @@
-import ScraperAPI
 import SwiftData
 import SwiftUI
 
 @Observable
-class CurrentlyWatchingViewModel {
+private class CurrentlyWatchingViewModel {
   enum State {
     case idle
     case loading
     case loadingFailed(Error)
     case loadedButEmpty
-    case loaded([WatchCardModel])
-    case needSubscribe
+    case loaded([EpisodeFromCurrentlyWatchingList])
   }
 
   private(set) var state: State = .idle
 
-  private let client: ScraperAPI.APIClient
-  private let userManager: UserManager
-  private var page = 1
-  private var shows: [WatchCardModel] = []
-  private var stopLazyLoading = false
+  private let currentlyWatchingService: CurrentlyWatchingService
+
+  private var episodes: [EpisodeFromCurrentlyWatchingList] = []
+  private var currentPage: Int = 1
+  private var stopLazyLoading: Bool = false
 
   init(
-    apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),
-    userManager: UserManager = ApplicationDependency.container.resolve()
+    currentlyWatchingService: CurrentlyWatchingService = ApplicationDependency.container.resolve()
   ) {
-    self.client = apiClient
-    self.userManager = userManager
+    self.currentlyWatchingService = currentlyWatchingService
   }
 
   func performInitialLoading() async {
-    if !self.userManager.subscribed {
-      return await self.updateState(.needSubscribe)
-    }
-    await self.updateState(.loading)
-    await self.performRefresh()
-  }
+    print("performInitialLoading")
 
-  func performRefresh() async {
-    self.page = 1
-    self.shows = []
-    self.stopLazyLoading = false
+    self.state = .loading
 
     do {
-      let shows = try await client.sendAPIRequest(ScraperAPI.Request.GetNextToWatch(page: self.page))
-        .map { WatchCardModel(from: $0) }
+      let episodes = try await currentlyWatchingService.getEpisodesToWatch(page: self.currentPage)
 
-      if shows.isEmpty {
-        return await self.updateState(.loadedButEmpty)
+      if episodes.isEmpty {
+        self.state = .loadedButEmpty
       }
       else {
-        self.shows = shows
-        return await self.updateState(.loaded(shows))
+        self.stopLazyLoading = false
+        self.currentPage = 1
+        self.episodes = episodes
+        self.state = .loaded(self.episodes)
       }
     }
     catch {
-      await self.updateState(.loadingFailed(error))
+      self.state = .loadingFailed(error)
     }
   }
 
-  func performLazyLoad() async {
+  func performLazyLoading() async {
+    print("performLazyLoading")
+
     if self.stopLazyLoading {
       return
     }
 
     do {
-      self.page += 1
-      let newShows = try await client.sendAPIRequest(ScraperAPI.Request.GetNextToWatch(page: self.page))
+      let episodes = try await currentlyWatchingService.getEpisodesToWatch(page: self.currentPage)
 
-      let newWatchCards = newShows.map { WatchCardModel(from: $0) }
-
-      if newWatchCards.last == self.shows.last {
+      if episodes.last?.episodeId == self.episodes.last?.episodeId {
         self.stopLazyLoading = true
         return
       }
 
-      self.shows += newWatchCards
-      await self.updateState(.loaded(self.shows))
+      self.stopLazyLoading = false
+      self.currentPage += 1
+      self.episodes += episodes
+      self.state = .loaded(self.episodes)
     }
     catch {
       self.stopLazyLoading = true
     }
   }
 
-  @MainActor
-  private func updateState(_ newState: State) {
-    self.state = newState
+  func performRefresh() async {
+    print("performRefresh")
+
+    self.currentPage = 1
+    self.episodes = []
+    self.stopLazyLoading = false
+
+    do {
+      let episodes = try await currentlyWatchingService.getEpisodesToWatch(page: self.currentPage)
+
+      if episodes.isEmpty {
+        self.state = .loadedButEmpty
+      }
+      else {
+        self.episodes = episodes
+        self.state = .loaded(self.episodes)
+      }
+    }
+    catch {
+      self.state = .loadingFailed(error)
+    }
   }
 }
 
@@ -106,14 +114,6 @@ struct CurrentlyWatchingView: View {
           .focusable()
           .centeredContentFix()
 
-      case .needSubscribe:
-        ContentUnavailableView {
-          Label("Нужна подписка", systemImage: "person.fill.badge.plus")
-        } description: {
-          Text("Подпишись чтоб получить все возможности приложения")
-        }
-        .focusable()
-
       case let .loadingFailed(error):
         ContentUnavailableView {
           Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
@@ -124,71 +124,50 @@ struct CurrentlyWatchingView: View {
 
       case .loadedButEmpty:
         ContentUnavailableView {
-          Label("Ничего не нашлось", systemImage: "list.bullet")
+          Label("Пусто", systemImage: "list.bullet")
         } description: {
-          Text("Вы еще ничего не добавили в свой список")
+          Text("Пока что нет серий, доступных к просмотру")
         }
         .focusable()
 
-      case let .loaded(shows):
-        LoadedCurrentlyWatching(shows: shows) {
-          await self.viewModel.performLazyLoad()
+      case let .loaded(episodes):
+        ScrollView([.vertical]) {
+          VStack(alignment: .leading) {
+            Section(
+              header: Text("Серии к просмотру")
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundStyle(.secondary)
+            ) {
+              EpisodesGrid(
+                episodes: episodes,
+                loadMore: { await self.viewModel.performLazyLoading() }
+              )
+            }
+          }
         }
-      }
-    }
-    .task {
-      switch self.viewModel.state {
-      case .loadedButEmpty, .loadingFailed, .loaded, .needSubscribe:
-        await self.viewModel.performRefresh()
-      case .idle, .loading:
-        return
+        .task {
+          await self.viewModel.performRefresh()
+        }
       }
     }
   }
 }
 
-struct LoadedCurrentlyWatching: View {
-  let shows: [WatchCardModel]
+private struct EpisodesGrid: View {
+  let episodes: [EpisodeFromCurrentlyWatchingList]
   let loadMore: () async -> Void
 
-  @State private var contextShow: Show? = nil
-
-  private func fetchShowForContext(episode: Int) async {
-    let api: Anime365Client = ApplicationDependency.container.resolve()
-    do {
-      self.contextShow = try await api.getShowByEpisodeId(episodeId: episode)
-    }
-    catch {
-      self.contextShow = nil
-    }
-  }
-
   var body: some View {
-    ScrollView(.vertical) {
-      LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
-        ForEach(self.shows) { show in
-          WatchCard(data: show)
-            .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-            .contextMenu(menuItems: {
-              Group {
-                if let contextShow {
-                  NavigationLink(destination: ShowView(showId: contextShow.id)) {
-                    Text("Открыть")
-                  }
-                }
-                else {
-                  ProgressView()
-                }
-              }.task {
-                await self.fetchShowForContext(episode: show.id)
-              }
-            })
-            .task {
-              if show == self.shows.last {
-                await self.loadMore()
-              }
+    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
+      ForEach(self.episodes, id: \.episodeId) { episode in
+        EpisodeFromCurrentlyWatchingListCard(episode: episode)
+          .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+          .task {
+            if episode.episodeId == self.episodes.last?.episodeId {
+              await self.loadMore()
             }
-        }
+          }
       }
     }
   }

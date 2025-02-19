@@ -3,8 +3,6 @@ import Foundation
 enum ServiceLocator {
   static let appGroup = "group.dev.midorinome.ichime.group"
 
-  static let topShellSchema = "ichime-top-shelf"
-
   static var websiteBaseUrl: URL {
     guard let userDefaults = UserDefaults(suiteName: appGroup) else {
       fatalError("Cannot get user defaults")

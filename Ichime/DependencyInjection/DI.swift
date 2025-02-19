@@ -98,6 +98,10 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
+      CurrentlyWatchingService(scraperApi: $0)
+    }
+
+    container.register {
       SubtitlesProxyUrlGenerator(
         anime365BaseUrl: ServiceLocator.websiteBaseUrl
       )

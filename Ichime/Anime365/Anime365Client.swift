@@ -87,14 +87,6 @@ class Anime365Client {
     }
   }
 
-  func getShowByEpisodeId(episodeId: Int) async throws -> Show {
-    let episodeResponse = try await apiClient.getEpisode(
-      episodeId: episodeId
-    )
-
-    return try await self.getShow(seriesId: episodeResponse.seriesId)
-  }
-
   func searchShows(
     searchQuery: String,
     offset: Int,

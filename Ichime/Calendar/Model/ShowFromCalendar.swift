@@ -23,12 +23,8 @@ struct ShowFromCalendar: Hashable, Identifiable {
   ) -> Self {
     let anime = calendarEntry.anime
 
-    let score = Float(anime.score) ?? 0
-
     let isoDateFormatter = ISO8601DateFormatter()
     isoDateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-
-    print(calendarEntry.next_episode_at)
 
     return .init(
       id: anime.id,

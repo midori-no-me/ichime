@@ -17,10 +17,6 @@ struct ContentViewWithTabBar: View {
       Tab(value: .currentlyWatching) {
         NavigationStack {
           CurrentlyWatchingView()
-            .navigationDestination(
-              for: WatchCardModel.self,
-              destination: { viewEpisodes(show: $0) }
-            )
         }
       } label: {
         Text("К просмотру")
@@ -32,18 +28,6 @@ struct ContentViewWithTabBar: View {
         }
       } label: {
         Text("Мой список")
-      }
-
-      Tab(value: .notifications) {
-        NavigationStack {
-          NotificationCenterView()
-            .navigationDestination(
-              for: WatchCardModel.self,
-              destination: { viewEpisodes(show: $0) }
-            )
-        }
-      } label: {
-        Text("Уведомления")
       }
 
       Tab(value: .profile) {
