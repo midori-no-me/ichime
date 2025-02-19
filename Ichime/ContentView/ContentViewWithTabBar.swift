@@ -7,7 +7,7 @@ struct ContentViewWithTabBar: View {
   var body: some View {
     TabView(selection: self.$selectedTab) {
       Tab(value: .home) {
-        NavigationStack {
+        NavigationStackWithRouter {
           HomeView()
         }
       } label: {
@@ -15,7 +15,7 @@ struct ContentViewWithTabBar: View {
       }
 
       Tab(value: .currentlyWatching) {
-        NavigationStack {
+        NavigationStackWithRouter {
           CurrentlyWatchingView()
         }
       } label: {
@@ -23,7 +23,7 @@ struct ContentViewWithTabBar: View {
       }
 
       Tab(value: .myLists) {
-        NavigationStack {
+        NavigationStackWithRouter {
           MyListsSelectorView()
         }
       } label: {
@@ -31,7 +31,7 @@ struct ContentViewWithTabBar: View {
       }
 
       Tab(value: .profile) {
-        NavigationStack {
+        NavigationStackWithRouter {
           ProfileView()
         }
       } label: {
@@ -39,7 +39,7 @@ struct ContentViewWithTabBar: View {
       }
 
       Tab(value: .search, role: .search) {
-        NavigationStack {
+        NavigationStackWithRouter {
           SearchShowsView()
         }
       } label: {

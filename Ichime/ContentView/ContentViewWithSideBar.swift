@@ -9,36 +9,36 @@ struct ContentViewWithSideBar: View {
   var body: some View {
     TabView(selection: self.$selectedTab) {
       Tab("Главная", systemImage: "play.house", value: .home) {
-        NavigationStack {
+        NavigationStackWithRouter {
           HomeView()
         }
       }
 
       Tab("К просмотру", systemImage: "play.square.stack", value: .currentlyWatching) {
-        NavigationStack {
+        NavigationStackWithRouter {
           CurrentlyWatchingView()
         }
       }
 
       Tab("Мой список", systemImage: "film.stack", value: .myLists) {
-        NavigationStack {
+        NavigationStackWithRouter {
           MyListsSelectorView()
         }
       }
 
       Tab("Календарь", systemImage: "calendar", value: .calendar) {
-        NavigationStack {
+        NavigationStackWithRouter {
           CalendarView()
         }
       }
       Tab("Профиль", systemImage: "person.circle", value: .profile) {
-        NavigationStack {
+        NavigationStackWithRouter {
           ProfileView()
         }
       }
 
       Tab("Поиск", systemImage: "magnifyingglass", value: .search, role: .search) {
-        NavigationStack {
+        NavigationStackWithRouter {
           SearchShowsView()
         }
       }

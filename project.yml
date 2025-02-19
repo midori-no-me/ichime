@@ -42,6 +42,9 @@ targets:
     info:
       path: Ichime/Info.plist
       properties:
+        CFBundleURLTypes:
+          - CFBundleURLSchemes:
+            - ichime
         LSApplicationQueriesSchemes: # Нужно для проверок UIApplication.shared.canOpenURL() в коде
           - infuse
           - vlc-x-callback

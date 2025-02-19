@@ -65,6 +65,20 @@ class ContentProvider: TVTopShelfContentProvider {
       topShelfItem.setImageURL($0.coverUrl, for: .screenScale2x)
       topShelfItem.imageShape = .poster
 
+      var components = URLComponents()
+
+      components.scheme = "ichime"
+      components.host = "episode"
+      components.queryItems = [
+        URLQueryItem(
+          name: "id",
+          value: String($0.episodeId)
+        )
+      ]
+
+      topShelfItem.displayAction = .init(url: components.url!)
+      topShelfItem.playAction = .init(url: components.url!)
+
       return topShelfItem
     }
 
@@ -85,6 +99,20 @@ class ContentProvider: TVTopShelfContentProvider {
         topShelfItem.setImageURL($0.posterUrl, for: .screenScale1x)
         topShelfItem.setImageURL($0.posterUrl, for: .screenScale2x)
         topShelfItem.imageShape = .poster
+
+        var components = URLComponents()
+
+        components.scheme = "ichime"
+        components.host = "showByMyAnimeListId"
+        components.queryItems = [
+          URLQueryItem(
+            name: "id",
+            value: String($0.id)
+          )
+        ]
+
+        topShelfItem.displayAction = .init(url: components.url!)
+        topShelfItem.playAction = .init(url: components.url!)
 
         return topShelfItem
       }
