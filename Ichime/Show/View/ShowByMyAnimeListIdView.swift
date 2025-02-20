@@ -70,6 +70,7 @@ struct ShowByMyAnimeListIdView: View {
           Text("Обновить")
         }
       }
+      .centeredContentFix()
 
     case let .loaded(showId):
       ShowView(showId: showId)

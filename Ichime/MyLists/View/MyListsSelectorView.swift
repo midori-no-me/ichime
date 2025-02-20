@@ -91,6 +91,7 @@ struct MyListsSelectorView: View {
           Text("Обновить")
         }
       }
+      .centeredContentFix()
 
     case let .loadingFailed(error):
       ContentUnavailableView {
@@ -106,6 +107,7 @@ struct MyListsSelectorView: View {
           Text("Обновить")
         }
       }
+      .centeredContentFix()
 
     case .loadedButEmpty:
       ContentUnavailableView {
@@ -121,6 +123,7 @@ struct MyListsSelectorView: View {
           Text("Обновить")
         }
       }
+      .centeredContentFix()
 
     case .loaded:
       List {

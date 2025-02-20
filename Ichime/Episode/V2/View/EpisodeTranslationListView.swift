@@ -92,6 +92,7 @@ struct EpisodeTranslationListView: View {
             Text("Обновить")
           }
         }
+        .centeredContentFix()
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -110,6 +111,7 @@ struct EpisodeTranslationListView: View {
             Text("Обновить")
           }
         }
+        .centeredContentFix()
 
       case let .loaded(episodeTranslationGroups):
         EpisodeTranslations(

@@ -82,6 +82,7 @@ struct EpisodeQualitySelectorListView: View {
           Text("Обновить")
         }
       }
+      .centeredContentFix()
 
     case .loadedButEmpty:
       ContentUnavailableView {
@@ -99,6 +100,7 @@ struct EpisodeQualitySelectorListView: View {
           Text("Обновить")
         }
       }
+      .centeredContentFix()
 
     case let .loaded(episodeTranslationStreamingInfo):
       EpisodeTranslationsStreamingQualities(

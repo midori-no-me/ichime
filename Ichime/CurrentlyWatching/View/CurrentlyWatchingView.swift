@@ -122,6 +122,7 @@ struct CurrentlyWatchingView: View {
             Text("Обновить")
           }
         }
+        .centeredContentFix()
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -137,6 +138,7 @@ struct CurrentlyWatchingView: View {
             Text("Обновить")
           }
         }
+        .centeredContentFix()
 
       case let .loaded(episodes):
         ScrollView([.vertical]) {

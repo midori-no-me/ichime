@@ -132,9 +132,11 @@ struct SearchShowsView: View {
             Text("Обновить")
           }
         }
+        .centeredContentFix()
 
       case .loadedButEmpty:
         ContentUnavailableView.search
+          .centeredContentFix()
 
       case let .loaded(shows):
         ScrollView([.vertical]) {

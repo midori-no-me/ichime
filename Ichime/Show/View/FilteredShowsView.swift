@@ -120,6 +120,7 @@ struct FilteredShowsView: View {
           Text("Обновить")
         }
       }
+      .centeredContentFix()
 
     case .loadedButEmpty:
       ContentUnavailableView {
@@ -135,6 +136,7 @@ struct FilteredShowsView: View {
           Text("Обновить")
         }
       }
+      .centeredContentFix()
 
     case let .loaded(shows):
       ScrollView([.vertical]) {

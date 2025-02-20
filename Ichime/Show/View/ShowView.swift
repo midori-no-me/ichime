@@ -151,6 +151,7 @@ struct ShowView: View {
           Text("Обновить")
         }
       }
+      .centeredContentFix()
 
     case let .loaded(show):
       ScrollView(.vertical) {
