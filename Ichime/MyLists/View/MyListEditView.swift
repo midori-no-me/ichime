@@ -3,7 +3,7 @@ import SwiftData
 import SwiftUI
 
 @Observable
-class MyListEditViewModel {
+private class MyListEditViewModel {
   enum State {
     case idle
     case loading

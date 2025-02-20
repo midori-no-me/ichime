@@ -2,7 +2,7 @@ import SwiftData
 import SwiftUI
 
 @Observable
-class MyListsSelectorViewModel {
+private class MyListsSelectorViewModel {
   enum State {
     case idle
     case loading

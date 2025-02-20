@@ -1,6 +1,7 @@
 import SwiftUI
 
-class FilteredShowsViewModel: ObservableObject {
+@Observable
+class FilteredShowsViewModel {
   enum State {
     case idle
     case loading
@@ -9,7 +10,7 @@ class FilteredShowsViewModel: ObservableObject {
     case loaded([Show])
   }
 
-  @Published private(set) var state: State = .idle
+  private(set) var state: State = .idle
 
   private var currentOffset: Int = 0
   private var shows: [Show] = []
@@ -25,7 +26,7 @@ class FilteredShowsViewModel: ObservableObject {
     if let preloadedShows = preloadedShows, !preloadedShows.isEmpty {
       self.currentOffset = preloadedShows.count
       self.shows = preloadedShows
-      self.state = .loaded(self.shows)
+      self.state = .loaded(preloadedShows)
     }
 
     self.fetchShows = fetchShows
@@ -86,7 +87,7 @@ class FilteredShowsViewModel: ObservableObject {
 
 struct FilteredShowsView: View {
   // swiftlint:disable private_swiftui_state
-  @StateObject var viewModel: FilteredShowsViewModel
+  @State var viewModel: FilteredShowsViewModel
 
   let title: String
   let description: String?

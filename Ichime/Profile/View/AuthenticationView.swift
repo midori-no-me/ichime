@@ -2,7 +2,7 @@ import ScraperAPI
 import SwiftUI
 
 @Observable
-class AuthenticationViewModel {
+private class AuthenticationViewModel {
   var userEmail = ""
   var userPassword = ""
   var showInvalidCredentialsAlert = false

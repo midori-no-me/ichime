@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable
-class SearchShowsViewModel {
+private class SearchShowsViewModel {
   enum State {
     case idle
     case loading

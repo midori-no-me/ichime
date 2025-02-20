@@ -17,7 +17,7 @@ extension ScraperAPI.Types.UserRateStatus {
 }
 
 @Observable
-class ShowViewModel {
+private class ShowViewModel {
   enum State {
     case idle
     case loading

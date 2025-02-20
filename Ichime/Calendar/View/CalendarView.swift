@@ -1,6 +1,7 @@
 import SwiftUI
 
-private class CalendarViewModel: ObservableObject {
+@Observable
+private class CalendarViewModel {
   enum State {
     case idle
     case loading
@@ -9,7 +10,7 @@ private class CalendarViewModel: ObservableObject {
     case loaded([GroupedShowsFromCalendar])
   }
 
-  @Published private(set) var state: State = .idle
+  private(set) var state: State = .idle
 
   private let schedule: ShowReleaseSchedule
 
@@ -39,7 +40,7 @@ private class CalendarViewModel: ObservableObject {
 }
 
 struct CalendarView: View {
-  @StateObject private var viewModel: CalendarViewModel = .init()
+  @State private var viewModel: CalendarViewModel = .init()
 
   var body: some View {
     switch self.viewModel.state {
