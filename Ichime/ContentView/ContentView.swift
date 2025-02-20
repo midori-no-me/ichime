@@ -12,13 +12,7 @@ struct ContentView: View {
 
   var body: some View {
     switch self.userManager.state {
-    case .idle:
-      Color.clear
-    case .loading:
-      ProgressView()
-        .focusable()
-
-    case .isAuth:
+    case .idle, .loading, .isAuth:
       switch self.navigationStyle {
       case .tabBar:
         ContentViewWithTabBar()
