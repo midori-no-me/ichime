@@ -1,3 +1,5 @@
+import Foundation
+
 public struct CalendarEntry: Decodable {
   public struct Anime: Decodable {
     public let id: Int
@@ -7,6 +9,6 @@ public struct CalendarEntry: Decodable {
   }
 
   public let next_episode: Int
-  public let next_episode_at: String
+  public let next_episode_at: Date
   public let anime: Anime
 }

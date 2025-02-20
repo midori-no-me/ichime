@@ -18,6 +18,8 @@ struct ShowReleaseSchedule {
         calendarEntry: $0
       )
     }
+    // Не показываем серии, которые должны были выйти более 5 часов назад
+    .filter { Date.now.addingTimeInterval(60 * 60 * 5 * -1) < $0.nextEpisodeReleaseDate }
 
     var showsGroupedByDate: [Date: [ShowFromCalendar]] = [:]
 

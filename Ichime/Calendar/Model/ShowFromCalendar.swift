@@ -23,9 +23,6 @@ struct ShowFromCalendar: Hashable, Identifiable {
   ) -> Self {
     let anime = calendarEntry.anime
 
-    let isoDateFormatter = ISO8601DateFormatter()
-    isoDateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-
     return .init(
       id: anime.id,
       title: .init(
@@ -36,7 +33,7 @@ struct ShowFromCalendar: Hashable, Identifiable {
       ),
       posterUrl: URL(string: shikimoriBaseUrl.absoluteString + anime.image.original),
       nextEpisodeNumber: calendarEntry.next_episode,
-      nextEpisodeReleaseDate: isoDateFormatter.date(from: calendarEntry.next_episode_at)!
+      nextEpisodeReleaseDate: calendarEntry.next_episode_at
     )
   }
 
