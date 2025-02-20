@@ -82,7 +82,7 @@ struct ShowFull {
 
   static func create(
     anime365Series: Anime365ApiClient.SeriesFull,
-    shikimoriAnime: ShikimoriApiClient.AnimeV1?,
+    shikimoriAnime: ShikimoriApiClient.Anime?,
     shikimoriScreenshots: [ShikimoriApiClient.ImageVariants],
     shikimoriBaseUrl: URL,
     jikanCharacterRoles: [JikanApiClient.CharacterRole],

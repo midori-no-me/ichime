@@ -1,7 +1,7 @@
 extension ApiClient {
   public func getAnimeById(
     animeId: Int
-  ) async throws -> AnimeV1 {
+  ) async throws -> Anime {
     try await sendRequest(
       httpMethod: .GET,
       endpoint: "/api/animes/\(animeId)",

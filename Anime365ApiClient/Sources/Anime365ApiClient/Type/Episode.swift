@@ -11,6 +11,5 @@ public struct Episode: Decodable {
 }
 
 public struct EpisodeFull: Decodable {
-  public let seriesId: Int
   public let translations: [Translation]
 }
