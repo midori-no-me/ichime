@@ -1,6 +1,6 @@
 import SwiftUI
 
-class CalendarViewModel: ObservableObject {
+private class CalendarViewModel: ObservableObject {
   enum State {
     case idle
     case loading
@@ -11,45 +11,35 @@ class CalendarViewModel: ObservableObject {
 
   @Published private(set) var state: State = .idle
 
-  private var shows: [GroupedShowsFromCalendar] = []
-
   private let schedule: ShowReleaseSchedule
 
   init(
-    schedule: ShowReleaseSchedule
+    schedule: ShowReleaseSchedule = ApplicationDependency.container.resolve()
   ) {
     self.schedule = schedule
   }
 
-  @MainActor
-  func updateState(_ newState: State) {
-    self.state = newState
-  }
-
   func performInitialLoad() async {
-    await self.updateState(.loading)
+    self.state = .loading
 
     do {
       let shows = try await schedule.getSchedule()
 
       if shows.isEmpty {
-        await self.updateState(.loadedButEmpty)
+        self.state = .loadedButEmpty
       }
       else {
-        self.shows = shows
-        await self.updateState(.loaded(self.shows))
+        self.state = .loaded(shows)
       }
     }
     catch {
-      await self.updateState(.loadingFailed(error))
+      self.state = .loadingFailed(error)
     }
   }
 }
 
 struct CalendarView: View {
-  @StateObject private var viewModel: CalendarViewModel = CalendarViewModel(
-    schedule: ShowReleaseSchedule(shikimoriApiClient: ApplicationDependency.container.resolve())
-  )
+  @StateObject private var viewModel: CalendarViewModel = .init()
 
   var body: some View {
     switch self.viewModel.state {
@@ -95,20 +85,22 @@ struct CalendarView: View {
         }
       }
 
-    case let .loaded(groupsOfShows):
+    case let .loaded(scheduleDays):
       ScrollView([.vertical]) {
-        VStack(alignment: .leading, spacing: 70) {
-          ForEach(groupsOfShows, id: \.self) { groupOfShows in
-            VStack(alignment: .leading, spacing: 50) {
-              SectionHeaderRaw(
-                title: formatRelativeDateDay(groupOfShows.date),
-                subtitle: nil
-              )
-
-              LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
-                ForEach(groupOfShows.shows) { show in
-                  ShowFromCalendarCard(show: show)
-                    .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+        VStack(alignment: .leading, spacing: 64) {
+          ForEach(scheduleDays, id: \.date) { scheduleDay in
+            VStack(alignment: .leading) {
+              Section(
+                header: Text(formatRelativeDateWithWeekdayNameAndDate(scheduleDay.date))
+                  .font(.headline)
+                  .fontWeight(.bold)
+                  .foregroundStyle(.secondary)
+              ) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
+                  ForEach(scheduleDay.shows) { show in
+                    ShowFromCalendarCard(show: show)
+                      .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+                  }
                 }
               }
             }

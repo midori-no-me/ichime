@@ -107,6 +107,10 @@ class ApplicationDependency: DIFramework {
       )
     }
 
+    container.register {
+      ShowReleaseSchedule(shikimoriApiClient: $0)
+    }
+
     if !container.makeGraph().checkIsValid() {
       fatalError("Граф зависимостей не валиден")
     }
