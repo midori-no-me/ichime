@@ -19,7 +19,7 @@ class ApplicationDependency: DIFramework {
       let schema = Schema([
         UserAnimeListModel.self
       ])
-      let storeURL = URL.documentsDirectory.appending(path: "offline.sqlite")
+
       let modelConfiguration = ModelConfiguration(
         schema: schema,
         groupContainer: .identifier(ServiceLocator.appGroup)
