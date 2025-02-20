@@ -71,16 +71,34 @@ struct EpisodeQualitySelectorListView: View {
         Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
       } description: {
         Text(error.localizedDescription)
+      } actions: {
+        Button(action: {
+          Task {
+            await self.viewModel.performInitialLoad(
+              translationId: self.translationId
+            )
+          }
+        }) {
+          Text("Обновить")
+        }
       }
-      .focusable()
 
     case .loadedButEmpty:
       ContentUnavailableView {
         Label("Список видео пустой", systemImage: "list.bullet")
       } description: {
         Text("У этого перевода ещё нет загруженных видео, либо они находятся в обработке")
+      } actions: {
+        Button(action: {
+          Task {
+            await self.viewModel.performInitialLoad(
+              translationId: self.translationId
+            )
+          }
+        }) {
+          Text("Обновить")
+        }
       }
-      .focusable()
 
     case let .loaded(episodeTranslationStreamingInfo):
       EpisodeTranslationsStreamingQualities(

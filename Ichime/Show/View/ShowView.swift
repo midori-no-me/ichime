@@ -140,8 +140,17 @@ struct ShowView: View {
         Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
       } description: {
         Text(error.localizedDescription)
+      } actions: {
+        Button(action: {
+          Task {
+            await self.viewModel.performInitialLoad(
+              showId: self.showId
+            )
+          }
+        }) {
+          Text("Обновить")
+        }
       }
-      .focusable()
 
     case let .loaded(show):
       ScrollView(.vertical) {

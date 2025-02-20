@@ -69,16 +69,34 @@ struct EpisodeListView: View {
         Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
       } description: {
         Text(error.localizedDescription)
+      } actions: {
+        Button(action: {
+          Task {
+            await self.viewModel.performInitialLoad(
+              showId: self.showId
+            )
+          }
+        }) {
+          Text("Обновить")
+        }
       }
-      .focusable()
 
     case .loadedButEmpty:
       ContentUnavailableView {
         Label("Список серий пустой", systemImage: "list.bullet")
       } description: {
         Text("У этого тайтла ещё нет загруженных серий")
+      } actions: {
+        Button(action: {
+          Task {
+            await self.viewModel.performInitialLoad(
+              showId: self.showId
+            )
+          }
+        }) {
+          Text("Обновить")
+        }
       }
-      .focusable()
 
     case let .loaded(episodeInfos):
       EpisodePreviews(

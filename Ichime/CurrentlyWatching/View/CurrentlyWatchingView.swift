@@ -113,16 +113,30 @@ struct CurrentlyWatchingView: View {
           Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
         } description: {
           Text(error.localizedDescription)
+        } actions: {
+          Button(action: {
+            Task {
+              await self.viewModel.performInitialLoading()
+            }
+          }) {
+            Text("Обновить")
+          }
         }
-        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView {
           Label("Пусто", systemImage: "list.bullet")
         } description: {
           Text("Пока что нет серий, доступных к просмотру")
+        } actions: {
+          Button(action: {
+            Task {
+              await self.viewModel.performInitialLoading()
+            }
+          }) {
+            Text("Обновить")
+          }
         }
-        .focusable()
 
       case let .loaded(episodes):
         ScrollView([.vertical]) {

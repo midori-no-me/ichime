@@ -123,6 +123,14 @@ struct SearchShowsView: View {
           Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
         } description: {
           Text(error.localizedDescription)
+        } actions: {
+          Button(action: {
+            Task {
+              await self.viewModel.performInitialSearch()
+            }
+          }) {
+            Text("Обновить")
+          }
         }
 
       case .loadedButEmpty:

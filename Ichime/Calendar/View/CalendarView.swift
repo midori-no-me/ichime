@@ -70,16 +70,30 @@ struct CalendarView: View {
         Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
       } description: {
         Text(error.localizedDescription)
+      } actions: {
+        Button(action: {
+          Task {
+            await self.viewModel.performInitialLoad()
+          }
+        }) {
+          Text("Обновить")
+        }
       }
-      .focusable()
 
     case .loadedButEmpty:
       ContentUnavailableView {
         Label("Ничего не нашлось", systemImage: "list.bullet")
       } description: {
         Text("Возможно, это баг")
+      } actions: {
+        Button(action: {
+          Task {
+            await self.viewModel.performInitialLoad()
+          }
+        }) {
+          Text("Обновить")
+        }
       }
-      .focusable()
 
     case let .loaded(groupsOfShows):
       ScrollView([.vertical]) {

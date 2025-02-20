@@ -135,8 +135,15 @@ struct MyListEditView: View {
           Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
         } description: {
           Text(error.localizedDescription)
+        } actions: {
+          Button(action: {
+            Task {
+              await self.viewModel.performInitialLoad(self.show.id)
+            }
+          }) {
+            Text("Обновить")
+          }
         }
-        .focusable()
 
       case let .loaded(userRate):
         UserRateForm(userRate, totalEpisodes: self.totalEpisodes) { newUserRate in

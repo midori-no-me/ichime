@@ -80,16 +80,36 @@ struct EpisodeTranslationListView: View {
           Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
         } description: {
           Text(error.localizedDescription)
+        } actions: {
+          Button(action: {
+            Task {
+              await self.viewModel.performInitialLoad(
+                episodeId: self.episodeId,
+                hiddenTranslationsPreference: self.hiddenTranslationsPreference.getPreference()
+              )
+            }
+          }) {
+            Text("Обновить")
+          }
         }
-        .focusable()
 
       case .loadedButEmpty:
         ContentUnavailableView {
           Label("Список переводов пустой", systemImage: "list.bullet")
         } description: {
           Text("У серии ещё нет переводов")
+        } actions: {
+          Button(action: {
+            Task {
+              await self.viewModel.performInitialLoad(
+                episodeId: self.episodeId,
+                hiddenTranslationsPreference: self.hiddenTranslationsPreference.getPreference()
+              )
+            }
+          }) {
+            Text("Обновить")
+          }
         }
-        .focusable()
 
       case let .loaded(episodeTranslationGroups):
         EpisodeTranslations(

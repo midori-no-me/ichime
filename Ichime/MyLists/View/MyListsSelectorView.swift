@@ -82,24 +82,45 @@ struct MyListsSelectorView: View {
         Label("Нужна подписка", systemImage: "person.fill.badge.plus")
       } description: {
         Text("Подпишись чтоб получить все возможности приложения")
+      } actions: {
+        Button(action: {
+          Task {
+            await self.viewModel.performLoad()
+          }
+        }) {
+          Text("Обновить")
+        }
       }
-      .focusable()
 
     case let .loadingFailed(error):
       ContentUnavailableView {
         Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
       } description: {
         Text(error.localizedDescription)
+      } actions: {
+        Button(action: {
+          Task {
+            await self.viewModel.performLoad()
+          }
+        }) {
+          Text("Обновить")
+        }
       }
-      .focusable()
 
     case .loadedButEmpty:
       ContentUnavailableView {
         Label("Ничего не нашлось", systemImage: "list.bullet")
       } description: {
         Text("Вы еще ничего не добавили в свой список")
+      } actions: {
+        Button(action: {
+          Task {
+            await self.viewModel.performLoad()
+          }
+        }) {
+          Text("Обновить")
+        }
       }
-      .focusable()
 
     case .loaded:
       List {

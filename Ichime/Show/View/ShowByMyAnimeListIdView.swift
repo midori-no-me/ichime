@@ -59,8 +59,17 @@ struct ShowByMyAnimeListIdView: View {
         Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
       } description: {
         Text(error.localizedDescription)
+      } actions: {
+        Button(action: {
+          Task {
+            await self.viewModel.performInitialLoad(
+              myAnimeListId: self.myAnimeListId
+            )
+          }
+        }) {
+          Text("Обновить")
+        }
       }
-      .focusable()
 
     case let .loaded(showId):
       ShowView(showId: showId)
