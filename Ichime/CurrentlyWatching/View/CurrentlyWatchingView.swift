@@ -26,8 +26,6 @@ private class CurrentlyWatchingViewModel {
   }
 
   func performInitialLoading() async {
-    print("performInitialLoading")
-
     self.state = .loading
 
     do {
@@ -49,8 +47,6 @@ private class CurrentlyWatchingViewModel {
   }
 
   func performLazyLoading() async {
-    print("performLazyLoading")
-
     if self.stopLazyLoading {
       return
     }
@@ -74,8 +70,6 @@ private class CurrentlyWatchingViewModel {
   }
 
   func performRefresh() async {
-    print("performRefresh")
-
     self.currentPage = 1
     self.episodes = []
     self.stopLazyLoading = false
@@ -146,8 +140,10 @@ struct CurrentlyWatchingView: View {
             }
           }
         }
-        .task {
-          await self.viewModel.performRefresh()
+        .onAppear {
+          Task {
+            await self.viewModel.performRefresh()
+          }
         }
       }
     }
