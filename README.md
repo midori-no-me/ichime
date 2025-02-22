@@ -4,7 +4,7 @@
 
 ## Скриншоты
 
-![Ichime на Apple TV](https://github.com/user-attachments/assets/cf5c55d5-bcf9-4f00-a59c-136696117bf1)
+![Ichime на Apple TV](https://github.com/user-attachments/assets/0a57c4bc-299b-44a5-9699-888e3f9c527b)
 
 Больше скриншотов можно найти на странице [Wiki → Скриншоты](https://github.com/midori-no-me/ichime/wiki/Скриншоты).
 
