@@ -172,7 +172,7 @@ private struct ShowsGrid: View {
   let loadMore: () async -> Void
 
   var body: some View {
-    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
+    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 1), spacing: 64) {
       ForEach(self.shows) { show in
         ShowCard(show: show, displaySeason: true)
           .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
