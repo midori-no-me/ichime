@@ -67,9 +67,6 @@ struct AnimeList: View {
                 NavigationLink(destination: ShowView(showId: show.id)) {
                   Text("Открыть")
                 }
-              },
-              preview: {
-                IndependentShowCardContextMenuPreview(showId: show.id)
               }
             )
           }

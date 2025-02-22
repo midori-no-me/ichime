@@ -7,7 +7,7 @@ extension ApiClient {
     offset: Int? = nil,
     chips: [String: String]? = nil,
     myAnimeListId: Int? = nil
-  ) async throws -> [SeriesFull] {
+  ) async throws -> [Series] {
     var queryItems: [URLQueryItem] = []
 
     if let chips {

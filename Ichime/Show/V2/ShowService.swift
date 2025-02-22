@@ -100,6 +100,56 @@ struct ShowService {
     )
   }
 
+  func getOngoings(
+    offset: Int,
+    limit: Int
+  ) async throws -> [ShowPreview] {
+    let apiResponse = try await anime365ApiClient.listSeries(
+      limit: limit,
+      offset: offset,
+      chips: [
+        "isAiring": "1",
+        "isActive": "1",
+      ]
+    )
+
+    return apiResponse.map { .init(anime365Series: $0) }
+  }
+
+  func getTopScored(
+    offset: Int,
+    limit: Int
+  ) async throws -> [ShowPreview] {
+    let apiResponse = try await anime365ApiClient.listSeries(
+      limit: limit,
+      offset: offset
+    )
+
+    return apiResponse.map { .init(anime365Series: $0) }
+  }
+
+  func getNextSeason(
+    page: Int,
+    limit: Int
+  ) async throws -> [ShowPreviewShikimori] {
+    let showSeasonService = ShowSeasonService()
+    let nextSeason = showSeasonService.getRelativeSeason(shift: ShowSeasonService.NEXT_SEASON)
+
+    let shikimoriAnimes = try await shikimoriApiClient.listAnimes(
+      page: page,
+      limit: limit,
+      order: "popularity",
+      season: "\(nextSeason.calendarSeason.getApiName())_\(nextSeason.year)"
+    )
+
+    return shikimoriAnimes.map {
+      .init(
+        anime: $0,
+        shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
+      )
+    }
+  }
+
   private func convertShikimoriRelationsToGroupedRelatedShows(
     _ shikimoriRelations: [ShikimoriApiClient.Relation]
   ) -> [GroupedRelatedShows] {

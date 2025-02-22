@@ -466,8 +466,8 @@ private struct SeasonShowProperty: View {
     .buttonStyle(.plain)
   }
 
-  private func getShowsBySeason() -> (_ offset: Int, _ limit: Int) async throws -> [Show] {
-    func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [Show] {
+  private func getShowsBySeason() -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
+    func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
       try await self.client.getSeason(
         offset: offset,
         limit: limit,

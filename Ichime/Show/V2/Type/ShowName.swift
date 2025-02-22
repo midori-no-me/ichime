@@ -2,13 +2,13 @@ protocol ShowName {
   func getFullName() -> String
 }
 
-//struct UnparsedShowName: ShowName {
-//  let fullName: String
-//
-//  func getFullName() -> String {
-//    self.fullName
-//  }
-//}
+struct UnparsedShowName: ShowName {
+  let fullName: String
+
+  func getFullName() -> String {
+    self.fullName
+  }
+}
 
 struct ParsedShowName: ShowName {
   let russian: String?

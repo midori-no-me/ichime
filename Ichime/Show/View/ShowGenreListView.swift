@@ -34,8 +34,8 @@ struct ShowGenreListView: View {
     .listStyle(.grouped)
   }
 
-  private func getShowsByGenre(genreId: Int) -> (_ offset: Int, _ limit: Int) async throws -> [Show] {
-    func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [Show] {
+  private func getShowsByGenre(genreId: Int) -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
+    func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
       try await self.client.getByGenre(
         offset: offset,
         limit: limit,

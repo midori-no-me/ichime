@@ -7,7 +7,7 @@ private class SearchShowsViewModel {
     case loading
     case loadingFailed(Error)
     case loadedButEmpty
-    case loaded([Show])
+    case loaded([ShowPreview])
   }
 
   var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
@@ -20,7 +20,7 @@ private class SearchShowsViewModel {
 
   private var lastPerformedSearchQuery = ""
   private var currentOffset: Int = 0
-  private var shows: [Show] = []
+  private var shows: [ShowPreview] = []
   private var stopLazyLoading: Bool = false
 
   private let SHOWS_PER_PAGE = 20
@@ -168,7 +168,7 @@ struct SearchShowsView: View {
 }
 
 private struct ShowsGrid: View {
-  let shows: [Show]
+  let shows: [ShowPreview]
   let loadMore: () async -> Void
 
   var body: some View {

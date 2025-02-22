@@ -7,21 +7,21 @@ class FilteredShowsViewModel {
     case loading
     case loadingFailed(Error)
     case loadedButEmpty
-    case loaded([Show])
+    case loaded([ShowPreview])
   }
 
   private(set) var state: State = .idle
 
   private var currentOffset: Int = 0
-  private var shows: [Show] = []
+  private var shows: [ShowPreview] = []
   private var stopLazyLoading: Bool = false
-  private let fetchShows: (_ offset: Int, _ limit: Int) async throws -> [Show]
+  private let fetchShows: (_ offset: Int, _ limit: Int) async throws -> [ShowPreview]
 
   private let SHOWS_PER_PAGE = 20
 
   init(
-    preloadedShows: [Show]? = nil,
-    fetchShows: @escaping (_ offset: Int, _ limit: Int) async throws -> [Show]
+    preloadedShows: [ShowPreview]? = nil,
+    fetchShows: @escaping (_ offset: Int, _ limit: Int) async throws -> [ShowPreview]
   ) {
     if let preloadedShows = preloadedShows, !preloadedShows.isEmpty {
       self.currentOffset = preloadedShows.count

@@ -10,49 +10,11 @@ class Anime365Client {
     self.apiClient = apiClient
   }
 
-  func getShow(seriesId: Int) async throws -> Show {
-    let apiResponse = try await apiClient.getSeries(seriesId: seriesId)
-
-    return Show.createFromApiSeries(series: apiResponse)
-  }
-
-  func getOngoings(
-    offset: Int,
-    limit: Int
-  ) async throws -> [Show] {
-    let apiResponse = try await apiClient.listSeries(
-      limit: limit,
-      offset: offset,
-      chips: [
-        "isAiring": "1",
-        "isActive": "1",
-      ]
-    )
-
-    return apiResponse.map { series in
-      Show.createFromApiSeries(series: series)
-    }
-  }
-
-  func getTop(
-    offset: Int,
-    limit: Int
-  ) async throws -> [Show] {
-    let apiResponse = try await apiClient.listSeries(
-      limit: limit,
-      offset: offset
-    )
-
-    return apiResponse.map { series in
-      Show.createFromApiSeries(series: series)
-    }
-  }
-
   func getSeason(
     offset: Int,
     limit: Int,
     airingSeason: AiringSeason
-  ) async throws -> [Show] {
+  ) async throws -> [ShowPreview] {
     let apiResponse = try await apiClient.listSeries(
       limit: limit,
       offset: offset,
@@ -61,16 +23,14 @@ class Anime365Client {
       ]
     )
 
-    return apiResponse.map { series in
-      Show.createFromApiSeries(series: series)
-    }
+    return apiResponse.map { .init(anime365Series: $0) }
   }
 
   func getByGenre(
     offset: Int,
     limit: Int,
     genreIds: [Int]
-  ) async throws -> [Show] {
+  ) async throws -> [ShowPreview] {
     let apiResponse = try await apiClient.listSeries(
       limit: limit,
       offset: offset,
@@ -82,24 +42,20 @@ class Anime365Client {
       ]
     )
 
-    return apiResponse.map { series in
-      Show.createFromApiSeries(series: series)
-    }
+    return apiResponse.map { .init(anime365Series: $0) }
   }
 
   func searchShows(
     searchQuery: String,
     offset: Int,
     limit: Int
-  ) async throws -> [Show] {
+  ) async throws -> [ShowPreview] {
     let apiResponse = try await apiClient.listSeries(
       query: searchQuery,
       limit: limit,
       offset: offset
     )
 
-    return apiResponse.map { series in
-      Show.createFromApiSeries(series: series)
-    }
+    return apiResponse.map { .init(anime365Series: $0) }
   }
 }

@@ -1,3 +1,4 @@
+import Anime365ApiClient
 import ShikimoriApiClient
 
 enum ShowKind {
@@ -14,7 +15,7 @@ enum ShowKind {
   var title: String {
     switch self {
     case .tv:
-      "Сериал"
+      "ТВ сериал"
     case .movie:
       "Фильм"
     case .ova:
@@ -22,9 +23,9 @@ enum ShowKind {
     case .ona:
       "ONA"
     case .special:
-      "Спецвыпуск"
+      "Спешл"
     case .tvSpecial:
-      "TV спецвыпуск"
+      "ТВ спешл"
     case .music:
       "Клип"
     case .promotionalVideo:
@@ -36,6 +37,29 @@ enum ShowKind {
 
   static func create(_ fromShikimoriApiEnum: ShikimoriApiClient.AnimeKind) -> Self {
     switch fromShikimoriApiEnum {
+    case .tv:
+      .tv
+    case .movie:
+      .movie
+    case .ova:
+      .ova
+    case .ona:
+      .ona
+    case .special:
+      .special
+    case .tv_special:
+      .tvSpecial
+    case .music:
+      .music
+    case .pv:
+      .promotionalVideo
+    case .cm:
+      .commercial
+    }
+  }
+
+  static func create(_ fromAnime365ApiEnum: Anime365ApiClient.SeriesType) -> Self {
+    switch fromAnime365ApiEnum {
     case .tv:
       .tv
     case .movie:

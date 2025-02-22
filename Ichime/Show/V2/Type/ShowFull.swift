@@ -110,7 +110,7 @@ struct ShowFull {
           source: description.source
         )
       },
-      posterUrl: URL(string: anime365Series.posterUrl),
+      posterUrl: anime365Series.posterUrl,
       score: score <= 0 ? nil : Float(anime365Series.myAnimeListScore),
       airingSeason: AiringSeason(fromTranslatedString: anime365Series.season),
       numberOfEpisodes: anime365Series.numberOfEpisodes <= 0 ? nil : anime365Series.numberOfEpisodes,
