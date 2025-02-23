@@ -6,7 +6,8 @@ extension ApiClient {
     limit: Int? = nil,
     offset: Int? = nil,
     chips: [String: String]? = nil,
-    myAnimeListId: Int? = nil
+    myAnimeListId: Int? = nil,
+    yearseason: Int? = nil
   ) async throws -> [Series] {
     var queryItems: [URLQueryItem] = []
 
@@ -55,6 +56,15 @@ extension ApiClient {
         URLQueryItem(
           name: "myAnimeListId",
           value: String(myAnimeListId)
+        )
+      )
+    }
+
+    if let yearseason {
+      queryItems.append(
+        URLQueryItem(
+          name: "yearseason",
+          value: String(yearseason)
         )
       )
     }

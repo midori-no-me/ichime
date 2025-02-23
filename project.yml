@@ -72,13 +72,34 @@ targets:
     deploymentTarget:
       tvOS: "18.0"
     sources:
-      - path: Ichime/DependencyInjection/ServiceLocator.swift
-      - path: Ichime/CurrentlyWatching/Type/EpisodeFromCurrentlyWatchingList.swift
-      - path: Ichime/CurrentlyWatching/CurrentlyWatchingService.swift
-      - path: Ichime/Show/V2/Type/ShowName.swift
-      - path: Ichime/Calendar/ShowReleaseSchedule.swift
+      - path: Ichime/AppPreferences/HiddenTranslationsPreference.swift
       - path: Ichime/Calendar/Model/GroupedShowsFromCalendar.swift
       - path: Ichime/Calendar/Model/ShowFromCalendar.swift
+      - path: Ichime/Calendar/ShowReleaseSchedule.swift
+      - path: Ichime/CurrentlyWatching/CurrentlyWatchingService.swift
+      - path: Ichime/CurrentlyWatching/Type/EpisodeFromCurrentlyWatchingList.swift
+      - path: Ichime/DependencyInjection/ServiceLocator.swift
+      - path: Ichime/Episode/V2/EpisodeService.swift
+      - path: Ichime/Episode/V2/Type/EpisodeInfo.swift
+      - path: Ichime/Episode/V2/Type/EpisodeTranslationGroup.swift
+      - path: Ichime/Episode/V2/Type/EpisodeTranslationGroupType.swift
+      - path: Ichime/Episode/V2/Type/EpisodeTranslationInfo.swift
+      - path: Ichime/Episode/V2/Type/EpisodeTranslationStreamingInfo.swift
+      - path: Ichime/Home/Anime365/Anime365HomeService.swift
+      - path: Ichime/Home/Hentai365/Hentai365HomeService.swift
+      - path: Ichime/Moment/Type/Moment.swift
+      - path: Ichime/Show/ShowSeasonService.swift
+      - path: Ichime/Show/V2/ShowService.swift
+      - path: Ichime/Show/V2/Type/Character.swift
+      - path: Ichime/Show/V2/Type/GroupedRelatedShows.swift
+      - path: Ichime/Show/V2/Type/RelatedShow.swift
+      - path: Ichime/Show/V2/Type/ShowFull.swift
+      - path: Ichime/Show/V2/Type/ShowKind.swift
+      - path: Ichime/Show/V2/Type/ShowName.swift
+      - path: Ichime/Show/V2/Type/ShowPreview.swift
+      - path: Ichime/Show/V2/Type/ShowPreviewShikimori.swift
+      - path: Ichime/Show/V2/Type/ShowRelationKind.swift
+      - path: Ichime/Show/V2/Type/StaffMember.swift
       - path: Ichime/Utils/DateUtils.swift
       - path: TopShelf
     info:
@@ -94,7 +115,10 @@ targets:
       properties:
         com.apple.security.application-groups: [group.dev.midorinome.ichime.group] # Application Groups нужны для расшаренных UserDefaults между основным приложением и Top Shelf
     dependencies:
+      - package: DITranquillity
       - package: Anime365ApiClient
+      - package: ThirdPartyVideoPlayer
+      - package: JikanApiClient
       - package: ScraperAPI
       - package: ShikimoriApiClient
     settings:

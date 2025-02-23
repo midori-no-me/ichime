@@ -125,18 +125,20 @@ struct UserRateForm: View {
           TextField("Текущий эпизод", text: self.$currentEpisode).keyboardType(.numberPad)
             .multilineTextAlignment(.trailing)
             .focused(self.$isFocused)
-            .onChange(of: self.isFocused) {
-              if self.isFocused {
-                DispatchQueue.main.async {
-                  UIApplication.shared.sendAction(
-                    #selector(UIResponder.selectAll(_:)),
-                    to: nil,
-                    from: nil,
-                    for: nil
-                  )
+            #if canImport(UIApplication.shared)
+              .onChange(of: self.isFocused) {
+                if self.isFocused {
+                  DispatchQueue.main.async {
+                    UIApplication.shared.sendAction(
+                      #selector(UIResponder.selectAll(_:)),
+                      to: nil,
+                      from: nil,
+                      for: nil
+                    )
+                  }
                 }
               }
-            }
+            #endif
           Text("/ \(self.totalEpisodes)")
         }
       }

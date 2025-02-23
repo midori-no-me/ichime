@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable
-private class OngoingsSectionViewModel {
+private class Hentai365TopScoredSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 
   public var shows: [ShowPreview] = []
@@ -12,7 +12,7 @@ private class OngoingsSectionViewModel {
   private let showService: ShowService
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve()
+    showService: ShowService = ServiceLocator.showServiceHentai365
   ) {
     self.showService = showService
   }
@@ -32,7 +32,7 @@ private class OngoingsSectionViewModel {
     }
 
     do {
-      let shows = try await showService.getOngoings(
+      let shows = try await showService.getTopScored(
         offset: self.offset,
         limit: Self.SHOWS_PER_PAGE
       )
@@ -50,15 +50,15 @@ private class OngoingsSectionViewModel {
   }
 }
 
-struct OngoingsSection: View {
+struct Hentai365TopScoredSection: View {
   let preloadedShows: [ShowPreview]
 
-  @State private var viewModel: OngoingsSectionViewModel = .init()
+  @State private var viewModel: Hentai365TopScoredSectionViewModel = .init()
 
   var body: some View {
     VStack(alignment: .leading) {
       Section(
-        header: Text("Онгоинги")
+        header: Text("С высоким рейтингом")
           .font(.headline)
           .fontWeight(.bold)
           .foregroundStyle(.secondary)

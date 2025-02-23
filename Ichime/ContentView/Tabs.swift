@@ -1,5 +1,6 @@
 enum Tabs: String {
   case home
+  case homeHentai
   case currentlyWatching
   case myLists
   case notifications
