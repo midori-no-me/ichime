@@ -1,25 +1,24 @@
 import SwiftUI
 
 @Observable
-private class HomeViewModel {
+private class Hentai365HomeViewModel {
   enum State {
     case idle
     case loading
     case loaded(
       (
-        ongoings: [ShowPreview],
         topScored: [ShowPreview],
-        nextSeason: [ShowPreviewShikimori]
+        years: [(shows: [ShowPreview], year: Int)]
       )
     )
   }
 
   private(set) var state: State = .idle
 
-  private let homeService: HomeService
+  private let homeService: Hentai365HomeService
 
   init(
-    homeService: HomeService = ApplicationDependency.container.resolve()
+    homeService: Hentai365HomeService = ServiceLocator.hentai365HomeService
   ) {
     self.homeService = homeService
   }
@@ -33,8 +32,8 @@ private class HomeViewModel {
   }
 }
 
-struct HomeView: View {
-  @State private var viewModel: HomeViewModel = .init()
+struct Hentai365HomeView: View {
+  @State private var viewModel: Hentai365HomeViewModel = .init()
 
   var body: some View {
     switch self.viewModel.state {
@@ -53,16 +52,14 @@ struct HomeView: View {
     case let .loaded(sections):
       ScrollView(.vertical) {
         VStack(alignment: .leading, spacing: 64) {
-          if !sections.ongoings.isEmpty {
-            OngoingsSection(preloadedShows: sections.ongoings)
-          }
-
-          if !sections.nextSeason.isEmpty {
-            NextSeasonSection(preloadedShows: sections.nextSeason)
-          }
-
           if !sections.topScored.isEmpty {
-            TopScoredSection(preloadedShows: sections.topScored)
+            Hentai365TopScoredSection(preloadedShows: sections.topScored)
+          }
+
+          ForEach(sections.years, id: \.year) { yearSection in
+            if !yearSection.shows.isEmpty {
+              Hentai365YearSection(preloadedShows: yearSection.shows, year: yearSection.year)
+            }
           }
         }
       }

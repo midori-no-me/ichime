@@ -150,6 +150,22 @@ struct ShowService {
     }
   }
 
+  func getYear(
+    offset: Int,
+    limit: Int,
+    year: Int
+  ) async throws -> [ShowPreview] {
+    let apiResponse = try await anime365ApiClient.listSeries(
+      limit: limit,
+      offset: offset,
+      chips: [
+        "yearseason": "\(year)"
+      ]
+    )
+
+    return apiResponse.map { .init(anime365Series: $0) }
+  }
+
   private func convertShikimoriRelationsToGroupedRelatedShows(
     _ shikimoriRelations: [ShikimoriApiClient.Relation]
   ) -> [GroupedRelatedShows] {

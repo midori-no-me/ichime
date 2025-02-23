@@ -1,4 +1,9 @@
+import Anime365ApiClient
 import Foundation
+import JikanApiClient
+import OSLog
+import ScraperAPI
+import ShikimoriApiClient
 
 enum ServiceLocator {
   static let appGroup = "group.dev.midorinome.ichime.group"
@@ -58,5 +63,88 @@ enum ServiceLocator {
 
   static var jikanBaseUrl: URL {
     URL(string: "https://api.jikan.moe/v4")!
+  }
+
+  static var shikimoriApiClient: ShikimoriApiClient.ApiClient {
+    .init(
+      baseUrl: Self.shikimoriBaseUrl,
+      userAgent: Self.shikimoriUserAgent,
+      logger: Logger(subsystem: Self.applicationId, category: "ShikimoriApiClient")
+    )
+  }
+
+  static var jikanApiClient: JikanApiClient.ApiClient {
+    .init(
+      baseUrl: Self.jikanBaseUrl,
+      userAgent: Self.jikanUserAgent,
+      logger: Logger(subsystem: Self.applicationId, category: "JikanApiClient")
+    )
+  }
+
+  static var showServiceAnime365: ShowService {
+    .init(
+      anime365ApiClient: Self.anime365ApiClient,
+      shikimoriApiClient: Self.shikimoriApiClient,
+      jikanApiClient: Self.jikanApiClient,
+      scraperApi: Self.scraperApiClient
+    )
+  }
+
+  static var showServiceHentai365: ShowService {
+    .init(
+      anime365ApiClient: Self.hentai365ApiClient,
+      shikimoriApiClient: Self.shikimoriApiClient,
+      jikanApiClient: Self.jikanApiClient,
+      scraperApi: Self.scraperApiClient
+    )
+  }
+
+  static var cookieStorage: HTTPCookieStorage {
+    HTTPCookieStorage.sharedCookieStorage(forGroupContainerIdentifier: Self.appGroup)
+  }
+
+  static var hentai365ApiClient: Anime365ApiClient.ApiClient {
+    .init(
+      baseURL: URL(string: "https://hentai365.ru")!,
+      userAgent: Self.userAgent,
+      cookieStorage: Self.cookieStorage,
+      logger: Logger(subsystem: Self.applicationId, category: "Hentai365ApiClient")
+    )
+  }
+
+  static var anime365ApiClient: Anime365ApiClient.ApiClient {
+    .init(
+      baseURL: Self.websiteBaseUrl,
+      userAgent: Self.userAgent,
+      cookieStorage: Self.cookieStorage,
+      logger: Logger(subsystem: Self.applicationId, category: "Anime365ApiClient")
+    )
+  }
+
+  static var scraperApiSession: ScraperAPI.Session {
+    .init(
+      cookieStorage: Self.cookieStorage,
+      baseURL: Self.websiteBaseUrl
+    )
+  }
+
+  static var scraperApiClient: ScraperAPI.APIClient {
+    .init(
+      baseURL: Self.websiteBaseUrl,
+      userAgent: Self.userAgent,
+      session: Self.scraperApiSession
+    )
+  }
+
+  static var hentai365HomeService: Hentai365HomeService {
+    .init(
+      showService: Self.showServiceHentai365
+    )
+  }
+
+  static var anime365HomeService: Anime365HomeService {
+    .init(
+      showService: Self.showServiceAnime365
+    )
   }
 }

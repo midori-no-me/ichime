@@ -3,14 +3,23 @@ import SwiftUI
 
 struct ContentViewWithSideBar: View {
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
+  @AppStorage("enable_hentai_365") private var enabledHentai365: Bool = false
 
   @State private var viewModel: UserAnimeListCache = ApplicationDependency.container.resolve()
 
   var body: some View {
     TabView(selection: self.$selectedTab) {
-      Tab("Главная", systemImage: "play.house", value: .home) {
+      Tab(self.enabledHentai365 ? "Anime 365" : "Главная", systemImage: "play.house", value: .home) {
         NavigationStackWithRouter {
-          HomeView()
+          Anime365HomeView()
+        }
+      }
+
+      if self.enabledHentai365 {
+        Tab("Hentai 365", systemImage: "18.circle", value: .homeHentai) {
+          NavigationStackWithRouter {
+            Hentai365HomeView()
+          }
         }
       }
 

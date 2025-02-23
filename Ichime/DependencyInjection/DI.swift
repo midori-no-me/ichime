@@ -112,7 +112,11 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      HomeService(showService: $0)
+      Anime365HomeService(showService: $0)
+    }
+
+    container.register {
+      Hentai365HomeService(showService: $0)
     }
 
     if !container.makeGraph().checkIsValid() {

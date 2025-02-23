@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable
-private class TopScoredSectionViewModel {
+private class Anime365TopScoredSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 
   public var shows: [ShowPreview] = []
@@ -50,10 +50,10 @@ private class TopScoredSectionViewModel {
   }
 }
 
-struct TopScoredSection: View {
+struct Anime365TopScoredSection: View {
   let preloadedShows: [ShowPreview]
 
-  @State private var viewModel: TopScoredSectionViewModel = .init()
+  @State private var viewModel: Anime365TopScoredSectionViewModel = .init()
 
   var body: some View {
     VStack(alignment: .leading) {

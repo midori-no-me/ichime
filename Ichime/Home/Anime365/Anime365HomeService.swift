@@ -1,6 +1,6 @@
 import Foundation
 
-struct HomeService {
+struct Anime365HomeService {
   private let showService: ShowService
 
   init(
