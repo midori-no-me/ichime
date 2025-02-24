@@ -56,25 +56,18 @@ struct TopScoredSection: View {
   @State private var viewModel: TopScoredSectionViewModel = .init()
 
   var body: some View {
-    VStack(alignment: .leading) {
-      Section(
-        header: Text("С высоким рейтингом")
-          .font(.headline)
-          .fontWeight(.bold)
-          .foregroundStyle(.secondary)
-      ) {
-        ScrollView(.horizontal) {
-          LazyHStack(alignment: .top) {
-            ForEach(self.viewModel.shows) { show in
-              ShowCard(show: show, displaySeason: true)
-                .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-                .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
-                .task {
-                  if show == self.viewModel.shows.last {
-                    await self.viewModel.performLazyLoading()
-                  }
+    SectionWithCards(title: "С высоким рейтингом") {
+      ScrollView(.horizontal) {
+        LazyHStack(alignment: .top) {
+          ForEach(self.viewModel.shows) { show in
+            ShowCard(show: show, displaySeason: true)
+              .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+              .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
+              .task {
+                if show == self.viewModel.shows.last {
+                  await self.viewModel.performLazyLoading()
                 }
-            }
+              }
           }
         }
       }

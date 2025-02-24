@@ -57,12 +57,7 @@ struct NextSeasonSection: View {
 
   var body: some View {
     VStack(alignment: .leading) {
-      Section(
-        header: Text("Следующий сезон")
-          .font(.headline)
-          .fontWeight(.bold)
-          .foregroundStyle(.secondary)
-      ) {
+      SectionWithCards(title: "Следующий сезон") {
         ScrollView(.horizontal) {
           LazyHStack(alignment: .top) {
             ForEach(self.viewModel.shows) { show in
@@ -77,8 +72,8 @@ struct NextSeasonSection: View {
             }
           }
         }
+        .scrollClipDisabled()
       }
-      .scrollClipDisabled()
     }
     .onAppear {
       self.viewModel.performInitialLoad(preloadedShows: self.preloadedShows)

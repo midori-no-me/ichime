@@ -31,17 +31,10 @@ private struct CharacterCardSheet: View {
     NavigationStack {
       if !self.character.voiceActors.isEmpty {
         ScrollView(.vertical) {
-          VStack(alignment: .leading) {
-            Section(
-              header: Text("Актёры лицензионной озвучки")
-                .font(.headline)
-                .fontWeight(.bold)
-                .foregroundStyle(.secondary)
-            ) {
-              LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 6), spacing: 64) {
-                ForEach(self.character.voiceActors) { voiceActor in
-                  VoiceActorCard(voiceActor: voiceActor)
-                }
+          SectionWithCards(title: "Актёры лицензионной озвучки") {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 6), spacing: 64) {
+              ForEach(self.character.voiceActors) { voiceActor in
+                VoiceActorCard(voiceActor: voiceActor)
               }
             }
           }

@@ -142,18 +142,11 @@ struct CurrentlyWatchingView: View {
 
       case let .loaded(episodes):
         ScrollView([.vertical]) {
-          VStack(alignment: .leading) {
-            Section(
-              header: Text("Серии к просмотру")
-                .font(.headline)
-                .fontWeight(.bold)
-                .foregroundStyle(.secondary)
-            ) {
-              EpisodesGrid(
-                episodes: episodes,
-                loadMore: { await self.viewModel.performLazyLoading() }
-              )
-            }
+          SectionWithCards(title: "Серии к просмотру") {
+            EpisodesGrid(
+              episodes: episodes,
+              loadMore: { await self.viewModel.performLazyLoading() }
+            )
           }
         }
         .onAppear {

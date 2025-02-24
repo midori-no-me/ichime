@@ -56,25 +56,18 @@ struct OngoingsSection: View {
   @State private var viewModel: OngoingsSectionViewModel = .init()
 
   var body: some View {
-    VStack(alignment: .leading) {
-      Section(
-        header: Text("Онгоинги")
-          .font(.headline)
-          .fontWeight(.bold)
-          .foregroundStyle(.secondary)
-      ) {
-        ScrollView(.horizontal) {
-          LazyHStack(alignment: .top) {
-            ForEach(self.viewModel.shows) { show in
-              ShowCard(show: show, displaySeason: true)
-                .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-                .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
-                .task {
-                  if show == self.viewModel.shows.last {
-                    await self.viewModel.performLazyLoading()
-                  }
+    SectionWithCards(title: "Онгоинги") {
+      ScrollView(.horizontal) {
+        LazyHStack(alignment: .top) {
+          ForEach(self.viewModel.shows) { show in
+            ShowCard(show: show, displaySeason: true)
+              .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+              .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
+              .task {
+                if show == self.viewModel.shows.last {
+                  await self.viewModel.performLazyLoading()
                 }
-            }
+              }
           }
         }
       }

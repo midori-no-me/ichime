@@ -122,23 +122,16 @@ struct FilteredShowsView: View {
 
     case let .loaded(shows):
       ScrollView(.vertical) {
-        VStack(alignment: .leading) {
-          Section(
-            header: Text(self.title)
-              .font(.headline)
-              .fontWeight(.bold)
-              .foregroundStyle(.secondary)
-          ) {
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
-              ForEach(shows) { show in
-                ShowCard(show: show, displaySeason: self.displaySeason)
-                  .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-                  .task {
-                    if show == shows.last {
-                      await self.viewModel.performLazyLoading(fetchShows: self.fetchShows)
-                    }
+        SectionWithCards(title: self.title) {
+          LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
+            ForEach(shows) { show in
+              ShowCard(show: show, displaySeason: self.displaySeason)
+                .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+                .task {
+                  if show == shows.last {
+                    await self.viewModel.performLazyLoading(fetchShows: self.fetchShows)
                   }
-              }
+                }
             }
           }
         }

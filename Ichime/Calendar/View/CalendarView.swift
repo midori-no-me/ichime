@@ -92,18 +92,11 @@ struct CalendarView: View {
       ScrollView([.vertical]) {
         VStack(alignment: .leading, spacing: 64) {
           ForEach(scheduleDays, id: \.date) { scheduleDay in
-            VStack(alignment: .leading) {
-              Section(
-                header: Text(formatRelativeDateWithWeekdayNameAndDate(scheduleDay.date))
-                  .font(.headline)
-                  .fontWeight(.bold)
-                  .foregroundStyle(.secondary)
-              ) {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
-                  ForEach(scheduleDay.shows) { show in
-                    ShowFromCalendarCard(show: show)
-                      .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-                  }
+            SectionWithCards(title: formatRelativeDateWithWeekdayNameAndDate(scheduleDay.date)) {
+              LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
+                ForEach(scheduleDay.shows) { show in
+                  ShowFromCalendarCard(show: show)
+                    .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
                 }
               }
             }

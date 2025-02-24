@@ -533,42 +533,28 @@ private struct ShowStudiosAndDescriptions: View {
     ScrollView(.horizontal) {
       LazyHStack(alignment: .top) {
         if !self.studios.isEmpty {
-          VStack(alignment: .leading) {
-            Section(
-              header: Text(self.studios.count == 1 ? "Студия" : "Студии")
-                .font(.headline)
-                .fontWeight(.bold)
-                .foregroundStyle(.secondary)
-            ) {
-              LazyHStack(alignment: .top) {
-                ForEach(self.studios) { studio in
-                  StudioCard(
-                    title: studio.name,
-                    cover: studio.image
-                  )
-                  .frame(width: 300, height: 300)
-                }
+          SectionWithCards(title: self.studios.count == 1 ? "Студия" : "Студии") {
+            LazyHStack(alignment: .top) {
+              ForEach(self.studios) { studio in
+                StudioCard(
+                  title: studio.name,
+                  cover: studio.image
+                )
+                .frame(width: 300, height: 300)
               }
             }
           }
         }
 
         if !self.descriptions.isEmpty {
-          VStack(alignment: .leading) {
-            Section(
-              header: Text("Описание")
-                .font(.headline)
-                .fontWeight(.bold)
-                .foregroundStyle(.secondary)
-            ) {
-              LazyHStack(alignment: .top) {
-                ForEach(self.descriptions, id: \.self) { description in
-                  ShowDescriptionCard(
-                    title: description.source,
-                    text: description.text
-                  )
-                  .frame(width: 600, height: 300)
-                }
+          SectionWithCards(title: "Описание") {
+            LazyHStack(alignment: .top) {
+              ForEach(self.descriptions, id: \.self) { description in
+                ShowDescriptionCard(
+                  title: description.source,
+                  text: description.text
+                )
+                .frame(width: 600, height: 300)
               }
             }
           }
@@ -698,92 +684,85 @@ private struct ScreenshotsSection: View {
   let screenshots: [URL]
 
   var body: some View {
-    VStack(alignment: .leading) {
-      Section(
-        header: Text("Скриншоты")
-          .font(.headline)
-          .fontWeight(.bold)
-          .foregroundStyle(.secondary)
-      ) {
-        ScrollView(.horizontal) {
-          LazyHStack(alignment: .top, spacing: Self.SPACING) {
-            ForEach(self.screenshots, id: \.self) { screenshot in
-              Button(action: {
-                self.selectedScreenshot = screenshot
-                self.showSheet = true
-              }) {
-                AsyncImage(
-                  url: screenshot,
-                  transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
-                ) { phase in
-                  switch phase {
-                  case .empty:
-                    Color.clear
+    SectionWithCards(title: "Скриншоты") {
+      ScrollView(.horizontal) {
+        LazyHStack(alignment: .top, spacing: Self.SPACING) {
+          ForEach(self.screenshots, id: \.self) { screenshot in
+            Button(action: {
+              self.selectedScreenshot = screenshot
+              self.showSheet = true
+            }) {
+              AsyncImage(
+                url: screenshot,
+                transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
+              ) { phase in
+                switch phase {
+                case .empty:
+                  Color.clear
 
-                  case let .success(image):
-                    image
-                      .resizable()
-                      .scaledToFit()
+                case let .success(image):
+                  image
+                    .resizable()
+                    .scaledToFit()
 
-                  case .failure:
-                    Color.clear
+                case .failure:
+                  Color.clear
 
-                  @unknown default:
-                    Color.clear
-                  }
+                @unknown default:
+                  Color.clear
                 }
-                .frame(
-                  maxWidth: .infinity,
-                  maxHeight: .infinity
-                )
-                .aspectRatio(16 / 9, contentMode: .fit)
-                .background(Color.black)
-                .hoverEffect(.highlight)
               }
-              .buttonStyle(.borderless)
-              .containerRelativeFrame(.horizontal, count: 3, span: 1, spacing: Self.SPACING)
+              .frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity
+              )
+              .aspectRatio(16 / 9, contentMode: .fit)
+              .background(Color.black)
+              .hoverEffect(.highlight)
             }
+            .buttonStyle(.borderless)
+            .containerRelativeFrame(.horizontal, count: 3, span: 1, spacing: Self.SPACING)
           }
         }
-        .scrollClipDisabled()
-        .sheet(isPresented: self.$showSheet) {
-          NavigationStack {
-            TabView(selection: self.$selectedScreenshot) {
-              ForEach(self.screenshots, id: \.self) { screenshot in
-                AsyncImage(
-                  url: screenshot,
-                  transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
-                ) { phase in
-                  switch phase {
-                  case .empty:
-                    ProgressView()
+      }
+      .scrollClipDisabled()
+    }
+    .sheet(isPresented: self.$showSheet) {
+      NavigationStack {
+        TabView(selection: self.$selectedScreenshot) {
+          ForEach(self.screenshots, id: \.self) { screenshot in
+            AsyncImage(
+              url: screenshot,
+              transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
+            ) { phase in
+              switch phase {
+              case .empty:
+                ProgressView()
 
-                  case let .success(image):
-                    image
-                      .resizable()
-                      .scaledToFit()
+              case let .success(image):
+                image
+                  .resizable()
+                  .scaledToFit()
 
-                  case .failure:
-                    Image(systemName: "photo.badge.exclamationmark")
-                      .font(.title)
-                      .foregroundColor(.secondary)
+              case .failure:
+                Image(systemName: "photo.badge.exclamationmark")
+                  .font(.title)
+                  .foregroundColor(.secondary)
 
-                  @unknown default:
-                    Color.clear
-                  }
-                }
-                .focusable()
-                .frame(
-                  maxWidth: .infinity,
-                  maxHeight: .infinity
-                )
-                .ignoresSafeArea()
-                .tag(screenshot)
+              @unknown default:
+                Color.clear
               }
             }
-            .tabViewStyle(.page)
+            .focusable()
+            .frame(
+              maxWidth: .infinity,
+              maxHeight: .infinity
+            )
+            .ignoresSafeArea()
+            .tag(screenshot)
           }
         }
+        .tabViewStyle(.page)
       }
     }
   }
@@ -795,23 +774,16 @@ private struct CharactersSection: View {
   let characters: [Character]
 
   var body: some View {
-    VStack(alignment: .leading) {
-      Section(
-        header: Text("Персонажи")
-          .font(.headline)
-          .fontWeight(.bold)
-          .foregroundStyle(.secondary)
-      ) {
-        ScrollView(.horizontal) {
-          LazyHStack(alignment: .top, spacing: Self.SPACING) {
-            ForEach(self.characters) { character in
-              CharacterCard(character: character)
-                .containerRelativeFrame(.horizontal, count: 6, span: 1, spacing: Self.SPACING)
-            }
+    SectionWithCards(title: "Персонажи") {
+      ScrollView(.horizontal) {
+        LazyHStack(alignment: .top, spacing: Self.SPACING) {
+          ForEach(self.characters) { character in
+            CharacterCard(character: character)
+              .containerRelativeFrame(.horizontal, count: 6, span: 1, spacing: Self.SPACING)
           }
         }
-        .scrollClipDisabled()
       }
+      .scrollClipDisabled()
     }
   }
 }
@@ -822,23 +794,16 @@ private struct StaffMembersSection: View {
   let staffMembers: [StaffMember]
 
   var body: some View {
-    VStack(alignment: .leading) {
-      Section(
-        header: Text("Авторы")
-          .font(.headline)
-          .fontWeight(.bold)
-          .foregroundStyle(.secondary)
-      ) {
-        ScrollView(.horizontal) {
-          LazyHStack(alignment: .top, spacing: Self.SPACING) {
-            ForEach(self.staffMembers) { staffMember in
-              StaffMemberCard(staffMember: staffMember)
-                .containerRelativeFrame(.horizontal, count: 6, span: 1, spacing: Self.SPACING)
-            }
+    SectionWithCards(title: "Авторы") {
+      ScrollView(.horizontal) {
+        LazyHStack(alignment: .top, spacing: Self.SPACING) {
+          ForEach(self.staffMembers) { staffMember in
+            StaffMemberCard(staffMember: staffMember)
+              .containerRelativeFrame(.horizontal, count: 6, span: 1, spacing: Self.SPACING)
           }
         }
-        .scrollClipDisabled()
       }
+      .scrollClipDisabled()
     }
   }
 }
@@ -849,23 +814,16 @@ private struct MomentsSection: View {
   let moments: [Moment]
 
   var body: some View {
-    VStack(alignment: .leading) {
-      Section(
-        header: Text("Моменты")
-          .font(.headline)
-          .fontWeight(.bold)
-          .foregroundStyle(.secondary)
-      ) {
-        ScrollView(.horizontal) {
-          LazyHStack(alignment: .top, spacing: Self.SPACING) {
-            ForEach(self.moments) { moment in
-              MomentCard(moment: moment)
-                .containerRelativeFrame(.horizontal, count: 4, span: 1, spacing: Self.SPACING)
-            }
+    SectionWithCards(title: "Моменты") {
+      ScrollView(.horizontal) {
+        LazyHStack(alignment: .top, spacing: Self.SPACING) {
+          ForEach(self.moments) { moment in
+            MomentCard(moment: moment)
+              .containerRelativeFrame(.horizontal, count: 4, span: 1, spacing: Self.SPACING)
           }
         }
-        .scrollClipDisabled()
       }
+      .scrollClipDisabled()
     }
   }
 }
@@ -877,19 +835,12 @@ private struct RelatedShowsSection: View {
     ScrollView(.horizontal) {
       LazyHStack(alignment: .top) {
         ForEach(self.relatedShowsGroups, id: \.relationKind) { relatedShowGroup in
-          VStack(alignment: .leading) {
-            Section(
-              header: Text(relatedShowGroup.relationKind.title)
-                .font(.headline)
-                .fontWeight(.bold)
-                .foregroundStyle(.secondary)
-            ) {
-              LazyHStack(alignment: .top) {
-                ForEach(relatedShowGroup.relatedShows, id: \.myAnimeListId) { relatedShow in
-                  RelatedShowCard(relatedShow: relatedShow)
-                    .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-                    .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
-                }
+          SectionWithCards(title: relatedShowGroup.relationKind.title) {
+            LazyHStack(alignment: .top) {
+              ForEach(relatedShowGroup.relatedShows, id: \.myAnimeListId) { relatedShow in
+                RelatedShowCard(relatedShow: relatedShow)
+                  .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+                  .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
               }
             }
           }
