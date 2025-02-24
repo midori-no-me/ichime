@@ -226,7 +226,7 @@ private struct ShowKeyDetailsSection: View {
 
           ShowProperty(
             label: "Тип",
-            value: self.show.typeTitle
+            value: self.show.kind?.title ?? "???"
           )
 
           EpisodesShowProperty(

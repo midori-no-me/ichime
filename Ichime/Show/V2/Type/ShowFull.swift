@@ -69,7 +69,7 @@ struct ShowFull {
   let numberOfEpisodes: Int?
   let latestAiredEpisodeNumber: Int?
   let hasEpisodes: Bool
-  let typeTitle: String  // TODO: Поменять на ShowKind
+  let kind: ShowKind?
   let genres: [Genre]
   let isOngoing: Bool
   let studios: [Studio]
@@ -92,6 +92,11 @@ struct ShowFull {
   ) -> Self {
     let score = Float(anime365Series.myAnimeListScore) ?? 0
     let totalEpisodes = anime365Series.numberOfEpisodes <= 0 ? nil : anime365Series.numberOfEpisodes
+    var kind: ShowKind? = nil
+
+    if let seriesType = anime365Series.type {
+      kind = .create(seriesType)
+    }
 
     return Self(
       id: anime365Series.id,
@@ -122,7 +127,7 @@ struct ShowFull {
         anime365Episodes: anime365Series.episodes ?? [],
         totalEpisodes: totalEpisodes
       ),
-      typeTitle: anime365Series.typeTitle,
+      kind: kind,
       genres: (anime365Series.genres ?? []).map { genre in
         Self.Genre(
           id: genre.id,

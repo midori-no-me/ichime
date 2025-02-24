@@ -31,7 +31,13 @@ struct ShowPreview: Hashable, Identifiable {
     }
 
     self.airingSeason = .init(fromTranslatedString: anime365Series.season)
-    self.kind = .create(anime365Series.type)
+
+    if let seriesType = anime365Series.type {
+      self.kind = .create(seriesType)
+    }
+    else {
+      self.kind = nil
+    }
   }
 
   static func == (lhs: Self, rhs: Self) -> Bool {

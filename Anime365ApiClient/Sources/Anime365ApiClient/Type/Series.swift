@@ -13,7 +13,7 @@ public struct Series: Decodable {
   public let posterUrl: URL?
   public let myAnimeListScore: String
   public let season: String
-  public let type: SeriesType
+  public let type: SeriesType?
 }
 
 public struct SeriesFull: Decodable {
@@ -35,8 +35,7 @@ public struct SeriesFull: Decodable {
   public let isAiring: Int
   public let numberOfEpisodes: Int
   public let season: String
-  public let type: String  // TODO: Use SeriesType
-  public let typeTitle: String  // TODO: Delete this
+  public let type: SeriesType?
   public let titles: Titles
   public let genres: [Genre]?
   public let descriptions: [Description]?
