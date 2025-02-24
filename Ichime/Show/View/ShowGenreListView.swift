@@ -18,10 +18,9 @@ struct ShowGenreListView: View {
         ForEach(self.genres) { genre in
           NavigationLink(
             destination: FilteredShowsView(
-              viewModel: .init(fetchShows: self.getShowsByGenre(genreId: genre.id)),
               title: genre.title,
-              description: nil,
-              displaySeason: true
+              displaySeason: true,
+              fetchShows: self.getShowsByGenre(genreId: genre.id)
             )
           ) {
             Text(genre.title)

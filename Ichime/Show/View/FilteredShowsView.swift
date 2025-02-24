@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable
-class FilteredShowsViewModel {
+private class FilteredShowsViewModel {
   enum State {
     case idle
     case loading
@@ -10,74 +10,56 @@ class FilteredShowsViewModel {
     case loaded([ShowPreview])
   }
 
+  private static let SHOWS_PER_PAGE = 20
+
   private(set) var state: State = .idle
 
-  private var currentOffset: Int = 0
   private var shows: [ShowPreview] = []
+  private var offset: Int = 0
   private var stopLazyLoading: Bool = false
-  private let fetchShows: (_ offset: Int, _ limit: Int) async throws -> [ShowPreview]
 
-  private let SHOWS_PER_PAGE = 20
-
-  init(
-    preloadedShows: [ShowPreview]? = nil,
-    fetchShows: @escaping (_ offset: Int, _ limit: Int) async throws -> [ShowPreview]
-  ) {
-    if let preloadedShows = preloadedShows, !preloadedShows.isEmpty {
-      self.currentOffset = preloadedShows.count
-      self.shows = preloadedShows
-      self.state = .loaded(preloadedShows)
-    }
-
-    self.fetchShows = fetchShows
-  }
-
-  @MainActor
-  func updateState(_ newState: State) {
-    self.state = newState
-  }
-
-  func performInitialLoad() async {
-    await self.updateState(.loading)
+  func performInitialLoading(
+    fetchShows: (_ offset: Int, _ limit: Int) async throws -> [ShowPreview]
+  ) async {
+    self.state = .loading
 
     do {
-      let shows = try await fetchShows(
-        currentOffset,
-        SHOWS_PER_PAGE
-      )
+      let shows = try await fetchShows(self.offset, Self.SHOWS_PER_PAGE)
 
       if shows.isEmpty {
-        await self.updateState(.loadedButEmpty)
+        self.state = .loadedButEmpty
       }
       else {
-        self.currentOffset = self.SHOWS_PER_PAGE
-        self.shows = shows
-        await self.updateState(.loaded(self.shows))
+        self.stopLazyLoading = false
+        self.offset += Self.SHOWS_PER_PAGE
+        self.shows += shows
+        self.state = .loaded(self.shows)
       }
     }
     catch {
-      await self.updateState(.loadingFailed(error))
+      self.state = .loadingFailed(error)
     }
   }
 
-  func performLazyLoading() async {
+  func performLazyLoading(
+    fetchShows: (_ offset: Int, _ limit: Int) async throws -> [ShowPreview]
+  ) async {
     if self.stopLazyLoading {
       return
     }
 
     do {
-      let shows = try await fetchShows(
-        currentOffset,
-        SHOWS_PER_PAGE
-      )
+      let shows = try await fetchShows(self.offset, Self.SHOWS_PER_PAGE)
 
-      if shows.count < self.SHOWS_PER_PAGE {
+      if shows.last?.id == self.shows.last?.id {
         self.stopLazyLoading = true
+        return
       }
 
-      self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
+      self.stopLazyLoading = false
+      self.offset += Self.SHOWS_PER_PAGE
       self.shows += shows
-      await self.updateState(.loaded(self.shows))
+      self.state = .loaded(self.shows)
     }
     catch {
       self.stopLazyLoading = true
@@ -86,19 +68,18 @@ class FilteredShowsViewModel {
 }
 
 struct FilteredShowsView: View {
-  // swiftlint:disable private_swiftui_state
-  @State var viewModel: FilteredShowsViewModel
-
   let title: String
-  let description: String?
   let displaySeason: Bool
+  let fetchShows: (_ offset: Int, _ limit: Int) async throws -> [ShowPreview]
+
+  @State private var viewModel: FilteredShowsViewModel = .init()
 
   var body: some View {
     switch self.viewModel.state {
     case .idle:
       Color.clear.onAppear {
         Task {
-          await self.viewModel.performInitialLoad()
+          await self.viewModel.performInitialLoading(fetchShows: self.fetchShows)
         }
       }
 
@@ -115,7 +96,7 @@ struct FilteredShowsView: View {
       } actions: {
         Button(action: {
           Task {
-            await self.viewModel.performInitialLoad()
+            await self.viewModel.performInitialLoading(fetchShows: self.fetchShows)
           }
         }) {
           Text("Обновить")
@@ -131,7 +112,7 @@ struct FilteredShowsView: View {
       } actions: {
         Button(action: {
           Task {
-            await self.viewModel.performInitialLoad()
+            await self.viewModel.performInitialLoading(fetchShows: self.fetchShows)
           }
         }) {
           Text("Обновить")
@@ -140,29 +121,24 @@ struct FilteredShowsView: View {
       .centeredContentFix()
 
     case let .loaded(shows):
-      ScrollView([.vertical]) {
-        VStack(alignment: .leading, spacing: 40) {
-          VStack(alignment: .leading) {
-            Text(self.title)
-              .font(.title2)
-
-            if let description {
-              Text(description)
-                .font(.title3)
-                .foregroundStyle(.secondary)
-            }
-          }
-          .frame(maxWidth: .infinity, alignment: .leading)
-
-          LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
-            ForEach(shows) { show in
-              ShowCard(show: show, displaySeason: self.displaySeason)
-                .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-                .task {
-                  if show == shows.last {
-                    await self.viewModel.performLazyLoading()
+      ScrollView(.vertical) {
+        VStack(alignment: .leading) {
+          Section(
+            header: Text(self.title)
+              .font(.headline)
+              .fontWeight(.bold)
+              .foregroundStyle(.secondary)
+          ) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
+              ForEach(shows) { show in
+                ShowCard(show: show, displaySeason: self.displaySeason)
+                  .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+                  .task {
+                    if show == shows.last {
+                      await self.viewModel.performLazyLoading(fetchShows: self.fetchShows)
+                    }
                   }
-                }
+              }
             }
           }
         }

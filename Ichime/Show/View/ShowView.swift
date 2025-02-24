@@ -452,10 +452,9 @@ private struct SeasonShowProperty: View {
   var body: some View {
     NavigationLink(
       destination: FilteredShowsView(
-        viewModel: .init(fetchShows: self.getShowsBySeason()),
         title: self.airingSeason.getLocalizedTranslation(),
-        description: nil,
-        displaySeason: false
+        displaySeason: false,
+        fetchShows: self.getShowsBySeason()
       )
     ) {
       ShowProperty(
