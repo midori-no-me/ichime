@@ -118,6 +118,7 @@ private struct EpisodeTranslationsStreamingQualities: View {
   private let subtitlesProxyUrlGenerator: SubtitlesProxyUrlGenerator = ApplicationDependency.container.resolve()
 
   @AppStorage("defaultPlayer") private var selectedPlayer: ThirdPartyVideoPlayerType = .infuse
+  @AppStorage("preferSubtitlesProxy") private var preferSubtitlesProxy: Bool = false
 
   // periphery:ignore
   @AppStorage("last_watched_translation_id") private var lastWatchedTranslationId: Int = 0
@@ -129,10 +130,7 @@ private struct EpisodeTranslationsStreamingQualities: View {
           Button(action: {
             var subtitlesUrl = self.episodeTranslationStreamingInfo.subtitlesUrl
 
-            // Используем прокси-сервер только если у ссылки на файл с субтитрами нет расширения
-            if let originalSubtitlesUrl = episodeTranslationStreamingInfo.subtitlesUrl,
-              originalSubtitlesUrl.pathExtension.isEmpty
-            {
+            if self.isForcedToUseExternalSubtitlesProxy() || self.preferSubtitlesProxy {
               subtitlesUrl = self.subtitlesProxyUrlGenerator.generate(translationId: self.translationId)
             }
 
@@ -161,14 +159,6 @@ private struct EpisodeTranslationsStreamingQualities: View {
         }
       } header: {
         Text("Качество видео")
-      } footer: {
-        if self.episodeTranslationStreamingInfo.subtitlesUrl != nil
-          && !self.selectedPlayer.supportsExternalSubtitlesPlayback
-        {
-          Text(
-            "⚠️ \(self.selectedPlayer.name) не поддерживает воспроизведение внешних субтитров, которые присутствуют в этом переводе."
-          )
-        }
       }
 
       Section {
@@ -178,10 +168,51 @@ private struct EpisodeTranslationsStreamingQualities: View {
           }
         }
         .pickerStyle(.navigationLink)
+
+        if self.translationUsesExternalSubtitles() && !self.isForcedToUseExternalSubtitlesProxy() {
+          Toggle(isOn: self.$preferSubtitlesProxy) {
+            Text("Прокси-сервер для внешних субтитров")
+          }
+        }
       } header: {
         Text("Настройки")
+      } footer: {
+        if self.translationUsesExternalSubtitles() {
+          if !self.selectedPlayer.supportsExternalSubtitlesPlayback {
+            Text(
+              "\(self.selectedPlayer.name) не поддерживает воспроизведение внешних субтитров, которые присутствуют в этом переводе."
+            )
+          }
+          else if self.isForcedToUseExternalSubtitlesProxy() {
+            Text("Для этого перевода внешние субтитры будут загружаться с сервера Ichime, а не с сервера Anime 365.")
+          }
+          else if !self.isForcedToUseExternalSubtitlesProxy() {
+            Text(
+              "Если внешние субтитры не отображаются в \(self.selectedPlayer.name), попробуйте включить прокси-сервер. В таком случае субтитры будут загружаться с сервера Ichime, а не с сервера Anime 365."
+            )
+          }
+        }
       }
     }
     .listStyle(.grouped)
+  }
+
+  private func translationUsesExternalSubtitles() -> Bool {
+    self.episodeTranslationStreamingInfo.subtitlesUrl != nil
+  }
+
+  private func isForcedToUseExternalSubtitlesProxy() -> Bool {
+    if !self.translationUsesExternalSubtitles() {
+      return false
+    }
+
+    // Используем прокси-сервер только если у ссылки на файл с субтитрами нет расширения
+    if let originalSubtitlesUrl = episodeTranslationStreamingInfo.subtitlesUrl,
+      originalSubtitlesUrl.pathExtension.isEmpty
+    {
+      return true
+    }
+
+    return false
   }
 }
