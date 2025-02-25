@@ -1,7 +1,6 @@
 import Anime365ApiClient
 import Foundation
 import JikanApiClient
-import ScraperAPI
 import ShikimoriApiClient
 
 struct ShowFull {
@@ -87,7 +86,7 @@ struct ShowFull {
     shikimoriBaseUrl: URL,
     jikanCharacterRoles: [JikanApiClient.CharacterRole],
     jikanStaffMembers: [JikanApiClient.StaffMember],
-    anime365Moments: [ScraperAPI.Types.Moment],
+    moments: [Moment],
     relatedShows: [GroupedRelatedShows]
   ) -> Self {
     let score = Float(anime365Series.myAnimeListScore) ?? 0
@@ -154,7 +153,7 @@ struct ShowFull {
       nextEpisodeReleasesAt: shikimoriAnime?.next_episode_at,
       characters: jikanCharacterRoles.map { .create(jikanCharacterRole: $0) },
       staffMembers: jikanStaffMembers.map { .create(jikanStaffMember: $0) },
-      moments: anime365Moments.map { .create(anime365Moment: $0) },
+      moments: moments,
       relatedShows: relatedShows
     )
   }

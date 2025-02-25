@@ -9,7 +9,8 @@ private class HomeViewModel {
       (
         ongoings: [ShowPreview],
         topScored: [ShowPreview],
-        nextSeason: [ShowPreviewShikimori]
+        nextSeason: [ShowPreviewShikimori],
+        moments: [Moment]
       )
     )
   }
@@ -55,6 +56,10 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 64) {
           if !sections.ongoings.isEmpty {
             OngoingsSection(preloadedShows: sections.ongoings)
+          }
+
+          if !sections.moments.isEmpty {
+            MomentsSection(preloadedMoments: sections.moments)
           }
 
           if !sections.nextSeason.isEmpty {

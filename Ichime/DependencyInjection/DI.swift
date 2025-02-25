@@ -90,7 +90,7 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowService(anime365ApiClient: $0, shikimoriApiClient: $1, jikanApiClient: $2, scraperApi: $3)
+      ShowService(anime365ApiClient: $0, shikimoriApiClient: $1, jikanApiClient: $2, momentsService: $3)
     }
 
     container.register {
@@ -112,7 +112,11 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      HomeService(showService: $0)
+      HomeService(showService: $0, momentService: $1)
+    }
+
+    container.register {
+      MomentService(scraperApi: $0)
     }
 
     if !container.makeGraph().checkIsValid() {

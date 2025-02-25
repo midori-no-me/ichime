@@ -185,7 +185,7 @@ private struct ShowDetails: View {
       }
 
       if !self.show.moments.isEmpty {
-        MomentsSection(moments: self.show.moments)
+        ShowMomentsSection(showId: self.show.id, preloadedMoments: self.show.moments)
       }
 
       if !self.show.characters.isEmpty {
@@ -800,26 +800,6 @@ private struct StaffMembersSection: View {
           ForEach(self.staffMembers) { staffMember in
             StaffMemberCard(staffMember: staffMember)
               .containerRelativeFrame(.horizontal, count: 6, span: 1, spacing: Self.SPACING)
-          }
-        }
-      }
-      .scrollClipDisabled()
-    }
-  }
-}
-
-private struct MomentsSection: View {
-  private static let SPACING: CGFloat = 64
-
-  let moments: [Moment]
-
-  var body: some View {
-    SectionWithCards(title: "Моменты") {
-      ScrollView(.horizontal) {
-        LazyHStack(alignment: .top, spacing: Self.SPACING) {
-          ForEach(self.moments) { moment in
-            MomentCard(moment: moment)
-              .containerRelativeFrame(.horizontal, count: 4, span: 1, spacing: Self.SPACING)
           }
         }
       }

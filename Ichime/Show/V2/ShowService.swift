@@ -1,7 +1,6 @@
 import Anime365ApiClient
 import Foundation
 import JikanApiClient
-import ScraperAPI
 import ShikimoriApiClient
 
 enum ShowNotFoundError: Error {
@@ -12,18 +11,18 @@ struct ShowService {
   private let anime365ApiClient: Anime365ApiClient.ApiClient
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
   private let jikanApiClient: JikanApiClient.ApiClient
-  private let scraperApi: ScraperAPI.APIClient
+  private let momentsService: MomentService
 
   init(
     anime365ApiClient: Anime365ApiClient.ApiClient,
     shikimoriApiClient: ShikimoriApiClient.ApiClient,
     jikanApiClient: JikanApiClient.ApiClient,
-    scraperApi: ScraperAPI.APIClient
+    momentsService: MomentService
   ) {
     self.anime365ApiClient = anime365ApiClient
     self.shikimoriApiClient = shikimoriApiClient
     self.jikanApiClient = jikanApiClient
-    self.scraperApi = scraperApi
+    self.momentsService = momentsService
   }
 
   func getShowIdByMyAnimeListId(_ myAnimeListId: Int) async throws -> Int {
@@ -57,9 +56,7 @@ struct ShowService {
       seriesId: showId
     )
 
-    async let anime365MomentsFuture = self.scraperApi.sendAPIRequest(
-      ScraperAPI.Request.GetMomentsByShow(showId: showId, page: 0)
-    )
+    async let momentsFuture = self.momentsService.getShowMoments(showId: showId, page: 1)
 
     async let shikimoriAnimeFuture = self.shikimoriApiClient.getAnimeById(
       animeId: anime365Series.myAnimeListId
@@ -81,7 +78,7 @@ struct ShowService {
       id: anime365Series.myAnimeListId
     )
 
-    let anime365Moments = (try? await anime365MomentsFuture) ?? []
+    let moments = (try? await momentsFuture) ?? []
     let shikimoriAnime = try? await shikimoriAnimeFuture
     let shikimoriScreenshots = (try? await shikimoriScreenshotsFuture) ?? []
     let shikimoriRelations = (try? await shikimoriRelationsFuture) ?? []
@@ -95,7 +92,7 @@ struct ShowService {
       shikimoriBaseUrl: self.shikimoriApiClient.baseUrl,
       jikanCharacterRoles: jikanCharacters,
       jikanStaffMembers: jikanStaffMembers,
-      anime365Moments: anime365Moments,
+      moments: moments,
       relatedShows: self.convertShikimoriRelationsToGroupedRelatedShows(shikimoriRelations)
     )
   }

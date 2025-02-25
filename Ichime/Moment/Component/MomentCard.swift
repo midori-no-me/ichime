@@ -4,6 +4,7 @@ import ThirdPartyVideoPlayer
 
 struct MomentCard: View {
   let moment: Moment
+  let displayShowTitle: Bool
 
   private let scraperApi: ScraperAPI.APIClient = ApplicationDependency.container.resolve()
 
@@ -81,8 +82,17 @@ struct MomentCard: View {
         .hoverEffect(.highlight)
       }
 
-      Text(self.moment.title)
-        .lineLimit(1)
+      VStack {
+        Text(self.moment.title)
+          .lineLimit(1)
+
+        if self.displayShowTitle {
+          Text(self.moment.showTitle)
+            .foregroundStyle(.secondary)
+            .lineLimit(2, reservesSpace: true)
+            .multilineTextAlignment(.center)
+        }
+      }
     }
     .buttonStyle(.borderless)
     .alert("Ошибка при открытии момента", isPresented: self.$showErrorAlert, presenting: self.error) { _ in
