@@ -38,7 +38,6 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
         }
       }
       .onChange(of: self.lastWatchedTranslationId) {
-        print(self.lastWatchedTranslationId)
         if self.lastWatchedTranslationId != 0 {
           Task {
             do {
