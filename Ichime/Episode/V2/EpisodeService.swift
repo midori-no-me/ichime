@@ -71,7 +71,7 @@ struct EpisodeService {
     showId: Int,
     myAnimeListId: Int,
     page: Int
-  ) async throws -> [EpisodeInfo] {
+  ) async throws -> (episodes: [EpisodeInfo], hasMore: Bool) {
     async let anime365EpisodesFuture = self.anime365ApiClient.listEpisodes(
       seriesId: showId,
       limit: 100,
@@ -86,10 +86,12 @@ struct EpisodeService {
     let anime365Episodes = try await anime365EpisodesFuture
     let jikanEpisodes = (try? await jikanEpisodesFuture) ?? []
 
-    return Self.mapAnime365EpisodesToJikanEpisodes(
+    let episodes = Self.mapAnime365EpisodesToJikanEpisodes(
       anime365EpisodePreviews: anime365Episodes,
       jikanEpisodes: jikanEpisodes
     )
+
+    return (episodes: episodes, hasMore: episodes.count >= 100)
   }
 
   func getEpisodeTranslations(

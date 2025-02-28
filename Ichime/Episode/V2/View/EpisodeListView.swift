@@ -32,7 +32,7 @@ private class EpisodeListViewModel {
     self.state = .loading
 
     do {
-      let episodes = try await self.episodeService.getEpisodeList(
+      let (episodes, hasMore) = try await self.episodeService.getEpisodeList(
         showId: showId,
         myAnimeListId: myAnimeListId,
         page: self.page
@@ -42,7 +42,7 @@ private class EpisodeListViewModel {
         self.state = .loadedButEmpty
       }
       else {
-        self.stopLazyLoading = false
+        self.stopLazyLoading = !hasMore
         self.page += 1
         self.episodes += episodes
         self.state = .loaded(self.episodes)
@@ -62,18 +62,13 @@ private class EpisodeListViewModel {
     }
 
     do {
-      let episodes = try await self.episodeService.getEpisodeList(
+      let (episodes, hasMore) = try await self.episodeService.getEpisodeList(
         showId: showId,
         myAnimeListId: myAnimeListId,
         page: self.page
       )
 
-      if episodes.last?.anime365Id == self.episodes.last?.anime365Id {
-        self.stopLazyLoading = true
-        return
-      }
-
-      self.stopLazyLoading = false
+      self.stopLazyLoading = !hasMore
       self.page += 1
       self.episodes += episodes
       self.state = .loaded(self.episodes)
