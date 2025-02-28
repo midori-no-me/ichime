@@ -50,6 +50,8 @@ struct EpisodeService {
 
       if let anime365EpisodeNumber {
         jikanEpisode = jikanEpisodeNumberToEpisode[anime365EpisodeNumber]
+
+        jikanEpisodeNumberToEpisode.removeValue(forKey: anime365EpisodeNumber)
       }
 
       let episodeInfo = EpisodeInfo.createValid(
