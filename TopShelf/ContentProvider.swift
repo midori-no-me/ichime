@@ -48,7 +48,15 @@ class ContentProvider: TVTopShelfContentProvider {
       let currentlyWatchingSection = await currentlyWatchingSectionFuture
       let calendarSections = await calendarSectionsFuture
 
-      let content = TVTopShelfSectionedContent(sections: [currentlyWatchingSection] + calendarSections)
+      var sections: [TVTopShelfItemCollection<TVTopShelfSectionedItem>] = []
+
+      if !currentlyWatchingSection.items.isEmpty {
+        sections.append(currentlyWatchingSection)
+      }
+
+      sections += calendarSections
+
+      let content = TVTopShelfSectionedContent(sections: sections)
 
       completionHandler(content)
     }
