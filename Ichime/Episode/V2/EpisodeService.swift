@@ -68,21 +68,26 @@ struct EpisodeService {
   }
 
   func getEpisodeList(
-    showId: Int
+    showId: Int,
+    myAnimeListId: Int,
+    page: Int
   ) async throws -> [EpisodeInfo] {
-    let anime365Series = try await anime365ApiClient.getSeries(
-      seriesId: showId
+    async let anime365EpisodesFuture = self.anime365ApiClient.listEpisodes(
+      seriesId: showId,
+      limit: 100,
+      offset: 100 * (page - 1)
     )
 
-    var jikanEpisodes: [JikanApiClient.Episode] = []
+    async let jikanEpisodesFuture = self.jikanApiClient.getAnimeEpisodes(
+      id: myAnimeListId,
+      page: page
+    )
 
-    // Jikan возвращает только 100 эпизодов за раз, поэтому пока не поддерживаем пагинацию
-    if anime365Series.episodes?.count ?? 0 <= 100 {
-      jikanEpisodes = (try? await self.jikanApiClient.getAnimeEpisodes(id: anime365Series.myAnimeListId)) ?? []
-    }
+    let anime365Episodes = try await anime365EpisodesFuture
+    let jikanEpisodes = (try? await jikanEpisodesFuture) ?? []
 
     return Self.mapAnime365EpisodesToJikanEpisodes(
-      anime365EpisodePreviews: anime365Series.episodes ?? [],
+      anime365EpisodePreviews: anime365Episodes,
       jikanEpisodes: jikanEpisodes
     )
   }

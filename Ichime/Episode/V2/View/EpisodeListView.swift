@@ -13,6 +13,10 @@ private class EpisodeListViewModel {
 
   private(set) var state: State = .idle
 
+  private var episodes: [EpisodeInfo] = []
+  private var page: Int = 1
+  private var stopLazyLoading: Bool = false
+
   private let episodeService: EpisodeService
 
   init(
@@ -21,30 +25,69 @@ private class EpisodeListViewModel {
     self.episodeService = episodeService
   }
 
-  func performInitialLoad(showId: Int) async {
+  func performInitialLoading(
+    showId: Int,
+    myAnimeListId: Int
+  ) async {
     self.state = .loading
 
     do {
-      let episodeInfos = try await episodeService.getEpisodeList(
-        showId: showId
+      let episodes = try await self.episodeService.getEpisodeList(
+        showId: showId,
+        myAnimeListId: myAnimeListId,
+        page: self.page
       )
 
-      if episodeInfos.isEmpty {
+      if episodes.isEmpty {
         self.state = .loadedButEmpty
       }
       else {
-        self.state = .loaded(episodeInfos)
+        self.stopLazyLoading = false
+        self.page += 1
+        self.episodes += episodes
+        self.state = .loaded(self.episodes)
       }
     }
     catch {
       self.state = .loadingFailed(error)
     }
   }
+
+  func performLazyLoading(
+    showId: Int,
+    myAnimeListId: Int
+  ) async {
+    if self.stopLazyLoading {
+      return
+    }
+
+    do {
+      let episodes = try await self.episodeService.getEpisodeList(
+        showId: showId,
+        myAnimeListId: myAnimeListId,
+        page: self.page
+      )
+
+      if episodes.last?.anime365Id == self.episodes.last?.anime365Id {
+        self.stopLazyLoading = true
+        return
+      }
+
+      self.stopLazyLoading = false
+      self.page += 1
+      self.episodes += episodes
+      self.state = .loaded(self.episodes)
+    }
+    catch {
+      self.stopLazyLoading = true
+    }
+  }
 }
 
 struct EpisodeListView: View {
-  var showId: Int
-  var nextEpisodeReleasesAt: Date?
+  let showId: Int
+  let myAnimeListId: Int
+  let nextEpisodeReleasesAt: Date?
 
   @State private var viewModel: EpisodeListViewModel = .init()
 
@@ -53,8 +96,9 @@ struct EpisodeListView: View {
     case .idle:
       Color.clear.onAppear {
         Task {
-          await self.viewModel.performInitialLoad(
-            showId: self.showId
+          await self.viewModel.performInitialLoading(
+            showId: self.showId,
+            myAnimeListId: self.myAnimeListId
           )
         }
       }
@@ -72,8 +116,9 @@ struct EpisodeListView: View {
       } actions: {
         Button(action: {
           Task {
-            await self.viewModel.performInitialLoad(
-              showId: self.showId
+            await self.viewModel.performInitialLoading(
+              showId: self.showId,
+              myAnimeListId: self.myAnimeListId
             )
           }
         }) {
@@ -90,8 +135,9 @@ struct EpisodeListView: View {
       } actions: {
         Button(action: {
           Task {
-            await self.viewModel.performInitialLoad(
-              showId: self.showId
+            await self.viewModel.performInitialLoading(
+              showId: self.showId,
+              myAnimeListId: self.myAnimeListId
             )
           }
         }) {
@@ -101,35 +147,31 @@ struct EpisodeListView: View {
       .centeredContentFix()
 
     case let .loaded(episodeInfos):
-      EpisodePreviews(
-        episodeInfos: episodeInfos,
-        nextEpisodeReleasesAt: self.nextEpisodeReleasesAt
-      )
-    }
-  }
-}
-
-private struct EpisodePreviews: View {
-  let episodeInfos: [EpisodeInfo]
-  let nextEpisodeReleasesAt: Date?
-
-  var body: some View {
-    List {
-      Section {
-        ForEach(self.episodeInfos, id: \.anime365Id) { episodeInfo in
-          EpisodePreviewRow(episodeInfo: episodeInfo)
-        }
-      } header: {
-        Text("Серии")
-      } footer: {
-        if let nextEpisodeReleasesAt {
-          Text(
-            "Следующая серия: \(formatRelativeDateWithWeekdayNameAndDateAndTime(nextEpisodeReleasesAt).lowercased())."
-          )
+      List {
+        Section {
+          ForEach(episodeInfos, id: \.anime365Id) { episodeInfo in
+            EpisodePreviewRow(episodeInfo: episodeInfo)
+              .task {
+                if episodeInfo.anime365Id == episodeInfos.last?.anime365Id {
+                  await self.viewModel.performLazyLoading(
+                    showId: self.showId,
+                    myAnimeListId: self.myAnimeListId
+                  )
+                }
+              }
+          }
+        } header: {
+          Text("Серии")
+        } footer: {
+          if let nextEpisodeReleasesAt {
+            Text(
+              "Следующая серия: \(formatRelativeDateWithWeekdayNameAndDateAndTime(nextEpisodeReleasesAt).lowercased())."
+            )
+          }
         }
       }
+      .listStyle(.grouped)
     }
-    .listStyle(.grouped)
   }
 }
 

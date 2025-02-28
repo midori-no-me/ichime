@@ -335,7 +335,11 @@ private struct ShowActionButtons: View {
       HStack(alignment: .center, spacing: self.SPACING_BETWEEN_BUTTONS) {
         if self.show.hasEpisodes {
           NavigationLink(
-            destination: EpisodeListView(showId: self.show.id, nextEpisodeReleasesAt: self.show.nextEpisodeReleasesAt)
+            destination: EpisodeListView(
+              showId: self.show.id,
+              myAnimeListId: self.show.myAnimeListId,
+              nextEpisodeReleasesAt: self.show.nextEpisodeReleasesAt
+            )
           ) {
             Label(
               "Смотреть",
