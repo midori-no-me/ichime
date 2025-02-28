@@ -4,7 +4,7 @@ import SwiftUI
 private class TopScoredSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 
-  public var shows: [ShowPreview] = []
+  var shows: [ShowPreview] = []
 
   private var offset: Int = 0
   private var stopLazyLoading: Bool = false

@@ -4,7 +4,7 @@ import SwiftUI
 private class NextSeasonSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 
-  public var shows: [ShowPreviewShikimori] = []
+  var shows: [ShowPreviewShikimori] = []
 
   private var page: Int = 1
   private var stopLazyLoading: Bool = false
