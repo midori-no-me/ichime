@@ -15,7 +15,8 @@ struct EpisodeInfo {
 
   static func createValid(
     anime365EpisodePreview: Anime365ApiClient.Episode,
-    jikanEpisode: JikanApiClient.Episode?
+    jikanEpisode: JikanApiClient.Episode?,
+    totalEpisodes: Int?
   ) -> Self? {
     if anime365EpisodePreview.isActive != 1 || anime365EpisodePreview.isFirstUploaded != 1 {
       return nil
@@ -26,6 +27,11 @@ struct EpisodeInfo {
     }
 
     let anime365EpisodeNumber = Int(anime365EpisodePreview.episodeInt)
+
+    // Если номер эпизода больше, чем общее количество эпизодов, заявленных в тайтле, то считаем такой эпизод не валидным
+    if let anime365EpisodeNumber, let totalEpisodes, anime365EpisodeNumber > totalEpisodes {
+      return nil
+    }
 
     let isTrailer = anime365EpisodePreview.episodeType == "preview"
 

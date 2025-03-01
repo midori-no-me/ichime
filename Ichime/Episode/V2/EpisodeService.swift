@@ -33,7 +33,8 @@ struct EpisodeService {
 
   private static func mapAnime365EpisodesToJikanEpisodes(
     anime365EpisodePreviews: [Anime365ApiClient.Episode],
-    jikanEpisodes: [JikanApiClient.Episode]
+    jikanEpisodes: [JikanApiClient.Episode],
+    totalEpisodes: Int? = nil
   ) -> [EpisodeInfo] {
     var jikanEpisodeNumberToEpisode: [Int: JikanApiClient.Episode] = [:]
 
@@ -56,7 +57,8 @@ struct EpisodeService {
 
       let episodeInfo = EpisodeInfo.createValid(
         anime365EpisodePreview: anime365EpisodePreview,
-        jikanEpisode: jikanEpisode
+        jikanEpisode: jikanEpisode,
+        totalEpisodes: totalEpisodes
       )
 
       guard let episodeInfo else {
@@ -72,7 +74,8 @@ struct EpisodeService {
   func getEpisodeList(
     showId: Int,
     myAnimeListId: Int,
-    page: Int
+    page: Int,
+    totalEpisodes: Int?
   ) async throws -> (episodes: [EpisodeInfo], hasMore: Bool) {
     async let anime365EpisodesFuture = self.anime365ApiClient.listEpisodes(
       seriesId: showId,
@@ -90,7 +93,8 @@ struct EpisodeService {
 
     let episodes = Self.mapAnime365EpisodesToJikanEpisodes(
       anime365EpisodePreviews: anime365Episodes,
-      jikanEpisodes: jikanEpisodes
+      jikanEpisodes: jikanEpisodes,
+      totalEpisodes: totalEpisodes
     )
 
     return (episodes: episodes, hasMore: episodes.count >= 100)

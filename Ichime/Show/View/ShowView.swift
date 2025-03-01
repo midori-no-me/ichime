@@ -338,6 +338,7 @@ private struct ShowActionButtons: View {
             destination: EpisodeListView(
               showId: self.show.id,
               myAnimeListId: self.show.myAnimeListId,
+              totalEpisodes: self.show.numberOfEpisodes,
               nextEpisodeReleasesAt: self.show.nextEpisodeReleasesAt
             )
           ) {

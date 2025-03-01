@@ -27,7 +27,8 @@ private class EpisodeListViewModel {
 
   func performInitialLoading(
     showId: Int,
-    myAnimeListId: Int
+    myAnimeListId: Int,
+    totalEpisodes: Int?
   ) async {
     self.state = .loading
 
@@ -35,7 +36,8 @@ private class EpisodeListViewModel {
       let (episodes, hasMore) = try await self.episodeService.getEpisodeList(
         showId: showId,
         myAnimeListId: myAnimeListId,
-        page: self.page
+        page: self.page,
+        totalEpisodes: totalEpisodes
       )
 
       if episodes.isEmpty {
@@ -55,7 +57,8 @@ private class EpisodeListViewModel {
 
   func performLazyLoading(
     showId: Int,
-    myAnimeListId: Int
+    myAnimeListId: Int,
+    totalEpisodes: Int?
   ) async {
     if self.stopLazyLoading {
       return
@@ -65,7 +68,8 @@ private class EpisodeListViewModel {
       let (episodes, hasMore) = try await self.episodeService.getEpisodeList(
         showId: showId,
         myAnimeListId: myAnimeListId,
-        page: self.page
+        page: self.page,
+        totalEpisodes: totalEpisodes
       )
 
       self.stopLazyLoading = !hasMore
@@ -82,6 +86,7 @@ private class EpisodeListViewModel {
 struct EpisodeListView: View {
   let showId: Int
   let myAnimeListId: Int
+  let totalEpisodes: Int?
   let nextEpisodeReleasesAt: Date?
 
   @State private var viewModel: EpisodeListViewModel = .init()
@@ -93,7 +98,8 @@ struct EpisodeListView: View {
         Task {
           await self.viewModel.performInitialLoading(
             showId: self.showId,
-            myAnimeListId: self.myAnimeListId
+            myAnimeListId: self.myAnimeListId,
+            totalEpisodes: self.totalEpisodes
           )
         }
       }
@@ -113,7 +119,8 @@ struct EpisodeListView: View {
           Task {
             await self.viewModel.performInitialLoading(
               showId: self.showId,
-              myAnimeListId: self.myAnimeListId
+              myAnimeListId: self.myAnimeListId,
+              totalEpisodes: self.totalEpisodes
             )
           }
         }) {
@@ -132,7 +139,8 @@ struct EpisodeListView: View {
           Task {
             await self.viewModel.performInitialLoading(
               showId: self.showId,
-              myAnimeListId: self.myAnimeListId
+              myAnimeListId: self.myAnimeListId,
+              totalEpisodes: self.totalEpisodes
             )
           }
         }) {
@@ -150,7 +158,8 @@ struct EpisodeListView: View {
                 if episodeInfo.anime365Id == episodeInfos.last?.anime365Id {
                   await self.viewModel.performLazyLoading(
                     showId: self.showId,
-                    myAnimeListId: self.myAnimeListId
+                    myAnimeListId: self.myAnimeListId,
+                    totalEpisodes: self.totalEpisodes
                   )
                 }
               }

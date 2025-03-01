@@ -167,7 +167,8 @@ struct ShowFull {
     for anime365Episode in anime365Episodes {
       let episodeInfo = EpisodeInfo.createValid(
         anime365EpisodePreview: anime365Episode,
-        jikanEpisode: nil
+        jikanEpisode: nil,
+        totalEpisodes: totalEpisodes
       )
 
       guard let episodeInfo else {
@@ -175,10 +176,6 @@ struct ShowFull {
       }
 
       guard let episodeNumber = episodeInfo.episodeNumber else {
-        continue
-      }
-
-      if let totalEpisodes, episodeNumber > totalEpisodes {
         continue
       }
 
@@ -203,20 +200,13 @@ struct ShowFull {
     for anime365Episode in anime365Episodes {
       let episodeInfo = EpisodeInfo.createValid(
         anime365EpisodePreview: anime365Episode,
-        jikanEpisode: nil
+        jikanEpisode: nil,
+        totalEpisodes: totalEpisodes
       )
 
-      guard let episodeInfo else {
-        continue
+      if episodeInfo != nil {
+        return true
       }
-
-      if let episodeNumber = episodeInfo.episodeNumber, let totalEpisodes {
-        if episodeNumber > totalEpisodes {
-          continue
-        }
-      }
-
-      return true
     }
 
     return false
