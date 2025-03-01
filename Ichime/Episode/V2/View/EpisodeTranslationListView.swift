@@ -8,7 +8,7 @@ private class EpisodeTranslationListViewModel {
     case loading
     case loadingFailed(Error)
     case loadedButEmpty
-    case loaded([EpisodeTranslationGroup])
+    case loaded(EpisodeInfo?, [EpisodeTranslationGroup])
   }
 
   private(set) var state: State = .idle
@@ -28,7 +28,7 @@ private class EpisodeTranslationListViewModel {
     self.state = .loading
 
     do {
-      let episodeTranslationInfos = try await episodeService.getEpisodeTranslations(
+      let (episode, episodeTranslationInfos) = try await episodeService.getEpisodeTranslations(
         episodeId: episodeId
       )
 
@@ -41,7 +41,7 @@ private class EpisodeTranslationListViewModel {
         self.state = .loadedButEmpty
       }
       else {
-        self.state = .loaded(episodeTranslationGroups)
+        self.state = .loaded(episode, episodeTranslationGroups)
       }
     }
     catch {
@@ -113,10 +113,21 @@ struct EpisodeTranslationListView: View {
         }
         .centeredContentFix()
 
-      case let .loaded(episodeTranslationGroups):
-        EpisodeTranslations(
-          episodeTranslationGroups: episodeTranslationGroups
-        )
+      case let .loaded(episode, episodeTranslationGroups):
+        List {
+          if let episode {
+            EpisodeDetailsRow(episode: episode)
+          }
+
+          ForEach(episodeTranslationGroups, id: \.groupType) { episodeTranslationGroup in
+            Section(header: Text(episodeTranslationGroup.groupType.title)) {
+              ForEach(episodeTranslationGroup.episodeTranslationInfos) { episodeTranslationInfo in
+                EpisodeTranslationRow(episodeTranslationInfo: episodeTranslationInfo)
+              }
+            }
+          }
+        }
+        .listStyle(.grouped)
       }
     }
     .onChange(of: self.hiddenTranslationsPreference.getPreference()) {
@@ -132,20 +143,37 @@ struct EpisodeTranslationListView: View {
   }
 }
 
-private struct EpisodeTranslations: View {
-  let episodeTranslationGroups: [EpisodeTranslationGroup]
+private struct EpisodeDetailsRow: View {
+  let episode: EpisodeInfo
 
   var body: some View {
-    List {
-      ForEach(self.episodeTranslationGroups, id: \.groupType) { episodeTranslationGroup in
-        Section(header: Text(episodeTranslationGroup.groupType.title)) {
-          ForEach(episodeTranslationGroup.episodeTranslationInfos) { episodeTranslationInfo in
-            EpisodeTranslationRow(episodeTranslationInfo: episodeTranslationInfo)
-          }
-        }
+    Section {
+      Text(self.formatEpisodeTitle())
+
+      if self.episode.isFiller {
+        Text("Филлер")
+      }
+
+      if self.episode.isRecap {
+        Text("Рекап")
+      }
+    } header: {
+      Text("О серии")
+    } footer: {
+      if let synopsis = episode.synopsis {
+        Text(synopsis)
       }
     }
-    .listStyle(.grouped)
+  }
+
+  private func formatEpisodeTitle() -> String {
+    var title = self.episode.anime365Title
+
+    if let officialTitle = episode.officialTitle {
+      title += ": \(officialTitle)"
+    }
+
+    return title
   }
 }
 

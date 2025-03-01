@@ -12,6 +12,7 @@ struct EpisodeInfo {
   let isFiller: Bool
   let isRecap: Bool
   let uploadedAt: Date
+  let synopsis: String?
 
   static func createValid(
     anime365EpisodePreview: Anime365ApiClient.Episode,
@@ -40,13 +41,16 @@ struct EpisodeInfo {
     var myAnimeListScore: Float? = nil
     var isFiller: Bool = false
     var isRecap: Bool = false
+    var synopsis: String? = nil
 
     // Если эпизод по каким-то признакам кажется не частью тайтла, а, допустим, трейлером или спешлом (с дробной серией),
     // то информацию из Jikan об этом эпизоде мы игнорируем
     let isNonStandardEpisodeUploadedToAnime365 = anime365EpisodeNumber == nil || isTrailer
 
     if !isNonStandardEpisodeUploadedToAnime365 {
-      title = jikanEpisode?.title
+      if let officialTitle = jikanEpisode?.title, !officialTitle.isEmpty {
+        title = officialTitle
+      }
 
       officiallyAiredAt = jikanEpisode?.aired
 
@@ -65,6 +69,8 @@ struct EpisodeInfo {
       if let recap = jikanEpisode?.recap {
         isRecap = recap
       }
+
+      synopsis = jikanEpisode?.synopsis
     }
 
     return Self(
@@ -76,7 +82,8 @@ struct EpisodeInfo {
       myAnimeListScore: myAnimeListScore,
       isFiller: isFiller,
       isRecap: isRecap,
-      uploadedAt: anime365EpisodePreview.firstUploadedDateTime
+      uploadedAt: anime365EpisodePreview.firstUploadedDateTime,
+      synopsis: synopsis
     )
   }
 }
