@@ -28,12 +28,19 @@ struct RawShowCard: View {
             .scaledToFit()
 
         case .failure:
-          ImagePlaceholder()
+          RoundedRectangle(cornerRadius: 16)
+            .foregroundStyle(.secondary)
+            .overlay {
+              Image(systemName: "photo")
+                .font(.title)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            }
 
         @unknown default:
           Color.clear
         }
       }
+      .hoverEffect(.highlight)
       .frame(
         maxWidth: .infinity,
         maxHeight: .infinity,
@@ -62,14 +69,6 @@ struct RawShowCard: View {
       .frame(maxWidth: .infinity, alignment: .leading)
       .padding(.vertical)
     }
-  }
-}
-
-private struct ImagePlaceholder: View {
-  var body: some View {
-    Image(systemName: "photo")
-      .resizable()
-      .aspectRatio(contentMode: .fit)
   }
 }
 

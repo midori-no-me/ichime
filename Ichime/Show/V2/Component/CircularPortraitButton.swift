@@ -22,7 +22,7 @@ struct CircularPortraitButton<Label>: View where Label: View {
   var body: some View {
     Button(action: self.action) {
       Circle()
-        .foregroundStyle(.regularMaterial)
+        .foregroundStyle(.secondary)
         .overlay(
           AsyncImage(
             url: self.imageUrl,
@@ -57,7 +57,6 @@ struct CircularPortraitButton<Label>: View where Label: View {
 private struct PortraitNotLoadedPlaceholder: View {
   var body: some View {
     Image(systemName: "person.fill")
-      .foregroundStyle(.secondary)
       .font(.title)
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
   }
