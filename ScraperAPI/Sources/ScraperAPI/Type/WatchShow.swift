@@ -24,8 +24,6 @@ extension ScraperAPI.Types {
         throw ScraperAPI.APIClientError.parseError
       }
 
-      let episode = Episode(id: episodeID, episodeText: episodeNumberText)
-
       guard let ruName = try Self.extractNameFromHTML(from: htmlElement.select("h5.line-1 a").first()) else {
         throw ScraperAPI.APIClientError.parseError
       }
