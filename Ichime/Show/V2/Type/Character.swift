@@ -33,7 +33,8 @@ struct Character: Identifiable {
         .init(
           id: $0.person.mal_id,
           name: $0.person.name,
-          image: $0.person.images.jpg.image_url,
+          image: ($0.person.images.jpg.image_url?.path().contains("questionmark") ?? true)
+            ? nil : $0.person.images.jpg.image_url,
           language: $0.language
         )
       }
