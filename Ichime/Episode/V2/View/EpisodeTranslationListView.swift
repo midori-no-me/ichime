@@ -125,10 +125,6 @@ struct EpisodeTranslationListView: View {
 
       case let .loaded(episode, episodeTranslationGroups):
         List {
-          if let episode {
-            EpisodeDetailsRow(episode: episode)
-          }
-
           ForEach(episodeTranslationGroups, id: \.groupType) { episodeTranslationGroup in
             Section(header: Text(episodeTranslationGroup.groupType.title)) {
               ForEach(episodeTranslationGroup.episodeTranslationInfos) { episodeTranslationInfo in
@@ -138,6 +134,13 @@ struct EpisodeTranslationListView: View {
           }
         }
         .listStyle(.grouped)
+        .safeAreaPadding(.leading, 700)
+        .overlay(alignment: .topLeading) {
+          if let episode {
+            EpisodeDetails(episode: episode)
+              .frame(width: 700 - 64)
+          }
+        }
       }
     }
     .onChange(of: self.hiddenTranslationsPreference.getPreference()) {
@@ -153,37 +156,49 @@ struct EpisodeTranslationListView: View {
   }
 }
 
-private struct EpisodeDetailsRow: View {
+private struct EpisodeDetails: View {
   let episode: EpisodeInfo
 
   var body: some View {
-    Section {
-      Text(self.formatEpisodeTitle())
+    VStack(alignment: .leading, spacing: 32) {
+      Group {
+        VStack {
+          Group {
+            Text(self.episode.anime365Title)
+              .font(.title2)
 
-      if self.episode.isFiller {
-        Text("Филлер")
-      }
+            if let officialTitle = episode.officialTitle {
+              Text(officialTitle)
+                .font(.title3)
+                .foregroundStyle(.secondary)
+            }
+          }
+          .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
 
-      if self.episode.isRecap {
-        Text("Рекап")
+        if let duration = self.episode.duration {
+          Label(duration.formatted(.units(width: .narrow)), systemImage: "clock")
+        }
+
+        if self.episode.isFiller {
+          Label("Филлер", systemImage: "info.circle")
+        }
+
+        if self.episode.isRecap {
+          Label("Рекап", systemImage: "repeat.circle")
+        }
+
+        if let synopsis = episode.synopsis {
+          Text(synopsis)
+        }
+
+        if let officiallyAiredAt = episode.officiallyAiredAt {
+          Text(formatRelativeDate(officiallyAiredAt))
+        }
       }
-    } header: {
-      Text("О серии")
-    } footer: {
-      if let synopsis = episode.synopsis {
-        Text(synopsis)
-      }
+      .frame(maxWidth: .infinity, alignment: .leading)
     }
-  }
-
-  private func formatEpisodeTitle() -> String {
-    var title = self.episode.anime365Title
-
-    if let officialTitle = episode.officialTitle {
-      title += ": \(officialTitle)"
-    }
-
-    return title
   }
 }
 

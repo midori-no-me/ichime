@@ -8,4 +8,5 @@ public struct Episode: Decodable {
   public let filler: Bool
   public let recap: Bool
   public let synopsis: String?
+  public let duration: Int?
 }
