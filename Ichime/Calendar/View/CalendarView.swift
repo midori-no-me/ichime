@@ -10,9 +10,19 @@ private class CalendarViewModel {
     case loaded([GroupedShowsFromCalendar])
   }
 
-  private(set) var state: State = .idle
-
+  private var _state: State = .idle
   private let schedule: ShowReleaseSchedule
+
+  private(set) var state: State {
+    get {
+      self._state
+    }
+    set {
+      withAnimation {
+        self._state = newValue
+      }
+    }
+  }
 
   init(
     schedule: ShowReleaseSchedule = ApplicationDependency.container.resolve()

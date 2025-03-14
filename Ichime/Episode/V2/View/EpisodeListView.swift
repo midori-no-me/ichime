@@ -11,13 +11,23 @@ private class EpisodeListViewModel {
     case loaded([EpisodeInfo])
   }
 
-  private(set) var state: State = .idle
-
+  private var _state: State = .idle
   private var episodes: [EpisodeInfo] = []
   private var page: Int = 1
   private var stopLazyLoading: Bool = false
 
   private let episodeService: EpisodeService
+
+  private(set) var state: State {
+    get {
+      self._state
+    }
+    set {
+      withAnimation {
+        self._state = newValue
+      }
+    }
+  }
 
   init(
     episodeService: EpisodeService = ApplicationDependency.container.resolve()

@@ -12,10 +12,20 @@ private class MyListsSelectorViewModel {
     case needSubscribe
   }
 
-  private(set) var state: State = .idle
-
+  private var _state: State = .idle
   private let userManager: UserManager
   private let userAnimeListCache: UserAnimeListCache
+
+  private(set) var state: State {
+    get {
+      self._state
+    }
+    set {
+      withAnimation {
+        self._state = newValue
+      }
+    }
+  }
 
   init(
     userManager: UserManager = ApplicationDependency.container.resolve(),

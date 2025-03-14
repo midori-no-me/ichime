@@ -11,13 +11,23 @@ private class CurrentlyWatchingViewModel {
     case loaded([EpisodeFromCurrentlyWatchingList])
   }
 
-  private(set) var state: State = .idle
-
+  private var _state: State = .idle
   private let currentlyWatchingService: CurrentlyWatchingService
 
   private var episodes: [EpisodeFromCurrentlyWatchingList] = []
   private var currentPage: Int = 1
   private var stopLazyLoading: Bool = false
+
+  private(set) var state: State {
+    get {
+      self._state
+    }
+    set {
+      withAnimation {
+        self._state = newValue
+      }
+    }
+  }
 
   init(
     currentlyWatchingService: CurrentlyWatchingService = ApplicationDependency.container.resolve()

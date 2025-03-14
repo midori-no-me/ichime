@@ -25,12 +25,22 @@ private class ShowViewModel {
     case loaded(ShowFull)
   }
 
-  private(set) var state: State = .idle
-
+  private var _state: State = .idle
   private var userRate: ScraperAPI.Types.UserRate?
   private let showService: ShowService
   private let scraperClient: ScraperAPI.APIClient
   private var showId: Int = 0
+
+  private(set) var state: State {
+    get {
+      self._state
+    }
+    set {
+      withAnimation {
+        self._state = newValue
+      }
+    }
+  }
 
   var showRateStatus: UserRateStatus {
     if let userRate {

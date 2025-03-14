@@ -12,10 +12,10 @@ private class SearchShowsViewModel {
 
   var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
 
-  private(set) var state: State = .idle
   var currentlyTypedSearchQuery = ""
   var isSearchPresented: Bool = false
 
+  private var _state: State = .idle
   private let client: Anime365Client
 
   private var lastPerformedSearchQuery = ""
@@ -24,6 +24,17 @@ private class SearchShowsViewModel {
   private var stopLazyLoading: Bool = false
 
   private let SHOWS_PER_PAGE = 20
+
+  private(set) var state: State {
+    get {
+      self._state
+    }
+    set {
+      withAnimation {
+        self._state = newValue
+      }
+    }
+  }
 
   init(client: Anime365Client = ApplicationDependency.container.resolve()) {
     self.client = client

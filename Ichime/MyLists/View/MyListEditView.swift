@@ -12,10 +12,20 @@ private class MyListEditViewModel {
     case formSended
   }
 
-  private(set) var state: State = .idle
-
+  private var _state: State = .idle
   private let client: ScraperAPI.APIClient
   private let userAnimeListManager: UserAnimeListManager
+
+  private(set) var state: State {
+    get {
+      self._state
+    }
+    set {
+      withAnimation {
+        self._state = newValue
+      }
+    }
+  }
 
   init(
     apiClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve(),

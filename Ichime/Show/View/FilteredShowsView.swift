@@ -12,11 +12,21 @@ private class FilteredShowsViewModel {
 
   private static let SHOWS_PER_PAGE = 20
 
-  private(set) var state: State = .idle
-
+  private var _state: State = .idle
   private var shows: [ShowPreview] = []
   private var offset: Int = 0
   private var stopLazyLoading: Bool = false
+
+  private(set) var state: State {
+    get {
+      self._state
+    }
+    set {
+      withAnimation {
+        self._state = newValue
+      }
+    }
+  }
 
   func performInitialLoading(
     fetchShows: (_ offset: Int, _ limit: Int) async throws -> [ShowPreview]

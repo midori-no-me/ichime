@@ -9,9 +9,19 @@ private class ShowByMyAnimeListIdViewModel {
     case loaded(Int)
   }
 
-  private(set) var state: State = .idle
-
+  private var _state: State = .idle
   private let showService: ShowService
+
+  private(set) var state: State {
+    get {
+      self._state
+    }
+    set {
+      withAnimation {
+        self._state = newValue
+      }
+    }
+  }
 
   init(
     showService: ShowService = ApplicationDependency.container.resolve()

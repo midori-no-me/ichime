@@ -11,9 +11,19 @@ private class EpisodeTranslationListViewModel {
     case loaded(EpisodeInfo?, [EpisodeTranslationGroup])
   }
 
-  private(set) var state: State = .idle
-
+  private var _state: State = .idle
   private let episodeService: EpisodeService
+
+  private(set) var state: State {
+    get {
+      self._state
+    }
+    set {
+      withAnimation {
+        self._state = newValue
+      }
+    }
+  }
 
   init(
     episodeService: EpisodeService = ApplicationDependency.container.resolve()

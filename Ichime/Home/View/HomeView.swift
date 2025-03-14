@@ -15,9 +15,19 @@ private class HomeViewModel {
     )
   }
 
-  private(set) var state: State = .idle
-
+  private var _state: State = .idle
   private let homeService: HomeService
+
+  private(set) var state: State {
+    get {
+      self._state
+    }
+    set {
+      withAnimation {
+        self._state = newValue
+      }
+    }
+  }
 
   init(
     homeService: HomeService = ApplicationDependency.container.resolve()
