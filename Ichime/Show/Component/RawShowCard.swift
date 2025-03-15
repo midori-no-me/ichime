@@ -29,7 +29,7 @@ struct RawShowCard: View {
 
         case .failure:
           RoundedRectangle(cornerRadius: 16)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(Color(UIColor.systemGray))
             .overlay {
               Image(systemName: "photo")
                 .font(.title)

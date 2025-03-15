@@ -49,7 +49,7 @@ struct ProfileView: View {
       .overlay(alignment: .topLeading) {
         VStack {
           Circle()
-            .foregroundStyle(.regularMaterial)
+            .foregroundStyle(Color(UIColor.systemGray))
             .overlay(
               AsyncImage(
                 url: user.avatarURL,

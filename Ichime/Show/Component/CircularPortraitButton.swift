@@ -22,7 +22,7 @@ struct CircularPortraitButton<Label>: View where Label: View {
   var body: some View {
     Button(action: self.action) {
       Circle()
-        .foregroundStyle(.secondary)
+        .foregroundStyle(Color(UIColor.systemGray))
         .overlay(
           AsyncImage(
             url: self.imageUrl,
