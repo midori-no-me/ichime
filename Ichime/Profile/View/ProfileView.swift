@@ -24,40 +24,6 @@ struct ProfileView: View {
     if case let .isAuth(user) = userManager.state {
       List {
         Section {
-          Label {
-            Text(user.username)
-              .font(.headline)
-              .fontWeight(.bold)
-              .padding()
-          } icon: {
-            Circle()
-              .foregroundStyle(.regularMaterial)
-              .overlay(
-                AsyncImage(
-                  url: user.avatarURL,
-                  transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
-                ) { phase in
-                  switch phase {
-                  case .empty:
-                    Color.clear
-
-                  case let .success(image):
-                    image
-                      .resizable()
-                      .scaledToFill()
-                  case .failure:
-                    Color.clear
-
-                  @unknown default:
-                    Color.clear
-                  }
-                },
-                alignment: .top
-              )
-              .clipShape(.circle)
-              .frame(width: 128, height: 128)
-          }
-
           Button("Выйти из аккаунта", role: .destructive) {
             self.userManager.dropAuth()
           }
@@ -79,6 +45,41 @@ struct ProfileView: View {
         }
       }
       .listStyle(.grouped)
+      .safeAreaPadding(.leading, 350)
+      .overlay(alignment: .topLeading) {
+        VStack {
+          Circle()
+            .foregroundStyle(.regularMaterial)
+            .overlay(
+              AsyncImage(
+                url: user.avatarURL,
+                transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
+              ) { phase in
+                switch phase {
+                case .empty:
+                  Color.clear
+
+                case let .success(image):
+                  image
+                    .resizable()
+                    .scaledToFill()
+                case .failure:
+                  Color.clear
+
+                @unknown default:
+                  Color.clear
+                }
+              },
+              alignment: .top
+            )
+            .clipShape(.circle)
+
+          Text(user.username)
+            .font(.headline)
+            .fontWeight(.bold)
+        }
+        .frame(width: 350 - 64)
+      }
     }
   }
 }
