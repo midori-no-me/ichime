@@ -75,7 +75,7 @@ targets:
       - path: Ichime/DependencyInjection/ServiceLocator.swift
       - path: Ichime/CurrentlyWatching/Type/EpisodeFromCurrentlyWatchingList.swift
       - path: Ichime/CurrentlyWatching/CurrentlyWatchingService.swift
-      - path: Ichime/Show/V2/Type/ShowName.swift
+      - path: Ichime/Show/Type/ShowName.swift
       - path: Ichime/Calendar/ShowReleaseSchedule.swift
       - path: Ichime/Calendar/Model/GroupedShowsFromCalendar.swift
       - path: Ichime/Calendar/Model/ShowFromCalendar.swift
