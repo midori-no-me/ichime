@@ -16,6 +16,7 @@ struct HomeService {
     ongoings: [ShowPreview],
     topScored: [ShowPreview],
     nextSeason: [ShowPreviewShikimori],
+    mostPopular: [ShowPreviewShikimori],
     moments: [Moment]
   ) {
     async let momentsFuture = self.momentService.getMoments(page: 1)
@@ -35,10 +36,16 @@ struct HomeService {
       limit: 10
     )
 
+    async let mostPopularFuture = self.showService.getMostPopular(
+      page: 0,
+      limit: 10
+    )
+
     return (
       ongoings: (try? await ongoingsFuture) ?? [],
       topScored: (try? await topScoredFuture) ?? [],
       nextSeason: (try? await nextSeasonFuture) ?? [],
+      mostPopular: (try? await mostPopularFuture) ?? [],
       moments: (try? await momentsFuture) ?? []
     )
   }

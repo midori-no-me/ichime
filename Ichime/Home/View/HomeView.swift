@@ -10,6 +10,7 @@ private class HomeViewModel {
         ongoings: [ShowPreview],
         topScored: [ShowPreview],
         nextSeason: [ShowPreviewShikimori],
+        mostPopular: [ShowPreviewShikimori],
         moments: [Moment]
       )
     )
@@ -78,6 +79,10 @@ struct HomeView: View {
 
           if !sections.topScored.isEmpty {
             TopScoredSection(preloadedShows: sections.topScored)
+          }
+
+          if !sections.mostPopular.isEmpty {
+            MostPopularSection(preloadedShows: sections.mostPopular)
           }
         }
       }

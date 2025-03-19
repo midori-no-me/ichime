@@ -125,6 +125,26 @@ struct ShowService {
     return apiResponse.map { .init(anime365Series: $0) }
   }
 
+  func getMostPopular(
+    page: Int,
+    limit: Int
+  ) async throws -> [ShowPreviewShikimori] {
+    let showSeasonService = ShowSeasonService()
+
+    let shikimoriAnimes = try await shikimoriApiClient.listAnimes(
+      page: page,
+      limit: limit,
+      order: "popularity"
+    )
+
+    return shikimoriAnimes.map {
+      .init(
+        anime: $0,
+        shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
+      )
+    }
+  }
+
   func getNextSeason(
     page: Int,
     limit: Int
