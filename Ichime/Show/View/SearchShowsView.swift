@@ -10,7 +10,9 @@ private class SearchShowsViewModel {
     case loaded([ShowPreview])
   }
 
-  var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
+  // Если рендерить пустой список Search Suggestions в .searchable на tvOS, то кнопка сабмита не появится для напечатанного текста.
+  // Поэтому в качестве костыля в массив предыдущих поисков добавляем один элемент.
+  var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? ["Frieren"]
 
   var currentlyTypedSearchQuery = ""
   var isSearchPresented: Bool = false
