@@ -129,8 +129,6 @@ struct ShowService {
     page: Int,
     limit: Int
   ) async throws -> [ShowPreviewShikimori] {
-    let showSeasonService = ShowSeasonService()
-
     let shikimoriAnimes = try await shikimoriApiClient.listAnimes(
       page: page,
       limit: limit,
