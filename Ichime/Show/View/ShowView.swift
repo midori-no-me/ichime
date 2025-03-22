@@ -576,6 +576,7 @@ private struct ShowStudiosAndDescriptions: View {
         }
       }
     }
+    .focusSection()
     .scrollClipDisabled()
   }
 }
@@ -842,6 +843,7 @@ private struct RelatedShowsSection: View {
         }
       }
     }
+    .focusSection()
     .scrollClipDisabled()
   }
 }
