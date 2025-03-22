@@ -674,7 +674,7 @@ private struct ShowDescriptionCardSheet: View {
 
   var body: some View {
     NavigationStack {
-      ScrollView([.vertical]) {
+      ScrollView(.vertical) {
         VStack(spacing: 16) {
           Group {
             ForEach(self.text.split(separator: "\n\n"), id: \.self) { paragraph in

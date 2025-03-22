@@ -4,7 +4,7 @@ struct OnboardingView: View {
   @State private var showAuth = false
 
   var body: some View {
-    ScrollView([.vertical]) {
+    ScrollView(.vertical) {
       AuthenticationTextParagraph(text: "Привет!")
 
       AuthenticationTextParagraph(

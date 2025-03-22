@@ -152,7 +152,7 @@ struct SearchShowsView: View {
           .centeredContentFix()
 
       case let .loaded(shows):
-        ScrollView([.vertical]) {
+        ScrollView(.vertical) {
           ShowsGrid(
             shows: shows,
             loadMore: { await self.viewModel.performLazyLoading() }

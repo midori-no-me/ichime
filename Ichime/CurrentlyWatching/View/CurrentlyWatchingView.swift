@@ -151,7 +151,7 @@ struct CurrentlyWatchingView: View {
         .centeredContentFix()
 
       case let .loaded(episodes):
-        ScrollView([.vertical]) {
+        ScrollView(.vertical) {
           SectionWithCards(title: "Серии к просмотру") {
             EpisodesGrid(
               episodes: episodes,
