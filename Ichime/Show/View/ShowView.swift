@@ -552,6 +552,7 @@ private struct ShowStudiosAndDescriptions: View {
             LazyHStack(alignment: .top) {
               ForEach(self.studios) { studio in
                 StudioCard(
+                  id: studio.id,
                   title: studio.name,
                   cover: studio.image
                 )
@@ -578,55 +579,6 @@ private struct ShowStudiosAndDescriptions: View {
     }
     .focusSection()
     .scrollClipDisabled()
-  }
-}
-
-private struct StudioCard: View {
-  let title: String
-  let cover: URL?
-
-  var body: some View {
-    Button(action: {}) {
-      VStack(alignment: .leading, spacing: 16) {
-        AsyncImage(
-          url: self.cover,
-          transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
-        ) { phase in
-          switch phase {
-          case .empty:
-            Color.clear
-
-          case let .success(image):
-            image
-              .resizable()
-              .scaledToFit()
-
-          case .failure:
-            Color.clear
-
-          @unknown default:
-            Color.clear
-          }
-        }
-        .frame(
-          maxWidth: .infinity,
-          maxHeight: .infinity
-        )
-
-        Text(self.title)
-          .lineLimit(1)
-          .truncationMode(.tail)
-          .font(.body)
-          .foregroundColor(.secondary)
-      }
-      .padding(24)
-      .frame(
-        maxWidth: .infinity,
-        maxHeight: .infinity,
-        alignment: .leading
-      )
-    }
-    .buttonStyle(.card)
   }
 }
 

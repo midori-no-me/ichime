@@ -181,6 +181,22 @@ struct ShowService {
     return apiResponse.map { .init(anime365Series: $0) }
   }
 
+  func getStudio(
+    offset: Int,
+    limit: Int,
+    studioId: Int
+  ) async throws -> [ShowPreview] {
+    let apiResponse = try await anime365ApiClient.listSeries(
+      limit: limit,
+      offset: offset,
+      chips: [
+        "studio": String(studioId)
+      ]
+    )
+
+    return apiResponse.map { .init(anime365Series: $0) }
+  }
+
   func getByGenre(
     offset: Int,
     limit: Int,
