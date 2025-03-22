@@ -143,7 +143,7 @@ struct ShowFull {
 
         return Self.Studio(
           id: studio.id,
-          name: studio.name,
+          name: studio.filtered_name,
           image: imageUrl
         )
       },

@@ -3,7 +3,7 @@ import Foundation
 public struct Anime: Decodable {
   public struct Studio: Decodable {
     public let id: Int
-    public let name: String
+    public let filtered_name: String
     public let image: String?
   }
 
