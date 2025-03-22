@@ -454,14 +454,14 @@ private struct ShowProperty: View {
 
 private struct SeasonShowProperty: View {
   let airingSeason: AiringSeason
-  let client: Anime365Client
+  let showService: ShowService
 
   init(
     airingSeason: AiringSeason,
-    client: Anime365Client = ApplicationDependency.container.resolve()
+    showService: ShowService = ApplicationDependency.container.resolve()
   ) {
     self.airingSeason = airingSeason
-    self.client = client
+    self.showService = showService
   }
 
   var body: some View {
@@ -482,7 +482,7 @@ private struct SeasonShowProperty: View {
 
   private func getShowsBySeason() -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
     func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
-      try await self.client.getSeason(
+      try await self.showService.getSeason(
         offset: offset,
         limit: limit,
         airingSeason: self.airingSeason

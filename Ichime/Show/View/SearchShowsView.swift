@@ -18,7 +18,7 @@ private class SearchShowsViewModel {
   var isSearchPresented: Bool = false
 
   private var _state: State = .idle
-  private let client: Anime365Client
+  private let showService: ShowService
 
   private var lastPerformedSearchQuery = ""
   private var currentOffset: Int = 0
@@ -38,8 +38,8 @@ private class SearchShowsViewModel {
     }
   }
 
-  init(client: Anime365Client = ApplicationDependency.container.resolve()) {
-    self.client = client
+  init(showService: ShowService = ApplicationDependency.container.resolve()) {
+    self.showService = showService
   }
 
   func performInitialSearch() async {
@@ -53,7 +53,7 @@ private class SearchShowsViewModel {
     self.addRecentSearch(searchQuery: self.currentlyTypedSearchQuery)
 
     do {
-      let shows = try await client.searchShows(
+      let shows = try await showService.searchShows(
         searchQuery: self.lastPerformedSearchQuery,
         offset: self.currentOffset,
         limit: self.SHOWS_PER_PAGE
@@ -80,7 +80,7 @@ private class SearchShowsViewModel {
     }
 
     do {
-      let shows = try await client.searchShows(
+      let shows = try await showService.searchShows(
         searchQuery: self.lastPerformedSearchQuery,
         offset: self.currentOffset,
         limit: self.SHOWS_PER_PAGE

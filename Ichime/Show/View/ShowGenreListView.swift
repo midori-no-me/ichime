@@ -2,14 +2,14 @@ import SwiftUI
 
 struct ShowGenreListView: View {
   private let genres: [ShowFull.Genre]
-  private let client: Anime365Client
+  private let showService: ShowService
 
   init(
     genres: [ShowFull.Genre],
-    client: Anime365Client = ApplicationDependency.container.resolve()
+    showService: ShowService = ApplicationDependency.container.resolve()
   ) {
     self.genres = genres
-    self.client = client
+    self.showService = showService
   }
 
   var body: some View {
@@ -35,7 +35,7 @@ struct ShowGenreListView: View {
 
   private func getShowsByGenre(genreId: Int) -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
     func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
-      try await self.client.getByGenre(
+      try await self.showService.getByGenre(
         offset: offset,
         limit: limit,
         genreIds: [genreId]

@@ -71,8 +71,6 @@ class ApplicationDependency: DIFramework {
       UserAnimeListCache(apiClient: $0, userManager: $1, modelContainer: $2)
     }
 
-    container.register { Anime365Client(apiClient: $0) }
-
     container.register {
       ShikimoriApiClient.ApiClient(
         baseUrl: ServiceLocator.shikimoriBaseUrl,
