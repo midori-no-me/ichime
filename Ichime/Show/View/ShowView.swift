@@ -125,9 +125,18 @@ private class ShowViewModel {
 }
 
 struct ShowView: View {
-  var showId: Int
-
   @State private var viewModel: ShowViewModel = .init()
+
+  private let showId: Int
+  private let onOpened: (() -> Void)?
+
+  init(
+    showId: Int,
+    onOpened: (() -> Void)? = nil
+  ) {
+    self.showId = showId
+    self.onOpened = onOpened
+  }
 
   var body: some View {
     switch self.viewModel.state {
@@ -166,6 +175,13 @@ struct ShowView: View {
     case let .loaded(show):
       ScrollView(.vertical) {
         ShowDetails(show: show, viewModel: self.viewModel)
+      }
+      .onAppear {
+        guard let onOpened = self.onOpened else {
+          return
+        }
+
+        onOpened()
       }
     }
   }

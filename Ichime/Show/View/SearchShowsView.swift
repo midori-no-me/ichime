@@ -10,9 +10,7 @@ private class SearchShowsViewModel {
     case loaded([ShowPreview])
   }
 
-  // Если рендерить пустой список Search Suggestions в .searchable на tvOS, то кнопка сабмита не появится для напечатанного текста.
-  // Поэтому в качестве костыля в массив предыдущих поисков добавляем один элемент.
-  var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? ["Frieren"]
+  var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
 
   var currentlyTypedSearchQuery = ""
   var isSearchPresented: Bool = false
@@ -42,15 +40,13 @@ private class SearchShowsViewModel {
     self.showService = showService
   }
 
-  func performInitialSearch() async {
+  func performSearch() async {
     if self.currentlyTypedSearchQuery.isEmpty {
       return
     }
 
     self.state = .loading
     self.lastPerformedSearchQuery = self.currentlyTypedSearchQuery
-
-    self.addRecentSearch(searchQuery: self.currentlyTypedSearchQuery)
 
     do {
       let shows = try await showService.searchShows(
@@ -99,10 +95,14 @@ private class SearchShowsViewModel {
     }
   }
 
-  private func addRecentSearch(searchQuery: String) {
+  func addRecentSearch() {
+    if self.currentlyTypedSearchQuery.isEmpty {
+      return
+    }
+
     var uniqueRecentSearches: [String] = []
 
-    for query in [searchQuery] + self.recentSearches {
+    for query in [self.currentlyTypedSearchQuery] + self.recentSearches {
       if uniqueRecentSearches.contains(query) {
         continue
       }
@@ -139,7 +139,7 @@ struct SearchShowsView: View {
         } actions: {
           Button(action: {
             Task {
-              await self.viewModel.performInitialSearch()
+              await self.viewModel.performSearch()
             }
           }) {
             Text("Обновить")
@@ -153,10 +153,21 @@ struct SearchShowsView: View {
 
       case let .loaded(shows):
         ScrollView(.vertical) {
-          ShowsGrid(
-            shows: shows,
-            loadMore: { await self.viewModel.performLazyLoading() }
-          )
+          LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 1), spacing: 64) {
+            ForEach(shows) { show in
+              ShowCard(
+                show: show,
+                displaySeason: true,
+                onOpened: self.viewModel.addRecentSearch
+              )
+              .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+              .task {
+                if show == shows.last {
+                  await self.viewModel.performLazyLoading()
+                }
+              }
+            }
+          }
           .padding(.top, RawShowCard.RECOMMENDED_SPACING)
           .padding(.leading, RawShowCard.RECOMMENDED_SPACING)
         }
@@ -174,26 +185,12 @@ struct SearchShowsView: View {
     }
     .onSubmit(of: .search) {
       Task {
-        await self.viewModel.performInitialSearch()
+        await self.viewModel.performSearch()
       }
     }
-  }
-}
-
-private struct ShowsGrid: View {
-  let shows: [ShowPreview]
-  let loadMore: () async -> Void
-
-  var body: some View {
-    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 1), spacing: 64) {
-      ForEach(self.shows) { show in
-        ShowCard(show: show, displaySeason: true)
-          .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-          .task {
-            if show == self.shows.last {
-              await self.loadMore()
-            }
-          }
+    .onChange(of: self.viewModel.currentlyTypedSearchQuery) {
+      Task {
+        await self.viewModel.performSearch()
       }
     }
   }

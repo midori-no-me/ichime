@@ -1,12 +1,23 @@
 import SwiftUI
 
 struct ShowCard: View {
-  let show: ShowPreview
-  let displaySeason: Bool
+  private let show: ShowPreview
+  private let displaySeason: Bool
+  private let onOpened: (() -> Void)?
+
+  init(
+    show: ShowPreview,
+    displaySeason: Bool,
+    onOpened: (() -> Void)? = nil
+  ) {
+    self.show = show
+    self.displaySeason = displaySeason
+    self.onOpened = onOpened
+  }
 
   var body: some View {
     NavigationLink(
-      destination: ShowView(showId: self.show.id)
+      destination: ShowView(showId: self.show.id, onOpened: self.onOpened)
     ) {
       RawShowCard(
         metadataLineComponents: self.formatMetadataLine(),
