@@ -62,13 +62,11 @@ struct AnimeList: View {
               currentEpisodeProgress: show.progress.watched,
               totalEpisodes: show.progress.total
             )
-            .contextMenu(
-              menuItems: {
-                NavigationLink(destination: ShowView(showId: show.id)) {
-                  Text("Открыть")
-                }
+            .contextMenu {
+              NavigationLink(destination: ShowView(showId: show.id)) {
+                Label("Перейти к тайтлу", systemImage: "info.circle")
               }
-            )
+            }
           }
         }
       } header: {
