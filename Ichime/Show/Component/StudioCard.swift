@@ -34,7 +34,9 @@ struct StudioCard: View {
         ) { phase in
           switch phase {
           case .empty:
-            Color.clear
+            Image(systemName: "photo")
+              .font(.title)
+              .foregroundStyle(.secondary)
 
           case let .success(image):
             image
@@ -42,7 +44,9 @@ struct StudioCard: View {
               .scaledToFit()
 
           case .failure:
-            Color.clear
+            Image(systemName: "photo.badge.exclamationmark")
+              .font(.title)
+              .foregroundStyle(.secondary)
 
           @unknown default:
             Color.clear
