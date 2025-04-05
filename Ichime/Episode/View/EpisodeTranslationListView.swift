@@ -182,7 +182,7 @@ private struct EpisodeDetails: View {
         }
 
         if self.episode.isFiller {
-          Label("Филлер", systemImage: "info.circle")
+          Label("Филлер", systemImage: "circle.lefthalf.filled")
         }
 
         if self.episode.isRecap {
@@ -194,7 +194,7 @@ private struct EpisodeDetails: View {
         }
 
         if let officiallyAiredAt = episode.officiallyAiredAt {
-          Text(formatRelativeDate(officiallyAiredAt))
+          Label(formatRelativeDate(officiallyAiredAt), systemImage: "calendar")
         }
       }
       .frame(maxWidth: .infinity, alignment: .leading)
