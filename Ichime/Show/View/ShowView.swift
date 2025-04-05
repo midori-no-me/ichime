@@ -318,25 +318,24 @@ private struct ShowKeyDetailsSection: View {
 }
 
 private struct ShowPrimaryAndSecondaryTitles: View {
-  let title: ShowFull.Title
+  let title: ShowName
 
   var body: some View {
     VStack {
       Group {
-        if self.title.translated.japaneseRomaji == nil || self.title.translated.russian == nil {
-          Text(self.title.full)
+        switch self.title {
+        case let .parsed(romaji, russian):
+          Text(romaji)
             .font(.title2)
-        }
 
-        if let japaneseRomajiTitle = title.translated.japaneseRomaji {
-          Text(japaneseRomajiTitle)
+          if let russian {
+            Text(russian)
+              .font(.title3)
+              .foregroundStyle(.secondary)
+          }
+        case let .unparsed(fullName):
+          Text(fullName)
             .font(.title2)
-        }
-
-        if let russianTitle = title.translated.russian {
-          Text(russianTitle)
-            .font(.title3)
-            .foregroundStyle(.secondary)
         }
       }
       .lineLimit(2)
@@ -435,7 +434,7 @@ private struct ShowActionButtons: View {
         MyListEditView(
           show: .init(
             id: self.show.id,
-            name: self.show.title.compose,
+            name: self.show.title.getFullName(),
             totalEpisodes: self.show.numberOfEpisodes ?? nil
           ),
           onUpdate: {

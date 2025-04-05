@@ -39,7 +39,9 @@ struct EpisodeService {
     var jikanEpisodeNumberToEpisode: [Int: JikanApiClient.Episode] = [:]
 
     for jikanEpisode in jikanEpisodes {
-      jikanEpisodeNumberToEpisode[jikanEpisode.mal_id] = jikanEpisode
+      let malId = jikanEpisode.mal_id
+
+      jikanEpisodeNumberToEpisode[malId] = jikanEpisode
     }
 
     var episodeInfos: [EpisodeInfo] = []

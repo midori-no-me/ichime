@@ -3,7 +3,6 @@ import Foundation
 public struct Titles: Decodable {
   public let ru: String?
   public let romaji: String?
-  public let en: String?
 }
 
 public struct Series: Decodable {

@@ -4,21 +4,6 @@ import JikanApiClient
 import ShikimoriApiClient
 
 struct ShowFull {
-  struct Title {
-    struct TranslatedTitles {
-      let russian: String?
-      let english: String?
-      let japaneseRomaji: String?
-    }
-
-    let full: String
-    let translated: TranslatedTitles
-
-    var compose: String {
-      self.translated.japaneseRomaji ?? self.translated.english ?? self.translated.russian ?? self.full
-    }
-  }
-
   struct Description: Hashable {
     let text: String
     let source: String
@@ -60,7 +45,7 @@ struct ShowFull {
 
   let id: Int
   let myAnimeListId: Int
-  let title: Title
+  let title: ShowName
   let descriptions: [Description]
   let posterUrl: URL?
   let score: Float?
@@ -97,17 +82,16 @@ struct ShowFull {
       kind = .create(seriesType)
     }
 
+    var title = ShowName.unparsed(anime365Series.title)
+
+    if let romajiTitle = anime365Series.titles.romaji {
+      title = .parsed(romajiTitle, anime365Series.titles.ru)
+    }
+
     return Self(
       id: anime365Series.id,
       myAnimeListId: anime365Series.myAnimeListId,
-      title: Self.Title(
-        full: anime365Series.title,
-        translated: Self.Title.TranslatedTitles(
-          russian: anime365Series.titles.ru,
-          english: anime365Series.titles.en,
-          japaneseRomaji: anime365Series.titles.romaji
-        )
-      ),
+      title: title,
       descriptions: (anime365Series.descriptions ?? []).map { description in
         Self.Description.createFiltered(
           text: description.value,
