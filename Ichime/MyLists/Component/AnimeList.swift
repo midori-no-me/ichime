@@ -30,7 +30,7 @@ private struct MyListEntry: View {
       String(currentEpisodeProgress)
     ]
 
-    if let totalEpisodes {
+    if let totalEpisodes = self.totalEpisodes {
       stringComponents.append(String(totalEpisodes))
     }
     else {

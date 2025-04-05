@@ -81,7 +81,7 @@ class UserManager {
 
   private func restoreUser() {
     let decoder = JSONDecoder()
-    if let cachedUser,
+    if let cachedUser = self.cachedUser,
       let decodedUser = try? decoder.decode(ScraperAPI.Types.User.self, from: cachedUser)
     {
       self.state = .isAuth(decodedUser)

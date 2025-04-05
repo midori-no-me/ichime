@@ -543,7 +543,7 @@ private struct EpisodesShowProperty: View {
   }
 
   private func formatString() -> String {
-    if let latestAiredEpisodeNumber, self.isOngoing {
+    if let latestAiredEpisodeNumber = self.latestAiredEpisodeNumber, self.isOngoing {
       return
         "Вышло \(latestAiredEpisodeNumber.formatted()) из \(totalEpisodes?.formatted() ?? EpisodeService.formatUnknownEpisodeCountBasedOnAlreadyAiredEpisodeCount(latestAiredEpisodeNumber))"
     }
