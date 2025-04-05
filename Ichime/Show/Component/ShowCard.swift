@@ -22,8 +22,8 @@ struct ShowCard: View {
       RawShowCard(
         metadataLineComponents: self.formatMetadataLine(),
         cover: self.show.posterUrl,
-        primaryTitle: self.romajiTitle(),
-        secondaryTitle: self.russianTitle()
+        primaryTitle: self.show.title.getRomajiOrFullName(),
+        secondaryTitle: self.show.title.getRussian()
       )
     }
     .buttonStyle(.borderless)
@@ -45,21 +45,5 @@ struct ShowCard: View {
     }
 
     return metadataLineComponents
-  }
-
-  private func romajiTitle() -> String {
-    if let parsedShowName = self.show.title as? ParsedShowName {
-      return parsedShowName.romaji
-    }
-
-    return self.show.title.getFullName()
-  }
-
-  private func russianTitle() -> String? {
-    if let parsedShowName = self.show.title as? ParsedShowName {
-      return parsedShowName.russian
-    }
-
-    return nil
   }
 }

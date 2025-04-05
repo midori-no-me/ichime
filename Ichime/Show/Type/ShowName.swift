@@ -1,28 +1,42 @@
-protocol ShowName {
-  func getFullName() -> String
-}
-
-struct UnparsedShowName: ShowName {
-  let fullName: String
+enum ShowName {
+  case parsed(String, String?)
+  case unparsed(String)
 
   func getFullName() -> String {
-    self.fullName
-  }
-}
+    switch self {
+    case let .unparsed(fullName):
+      return fullName
 
-struct ParsedShowName: ShowName {
-  let russian: String?
-  let romaji: String
+    case let .parsed(romaji, russian):
+      var components: [String] = []
 
-  func getFullName() -> String {
-    var components: [String] = []
+      if let russian = russian {
+        components.append(russian)
+      }
 
-    if let russian = russian {
-      components.append(russian)
+      components.append(romaji)
+
+      return components.joined(separator: " / ")
     }
+  }
 
-    components.append(self.romaji)
+  func getRomajiOrFullName() -> String {
+    switch self {
+    case let .unparsed(fullName):
+      return fullName
 
-    return components.joined(separator: " / ")
+    case let .parsed(romaji, _):
+      return romaji
+    }
+  }
+
+  func getRussian() -> String? {
+    switch self {
+    case .unparsed:
+      return nil
+
+    case let .parsed(_, russian):
+      return russian
+    }
   }
 }

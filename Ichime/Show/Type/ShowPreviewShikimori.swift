@@ -14,7 +14,7 @@ struct ShowPreviewShikimori: Hashable, Identifiable {
     shikimoriBaseUrl: URL
   ) {
     self.id = anime.id
-    self.title = ParsedShowName(russian: anime.russian, romaji: anime.name)
+    self.title = .parsed(anime.name, anime.russian)
 
     if let image = anime.image {
       self.posterUrl = URL(string: shikimoriBaseUrl.absoluteString + image.original)

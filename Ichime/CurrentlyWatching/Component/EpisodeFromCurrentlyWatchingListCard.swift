@@ -8,8 +8,8 @@ struct EpisodeFromCurrentlyWatchingListCard: View {
       RawShowCard(
         metadataLineComponents: [self.episode.episodeTitle, self.episode.updateNote],
         cover: self.episode.coverUrl,
-        primaryTitle: self.romajiTitle(),
-        secondaryTitle: self.russianTitle()
+        primaryTitle: self.episode.showName.getRomajiOrFullName(),
+        secondaryTitle: self.episode.showName.getRussian()
       )
     }
     .buttonStyle(.borderless)
@@ -18,21 +18,5 @@ struct EpisodeFromCurrentlyWatchingListCard: View {
         Label("Перейти к тайтлу", systemImage: "info.circle")
       }
     }
-  }
-
-  private func romajiTitle() -> String {
-    if let parsedShowName = self.episode.showName as? ParsedShowName {
-      return parsedShowName.romaji
-    }
-
-    return self.episode.showName.getFullName()
-  }
-
-  private func russianTitle() -> String? {
-    if let parsedShowName = self.episode.showName as? ParsedShowName {
-      return parsedShowName.russian
-    }
-
-    return nil
   }
 }

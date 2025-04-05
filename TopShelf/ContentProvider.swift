@@ -68,7 +68,7 @@ class ContentProvider: TVTopShelfContentProvider {
     let topShelfItems = episodes.map {
       let topShelfItem = TVTopShelfSectionedItem(identifier: String($0.episodeId))
 
-      topShelfItem.title = "\($0.episodeTitle) — \(self.romajiShowTitle($0.showName))"
+      topShelfItem.title = "\($0.episodeTitle) — \($0.showName.getRomajiOrFullName())"
       topShelfItem.setImageURL($0.coverUrl, for: .screenScale1x)
       topShelfItem.setImageURL($0.coverUrl, for: .screenScale2x)
       topShelfItem.imageShape = .poster
@@ -132,13 +132,5 @@ class ContentProvider: TVTopShelfContentProvider {
     }
 
     return sections
-  }
-
-  private func romajiShowTitle(_ showName: ShowName) -> String {
-    if let parsedShowName = showName as? ParsedShowName {
-      return parsedShowName.romaji
-    }
-
-    return showName.getFullName()
   }
 }

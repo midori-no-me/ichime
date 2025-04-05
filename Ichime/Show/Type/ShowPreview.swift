@@ -15,10 +15,10 @@ struct ShowPreview: Hashable, Identifiable {
     self.id = anime365Series.id
 
     if let romajiTitle = anime365Series.titles.romaji {
-      self.title = ParsedShowName(russian: anime365Series.titles.ru, romaji: romajiTitle)
+      self.title = .parsed(romajiTitle, anime365Series.titles.ru)
     }
     else {
-      self.title = UnparsedShowName(fullName: anime365Series.title)
+      self.title = .unparsed(anime365Series.title)
     }
 
     self.posterUrl = anime365Series.posterUrl

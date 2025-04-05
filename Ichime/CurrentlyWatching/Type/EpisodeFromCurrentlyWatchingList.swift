@@ -10,9 +10,9 @@ struct EpisodeFromCurrentlyWatchingList {
   let coverUrl: URL?
 
   init(fromScraperWatchShow: ScraperAPI.Types.WatchShow) {
-    self.showName = ParsedShowName(
-      russian: fromScraperWatchShow.showName.ru,
-      romaji: fromScraperWatchShow.showName.romaji
+    self.showName = .parsed(
+      fromScraperWatchShow.showName.ru,
+      fromScraperWatchShow.showName.romaji
     )
 
     self.episodeTitle = fromScraperWatchShow.episodeTitle
