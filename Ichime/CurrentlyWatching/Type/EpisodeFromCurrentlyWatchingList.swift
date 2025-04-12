@@ -11,8 +11,8 @@ struct EpisodeFromCurrentlyWatchingList {
 
   init(fromScraperWatchShow: ScraperAPI.Types.WatchShow) {
     self.showName = .parsed(
-      fromScraperWatchShow.showName.ru,
-      fromScraperWatchShow.showName.romaji
+      fromScraperWatchShow.showName.romaji,
+      fromScraperWatchShow.showName.ru
     )
 
     self.episodeTitle = fromScraperWatchShow.episodeTitle
