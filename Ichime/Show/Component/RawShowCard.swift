@@ -21,26 +21,31 @@ struct RawShowCard: View {
         switch phase {
         case .empty:
           Color.clear
+            .hoverEffect(.highlight)
 
         case let .success(image):
           image
             .resizable()
             .scaledToFit()
+            .hoverEffect(.highlight)
 
         case .failure:
-          RoundedRectangle(cornerRadius: 16)
-            .foregroundStyle(Color(UIColor.systemGray))
-            .overlay {
-              Image(systemName: "photo")
-                .font(.title)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-            }
+          Group {
+            RoundedRectangle(cornerRadius: 16)
+              .foregroundStyle(Color(UIColor.systemGray))
+              .overlay {
+                Image(systemName: "photo")
+                  .font(.title)
+                  .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+              }
+          }
+          .hoverEffect(.highlight)
 
         @unknown default:
           Color.clear
+            .hoverEffect(.highlight)
         }
       }
-      .hoverEffect(.highlight)
       .frame(
         maxWidth: .infinity,
         maxHeight: .infinity,
