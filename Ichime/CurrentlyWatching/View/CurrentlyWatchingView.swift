@@ -62,6 +62,8 @@ private class CurrentlyWatchingViewModel {
     }
 
     do {
+      self.currentPage += 1
+
       let episodes = try await currentlyWatchingService.getEpisodesToWatch(page: self.currentPage)
 
       if episodes.last?.episodeId == self.episodes.last?.episodeId {
@@ -70,7 +72,6 @@ private class CurrentlyWatchingViewModel {
       }
 
       self.stopLazyLoading = false
-      self.currentPage += 1
       self.episodes += episodes
       self.state = .loaded(self.episodes)
     }
