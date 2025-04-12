@@ -67,7 +67,9 @@ struct MomentCard: View {
               .scaledToFit()
 
           case .failure:
-            Color.clear
+            Image(systemName: "photo")
+              .font(.title)
+              .foregroundStyle(Color.white)
 
           @unknown default:
             Color.clear
