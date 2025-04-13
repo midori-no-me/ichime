@@ -117,6 +117,10 @@ class ApplicationDependency: DIFramework {
       MomentService(scraperApi: $0)
     }
 
+    container.register {
+      ShowSearchService(shikimoriApiClient: $0)
+    }
+
     if !container.makeGraph().checkIsValid() {
       fatalError("Граф зависимостей не валиден")
     }

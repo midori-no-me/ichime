@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct RawShowCard: View {
-  static let RECOMMENDED_SPACING: CGFloat = 64
   static let RECOMMENDED_HEIGHT: CGFloat = 384
 
   let metadataLineComponents: [String]

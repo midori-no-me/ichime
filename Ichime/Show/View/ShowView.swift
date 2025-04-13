@@ -509,7 +509,7 @@ private struct SeasonShowProperty: View {
 }
 
 private struct GenresShowProperty: View {
-  let genres: [ShowFull.Genre]
+  let genres: [Genre]
 
   var body: some View {
     NavigationLink(
@@ -556,7 +556,7 @@ private struct EpisodesShowProperty: View {
 }
 
 private struct ShowStudiosAndDescriptions: View {
-  let studios: [ShowFull.Studio]
+  let studios: [Studio]
   let descriptions: [ShowFull.Description]
 
   var body: some View {

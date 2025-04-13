@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct ShowGenreListView: View {
-  private let genres: [ShowFull.Genre]
+  private let genres: [Genre]
   private let showService: ShowService
 
   init(
-    genres: [ShowFull.Genre],
+    genres: [Genre],
     showService: ShowService = ApplicationDependency.container.resolve()
   ) {
     self.genres = genres

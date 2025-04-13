@@ -32,17 +32,6 @@ struct ShowFull {
     }
   }
 
-  struct Genre: Identifiable {
-    let id: Int
-    let title: String
-  }
-
-  struct Studio: Identifiable {
-    let id: Int
-    let name: String
-    let image: URL?
-  }
-
   let id: Int
   let myAnimeListId: Int
   let title: ShowName
@@ -111,25 +100,10 @@ struct ShowFull {
         totalEpisodes: totalEpisodes
       ),
       kind: kind,
-      genres: (anime365Series.genres ?? []).map { genre in
-        Self.Genre(
-          id: genre.id,
-          title: genre.title
-        )
-      },
+      genres: (anime365Series.genres ?? []).map { .init(fromAnime365Genre: $0) },
       isOngoing: anime365Series.isAiring == 1,
-      studios: (shikimoriAnime?.studios ?? []).map { studio in
-        var imageUrl: URL? = nil
-
-        if let imagePath = studio.image {
-          imageUrl = URL(string: shikimoriBaseUrl.absoluteString + imagePath)
-        }
-
-        return Self.Studio(
-          id: studio.id,
-          name: studio.filtered_name,
-          image: imageUrl
-        )
+      studios: (shikimoriAnime?.studios ?? []).map {
+        .init(fromShikimoriStudio: $0, shikimoriBaseUrl: shikimoriBaseUrl)
       },
       screenshots: shikimoriScreenshots.map { screenshot in
         URL(string: shikimoriBaseUrl.absoluteString + screenshot.original)!

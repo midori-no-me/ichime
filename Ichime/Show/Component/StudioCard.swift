@@ -5,7 +5,7 @@ struct StudioCard: View {
   let title: String
   let cover: URL?
 
-  let showService: ShowService
+  private let showService: ShowService
 
   init(
     id: Int,

@@ -125,7 +125,9 @@ struct SearchShowsView: View {
     Group {
       switch self.viewModel.state {
       case .idle:
-        Color.clear
+        ScrollView(.vertical) {
+          SearchSuggestionsView()
+        }
 
       case .loading:
         ProgressView()
@@ -168,8 +170,6 @@ struct SearchShowsView: View {
               }
             }
           }
-          .padding(.top, RawShowCard.RECOMMENDED_SPACING)
-          .padding(.leading, RawShowCard.RECOMMENDED_SPACING)
         }
       }
     }
