@@ -82,12 +82,16 @@ struct CalendarView: View {
         VStack(alignment: .leading, spacing: 64) {
           ForEach(scheduleDays, id: \.date) { scheduleDay in
             SectionWithCards(title: formatRelativeDateWithWeekdayNameAndDate(scheduleDay.date)) {
-              LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
-                ForEach(scheduleDay.shows) { show in
-                  ShowFromCalendarWithExactReleaseDateCard(show: show)
-                    .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+              ScrollView(.horizontal) {
+                LazyHStack(alignment: .top) {
+                  ForEach(scheduleDay.shows) { show in
+                    ShowFromCalendarWithExactReleaseDateCard(show: show)
+                      .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+                      .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
+                  }
                 }
               }
+              .scrollClipDisabled()
             }
           }
         }
