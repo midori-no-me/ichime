@@ -5,7 +5,7 @@ import SwiftUI
 private class NextSeasonSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 
-  var shows: [ShowPreviewShikimori] = []
+  var shows: OrderedSet<ShowPreviewShikimori> = []
 
   private var page: Int = 1
   private var stopLazyLoading: Bool = false
@@ -23,7 +23,7 @@ private class NextSeasonSectionViewModel {
       return
     }
 
-    self.shows = preloadedShows.elements
+    self.shows = preloadedShows
     self.page += 1
   }
 
@@ -43,7 +43,7 @@ private class NextSeasonSectionViewModel {
       }
 
       self.page += 1
-      self.shows += shows.elements
+      self.shows = .init(self.shows.elements + shows)
     }
     catch {
       self.stopLazyLoading = true

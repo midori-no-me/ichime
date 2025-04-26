@@ -3,7 +3,7 @@ import SwiftUI
 
 @Observable
 private class ShowMomentsSectionViewModel {
-  var moments: OrderedSet<Moment> = .init()
+  var moments: OrderedSet<Moment> = []
 
   private var page: Int = 1
   private var stopLazyLoading: Bool = false

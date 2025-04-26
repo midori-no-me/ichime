@@ -3,7 +3,7 @@ import SwiftUI
 
 @Observable
 private class MomentsSectionViewModel {
-  var moments: [Moment] = []
+  var moments: OrderedSet<Moment> = []
 
   private var page: Int = 1
   private var stopLazyLoading: Bool = false
@@ -21,7 +21,7 @@ private class MomentsSectionViewModel {
       return
     }
 
-    self.moments = preloadedMoments.elements
+    self.moments = preloadedMoments
     self.page += 1
   }
 
@@ -39,7 +39,7 @@ private class MomentsSectionViewModel {
       }
 
       self.page += 1
-      self.moments += moments.elements
+      self.moments = .init(self.moments.elements + moments)
     }
     catch {
       self.stopLazyLoading = true

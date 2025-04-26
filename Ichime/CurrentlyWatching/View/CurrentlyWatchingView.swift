@@ -15,7 +15,7 @@ private class CurrentlyWatchingViewModel {
   private var _state: State = .idle
   private let currentlyWatchingService: CurrentlyWatchingService
 
-  private var episodes: OrderedSet<EpisodeFromCurrentlyWatchingList> = .init()
+  private var episodes: OrderedSet<EpisodeFromCurrentlyWatchingList> = []
   private var currentPage: Int = 1
   private var stopLazyLoading: Bool = false
 
@@ -73,7 +73,7 @@ private class CurrentlyWatchingViewModel {
       }
 
       self.stopLazyLoading = false
-      self.episodes.append(contentsOf: episodes)
+      self.episodes = .init(self.episodes.elements + episodes)
       self.state = .loaded(self.episodes)
     }
     catch {

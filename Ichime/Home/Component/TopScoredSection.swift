@@ -5,7 +5,7 @@ import SwiftUI
 private class TopScoredSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 
-  var shows: [ShowPreview] = []
+  var shows: OrderedSet<ShowPreview> = []
 
   private var offset: Int = 0
   private var stopLazyLoading: Bool = false
@@ -23,7 +23,7 @@ private class TopScoredSectionViewModel {
       return
     }
 
-    self.shows = preloadedShows.elements
+    self.shows = preloadedShows
     self.offset += preloadedShows.count
   }
 
@@ -43,7 +43,7 @@ private class TopScoredSectionViewModel {
       }
 
       self.offset += shows.count
-      self.shows += shows.elements
+      self.shows = .init(self.shows.elements + shows)
     }
     catch {
       self.stopLazyLoading = true

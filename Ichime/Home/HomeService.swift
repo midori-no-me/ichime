@@ -43,11 +43,11 @@ struct HomeService {
     )
 
     return (
-      ongoings: (try? await ongoingsFuture) ?? .init(),
-      topScored: (try? await topScoredFuture) ?? .init(),
-      nextSeason: (try? await nextSeasonFuture) ?? .init(),
-      mostPopular: (try? await mostPopularFuture) ?? .init(),
-      moments: (try? await momentsFuture) ?? .init()
+      ongoings: (try? await ongoingsFuture) ?? [],
+      topScored: (try? await topScoredFuture) ?? [],
+      nextSeason: (try? await nextSeasonFuture) ?? [],
+      mostPopular: (try? await mostPopularFuture) ?? [],
+      moments: (try? await momentsFuture) ?? []
     )
   }
 }

@@ -88,7 +88,7 @@ private class SearchShowsViewModel {
       }
 
       self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
-      self.shows.append(contentsOf: shows)
+      self.shows = .init(self.shows.elements + shows)
       self.state = .loaded(self.shows)
     }
     catch {
