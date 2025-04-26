@@ -1,3 +1,4 @@
+import OrderedCollections
 import SwiftUI
 
 @Observable
@@ -17,12 +18,12 @@ private class TopScoredSectionViewModel {
     self.showService = showService
   }
 
-  func performInitialLoad(preloadedShows: [ShowPreview]) {
+  func performInitialLoad(preloadedShows: OrderedSet<ShowPreview>) {
     if !self.shows.isEmpty {
       return
     }
 
-    self.shows = preloadedShows
+    self.shows = preloadedShows.elements
     self.offset += preloadedShows.count
   }
 
@@ -42,7 +43,7 @@ private class TopScoredSectionViewModel {
       }
 
       self.offset += shows.count
-      self.shows += shows
+      self.shows += shows.elements
     }
     catch {
       self.stopLazyLoading = true
@@ -51,7 +52,7 @@ private class TopScoredSectionViewModel {
 }
 
 struct TopScoredSection: View {
-  let preloadedShows: [ShowPreview]
+  let preloadedShows: OrderedSet<ShowPreview>
 
   @State private var viewModel: TopScoredSectionViewModel = .init()
 

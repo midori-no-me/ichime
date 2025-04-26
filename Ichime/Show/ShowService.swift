@@ -101,7 +101,7 @@ struct ShowService {
   func getOngoings(
     offset: Int,
     limit: Int
-  ) async throws -> [ShowPreview] {
+  ) async throws -> OrderedSet<ShowPreview> {
     let apiResponse = try await anime365ApiClient.listSeries(
       limit: limit,
       offset: offset,
@@ -111,43 +111,45 @@ struct ShowService {
       ]
     )
 
-    return apiResponse.map { .init(anime365Series: $0) }
+    return .init(apiResponse.map { .init(anime365Series: $0) })
   }
 
   func getTopScored(
     offset: Int,
     limit: Int
-  ) async throws -> [ShowPreview] {
+  ) async throws -> OrderedSet<ShowPreview> {
     let apiResponse = try await anime365ApiClient.listSeries(
       limit: limit,
       offset: offset
     )
 
-    return apiResponse.map { .init(anime365Series: $0) }
+    return .init(apiResponse.map { .init(anime365Series: $0) })
   }
 
   func getMostPopular(
     page: Int,
     limit: Int
-  ) async throws -> [ShowPreviewShikimori] {
+  ) async throws -> OrderedSet<ShowPreviewShikimori> {
     let shikimoriAnimes = try await shikimoriApiClient.listAnimes(
       page: page,
       limit: limit,
       order: "popularity"
     )
 
-    return shikimoriAnimes.map {
-      .init(
-        anime: $0,
-        shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
-      )
-    }
+    return .init(
+      shikimoriAnimes.map {
+        .init(
+          anime: $0,
+          shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
+        )
+      }
+    )
   }
 
   func getNextSeason(
     page: Int,
     limit: Int
-  ) async throws -> [ShowPreviewShikimori] {
+  ) async throws -> OrderedSet<ShowPreviewShikimori> {
     let showSeasonService = ShowSeasonService()
     let nextSeason = showSeasonService.getRelativeSeason(shift: ShowSeasonService.NEXT_SEASON)
 
@@ -158,12 +160,14 @@ struct ShowService {
       season: "\(nextSeason.calendarSeason.getApiName())_\(nextSeason.year)"
     )
 
-    return shikimoriAnimes.map {
-      .init(
-        anime: $0,
-        shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
-      )
-    }
+    return .init(
+      shikimoriAnimes.map {
+        .init(
+          anime: $0,
+          shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
+        )
+      }
+    )
   }
 
   func getSeason(

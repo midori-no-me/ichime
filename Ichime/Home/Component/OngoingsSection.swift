@@ -1,3 +1,5 @@
+import OSLog
+import OrderedCollections
 import SwiftUI
 
 @Observable
@@ -10,19 +12,22 @@ private class OngoingsSectionViewModel {
   private var stopLazyLoading: Bool = false
 
   private let showService: ShowService
+  private let logger: Logger
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve()
+    showService: ShowService = ApplicationDependency.container.resolve(),
+    logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "OngoingsSectionViewModel")
   ) {
     self.showService = showService
+    self.logger = logger
   }
 
-  func performInitialLoad(preloadedShows: [ShowPreview]) {
+  func performInitialLoad(preloadedShows: OrderedSet<ShowPreview>) {
     if !self.shows.isEmpty {
       return
     }
 
-    self.shows = preloadedShows
+    self.shows = preloadedShows.elements
     self.offset += preloadedShows.count
   }
 
@@ -38,20 +43,22 @@ private class OngoingsSectionViewModel {
       )
 
       if shows.count < Self.SHOWS_PER_PAGE {
+        self.logger.debug("Stop lazy loading because next page has less than \(Self.SHOWS_PER_PAGE) items")
         self.stopLazyLoading = true
       }
 
       self.offset += shows.count
-      self.shows += shows
+      self.shows += shows.elements
     }
     catch {
+      self.logger.debug("Stop lazy loading due to exception: \(error)")
       self.stopLazyLoading = true
     }
   }
 }
 
 struct OngoingsSection: View {
-  let preloadedShows: [ShowPreview]
+  let preloadedShows: OrderedSet<ShowPreview>
 
   @State private var viewModel: OngoingsSectionViewModel = .init()
 

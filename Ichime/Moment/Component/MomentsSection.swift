@@ -1,3 +1,4 @@
+import OrderedCollections
 import SwiftUI
 
 @Observable
@@ -15,12 +16,12 @@ private class MomentsSectionViewModel {
     self.momentService = momentService
   }
 
-  func performInitialLoad(preloadedMoments: [Moment]) {
+  func performInitialLoad(preloadedMoments: OrderedSet<Moment>) {
     if !self.moments.isEmpty {
       return
     }
 
-    self.moments = preloadedMoments
+    self.moments = preloadedMoments.elements
     self.page += 1
   }
 
@@ -38,7 +39,7 @@ private class MomentsSectionViewModel {
       }
 
       self.page += 1
-      self.moments += moments
+      self.moments += moments.elements
     }
     catch {
       self.stopLazyLoading = true
@@ -47,7 +48,7 @@ private class MomentsSectionViewModel {
 }
 
 struct MomentsSection: View {
-  let preloadedMoments: [Moment]
+  let preloadedMoments: OrderedSet<Moment>
 
   @State private var viewModel: MomentsSectionViewModel = .init()
 

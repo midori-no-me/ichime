@@ -1,3 +1,4 @@
+import OrderedCollections
 import SwiftUI
 
 @Observable
@@ -17,12 +18,12 @@ private class NextSeasonSectionViewModel {
     self.showService = showService
   }
 
-  func performInitialLoad(preloadedShows: [ShowPreviewShikimori]) {
+  func performInitialLoad(preloadedShows: OrderedSet<ShowPreviewShikimori>) {
     if !self.shows.isEmpty {
       return
     }
 
-    self.shows = preloadedShows
+    self.shows = preloadedShows.elements
     self.page += 1
   }
 
@@ -42,7 +43,7 @@ private class NextSeasonSectionViewModel {
       }
 
       self.page += 1
-      self.shows += shows
+      self.shows += shows.elements
     }
     catch {
       self.stopLazyLoading = true
@@ -51,7 +52,7 @@ private class NextSeasonSectionViewModel {
 }
 
 struct NextSeasonSection: View {
-  let preloadedShows: [ShowPreviewShikimori]
+  let preloadedShows: OrderedSet<ShowPreviewShikimori>
 
   @State private var viewModel: NextSeasonSectionViewModel = .init()
 

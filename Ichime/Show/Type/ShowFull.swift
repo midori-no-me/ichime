@@ -1,6 +1,7 @@
 import Anime365ApiClient
 import Foundation
 import JikanApiClient
+import OrderedCollections
 import ShikimoriApiClient
 
 struct ShowFull {
@@ -50,7 +51,7 @@ struct ShowFull {
   let nextEpisodeReleasesAt: Date?
   let characters: [Character]
   let staffMembers: [StaffMember]
-  let moments: [Moment]
+  let moments: OrderedSet<Moment>
   let relatedShows: [GroupedRelatedShows]
 
   static func create(
@@ -60,7 +61,7 @@ struct ShowFull {
     shikimoriBaseUrl: URL,
     jikanCharacterRoles: [JikanApiClient.CharacterRole],
     jikanStaffMembers: [JikanApiClient.StaffMember],
-    moments: [Moment],
+    moments: OrderedSet<Moment>,
     relatedShows: [GroupedRelatedShows]
   ) -> Self {
     let score = Float(anime365Series.myAnimeListScore) ?? 0

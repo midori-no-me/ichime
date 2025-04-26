@@ -1,4 +1,5 @@
 import Foundation
+import OrderedCollections
 
 struct HomeService {
   private let showService: ShowService
@@ -13,11 +14,11 @@ struct HomeService {
   }
 
   func preloadHomeSections() async -> (
-    ongoings: [ShowPreview],
-    topScored: [ShowPreview],
-    nextSeason: [ShowPreviewShikimori],
-    mostPopular: [ShowPreviewShikimori],
-    moments: [Moment]
+    ongoings: OrderedSet<ShowPreview>,
+    topScored: OrderedSet<ShowPreview>,
+    nextSeason: OrderedSet<ShowPreviewShikimori>,
+    mostPopular: OrderedSet<ShowPreviewShikimori>,
+    moments: OrderedSet<Moment>
   ) {
     async let momentsFuture = self.momentService.getMoments(page: 1)
 
@@ -42,11 +43,11 @@ struct HomeService {
     )
 
     return (
-      ongoings: (try? await ongoingsFuture) ?? [],
-      topScored: (try? await topScoredFuture) ?? [],
-      nextSeason: (try? await nextSeasonFuture) ?? [],
-      mostPopular: (try? await mostPopularFuture) ?? [],
-      moments: (try? await momentsFuture) ?? []
+      ongoings: (try? await ongoingsFuture) ?? .init(),
+      topScored: (try? await topScoredFuture) ?? .init(),
+      nextSeason: (try? await nextSeasonFuture) ?? .init(),
+      mostPopular: (try? await mostPopularFuture) ?? .init(),
+      moments: (try? await momentsFuture) ?? .init()
     )
   }
 }

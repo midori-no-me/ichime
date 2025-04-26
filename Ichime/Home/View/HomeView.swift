@@ -1,3 +1,4 @@
+import OrderedCollections
 import SwiftUI
 
 @Observable
@@ -7,11 +8,11 @@ private class HomeViewModel {
     case loading
     case loaded(
       (
-        ongoings: [ShowPreview],
-        topScored: [ShowPreview],
-        nextSeason: [ShowPreviewShikimori],
-        mostPopular: [ShowPreviewShikimori],
-        moments: [Moment]
+        ongoings: OrderedSet<ShowPreview>,
+        topScored: OrderedSet<ShowPreview>,
+        nextSeason: OrderedSet<ShowPreviewShikimori>,
+        mostPopular: OrderedSet<ShowPreviewShikimori>,
+        moments: OrderedSet<Moment>
       )
     )
   }
