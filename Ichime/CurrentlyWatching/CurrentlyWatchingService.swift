@@ -1,4 +1,5 @@
 import Foundation
+import OrderedCollections
 import ScraperAPI
 
 struct CurrentlyWatchingService {
@@ -10,11 +11,11 @@ struct CurrentlyWatchingService {
     self.scraperApi = scraperApi
   }
 
-  func getEpisodesToWatch(page: Int) async throws -> [EpisodeFromCurrentlyWatchingList] {
+  func getEpisodesToWatch(page: Int) async throws -> OrderedSet<EpisodeFromCurrentlyWatchingList> {
     let scraperApiWatchShows = try await self.scraperApi.sendAPIRequest(
       ScraperAPI.Request.GetNextToWatch(page: page)
     )
 
-    return scraperApiWatchShows.map { .init(fromScraperWatchShow: $0) }
+    return .init(scraperApiWatchShows.map { .init(fromScraperWatchShow: $0) })
   }
 }

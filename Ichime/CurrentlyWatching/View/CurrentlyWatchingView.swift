@@ -1,3 +1,4 @@
+import OrderedCollections
 import SwiftData
 import SwiftUI
 
@@ -8,13 +9,13 @@ private class CurrentlyWatchingViewModel {
     case loading
     case loadingFailed(Error)
     case loadedButEmpty
-    case loaded([EpisodeFromCurrentlyWatchingList])
+    case loaded(OrderedSet<EpisodeFromCurrentlyWatchingList>)
   }
 
   private var _state: State = .idle
   private let currentlyWatchingService: CurrentlyWatchingService
 
-  private var episodes: [EpisodeFromCurrentlyWatchingList] = []
+  private var episodes: OrderedSet<EpisodeFromCurrentlyWatchingList> = .init()
   private var currentPage: Int = 1
   private var stopLazyLoading: Bool = false
 
@@ -72,7 +73,7 @@ private class CurrentlyWatchingViewModel {
       }
 
       self.stopLazyLoading = false
-      self.episodes += episodes
+      self.episodes.append(contentsOf: episodes)
       self.state = .loaded(self.episodes)
     }
     catch {
@@ -171,12 +172,12 @@ struct CurrentlyWatchingView: View {
 }
 
 private struct EpisodesGrid: View {
-  let episodes: [EpisodeFromCurrentlyWatchingList]
+  let episodes: OrderedSet<EpisodeFromCurrentlyWatchingList>
   let loadMore: () async -> Void
 
   var body: some View {
     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
-      ForEach(self.episodes, id: \.episodeId) { episode in
+      ForEach(self.episodes) { episode in
         EpisodeFromCurrentlyWatchingListCard(episode: episode)
           .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
           .task {
