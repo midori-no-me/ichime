@@ -1,4 +1,5 @@
 import Foundation
+import OrderedCollections
 import ShikimoriApiClient
 
 struct ShowSearchService {
@@ -10,13 +11,13 @@ struct ShowSearchService {
     self.shikimoriApiClient = shikimoriApiClient
   }
 
-  func getAllGenresAndStudios() async -> (genres: [Genre], studios: [Studio]) {
+  func getAllGenresAndStudios() async -> (genres: OrderedSet<Genre>, studios: OrderedSet<Studio>) {
     async let allGenresFuture = self.getAllGenres()
     async let allStudiosFuture = self.getAllStudios()
 
     return (
-      genres: (try? await allGenresFuture) ?? [],
-      studios: ((try? await allStudiosFuture) ?? []).filter { $0.image != nil }
+      genres: .init((try? await allGenresFuture) ?? []),
+      studios: .init(((try? await allStudiosFuture) ?? []).filter { $0.image != nil })
     )
   }
 

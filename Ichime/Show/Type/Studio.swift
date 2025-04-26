@@ -1,7 +1,7 @@
 import Foundation
 import ShikimoriApiClient
 
-struct Studio: Identifiable {
+struct Studio: Identifiable, Hashable {
   let id: Int
   let name: String
   let image: URL?

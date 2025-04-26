@@ -1,7 +1,7 @@
 import Anime365ApiClient
 import ShikimoriApiClient
 
-struct Genre: Identifiable {
+struct Genre: Identifiable, Hashable {
   let id: Int
   let title: String
 

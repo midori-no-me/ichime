@@ -1,3 +1,4 @@
+import OrderedCollections
 import SwiftUI
 
 @Observable
@@ -5,7 +6,7 @@ private class SearchSuggestionsViewModel {
   enum State {
     case idle
     case loading
-    case loaded((genres: [Genre], studios: [Studio]))
+    case loaded((genres: OrderedSet<Genre>, studios: OrderedSet<Studio>))
   }
 
   private var _state: State = .idle

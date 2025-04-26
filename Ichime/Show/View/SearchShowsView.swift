@@ -1,3 +1,4 @@
+import OrderedCollections
 import SwiftUI
 
 @Observable
@@ -7,7 +8,7 @@ private class SearchShowsViewModel {
     case loading
     case loadingFailed(Error)
     case loadedButEmpty
-    case loaded([ShowPreview])
+    case loaded(OrderedSet<ShowPreview>)
   }
 
   var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
@@ -20,7 +21,7 @@ private class SearchShowsViewModel {
 
   private var lastPerformedSearchQuery = ""
   private var currentOffset: Int = 0
-  private var shows: [ShowPreview] = []
+  private var shows: OrderedSet<ShowPreview> = []
   private var stopLazyLoading: Bool = false
 
   private let SHOWS_PER_PAGE = 20
@@ -87,7 +88,7 @@ private class SearchShowsViewModel {
       }
 
       self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
-      self.shows += shows
+      self.shows.append(contentsOf: shows)
       self.state = .loaded(self.shows)
     }
     catch {

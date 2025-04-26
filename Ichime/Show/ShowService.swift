@@ -1,6 +1,7 @@
 import Anime365ApiClient
 import Foundation
 import JikanApiClient
+import OrderedCollections
 import ShikimoriApiClient
 
 enum ShowNotFoundError: Error {
@@ -220,14 +221,14 @@ struct ShowService {
     searchQuery: String,
     offset: Int,
     limit: Int
-  ) async throws -> [ShowPreview] {
+  ) async throws -> OrderedSet<ShowPreview> {
     let apiResponse = try await anime365ApiClient.listSeries(
       query: searchQuery,
       limit: limit,
       offset: offset
     )
 
-    return apiResponse.map { .init(anime365Series: $0) }
+    return .init(apiResponse.map { .init(anime365Series: $0) })
   }
 
   private func convertShikimoriRelationsToGroupedRelatedShows(
