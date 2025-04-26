@@ -22,6 +22,14 @@ struct ContentViewWithTabBar: View {
         Text("К просмотру")
       }
 
+      Tab(value: .calendar) {
+        NavigationStackWithRouter {
+          CalendarView()
+        }
+      } label: {
+        Text("Календарь")
+      }
+
       Tab(value: .myLists) {
         NavigationStackWithRouter {
           MyListsSelectorView()

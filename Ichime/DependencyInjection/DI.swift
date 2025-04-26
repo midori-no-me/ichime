@@ -106,7 +106,7 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowReleaseSchedule(shikimoriApiClient: $0)
+      ShowReleaseSchedule(shikimoriApiClient: $0, jikanApiClient: $1)
     }
 
     container.register {

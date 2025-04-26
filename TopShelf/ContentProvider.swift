@@ -1,3 +1,4 @@
+import JikanApiClient
 import OSLog
 import ScraperAPI
 import ShikimoriApiClient
@@ -28,9 +29,18 @@ class ContentProvider: TVTopShelfContentProvider {
     )
   }
 
+  var jikanApiClient: JikanApiClient.ApiClient {
+    .init(
+      baseUrl: ServiceLocator.jikanBaseUrl,
+      userAgent: ServiceLocator.jikanUserAgent,
+      logger: Logger(subsystem: ServiceLocator.applicationId, category: "JikanApiClient")
+    )
+  }
+
   var showReleaseSchedule: ShowReleaseSchedule {
     .init(
-      shikimoriApiClient: self.shikimoriApiClient
+      shikimoriApiClient: self.shikimoriApiClient,
+      jikanApiClient: self.jikanApiClient
     )
   }
 
@@ -42,8 +52,8 @@ class ContentProvider: TVTopShelfContentProvider {
 
   override func loadTopShelfContent(completionHandler: @escaping (TVTopShelfContent?) -> Void) {
     Task {
-      async let currentlyWatchingSectionFuture = self.getCurrentlyWatchingSection()
       async let calendarSectionsFuture = self.getCalendarSection()
+      async let currentlyWatchingSectionFuture = self.getCurrentlyWatchingSection()
 
       let currentlyWatchingSection = await currentlyWatchingSectionFuture
       let calendarSections = await calendarSectionsFuture
@@ -54,7 +64,9 @@ class ContentProvider: TVTopShelfContentProvider {
         sections.append(currentlyWatchingSection)
       }
 
-      sections += calendarSections
+      if !calendarSections.isEmpty {
+        sections += calendarSections
+      }
 
       let content = TVTopShelfSectionedContent(sections: sections)
 
@@ -97,7 +109,7 @@ class ContentProvider: TVTopShelfContentProvider {
   }
 
   private func getCalendarSection() async -> [TVTopShelfItemCollection<TVTopShelfSectionedItem>] {
-    let scheduleDays = (try? await showReleaseSchedule.getSchedule()) ?? []
+    let scheduleDays = await showReleaseSchedule.getSchedule()
 
     let sections: [TVTopShelfItemCollection<TVTopShelfSectionedItem>] = scheduleDays.map { scheduleDay in
       let topShelfItems = scheduleDay.shows.map {

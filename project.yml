@@ -25,6 +25,9 @@ packages:
     path: ./ScraperAPI
   ShikimoriApiClient:
     path: ./ShikimoriApiClient
+  Collections:
+    url: https://github.com/apple/swift-collections.git
+    from: "1.1.4"
   DITranquillity:
     url: https://github.com/ivlevAstef/DITranquillity.git
     from: "4.5.0"
@@ -54,6 +57,7 @@ targets:
         com.apple.security.application-groups: [group.dev.midorinome.ichime.group] # Application Groups нужны для расшаренных UserDefaults между основным приложением и Top Shelf
     dependencies:
       - package: DITranquillity
+      - package: Collections
       - package: Anime365ApiClient
       - package: ThirdPartyVideoPlayer
       - package: JikanApiClient
@@ -77,8 +81,8 @@ targets:
       - path: Ichime/CurrentlyWatching/CurrentlyWatchingService.swift
       - path: Ichime/Show/Type/ShowName.swift
       - path: Ichime/Calendar/ShowReleaseSchedule.swift
-      - path: Ichime/Calendar/Model/GroupedShowsFromCalendar.swift
-      - path: Ichime/Calendar/Model/ShowFromCalendar.swift
+      - path: Ichime/Calendar/Model/ShowFromCalendarWithExactReleaseDate.swift
+      - path: Ichime/Calendar/Model/ShowsFromCalendarGroupedByDate.swift
       - path: Ichime/Utils/DateUtils.swift
       - path: TopShelf
     info:
@@ -94,7 +98,9 @@ targets:
       properties:
         com.apple.security.application-groups: [group.dev.midorinome.ichime.group] # Application Groups нужны для расшаренных UserDefaults между основным приложением и Top Shelf
     dependencies:
+      - package: Collections
       - package: Anime365ApiClient
+      - package: JikanApiClient
       - package: ScraperAPI
       - package: ShikimoriApiClient
     settings:

@@ -76,7 +76,7 @@ struct EpisodeInfo {
 
       let durationInt = jikanEpisode?.duration
 
-      if let durationInt {
+      if let durationInt, durationInt > 0 {
         duration = .seconds(durationInt)
       }
     }

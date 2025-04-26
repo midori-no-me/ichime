@@ -1,3 +1,4 @@
+import OrderedCollections
 import SwiftUI
 
 @Observable
@@ -5,9 +6,8 @@ private class CalendarViewModel {
   enum State {
     case idle
     case loading
-    case loadingFailed(Error)
     case loadedButEmpty
-    case loaded([GroupedShowsFromCalendar])
+    case loaded(OrderedSet<ShowsFromCalendarGroupedByDate>)
   }
 
   private var _state: State = .idle
@@ -33,18 +33,13 @@ private class CalendarViewModel {
   func performInitialLoad() async {
     self.state = .loading
 
-    do {
-      let shows = try await schedule.getSchedule()
+    let shows = await schedule.getSchedule()
 
-      if shows.isEmpty {
-        self.state = .loadedButEmpty
-      }
-      else {
-        self.state = .loaded(shows)
-      }
+    if shows.isEmpty {
+      self.state = .loadedButEmpty
     }
-    catch {
-      self.state = .loadingFailed(error)
+    else {
+      self.state = .loaded(shows)
     }
   }
 }
@@ -65,22 +60,6 @@ struct CalendarView: View {
       ProgressView()
         .focusable()
         .centeredContentFix()
-
-    case let .loadingFailed(error):
-      ContentUnavailableView {
-        Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-      } description: {
-        Text(error.localizedDescription)
-      } actions: {
-        Button(action: {
-          Task {
-            await self.viewModel.performInitialLoad()
-          }
-        }) {
-          Text("Обновить")
-        }
-      }
-      .centeredContentFix()
 
     case .loadedButEmpty:
       ContentUnavailableView {
@@ -105,7 +84,7 @@ struct CalendarView: View {
             SectionWithCards(title: formatRelativeDateWithWeekdayNameAndDate(scheduleDay.date)) {
               LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
                 ForEach(scheduleDay.shows) { show in
-                  ShowFromCalendarCard(show: show)
+                  ShowFromCalendarWithExactReleaseDateCard(show: show)
                     .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
                 }
               }
