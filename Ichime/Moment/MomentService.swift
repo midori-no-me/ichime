@@ -11,9 +11,23 @@ struct MomentService {
     self.scraperApi = scraperApi
   }
 
-  func getMoments(page: Int) async throws -> OrderedSet<Moment> {
+  private static func momentSortingToScraperSorting(_ sorting: MomentSorting)
+    -> ScraperAPI.Request.GetMoments.MomentSorting
+  {
+    switch sorting {
+    case .newest:
+      .newest
+    case .popular:
+      .popular
+    }
+  }
+
+  func getMoments(page: Int, sorting: MomentSorting) async throws -> OrderedSet<Moment> {
     let anime365Moments = try await self.scraperApi.sendAPIRequest(
-      ScraperAPI.Request.GetMoments(page: page)
+      ScraperAPI.Request.GetMoments(
+        page: page,
+        filter: .init(sort: Self.momentSortingToScraperSorting(sorting))
+      )
     )
 
     return .init(anime365Moments.map { .create(anime365Moment: $0) })

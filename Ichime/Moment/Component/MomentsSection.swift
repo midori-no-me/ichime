@@ -16,7 +16,7 @@ private class MomentsSectionViewModel {
     self.momentService = momentService
   }
 
-  func performInitialLoad(preloadedMoments: OrderedSet<Moment>) {
+  func performInitialLoad(preloadedMoments: OrderedSet<Moment>, sorting: MomentSorting) {
     if !self.moments.isEmpty {
       return
     }
@@ -25,13 +25,13 @@ private class MomentsSectionViewModel {
     self.page += 1
   }
 
-  func performLazyLoading() async {
+  func performLazyLoading(sorting: MomentSorting) async {
     if self.stopLazyLoading {
       return
     }
 
     do {
-      let moments = try await momentService.getMoments(page: self.page)
+      let moments = try await momentService.getMoments(page: self.page, sorting: sorting)
 
       if moments.last?.id == self.moments.last?.id {
         self.stopLazyLoading = true
@@ -49,12 +49,13 @@ private class MomentsSectionViewModel {
 
 struct MomentsSection: View {
   let preloadedMoments: OrderedSet<Moment>
+  let sorting: MomentSorting
 
   @State private var viewModel: MomentsSectionViewModel = .init()
 
   var body: some View {
     VStack(alignment: .leading) {
-      SectionWithCards(title: "Моменты") {
+      SectionWithCards(title: self.sectionTitle()) {
         ScrollView(.horizontal) {
           LazyHStack(alignment: .top) {
             ForEach(self.viewModel.moments) { moment in
@@ -62,7 +63,7 @@ struct MomentsSection: View {
                 .containerRelativeFrame(.horizontal, count: 3, span: 1, spacing: 64)
                 .task {
                   if moment == self.viewModel.moments.last {
-                    await self.viewModel.performLazyLoading()
+                    await self.viewModel.performLazyLoading(sorting: self.sorting)
                   }
                 }
             }
@@ -72,7 +73,16 @@ struct MomentsSection: View {
       }
     }
     .onAppear {
-      self.viewModel.performInitialLoad(preloadedMoments: self.preloadedMoments)
+      self.viewModel.performInitialLoad(preloadedMoments: self.preloadedMoments, sorting: self.sorting)
+    }
+  }
+
+  private func sectionTitle() -> String {
+    switch self.sorting {
+    case .newest:
+      "Моменты"
+    case .popular:
+      "Популярные моменты"
     }
   }
 }

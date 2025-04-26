@@ -18,9 +18,14 @@ struct HomeService {
     topScored: OrderedSet<ShowPreview>,
     nextSeason: OrderedSet<ShowPreviewShikimori>,
     mostPopular: OrderedSet<ShowPreviewShikimori>,
-    moments: OrderedSet<Moment>
+    moments: (OrderedSet<Moment>, MomentSorting)
   ) {
-    async let momentsFuture = self.momentService.getMoments(page: 1)
+    let momentSorting: MomentSorting =
+      Int.random(in: 1...100) <= 10
+      ? .popular
+      : .newest
+
+    async let momentsFuture = self.momentService.getMoments(page: 1, sorting: momentSorting)
 
     async let ongoingsFuture = self.showService.getOngoings(
       offset: 0,
@@ -47,7 +52,7 @@ struct HomeService {
       topScored: (try? await topScoredFuture) ?? [],
       nextSeason: (try? await nextSeasonFuture) ?? [],
       mostPopular: (try? await mostPopularFuture) ?? [],
-      moments: (try? await momentsFuture) ?? []
+      moments: ((try? await momentsFuture) ?? [], momentSorting)
     )
   }
 }
