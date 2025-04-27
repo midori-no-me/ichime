@@ -1,7 +1,7 @@
 import Foundation
 import ShikimoriApiClient
 
-struct RelatedShow: Identifiable {
+struct RelatedShow: Identifiable, Hashable {
   struct TranslatedTitles {
     let russian: String?
     let japaneseRomaji: String
@@ -17,6 +17,10 @@ struct RelatedShow: Identifiable {
 
   var id: Int {
     self.myAnimeListId
+  }
+
+  static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.id == rhs.id
   }
 
   static func createValid(
@@ -67,5 +71,9 @@ struct RelatedShow: Identifiable {
       relationKind: .create(shikimoriRelation.relation_russian),
       kind: kind
     )
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(self.id)
   }
 }

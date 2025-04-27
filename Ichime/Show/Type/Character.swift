@@ -1,8 +1,9 @@
 import Foundation
 import JikanApiClient
+import OrderedCollections
 
-struct Character: Identifiable {
-  struct VoiceActor: Identifiable {
+struct Character: Identifiable, Hashable {
+  struct VoiceActor: Identifiable, Hashable {
     let id: Int
     let name: String
     let image: URL?
@@ -13,7 +14,11 @@ struct Character: Identifiable {
   let image: URL?
   let name: String
   let role: String
-  let voiceActors: [VoiceActor]
+  let voiceActors: OrderedSet<VoiceActor>
+
+  static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.id == rhs.id
+  }
 
   static func create(
     jikanCharacterRole: JikanApiClient.CharacterRole
@@ -29,15 +34,21 @@ struct Character: Identifiable {
       image: imageUrl,
       name: jikanCharacterRole.character.name,
       role: jikanCharacterRole.role,
-      voiceActors: jikanCharacterRole.voice_actors.map {
-        .init(
-          id: $0.person.mal_id,
-          name: $0.person.name,
-          image: ($0.person.images.jpg.image_url?.path().contains("questionmark") ?? true)
-            ? nil : $0.person.images.jpg.image_url,
-          language: $0.language
-        )
-      }
+      voiceActors: .init(
+        jikanCharacterRole.voice_actors.map {
+          .init(
+            id: $0.person.mal_id,
+            name: $0.person.name,
+            image: ($0.person.images.jpg.image_url?.path().contains("questionmark") ?? true)
+              ? nil : $0.person.images.jpg.image_url,
+            language: $0.language
+          )
+        }
+      )
     )
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(self.id)
   }
 }

@@ -1,11 +1,12 @@
+import OrderedCollections
 import SwiftUI
 
 struct ShowGenreListView: View {
-  private let genres: [Genre]
+  private let genres: OrderedSet<Genre>
   private let showService: ShowService
 
   init(
-    genres: [Genre],
+    genres: OrderedSet<Genre>,
     showService: ShowService = ApplicationDependency.container.resolve()
   ) {
     self.genres = genres

@@ -237,7 +237,7 @@ struct ShowService {
 
   private func convertShikimoriRelationsToGroupedRelatedShows(
     _ shikimoriRelations: [ShikimoriApiClient.Relation]
-  ) -> [GroupedRelatedShows] {
+  ) -> OrderedSet<GroupedRelatedShows> {
     var relationTitleToRelatedShows: [ShowRelationKind: [RelatedShow]] = [:]
 
     for shikimoriRelation in shikimoriRelations {
@@ -259,13 +259,13 @@ struct ShowService {
       relatedShowsGroups.append(
         .init(
           relationKind: relationType,
-          relatedShows: relatedShows
+          relatedShows: .init(relatedShows)
         )
       )
     }
 
     relatedShowsGroups.sort(by: { $0.relationKind.priority > $1.relationKind.priority })
 
-    return relatedShowsGroups
+    return .init(relatedShowsGroups)
   }
 }

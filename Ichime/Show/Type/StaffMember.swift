@@ -1,7 +1,7 @@
 import Foundation
 import JikanApiClient
 
-struct StaffMember: Identifiable {
+struct StaffMember: Identifiable, Hashable {
   let id: Int
   let image: URL?
   let name: String

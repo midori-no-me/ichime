@@ -510,7 +510,7 @@ private struct SeasonShowProperty: View {
 }
 
 private struct GenresShowProperty: View {
-  let genres: [Genre]
+  let genres: OrderedSet<Genre>
 
   var body: some View {
     NavigationLink(
@@ -557,7 +557,7 @@ private struct EpisodesShowProperty: View {
 }
 
 private struct ShowStudiosAndDescriptions: View {
-  let studios: [Studio]
+  let studios: OrderedSet<Studio>
   let descriptions: [ShowFull.Description]
 
   var body: some View {
@@ -755,7 +755,7 @@ private struct ScreenshotsSection: View {
 private struct CharactersSection: View {
   private static let SPACING: CGFloat = 64
 
-  let characters: [Character]
+  let characters: OrderedSet<Character>
 
   var body: some View {
     SectionWithCards(title: "Персонажи") {
@@ -775,7 +775,7 @@ private struct CharactersSection: View {
 private struct StaffMembersSection: View {
   private static let SPACING: CGFloat = 64
 
-  let staffMembers: [StaffMember]
+  let staffMembers: OrderedSet<StaffMember>
 
   var body: some View {
     SectionWithCards(title: "Авторы") {
@@ -793,7 +793,7 @@ private struct StaffMembersSection: View {
 }
 
 private struct RelatedShowsSection: View {
-  let relatedShowsGroups: [GroupedRelatedShows]
+  let relatedShowsGroups: OrderedSet<GroupedRelatedShows>
 
   var body: some View {
     ScrollView(.horizontal) {

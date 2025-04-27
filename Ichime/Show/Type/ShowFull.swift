@@ -44,15 +44,15 @@ struct ShowFull {
   let latestAiredEpisodeNumber: Int?
   let hasEpisodes: Bool
   let kind: ShowKind?
-  let genres: [Genre]
+  let genres: OrderedSet<Genre>
   let isOngoing: Bool
-  let studios: [Studio]
+  let studios: OrderedSet<Studio>
   let screenshots: OrderedSet<URL>
   let nextEpisodeReleasesAt: Date?
-  let characters: [Character]
-  let staffMembers: [StaffMember]
+  let characters: OrderedSet<Character>
+  let staffMembers: OrderedSet<StaffMember>
   let moments: OrderedSet<Moment>
-  let relatedShows: [GroupedRelatedShows]
+  let relatedShows: OrderedSet<GroupedRelatedShows>
 
   static func create(
     anime365Series: Anime365ApiClient.SeriesFull,
@@ -62,7 +62,7 @@ struct ShowFull {
     jikanCharacterRoles: [JikanApiClient.CharacterRole],
     jikanStaffMembers: [JikanApiClient.StaffMember],
     moments: OrderedSet<Moment>,
-    relatedShows: [GroupedRelatedShows]
+    relatedShows: OrderedSet<GroupedRelatedShows>
   ) -> Self {
     let score = Float(anime365Series.myAnimeListScore) ?? 0
     let totalEpisodes = anime365Series.numberOfEpisodes <= 0 ? nil : anime365Series.numberOfEpisodes
@@ -101,19 +101,21 @@ struct ShowFull {
         totalEpisodes: totalEpisodes
       ),
       kind: kind,
-      genres: (anime365Series.genres ?? []).map { .init(fromAnime365Genre: $0) },
+      genres: .init((anime365Series.genres ?? []).map { .init(fromAnime365Genre: $0) }),
       isOngoing: anime365Series.isAiring == 1,
-      studios: (shikimoriAnime?.studios ?? []).map {
-        .init(fromShikimoriStudio: $0, shikimoriBaseUrl: shikimoriBaseUrl)
-      },
+      studios: .init(
+        (shikimoriAnime?.studios ?? []).map {
+          .init(fromShikimoriStudio: $0, shikimoriBaseUrl: shikimoriBaseUrl)
+        }
+      ),
       screenshots: .init(
         shikimoriScreenshots.map { screenshot in
           URL(string: shikimoriBaseUrl.absoluteString + screenshot.original)!
         }
       ),
       nextEpisodeReleasesAt: shikimoriAnime?.next_episode_at,
-      characters: jikanCharacterRoles.map { .create(jikanCharacterRole: $0) },
-      staffMembers: jikanStaffMembers.map { .create(jikanStaffMember: $0) },
+      characters: .init(jikanCharacterRoles.map { .create(jikanCharacterRole: $0) }),
+      staffMembers: .init(jikanStaffMembers.map { .create(jikanStaffMember: $0) }),
       moments: moments,
       relatedShows: relatedShows
     )
