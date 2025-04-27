@@ -7,14 +7,12 @@ struct Moment: Identifiable, Hashable {
   let thumbnailUrl: URL
   let showTitle: String
 
-  static func create(
-    anime365Moment: ScraperAPI.Types.Moment
-  ) -> Self {
-    .init(
-      id: anime365Moment.id,
-      title: anime365Moment.title,
-      thumbnailUrl: anime365Moment.preview,
-      showTitle: anime365Moment.fromAnime
-    )
+  init(
+    fromAnime365Moment: ScraperAPI.Types.Moment
+  ) {
+    self.id = fromAnime365Moment.id
+    self.title = fromAnime365Moment.title
+    self.thumbnailUrl = fromAnime365Moment.preview
+    self.showTitle = fromAnime365Moment.fromAnime
   }
 }

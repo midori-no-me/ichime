@@ -30,7 +30,7 @@ struct MomentService {
       )
     )
 
-    return .init(anime365Moments.map { .create(anime365Moment: $0) })
+    return .init(anime365Moments.map { .init(fromAnime365Moment: $0) })
   }
 
   func getShowMoments(showId: Int, page: Int) async throws -> OrderedSet<Moment> {
@@ -38,6 +38,6 @@ struct MomentService {
       ScraperAPI.Request.GetMomentsByShow(showId: showId, page: page)
     )
 
-    return .init(anime365Moments.map { .create(anime365Moment: $0) })
+    return .init(anime365Moments.map { .init(fromAnime365Moment: $0) })
   }
 }
