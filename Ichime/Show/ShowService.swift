@@ -255,8 +255,8 @@ struct ShowService {
 
     for shikimoriRelation in shikimoriRelations {
       guard
-        let relatedShow = RelatedShow.createValid(
-          shikimoriRelation: shikimoriRelation,
+        let relatedShow = RelatedShow(
+          fromShikimoriRelation: shikimoriRelation,
           shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
         )
       else {

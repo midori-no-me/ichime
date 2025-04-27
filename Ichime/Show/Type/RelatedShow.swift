@@ -19,58 +19,56 @@ struct RelatedShow: Identifiable, Hashable {
     self.myAnimeListId
   }
 
-  static func == (lhs: Self, rhs: Self) -> Bool {
-    lhs.id == rhs.id
-  }
-
-  static func createValid(
-    shikimoriRelation: ShikimoriApiClient.Relation,
+  init?(
+    fromShikimoriRelation: ShikimoriApiClient.Relation,
     shikimoriBaseUrl: URL
-  ) -> Self? {
-    guard let anime = shikimoriRelation.anime else {
+  ) {
+    guard let anime = fromShikimoriRelation.anime else {
       return nil
     }
 
     let dateWithoutTimeFormatter = ShikimoriApiClient.ApiDateDecoder.getDateWithoutTimeFormatter()
 
-    var airingSeason: AiringSeason? = nil
-
     if let airedOnString = anime.aired_on, let airedAt = dateWithoutTimeFormatter.date(from: airedOnString) {
-      airingSeason = .init(fromDate: airedAt)
+      self.airingSeason = .init(fromDate: airedAt)
     }
-
-    var posterUrl: URL? = nil
+    else {
+      self.airingSeason = nil
+    }
 
     if let image = anime.image {
-      posterUrl = URL(string: shikimoriBaseUrl.absoluteString + image.original)
+      self.posterUrl = URL(string: shikimoriBaseUrl.absoluteString + image.original)
+    }
+    else {
+      self.posterUrl = nil
     }
 
-    var score: Float? = nil
-
-    if let scoreString = anime.score {
-      if let parsedScore = Float(scoreString), parsedScore > 0 {
-        score = parsedScore
-      }
+    if let scoreString = anime.score, let parsedScore = Float(scoreString), parsedScore > 0 {
+      self.score = parsedScore
     }
-
-    var kind: ShowKind? = nil
+    else {
+      self.score = nil
+    }
 
     if let shikimoriAnimeKind = anime.kind {
-      kind = .create(shikimoriAnimeKind)
+      self.kind = .create(shikimoriAnimeKind)
+    }
+    else {
+      self.kind = nil
     }
 
-    return Self(
-      myAnimeListId: anime.id,
-      title: .init(
-        russian: anime.russian,
-        japaneseRomaji: anime.name
-      ),
-      posterUrl: posterUrl,
-      score: score,
-      airingSeason: airingSeason,
-      relationKind: .create(shikimoriRelation.relation_russian),
-      kind: kind
+    self.myAnimeListId = anime.id
+
+    self.title = .init(
+      russian: anime.russian,
+      japaneseRomaji: anime.name
     )
+
+    self.relationKind = .create(fromShikimoriRelation.relation_russian)
+  }
+
+  static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.id == rhs.id
   }
 
   func hash(into hasher: inout Hasher) {
