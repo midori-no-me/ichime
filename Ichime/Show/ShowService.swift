@@ -52,7 +52,14 @@ struct ShowService {
     return coverUrls
   }
 
-  func getFullShow(showId: Int) async throws -> ShowFull {
+  func getShowDetails(showId: Int) async throws -> (
+    show: ShowDetails,
+    moments: OrderedSet<Moment>,
+    screenshots: OrderedSet<URL>,
+    characters: OrderedSet<Character>,
+    staffMembers: OrderedSet<StaffMember>,
+    relatedShows: OrderedSet<GroupedRelatedShows>
+  ) {
     let anime365Series = try await anime365ApiClient.getSeries(
       seriesId: showId
     )
@@ -71,7 +78,7 @@ struct ShowService {
       animeId: anime365Series.myAnimeListId
     )
 
-    async let jikanCharactersFuture = self.jikanApiClient.getAnimeCharacters(
+    async let jikanCharacterRolesFuture = self.jikanApiClient.getAnimeCharacters(
       id: anime365Series.myAnimeListId
     )
 
@@ -83,17 +90,23 @@ struct ShowService {
     let shikimoriAnime = try? await shikimoriAnimeFuture
     let shikimoriScreenshots = (try? await shikimoriScreenshotsFuture) ?? []
     let shikimoriRelations = (try? await shikimoriRelationsFuture) ?? []
-    let jikanCharacters = (try? await jikanCharactersFuture) ?? []
+    let jikanCharacterRoles = (try? await jikanCharacterRolesFuture) ?? []
     let jikanStaffMembers = (try? await jikanStaffMembersFuture) ?? []
 
-    return ShowFull.create(
-      anime365Series: anime365Series,
-      shikimoriAnime: shikimoriAnime,
-      shikimoriScreenshots: shikimoriScreenshots,
-      shikimoriBaseUrl: self.shikimoriApiClient.baseUrl,
-      jikanCharacterRoles: jikanCharacters,
-      jikanStaffMembers: jikanStaffMembers,
+    return (
+      show: .create(
+        anime365Series: anime365Series,
+        shikimoriAnime: shikimoriAnime,
+        shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
+      ),
       moments: moments,
+      screenshots: .init(
+        shikimoriScreenshots.map { screenshot in
+          URL(string: self.shikimoriApiClient.baseUrl.absoluteString + screenshot.original)!
+        }
+      ),
+      characters: .init(jikanCharacterRoles.map { .create(jikanCharacterRole: $0) }),
+      staffMembers: .init(jikanStaffMembers.map { .create(jikanStaffMember: $0) }),
       relatedShows: self.convertShikimoriRelationsToGroupedRelatedShows(shikimoriRelations)
     )
   }

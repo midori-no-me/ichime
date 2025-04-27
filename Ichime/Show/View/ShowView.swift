@@ -23,7 +23,16 @@ private class ShowViewModel {
     case idle
     case loading
     case loadingFailed(Error)
-    case loaded(ShowFull)
+    case loaded(
+      (
+        show: ShowDetails,
+        moments: OrderedSet<Moment>,
+        screenshots: OrderedSet<URL>,
+        characters: OrderedSet<Character>,
+        staffMembers: OrderedSet<StaffMember>,
+        relatedShows: OrderedSet<GroupedRelatedShows>
+      )
+    )
   }
 
   private var _state: State = .idle
@@ -66,7 +75,7 @@ private class ShowViewModel {
     self.showId = showId
 
     do {
-      let show = try await showService.getFullShow(
+      let show = try await showService.getShowDetails(
         showId: showId
       )
 
@@ -81,7 +90,7 @@ private class ShowViewModel {
 
   func performPullToRefresh() async {
     do {
-      let show = try await showService.getFullShow(
+      let show = try await showService.getShowDetails(
         showId: self.showId
       )
 
@@ -173,9 +182,17 @@ struct ShowView: View {
       }
       .centeredContentFix()
 
-    case let .loaded(show):
+    case let .loaded((show, moments, screenshots, characters, staffMembers, relatedShows)):
       ScrollView(.vertical) {
-        ShowDetails(show: show, viewModel: self.viewModel)
+        ShowDetailsView(
+          show: show,
+          moments: moments,
+          screenshots: screenshots,
+          characters: characters,
+          staffMembers: staffMembers,
+          relatedShows: relatedShows,
+          viewModel: self.viewModel
+        )
       }
       .onAppear {
         guard let onOpened = self.onOpened else {
@@ -190,8 +207,13 @@ struct ShowView: View {
 
 private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
 
-private struct ShowDetails: View {
-  let show: ShowFull
+private struct ShowDetailsView: View {
+  let show: ShowDetails
+  let moments: OrderedSet<Moment>
+  let screenshots: OrderedSet<URL>
+  let characters: OrderedSet<Character>
+  let staffMembers: OrderedSet<StaffMember>
+  let relatedShows: OrderedSet<GroupedRelatedShows>
   var viewModel: ShowViewModel
 
   var body: some View {
@@ -207,31 +229,31 @@ private struct ShowDetails: View {
         .padding(.bottom, SPACING_BETWEEN_SECTIONS)
       }
 
-      if !self.show.screenshots.isEmpty {
-        ScreenshotsSection(screenshots: self.show.screenshots)
+      if !self.screenshots.isEmpty {
+        ScreenshotsSection(screenshots: self.screenshots)
       }
 
-      if !self.show.moments.isEmpty {
-        ShowMomentsSection(showId: self.show.id, preloadedMoments: self.show.moments)
+      if !self.moments.isEmpty {
+        ShowMomentsSection(showId: self.show.id, preloadedMoments: self.moments)
       }
 
-      if !self.show.characters.isEmpty {
-        CharactersSection(characters: self.show.characters)
+      if !self.characters.isEmpty {
+        CharactersSection(characters: self.characters)
       }
 
-      if !self.show.staffMembers.isEmpty {
-        StaffMembersSection(staffMembers: self.show.staffMembers)
+      if !self.staffMembers.isEmpty {
+        StaffMembersSection(staffMembers: self.staffMembers)
       }
 
-      if !self.show.relatedShows.isEmpty {
-        RelatedShowsSection(relatedShowsGroups: self.show.relatedShows)
+      if !self.relatedShows.isEmpty {
+        RelatedShowsSection(relatedShowsGroups: self.relatedShows)
       }
     }
   }
 }
 
 private struct ShowKeyDetailsSection: View {
-  let show: ShowFull
+  let show: ShowDetails
   var viewModel: ShowViewModel
 
   @State private var displayShowCoversSheet: Bool = false
@@ -347,7 +369,7 @@ private struct ShowPrimaryAndSecondaryTitles: View {
 }
 
 private struct ShowActionButtons: View {
-  let show: ShowFull
+  let show: ShowDetails
   var viewModel: ShowViewModel
   @State private var showEdit = false
   private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
@@ -558,7 +580,7 @@ private struct EpisodesShowProperty: View {
 
 private struct ShowStudiosAndDescriptions: View {
   let studios: OrderedSet<Studio>
-  let descriptions: [ShowFull.Description]
+  let descriptions: [ShowDetails.Description]
 
   var body: some View {
     ScrollView(.horizontal) {

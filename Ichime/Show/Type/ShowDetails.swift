@@ -1,10 +1,9 @@
 import Anime365ApiClient
 import Foundation
-import JikanApiClient
 import OrderedCollections
 import ShikimoriApiClient
 
-struct ShowFull {
+struct ShowDetails {
   struct Description: Hashable {
     let text: String
     let source: String
@@ -47,22 +46,12 @@ struct ShowFull {
   let genres: OrderedSet<Genre>
   let isOngoing: Bool
   let studios: OrderedSet<Studio>
-  let screenshots: OrderedSet<URL>
   let nextEpisodeReleasesAt: Date?
-  let characters: OrderedSet<Character>
-  let staffMembers: OrderedSet<StaffMember>
-  let moments: OrderedSet<Moment>
-  let relatedShows: OrderedSet<GroupedRelatedShows>
 
   static func create(
     anime365Series: Anime365ApiClient.SeriesFull,
     shikimoriAnime: ShikimoriApiClient.Anime?,
-    shikimoriScreenshots: [ShikimoriApiClient.ImageVariants],
-    shikimoriBaseUrl: URL,
-    jikanCharacterRoles: [JikanApiClient.CharacterRole],
-    jikanStaffMembers: [JikanApiClient.StaffMember],
-    moments: OrderedSet<Moment>,
-    relatedShows: OrderedSet<GroupedRelatedShows>
+    shikimoriBaseUrl: URL
   ) -> Self {
     let score = Float(anime365Series.myAnimeListScore) ?? 0
     let totalEpisodes = anime365Series.numberOfEpisodes <= 0 ? nil : anime365Series.numberOfEpisodes
@@ -108,16 +97,7 @@ struct ShowFull {
           .init(fromShikimoriStudio: $0, shikimoriBaseUrl: shikimoriBaseUrl)
         }
       ),
-      screenshots: .init(
-        shikimoriScreenshots.map { screenshot in
-          URL(string: shikimoriBaseUrl.absoluteString + screenshot.original)!
-        }
-      ),
-      nextEpisodeReleasesAt: shikimoriAnime?.next_episode_at,
-      characters: .init(jikanCharacterRoles.map { .create(jikanCharacterRole: $0) }),
-      staffMembers: .init(jikanStaffMembers.map { .create(jikanStaffMember: $0) }),
-      moments: moments,
-      relatedShows: relatedShows
+      nextEpisodeReleasesAt: shikimoriAnime?.next_episode_at
     )
   }
 
