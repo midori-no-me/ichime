@@ -52,7 +52,7 @@ struct AnimeList: View {
   var body: some View {
     List {
       Section {
-        ForEach(self.animeList, id: \.id) { show in
+        ForEach(self.animeList) { show in
           Button(action: {
             self.selectedShow = .init(id: show.id, name: show.name.ru, totalEpisodes: show.progress.total)
           }) {

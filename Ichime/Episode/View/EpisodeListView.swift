@@ -162,7 +162,7 @@ struct EpisodeListView: View {
     case let .loaded(episodeInfos):
       List {
         Section {
-          ForEach(episodeInfos, id: \.anime365Id) { episodeInfo in
+          ForEach(episodeInfos) { episodeInfo in
             EpisodePreviewRow(episodeInfo: episodeInfo)
               .task {
                 if episodeInfo.anime365Id == episodeInfos.last?.anime365Id {

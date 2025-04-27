@@ -136,7 +136,7 @@ private struct EpisodeTranslationsStreamingQualities: View {
   var body: some View {
     List {
       Section {
-        ForEach(self.episodeTranslationStreamingInfo.streamingQualities, id: \.videoUrl) { streamingQuality in
+        ForEach(self.episodeTranslationStreamingInfo.streamingQualities) { streamingQuality in
           Button(action: {
             var subtitlesUrl = self.episodeTranslationStreamingInfo.subtitlesUrl
 
@@ -173,7 +173,7 @@ private struct EpisodeTranslationsStreamingQualities: View {
 
       Section {
         Picker("Плеер", selection: self.$selectedPlayer) {
-          ForEach(ThirdPartyVideoPlayerType.allCases, id: \.self) { type in
+          ForEach(ThirdPartyVideoPlayerType.allCases) { type in
             Text(type.name).tag(type)
           }
         }

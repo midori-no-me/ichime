@@ -1,8 +1,12 @@
 import Foundation
 
-public enum ThirdPartyVideoPlayerType: String, CaseIterable {
+public enum ThirdPartyVideoPlayerType: String, CaseIterable, Identifiable {
   case infuse
   case vlc
+
+  public var id: String {
+    self.rawValue
+  }
 
   public var appStoreUrl: URL {
     switch self {

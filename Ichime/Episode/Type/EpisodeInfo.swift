@@ -2,7 +2,7 @@ import Anime365ApiClient
 import Foundation
 import JikanApiClient
 
-struct EpisodeInfo {
+struct EpisodeInfo: Identifiable {
   let anime365Id: Int
   let episodeNumber: Int?
   let anime365Title: String
@@ -14,6 +14,10 @@ struct EpisodeInfo {
   let uploadedAt: Date
   let synopsis: String?
   let duration: Duration?
+
+  var id: Int {
+    self.anime365Id
+  }
 
   static func createValid(
     anime365EpisodePreview: Anime365ApiClient.Episode,

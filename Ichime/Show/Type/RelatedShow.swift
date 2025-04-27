@@ -1,7 +1,7 @@
 import Foundation
 import ShikimoriApiClient
 
-struct RelatedShow {
+struct RelatedShow: Identifiable {
   struct TranslatedTitles {
     let russian: String?
     let japaneseRomaji: String
@@ -14,6 +14,10 @@ struct RelatedShow {
   let airingSeason: AiringSeason?
   let relationKind: ShowRelationKind
   let kind: ShowKind?
+
+  var id: Int {
+    self.myAnimeListId
+  }
 
   static func createValid(
     shikimoriRelation: ShikimoriApiClient.Relation,

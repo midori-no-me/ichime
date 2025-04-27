@@ -797,10 +797,10 @@ private struct RelatedShowsSection: View {
   var body: some View {
     ScrollView(.horizontal) {
       LazyHStack(alignment: .top) {
-        ForEach(self.relatedShowsGroups, id: \.relationKind) { relatedShowGroup in
+        ForEach(self.relatedShowsGroups) { relatedShowGroup in
           SectionWithCards(title: relatedShowGroup.relationKind.title) {
             LazyHStack(alignment: .top) {
-              ForEach(relatedShowGroup.relatedShows, id: \.myAnimeListId) { relatedShow in
+              ForEach(relatedShowGroup.relatedShows) { relatedShow in
                 RelatedShowCard(relatedShow: relatedShow)
                   .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
                   .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)

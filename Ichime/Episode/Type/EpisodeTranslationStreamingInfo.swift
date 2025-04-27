@@ -2,9 +2,13 @@ import Anime365ApiClient
 import Foundation
 
 struct EpisodeTranslationStreamingInfo {
-  struct EpisodeTranslationStreamingQuality {
+  struct EpisodeTranslationStreamingQuality: Identifiable {
     let videoUrl: URL
     let height: Int
+
+    var id: URL {
+      self.videoUrl
+    }
 
     static func createValid(
       anime365ApiTranslationEmbedStream: Anime365ApiClient.TranslationEmbed.Stream

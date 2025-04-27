@@ -125,7 +125,7 @@ struct EpisodeTranslationListView: View {
 
       case let .loaded(episode, episodeTranslationGroups):
         List {
-          ForEach(episodeTranslationGroups, id: \.groupType) { episodeTranslationGroup in
+          ForEach(episodeTranslationGroups) { episodeTranslationGroup in
             Section(header: Text(episodeTranslationGroup.groupType.title)) {
               ForEach(episodeTranslationGroup.episodeTranslationInfos) { episodeTranslationInfo in
                 EpisodeTranslationRow(episodeTranslationInfo: episodeTranslationInfo)
