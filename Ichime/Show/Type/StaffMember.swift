@@ -7,20 +7,18 @@ struct StaffMember: Identifiable, Hashable {
   let name: String
   let roles: [String]
 
-  static func create(
-    jikanStaffMember: JikanApiClient.StaffMember
-  ) -> Self {
-    var imageUrl: URL? = jikanStaffMember.person.images.jpg.image_url
-
-    if let nonNilImageUrl = imageUrl, nonNilImageUrl.path().contains("questionmark") {
-      imageUrl = nil
+  init(
+    fromJikanStaffMember: JikanApiClient.StaffMember
+  ) {
+    if let imageUrl = fromJikanStaffMember.person.images.jpg.image_url, !imageUrl.path().contains("questionmark") {
+      self.image = imageUrl
+    }
+    else {
+      self.image = nil
     }
 
-    return .init(
-      id: jikanStaffMember.person.mal_id,
-      image: imageUrl,
-      name: jikanStaffMember.person.name,
-      roles: jikanStaffMember.positions
-    )
+    self.id = fromJikanStaffMember.person.mal_id
+    self.name = fromJikanStaffMember.person.name
+    self.roles = fromJikanStaffMember.positions
   }
 }

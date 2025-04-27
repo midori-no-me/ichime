@@ -106,7 +106,7 @@ struct ShowService {
         }
       ),
       characters: .init(jikanCharacterRoles.map { .create(jikanCharacterRole: $0) }),
-      staffMembers: .init(jikanStaffMembers.map { .create(jikanStaffMember: $0) }),
+      staffMembers: .init(jikanStaffMembers.map { .init(fromJikanStaffMember: $0) }),
       relatedShows: self.convertShikimoriRelationsToGroupedRelatedShows(shikimoriRelations)
     )
   }
