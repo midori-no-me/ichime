@@ -105,7 +105,7 @@ struct ShowService {
           URL(string: self.shikimoriApiClient.baseUrl.absoluteString + screenshot.original)!
         }
       ),
-      characters: .init(jikanCharacterRoles.map { .create(jikanCharacterRole: $0) }),
+      characters: .init(jikanCharacterRoles.map { .init(fromJikanCharacterRole: $0) }),
       staffMembers: .init(jikanStaffMembers.map { .init(fromJikanStaffMember: $0) }),
       relatedShows: self.convertShikimoriRelationsToGroupedRelatedShows(shikimoriRelations)
     )
