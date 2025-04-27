@@ -16,7 +16,7 @@ private class MomentsSectionViewModel {
     self.momentService = momentService
   }
 
-  func performInitialLoad(preloadedMoments: OrderedSet<Moment>, sorting: MomentSorting) {
+  func performInitialLoad(preloadedMoments: OrderedSet<Moment>) {
     if !self.moments.isEmpty {
       return
     }
@@ -73,7 +73,7 @@ struct MomentsSection: View {
       }
     }
     .onAppear {
-      self.viewModel.performInitialLoad(preloadedMoments: self.preloadedMoments, sorting: self.sorting)
+      self.viewModel.performInitialLoad(preloadedMoments: self.preloadedMoments)
     }
   }
 
