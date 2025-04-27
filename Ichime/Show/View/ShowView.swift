@@ -1,3 +1,4 @@
+import OrderedCollections
 import ScraperAPI
 import SwiftData
 import SwiftUI
@@ -664,7 +665,7 @@ private struct ScreenshotsSection: View {
   @State private var selectedScreenshot: URL? = nil
   @State private var showSheet: Bool = false
 
-  let screenshots: [URL]
+  let screenshots: OrderedSet<URL>
 
   var body: some View {
     SectionWithCards(title: "Скриншоты") {

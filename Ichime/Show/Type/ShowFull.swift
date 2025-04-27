@@ -47,7 +47,7 @@ struct ShowFull {
   let genres: [Genre]
   let isOngoing: Bool
   let studios: [Studio]
-  let screenshots: [URL]
+  let screenshots: OrderedSet<URL>
   let nextEpisodeReleasesAt: Date?
   let characters: [Character]
   let staffMembers: [StaffMember]
@@ -106,9 +106,11 @@ struct ShowFull {
       studios: (shikimoriAnime?.studios ?? []).map {
         .init(fromShikimoriStudio: $0, shikimoriBaseUrl: shikimoriBaseUrl)
       },
-      screenshots: shikimoriScreenshots.map { screenshot in
-        URL(string: shikimoriBaseUrl.absoluteString + screenshot.original)!
-      },
+      screenshots: .init(
+        shikimoriScreenshots.map { screenshot in
+          URL(string: shikimoriBaseUrl.absoluteString + screenshot.original)!
+        }
+      ),
       nextEpisodeReleasesAt: shikimoriAnime?.next_episode_at,
       characters: jikanCharacterRoles.map { .create(jikanCharacterRole: $0) },
       staffMembers: jikanStaffMembers.map { .create(jikanStaffMember: $0) },
