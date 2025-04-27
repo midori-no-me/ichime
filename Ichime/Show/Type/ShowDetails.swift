@@ -1,5 +1,6 @@
 import Anime365ApiClient
 import Foundation
+import JikanApiClient
 import OrderedCollections
 import ShikimoriApiClient
 
@@ -38,6 +39,11 @@ struct ShowDetails {
   let descriptions: [Description]
   let posterUrl: URL?
   let score: Float?
+  let scoredBy: Int?
+  let rank: Int?
+  let popularity: Int?
+  let members: Int?
+  let favorites: Int?
   let airingSeason: AiringSeason?
   let numberOfEpisodes: Int?
   let latestAiredEpisodeNumber: Int?
@@ -48,57 +54,97 @@ struct ShowDetails {
   let studios: OrderedSet<Studio>
   let nextEpisodeReleasesAt: Date?
 
-  static func create(
+  init(
     anime365Series: Anime365ApiClient.SeriesFull,
     shikimoriAnime: ShikimoriApiClient.Anime?,
-    shikimoriBaseUrl: URL
-  ) -> Self {
-    let score = Float(anime365Series.myAnimeListScore) ?? 0
+    shikimoriBaseUrl: URL,
+    jikanAnime: JikanApiClient.Anime?
+  ) {
     let totalEpisodes = anime365Series.numberOfEpisodes <= 0 ? nil : anime365Series.numberOfEpisodes
-    var kind: ShowKind? = nil
 
     if let seriesType = anime365Series.type {
-      kind = .create(seriesType)
+      self.kind = .create(seriesType)
     }
-
-    var title = ShowName.unparsed(anime365Series.title)
+    else {
+      self.kind = nil
+    }
 
     if let romajiTitle = anime365Series.titles.romaji {
-      title = .parsed(romajiTitle, anime365Series.titles.ru)
+      self.title = .parsed(romajiTitle, anime365Series.titles.ru)
+    }
+    else {
+      self.title = .unparsed(anime365Series.title)
     }
 
-    return Self(
-      id: anime365Series.id,
-      myAnimeListId: anime365Series.myAnimeListId,
-      title: title,
-      descriptions: (anime365Series.descriptions ?? []).map { description in
-        Self.Description.createFiltered(
-          text: description.value,
-          source: description.source
-        )
-      },
-      posterUrl: anime365Series.posterUrl,
-      score: score <= 0 ? nil : Float(anime365Series.myAnimeListScore),
-      airingSeason: AiringSeason(fromTranslatedString: anime365Series.season),
-      numberOfEpisodes: anime365Series.numberOfEpisodes <= 0 ? nil : anime365Series.numberOfEpisodes,
-      latestAiredEpisodeNumber: Self.getLatestAiredEpisodeNumber(
-        anime365Episodes: anime365Series.episodes ?? [],
-        totalEpisodes: totalEpisodes
-      ),
-      hasEpisodes: Self.calculateShowHasUploadedEpisodesToWatch(
-        anime365Episodes: anime365Series.episodes ?? [],
-        totalEpisodes: totalEpisodes
-      ),
-      kind: kind,
-      genres: .init((anime365Series.genres ?? []).map { .init(fromAnime365Genre: $0) }),
-      isOngoing: anime365Series.isAiring == 1,
-      studios: .init(
-        (shikimoriAnime?.studios ?? []).map {
-          .init(fromShikimoriStudio: $0, shikimoriBaseUrl: shikimoriBaseUrl)
-        }
-      ),
-      nextEpisodeReleasesAt: shikimoriAnime?.next_episode_at
+    if let score = Float(anime365Series.myAnimeListScore), score > 0 {
+      self.score = score
+    }
+    else {
+      self.score = nil
+    }
+
+    if let scoredBy = jikanAnime?.scored_by, scoredBy > 0 {
+      self.scoredBy = scoredBy
+    }
+    else {
+      self.scoredBy = nil
+    }
+
+    if let rank = jikanAnime?.rank, rank > 0 {
+      self.rank = rank
+    }
+    else {
+      self.rank = nil
+    }
+
+    if let popularity = jikanAnime?.popularity, popularity > 0 {
+      self.popularity = popularity
+    }
+    else {
+      self.popularity = nil
+    }
+
+    if let members = jikanAnime?.members, members > 0 {
+      self.members = members
+    }
+    else {
+      self.members = nil
+    }
+
+    if let favorites = jikanAnime?.favorites, favorites > 0 {
+      self.favorites = favorites
+    }
+    else {
+      self.favorites = nil
+    }
+
+    self.id = anime365Series.id
+    self.myAnimeListId = anime365Series.myAnimeListId
+    self.descriptions = (anime365Series.descriptions ?? []).map { description in
+      Self.Description.createFiltered(
+        text: description.value,
+        source: description.source
+      )
+    }
+    self.posterUrl = anime365Series.posterUrl
+    self.airingSeason = AiringSeason(fromTranslatedString: anime365Series.season)
+    self.numberOfEpisodes = totalEpisodes
+    self.latestAiredEpisodeNumber = Self.getLatestAiredEpisodeNumber(
+      anime365Episodes: anime365Series.episodes ?? [],
+      totalEpisodes: totalEpisodes
     )
+    self.hasEpisodes = Self.calculateShowHasUploadedEpisodesToWatch(
+      anime365Episodes: anime365Series.episodes ?? [],
+      totalEpisodes: totalEpisodes
+    )
+    self.genres = .init((anime365Series.genres ?? []).map { .init(fromAnime365Genre: $0) })
+    self.isOngoing = anime365Series.isAiring == 1
+    self.studios = .init(
+      (shikimoriAnime?.studios ?? []).map {
+        .init(fromShikimoriStudio: $0, shikimoriBaseUrl: shikimoriBaseUrl)
+      }
+    )
+    self.nextEpisodeReleasesAt = shikimoriAnime?.next_episode_at
   }
 
   private static func getLatestAiredEpisodeNumber(

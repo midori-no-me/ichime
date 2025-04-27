@@ -11,4 +11,9 @@ public struct Anime: Decodable {
   public let images: ImageInDifferentFormats
   public let title: String
   public let broadcast: Broadcast
+  public let scored_by: Int?
+  public let rank: Int?
+  public let popularity: Int?
+  public let members: Int?
+  public let favorites: Int?
 }

@@ -266,12 +266,20 @@ private struct ShowKeyDetailsSection: View {
         ShowActionButtons(show: self.show, viewModel: self.viewModel)
 
         VStack(alignment: .leading, spacing: 16) {
-          ShowProperty(
-            label: "Рейтинг",
-            value: self.show
-              .score != nil
-              ? "★ \(self.show.score!.formatted(.number.precision(.fractionLength(2))))" : "???"
-          )
+          HStack(alignment: .top, spacing: 32) {
+            RatingProperty(
+              score: self.show.score,
+              scoredBy: self.show.scoredBy,
+              rank: self.show.rank
+            )
+
+            if self.show.popularity != nil || self.show.members != nil {
+              PopularityProperty(
+                popularity: self.show.popularity,
+                members: self.show.members
+              )
+            }
+          }
 
           ShowProperty(
             label: "Тип",
@@ -528,6 +536,73 @@ private struct SeasonShowProperty: View {
     }
 
     return fetchFunction
+  }
+}
+
+private struct RatingProperty: View {
+  let score: Float?
+  let scoredBy: Int?
+  let rank: Int?
+
+  var body: some View {
+    ShowProperty(
+      label: self.formatLabel(),
+      value: self.formatPropertyValue()
+    )
+  }
+
+  private func formatLabel() -> String {
+    if let rank = self.rank {
+      return "Топ \(rank.formatted(.number)) по рейтингу"
+    }
+
+    return "Рейтинг"
+  }
+
+  private func formatPropertyValue() -> String {
+    var components: [String] = []
+
+    if let score = self.score {
+      components.append("★ \(score.formatted(.number.precision(.fractionLength(2))))")
+    }
+
+    if let scoredBy = self.scoredBy {
+      components.append("\(scoredBy.formatted(ShortLargeNumberFormatter())) оценок")
+    }
+
+    if components.isEmpty {
+      return "???"
+    }
+
+    return components.joined(separator: " • ")
+  }
+}
+
+private struct PopularityProperty: View {
+  let popularity: Int?
+  let members: Int?
+
+  var body: some View {
+    ShowProperty(
+      label: self.formatLabel(),
+      value: self.formatPropertyValue()
+    )
+  }
+
+  private func formatLabel() -> String {
+    if let popularity = self.popularity {
+      return "Топ \(popularity.formatted(.number)) по популярности"
+    }
+
+    return "Популярность"
+  }
+
+  private func formatPropertyValue() -> String {
+    if let members = self.members {
+      return "\(members.formatted(ShortLargeNumberFormatter())) зрителей"
+    }
+
+    return "??? зрителей"
   }
 }
 
