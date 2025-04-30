@@ -1,3 +1,4 @@
+import AuthenticationServices
 import ScraperAPI
 import SwiftUI
 
@@ -15,11 +16,6 @@ private class AuthenticationViewModel {
 
   init(userManager: UserManager = ApplicationDependency.container.resolve()) {
     self.userManager = userManager
-  }
-
-  func getProfileSettingsUrl() -> URL {
-    self.baseUrlPreference.url
-      .appendingPathComponent("/users/profile")
   }
 
   func performAuthentication() async {
@@ -50,20 +46,45 @@ private class AuthenticationViewModel {
 
 struct AuthenticationView: View {
   @State private var viewModel: AuthenticationViewModel = .init()
-  @Environment(\.dismiss) private var dismiss
+  @Environment(\.authorizationController) private var authorizationController
+  @State private var showManualSignInForm: Bool = false
 
   var body: some View {
     Form {
       Section {
-        TextField("Почта", text: self.$viewModel.userEmail, prompt: Text("Адрес электронной почты"))
-          .keyboardType(.emailAddress)
-          .disableAutocorrection(true)
+        if self.showManualSignInForm {
+          Button("Отмена") {
+            withAnimation {
+              self.showManualSignInForm = false
+            }
+          }
+        }
+        else {
+          Button("Войти в аккаунт Anime 365") {
+            Task {
+              await self.openSignInScreen()
+            }
+          }
+        }
+      }
 
-        SecureField("Пароль", text: self.$viewModel.userPassword, prompt: Text("Пароль"))
-      } footer: {
-        Text(
-          "Приложение не поддерживает авторизацию через социальные сети. Установите пароль в [настройках профиля](\(self.viewModel.getProfileSettingsUrl().absoluteString)) на сайте."
-        )
+      if self.showManualSignInForm {
+        Section {
+          TextField("Почта", text: self.$viewModel.userEmail, prompt: Text("Адрес электронной почты"))
+            .keyboardType(.emailAddress)
+            .disableAutocorrection(true)
+
+          SecureField("Пароль", text: self.$viewModel.userPassword, prompt: Text("Пароль"))
+        }
+
+        Section {
+          Button("Войти") {
+            Task {
+              await self.viewModel.performAuthentication()
+            }
+          }
+          .disabled(self.viewModel.userEmail.isEmpty || self.viewModel.userPassword.isEmpty)
+        }
       }
 
       Section {
@@ -77,6 +98,21 @@ struct AuthenticationView: View {
           "Попробуйте выбрать другой адрес, если испытываете проблемы с авторизацией, или если приложение работает некорректно."
         )
       }
+    }
+    .safeAreaPadding(.leading, 900)
+    .navigationTitle("Авторизация")
+    .overlay(alignment: .topLeading) {
+      VStack(alignment: .leading, spacing: 16) {
+        Group {
+          Text("Ichime — приложение для просмотра сериалов с сайта Anime 365.")
+          Text("Для использования приложения требуется активная платная подписка на сайте Anime 365.")
+          Text(
+            "Приложение не поддерживает авторизацию через социальные сети. Установите пароль в настройках профиля на сайте."
+          )
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+      }
+      .frame(width: 900 - 64)
     }
     .alert(
       "Не удалось авторизоваться",
@@ -110,26 +146,40 @@ struct AuthenticationView: View {
         "При авторизации что-то пошло не так. Если у вас включен VPN, попробуйте его выключить."
       )
     }
-    .toolbar {
-      Group {
-        if self.viewModel.isLoadingAuthentication {
-          ProgressView()
+  }
+
+  private func openSignInScreen() async -> Void {
+    do {
+      let result =
+        try await authorizationController
+        .performRequests(
+          [
+            ASAuthorizationPasswordProvider().createRequest()
+          ],
+          customMethods: [
+            .other
+          ]
+        )
+
+      switch result {
+      case .password(let credential):
+        self.viewModel.userEmail = credential.user
+        self.viewModel.userPassword = credential.password
+
+        await self.viewModel.performAuthentication()
+      case .customMethod(let method):
+        switch method {
+        case .other:
+          self.showManualSignInForm = true
+        default:
+          return
         }
-        else {
-          Button("Войти") {
-            Task {
-              await self.viewModel.performAuthentication()
-            }
-          }
-          .disabled(self.viewModel.userEmail.isEmpty || self.viewModel.userPassword.isEmpty)
-        }
+      default:
+        return
       }
     }
-    .onChange(of: self.viewModel.isSuccess) {
-      if self.viewModel.isSuccess {
-        self.dismiss()
-      }
+    catch {
+      // code to handle the authorization error
     }
-    .navigationTitle("Авторизация")
   }
 }

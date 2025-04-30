@@ -23,7 +23,7 @@ struct ContentView: View {
       }
     case .isAnonym:
       NavigationStack {
-        OnboardingView()
+        AuthenticationView()
       }
     }
   }
