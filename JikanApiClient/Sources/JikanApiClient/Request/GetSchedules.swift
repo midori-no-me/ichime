@@ -4,7 +4,8 @@ extension ApiClient {
   public func getSchedules(
     filter: ScheduleFilter? = nil,
     page: Int? = nil,
-    limit: Int? = nil
+    limit: Int? = nil,
+    swf: Bool? = nil
   ) async throws -> (data: [Anime], hasMore: Bool) {
     var queryItems: [URLQueryItem] = []
 
@@ -31,6 +32,15 @@ extension ApiClient {
         URLQueryItem(
           name: "limit",
           value: String(limit)
+        )
+      )
+    }
+
+    if let swf {
+      queryItems.append(
+        URLQueryItem(
+          name: "swf",
+          value: swf ? "true" : "false"
         )
       )
     }

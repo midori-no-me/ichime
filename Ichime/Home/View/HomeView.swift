@@ -12,6 +12,7 @@ private class HomeViewModel {
         topScored: OrderedSet<ShowPreview>,
         nextSeason: OrderedSet<ShowPreviewShikimori>,
         mostPopular: OrderedSet<ShowPreviewShikimori>,
+        random: OrderedSet<ShowPreviewShikimori>,
         moments: (OrderedSet<Moment>, MomentSorting)
       )
     )
@@ -72,6 +73,10 @@ struct HomeView: View {
 
           if !sections.moments.0.isEmpty {
             MomentsSection(preloadedMoments: sections.moments.0, sorting: sections.moments.1)
+          }
+
+          if !sections.random.isEmpty {
+            RandomSection(preloadedShows: sections.random)
           }
 
           if !sections.nextSeason.isEmpty {

@@ -152,7 +152,8 @@ struct ShowService {
     let shikimoriAnimes = try await shikimoriApiClient.listAnimes(
       page: page,
       limit: limit,
-      order: "popularity"
+      order: "popularity",
+      censored: true
     )
 
     return .init(
@@ -176,7 +177,29 @@ struct ShowService {
       page: page,
       limit: limit,
       order: "popularity",
-      season: "\(nextSeason.calendarSeason.getApiName())_\(nextSeason.year)"
+      season: "\(nextSeason.calendarSeason.getApiName())_\(nextSeason.year)",
+      censored: true
+    )
+
+    return .init(
+      shikimoriAnimes.map {
+        .init(
+          anime: $0,
+          shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
+        )
+      }
+    )
+  }
+
+  func getRandom(
+    page: Int,
+    limit: Int
+  ) async throws -> OrderedSet<ShowPreviewShikimori> {
+    let shikimoriAnimes = try await shikimoriApiClient.listAnimes(
+      page: page,
+      limit: limit,
+      order: "random",
+      censored: true
     )
 
     return .init(

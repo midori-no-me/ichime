@@ -5,7 +5,9 @@ extension ApiClient {
     page: Int? = nil,
     limit: Int? = nil,
     order: String? = nil,
-    season: String? = nil
+    season: String? = nil,
+    censored: Bool? = nil,
+    rating: String? = nil
   ) async throws -> [AnimePreview] {
     var queryItems: [URLQueryItem] = []
 
@@ -41,6 +43,24 @@ extension ApiClient {
         URLQueryItem(
           name: "season",
           value: season
+        )
+      )
+    }
+
+    if let censored {
+      queryItems.append(
+        URLQueryItem(
+          name: "censored",
+          value: censored ? "true" : "false"
+        )
+      )
+    }
+
+    if let rating {
+      queryItems.append(
+        URLQueryItem(
+          name: "rating",
+          value: rating
         )
       )
     }

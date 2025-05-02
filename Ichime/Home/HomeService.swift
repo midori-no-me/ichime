@@ -18,6 +18,7 @@ struct HomeService {
     topScored: OrderedSet<ShowPreview>,
     nextSeason: OrderedSet<ShowPreviewShikimori>,
     mostPopular: OrderedSet<ShowPreviewShikimori>,
+    random: OrderedSet<ShowPreviewShikimori>,
     moments: (OrderedSet<Moment>, MomentSorting)
   ) {
     let momentSorting: MomentSorting =
@@ -47,11 +48,18 @@ struct HomeService {
       limit: 10
     )
 
+    //        async let randomFuture = self.showService.getRandom(
+    //          page: 0,
+    //          limit: 10
+    //        )
+
     return (
       ongoings: (try? await ongoingsFuture) ?? [],
       topScored: (try? await topScoredFuture) ?? [],
       nextSeason: (try? await nextSeasonFuture) ?? [],
       mostPopular: (try? await mostPopularFuture) ?? [],
+      //      random: (try? await randomFuture) ?? [],
+      random: [],
       moments: ((try? await momentsFuture) ?? [], momentSorting)
     )
   }

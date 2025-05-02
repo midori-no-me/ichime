@@ -82,7 +82,7 @@ struct ShowReleaseSchedule {
     var page = 1
 
     while true {
-      guard let (jikanAnimesFromPage, hasMore) = try? await jikanApiClient.getSchedules(page: page) else {
+      guard let (jikanAnimesFromPage, hasMore) = try? await jikanApiClient.getSchedules(page: page, swf: true) else {
         break
       }
 
