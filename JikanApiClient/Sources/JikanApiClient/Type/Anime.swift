@@ -16,4 +16,5 @@ public struct Anime: Decodable {
   public let popularity: Int?
   public let members: Int?
   public let favorites: Int?
+  public let source: String?
 }

@@ -222,12 +222,12 @@ private struct ShowDetailsView: View {
         VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
           ShowKeyDetailsSection(show: self.show, viewModel: self.viewModel)
 
-          if !self.show.genres.isEmpty {
-            ShowGenres(genres: self.show.genres)
-          }
-
           if !self.show.studios.isEmpty || !self.show.descriptions.isEmpty {
             ShowStudiosAndDescriptions(studios: self.show.studios, descriptions: self.show.descriptions)
+          }
+
+          if !self.show.genres.isEmpty {
+            ShowGenres(genres: self.show.genres)
           }
         }
         .padding(.bottom, SPACING_BETWEEN_SECTIONS)
@@ -269,43 +269,56 @@ private struct ShowKeyDetailsSection: View {
 
         ShowActionButtons(show: self.show, viewModel: self.viewModel)
 
-        VStack(alignment: .leading, spacing: 16) {
-          RatingProperty(
-            score: self.show.score,
-            scoredBy: self.show.scoredBy,
-            rank: self.show.rank
-          )
-
-          if self.show.popularity != nil || self.show.members != nil {
-            PopularityProperty(
-              popularity: self.show.popularity,
-              members: self.show.members
+        Grid(alignment: .topLeading, horizontalSpacing: 64, verticalSpacing: 32) {
+          GridRow {
+            RatingProperty(
+              score: self.show.score,
+              scoredBy: self.show.scoredBy,
+              rank: self.show.rank
             )
+
+            if self.show.popularity != nil || self.show.members != nil {
+              PopularityProperty(
+                popularity: self.show.popularity,
+                members: self.show.members
+              )
+            }
           }
 
-          ShowProperty(
-            label: "Тип",
-            value: self.show.kind?.title ?? "???"
-          )
-
-          EpisodesShowProperty(
-            totalEpisodes: self.show.numberOfEpisodes,
-            latestAiredEpisodeNumber: self.show.latestAiredEpisodeNumber,
-            isOngoing: self.show.isOngoing
-          )
-
-          if let airingSeason = self.show.airingSeason {
-            SeasonShowProperty(airingSeason: airingSeason)
-          }
-          else {
+          GridRow {
             ShowProperty(
-              label: "Сезон",
-              value: "???"
+              label: "Тип",
+              value: self.show.kind?.title ?? "???"
             )
+
+            EpisodesShowProperty(
+              totalEpisodes: self.show.numberOfEpisodes,
+              latestAiredEpisodeNumber: self.show.latestAiredEpisodeNumber,
+              isOngoing: self.show.isOngoing
+            )
+          }
+
+          GridRow {
+            ShowProperty(
+              label: "Источник",
+              value: self.show.source ?? "???"
+            )
+          }
+
+          GridRow {
+            if let airingSeason = self.show.airingSeason {
+              SeasonShowProperty(airingSeason: airingSeason)
+            }
+            else {
+              ShowProperty(
+                label: "Сезон",
+                value: "???"
+              )
+            }
           }
         }
       }
-      .frame(maxHeight: .infinity)
+      .frame(maxHeight: .infinity, alignment: .topLeading)
 
       if let coverUrl = self.show.posterUrl {
         Button(action: {

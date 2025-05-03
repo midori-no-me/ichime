@@ -53,6 +53,7 @@ struct ShowDetails {
   let isOngoing: Bool
   let studios: OrderedSet<Studio>
   let nextEpisodeReleasesAt: Date?
+  let source: String?
 
   init(
     anime365Series: Anime365ApiClient.SeriesFull,
@@ -145,6 +146,7 @@ struct ShowDetails {
       }
     )
     self.nextEpisodeReleasesAt = shikimoriAnime?.next_episode_at
+    self.source = jikanAnime?.source
   }
 
   private static func getLatestAiredEpisodeNumber(
