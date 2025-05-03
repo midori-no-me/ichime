@@ -13,8 +13,8 @@ struct ShortLargeNumberFormatter: FormatStyle {
       let formatted = Double(value) / 1000
 
       return formatted.truncatingRemainder(dividingBy: 1) == 0
-        ? "\(Int(formatted))k"
-        : String(format: "%.1fk", formatted)
+        ? "\(Int(formatted))K"
+        : String(format: "%.1fK", formatted)
     }
     else {
       let formatted = Double(value) / 1_000_000
