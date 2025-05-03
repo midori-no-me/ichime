@@ -551,7 +551,7 @@ private struct RatingProperty: View {
 
   private func formatLabel() -> String {
     if let rank = self.rank {
-      return "Топ \(rank.formatted(.number)) по рейтингу"
+      return "Топ \(rank.formatted(ShortLargeNumberFormatter())) по рейтингу"
     }
 
     return "Рейтинг"
@@ -589,7 +589,7 @@ private struct PopularityProperty: View {
 
   private func formatLabel() -> String {
     if let popularity = self.popularity {
-      return "Топ \(popularity.formatted(.number)) по популярности"
+      return "Топ \(popularity.formatted(ShortLargeNumberFormatter())) по популярности"
     }
 
     return "Популярность"
