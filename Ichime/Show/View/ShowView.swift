@@ -222,6 +222,10 @@ private struct ShowDetailsView: View {
         VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
           ShowKeyDetailsSection(show: self.show, viewModel: self.viewModel)
 
+          if !self.show.genres.isEmpty {
+            ShowGenres(genres: self.show.genres)
+          }
+
           if !self.show.studios.isEmpty || !self.show.descriptions.isEmpty {
             ShowStudiosAndDescriptions(studios: self.show.studios, descriptions: self.show.descriptions)
           }
@@ -266,19 +270,17 @@ private struct ShowKeyDetailsSection: View {
         ShowActionButtons(show: self.show, viewModel: self.viewModel)
 
         VStack(alignment: .leading, spacing: 16) {
-          HStack(alignment: .top, spacing: 32) {
-            RatingProperty(
-              score: self.show.score,
-              scoredBy: self.show.scoredBy,
-              rank: self.show.rank
-            )
+          RatingProperty(
+            score: self.show.score,
+            scoredBy: self.show.scoredBy,
+            rank: self.show.rank
+          )
 
-            if self.show.popularity != nil || self.show.members != nil {
-              PopularityProperty(
-                popularity: self.show.popularity,
-                members: self.show.members
-              )
-            }
+          if self.show.popularity != nil || self.show.members != nil {
+            PopularityProperty(
+              popularity: self.show.popularity,
+              members: self.show.members
+            )
           }
 
           ShowProperty(
@@ -300,10 +302,6 @@ private struct ShowKeyDetailsSection: View {
               label: "Сезон",
               value: "???"
             )
-          }
-
-          if !self.show.genres.isEmpty {
-            GenresShowProperty(genres: self.show.genres)
           }
         }
       }
@@ -606,27 +604,6 @@ private struct PopularityProperty: View {
   }
 }
 
-private struct GenresShowProperty: View {
-  let genres: OrderedSet<Genre>
-
-  var body: some View {
-    NavigationLink(
-      destination: ShowGenreListView(
-        genres: self.genres
-      )
-    ) {
-      ShowProperty(
-        label: "Жанры",
-        value:
-          self.genres
-          .map { genre in genre.title }
-          .formatted(.list(type: .and, width: .narrow))
-      )
-    }
-    .buttonStyle(.plain)
-  }
-}
-
 private struct EpisodesShowProperty: View {
   let totalEpisodes: Int?
   let latestAiredEpisodeNumber: Int?
@@ -692,6 +669,23 @@ private struct ShowStudiosAndDescriptions: View {
     }
     .focusSection()
     .scrollClipDisabled()
+  }
+}
+
+private struct ShowGenres: View {
+  let genres: OrderedSet<Genre>
+
+  var body: some View {
+    SectionWithCards(title: "Жанры") {
+      ScrollView(.horizontal) {
+        LazyHStack(alignment: .top, spacing: 32) {
+          ForEach(self.genres) { genre in
+            GenreCard(id: genre.id, title: genre.title)
+          }
+        }
+      }
+      .scrollClipDisabled()
+    }
   }
 }
 
