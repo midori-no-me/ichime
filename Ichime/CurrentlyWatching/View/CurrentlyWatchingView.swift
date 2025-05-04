@@ -105,7 +105,6 @@ private class CurrentlyWatchingViewModel {
 
 struct CurrentlyWatchingView: View {
   @State private var viewModel: CurrentlyWatchingViewModel = .init()
-  @State private var firstLoaded: Bool = false
 
   var body: some View {
     Group {
@@ -162,13 +161,7 @@ struct CurrentlyWatchingView: View {
             )
           }
         }
-        .onAppear {
-          if !self.firstLoaded {
-            self.firstLoaded = true
-
-            return
-          }
-
+        .refreshOnAppear {
           Task {
             await self.viewModel.performRefresh()
           }
