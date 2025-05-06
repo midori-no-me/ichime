@@ -1,4 +1,5 @@
 import Foundation
+import JikanApiClient
 
 enum CalendarSeason: String {
   case winter
@@ -91,7 +92,23 @@ struct AiringSeason {
     self.year = year
   }
 
-  init?(fromDate: Date) {
+  init(fromJikanSeason: JikanApiClient.Season, year: Int) {
+    self.calendarSeason =
+      switch fromJikanSeason {
+      case .fall:
+        .autumn
+      case .spring:
+        .spring
+      case .summer:
+        .summer
+      case .winter:
+        .winter
+      }
+
+    self.year = year
+  }
+
+  init(fromDate: Date) {
     let year = Calendar.current.component(.year, from: fromDate)
     let monthNumber = Calendar.current.component(.month, from: fromDate)
 

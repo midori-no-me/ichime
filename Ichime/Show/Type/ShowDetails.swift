@@ -128,7 +128,20 @@ struct ShowDetails {
       )
     }
     self.posterUrl = anime365Series.posterUrl
-    self.airingSeason = AiringSeason(fromTranslatedString: anime365Series.season)
+
+    /// Anime 365 выдумывает сезон, если сезон не известен или известен только год, поэтому если нам пришло аниме из Jikan, то берем информацию о сезоне оттуда
+    if let jikanAnime {
+      if let jikanSeason = jikanAnime.season, let jikanYear = jikanAnime.year {
+        self.airingSeason = .init(fromJikanSeason: jikanSeason, year: jikanYear)
+      }
+      else {
+        self.airingSeason = nil
+      }
+    }
+    else {
+      self.airingSeason = .init(fromTranslatedString: anime365Series.season)
+    }
+
     self.numberOfEpisodes = totalEpisodes
     self.latestAiredEpisodeNumber = Self.getLatestAiredEpisodeNumber(
       anime365Episodes: anime365Series.episodes ?? [],
