@@ -102,16 +102,34 @@ struct AuthenticationView: View {
     .safeAreaPadding(.leading, 900)
     .navigationTitle("Авторизация")
     .overlay(alignment: .topLeading) {
-      VStack(alignment: .leading, spacing: 16) {
+      List {
         Group {
-          Text("Ichime — приложение для просмотра сериалов с сайта Anime 365.")
-          Text("Для использования приложения требуется активная платная подписка на сайте Anime 365.")
-          Text(
-            "Приложение не поддерживает авторизацию через социальные сети. Установите пароль в настройках профиля на сайте."
-          )
+          Label {
+            Text("Ichime — приложение для просмотра сериалов с сайта Anime 365.")
+          } icon: {
+            Image(systemName: "info.circle")
+              .frame(width: 48, alignment: .center)
+          }
+
+          Label {
+            Text("Для использования приложения требуется активная платная подписка на сайте Anime 365.")
+          } icon: {
+            Image(systemName: "wallet.bifold")
+              .frame(width: 48, alignment: .center)
+          }
+
+          Label {
+            Text(
+              "Приложение не поддерживает авторизацию через социальные сети. Установите пароль в настройках профиля на сайте."
+            )
+          } icon: {
+            Image(systemName: "key")
+              .frame(width: 48, alignment: .center)
+          }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 16)
       }
+      .listStyle(.grouped)
       .frame(width: 900 - 64)
     }
     .alert(
