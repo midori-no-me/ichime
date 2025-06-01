@@ -15,7 +15,11 @@ struct EpisodeFromCurrentlyWatchingListCard: View {
     .buttonStyle(.borderless)
     .contextMenu {
       NavigationLink(destination: ShowView(showId: self.episode.showId)) {
-        Label("Перейти к тайтлу", systemImage: "info.circle")
+        Label(self.episode.showName.getRomajiOrFullName(), systemImage: "info.circle")
+
+        if let russian = self.episode.showName.getRussian() {
+          Text(russian)
+        }
       }
     }
   }
