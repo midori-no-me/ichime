@@ -55,17 +55,6 @@ targets:
       path: Ichime/Ichime.entitlements
       properties:
         com.apple.security.application-groups: [group.dev.midorinome.ichime.group] # Application Groups нужны для расшаренных UserDefaults между основным приложением и Top Shelf
-        com.apple.developer.associated-domains: # Домены, ассоциированные с приложением (для автокомплита паролей)
-          - "webcredentials:anime365.ru"
-          - "webcredentials:anime-365.ru"
-          - "webcredentials:smotret-anime.ru"
-          - "webcredentials:smotret-anime.com"
-          - "webcredentials:smotret-anime.net"
-          - "webcredentials:smotret-anime.org"
-          - "webcredentials:smotret-anime.online"
-          - "webcredentials:smotretanime.ru"
-          - "webcredentials:hentai365.ru"
-          - "webcredentials:h365-art.org"
     dependencies:
       - package: DITranquillity
       - package: Collections

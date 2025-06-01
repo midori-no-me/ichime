@@ -1,4 +1,3 @@
-import AuthenticationServices
 import ScraperAPI
 import SwiftUI
 
@@ -46,45 +45,14 @@ private class AuthenticationViewModel {
 
 struct AuthenticationView: View {
   @State private var viewModel: AuthenticationViewModel = .init()
-  @Environment(\.authorizationController) private var authorizationController
-  @State private var showManualSignInForm: Bool = false
 
   var body: some View {
     Form {
       Section {
-        if self.showManualSignInForm {
-          Button("Отмена") {
-            withAnimation {
-              self.showManualSignInForm = false
-            }
-          }
-        }
-        else {
-          Button("Войти в аккаунт Anime 365") {
-            Task {
-              await self.openSignInScreen()
-            }
-          }
-        }
-      }
+        TextField("Почта", text: self.$viewModel.userEmail, prompt: Text("Адрес электронной почты"))
+          .keyboardType(.emailAddress)
 
-      if self.showManualSignInForm {
-        Section {
-          TextField("Почта", text: self.$viewModel.userEmail, prompt: Text("Адрес электронной почты"))
-            .keyboardType(.emailAddress)
-            .disableAutocorrection(true)
-
-          SecureField("Пароль", text: self.$viewModel.userPassword, prompt: Text("Пароль"))
-        }
-
-        Section {
-          Button("Войти") {
-            Task {
-              await self.viewModel.performAuthentication()
-            }
-          }
-          .disabled(self.viewModel.userEmail.isEmpty || self.viewModel.userPassword.isEmpty)
-        }
+        SecureField("Пароль", text: self.$viewModel.userPassword, prompt: Text("Пароль"))
       }
 
       Section {
@@ -97,6 +65,15 @@ struct AuthenticationView: View {
         Text(
           "Попробуйте выбрать другой адрес, если испытываете проблемы с авторизацией, или если приложение работает некорректно."
         )
+      }
+
+      Section {
+        Button("Войти") {
+          Task {
+            await self.viewModel.performAuthentication()
+          }
+        }
+        .disabled(self.viewModel.userEmail.isEmpty || self.viewModel.userPassword.isEmpty)
       }
     }
     .safeAreaPadding(.leading, 900)
@@ -163,41 +140,6 @@ struct AuthenticationView: View {
       Text(
         "При авторизации что-то пошло не так. Если у вас включен VPN, попробуйте его выключить."
       )
-    }
-  }
-
-  private func openSignInScreen() async -> Void {
-    do {
-      let result =
-        try await authorizationController
-        .performRequests(
-          [
-            ASAuthorizationPasswordProvider().createRequest()
-          ],
-          customMethods: [
-            .other
-          ]
-        )
-
-      switch result {
-      case .password(let credential):
-        self.viewModel.userEmail = credential.user
-        self.viewModel.userPassword = credential.password
-
-        await self.viewModel.performAuthentication()
-      case .customMethod(let method):
-        switch method {
-        case .other:
-          self.showManualSignInForm = true
-        default:
-          return
-        }
-      default:
-        return
-      }
-    }
-    catch {
-      // code to handle the authorization error
     }
   }
 }
