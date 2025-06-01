@@ -118,11 +118,11 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime.TopShelf # Bundle ID этого таргета
 settings:
   base:
-    CURRENT_PROJECT_VERSION: 108000 # Техническая версия приложения
+    CURRENT_PROJECT_VERSION: 109000 # Техническая версия приложения
     DEVELOPMENT_TEAM: YBBAN7R28K # ID аккаунта команды Apple Developer
     INFOPLIST_KEY_CFBundleDisplayName: Ichime # Человекочитабельное название приложения. When GENERATE_INFOPLIST_FILE is enabled, sets the value of the CFBundleDisplayName key in the Info.plist file to the value of this build setting.
     INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.entertainment # К какой категории относится приложение. When GENERATE_INFOPLIST_FILE is enabled, sets the value of the LSApplicationCategoryType key in the Info.plist file to the value of this build setting.
-    MARKETING_VERSION: "1.8.0" # Человекочитабельная версия приложения
+    MARKETING_VERSION: "1.9.0" # Человекочитабельная версия приложения
     SWIFT_VERSION: "5" # Какую версию Swift использовать для компиляции приложения
   configs:
     Debug:
