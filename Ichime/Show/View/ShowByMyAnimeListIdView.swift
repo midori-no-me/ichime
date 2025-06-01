@@ -44,7 +44,7 @@ private class ShowByMyAnimeListIdViewModel {
 }
 
 struct ShowByMyAnimeListIdView: View {
-  var myAnimeListId: Int
+  let myAnimeListId: Int
 
   @State private var viewModel: ShowByMyAnimeListIdViewModel = .init()
 

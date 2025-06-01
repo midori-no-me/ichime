@@ -61,7 +61,7 @@ private class EpisodeTranslationListViewModel {
 }
 
 struct EpisodeTranslationListView: View {
-  var episodeId: Int
+  let episodeId: Int
 
   @State private var viewModel: EpisodeTranslationListViewModel = .init()
 

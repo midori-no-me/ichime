@@ -214,7 +214,7 @@ private struct ShowDetailsView: View {
   let characters: OrderedSet<Character>
   let staffMembers: OrderedSet<StaffMember>
   let relatedShows: OrderedSet<GroupedRelatedShows>
-  var viewModel: ShowViewModel
+  let viewModel: ShowViewModel
 
   var body: some View {
     VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
@@ -258,7 +258,7 @@ private struct ShowDetailsView: View {
 
 private struct ShowKeyDetailsSection: View {
   let show: ShowDetails
-  var viewModel: ShowViewModel
+  let viewModel: ShowViewModel
 
   @State private var displayShowCoversSheet: Bool = false
 
@@ -389,7 +389,7 @@ private struct ShowPrimaryAndSecondaryTitles: View {
 
 private struct ShowActionButtons: View {
   let show: ShowDetails
-  var viewModel: ShowViewModel
+  let viewModel: ShowViewModel
   @State private var showEdit = false
   private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
 
