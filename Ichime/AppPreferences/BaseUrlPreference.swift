@@ -1,15 +1,20 @@
 import Foundation
+import OrderedCollections
 import SwiftUI
 
 class BaseUrlPreference: ObservableObject {
-  static let allPossibleWebsiteBaseDomains = [
-    URL(string: "https://smotret-anime.org")!,
-    URL(string: "https://anime365.ru")!,
-    URL(string: "https://anime-365.ru")!,
-    URL(string: "https://smotret-anime.com")!,
-    URL(string: "https://smotret-anime.online")!,
-    URL(string: "https://smotret-anime.net")!,
-  ]
+  static let allPossibleWebsiteBaseDomains: OrderedSet = .init(
+    [
+      URL(string: "https://anime365.ru")!,
+      URL(string: "https://anime-365.ru")!,
+      URL(string: "https://smotret-anime.org")!,
+      URL(string: "https://smotret-anime.com")!,
+      URL(string: "https://smotret-anime.online")!,
+      URL(string: "https://smotret-anime.net")!,
+      URL(string: "https://smotret-anime.ru")!,
+      URL(string: "https://smotretanime.ru")!,
+    ].sorted(by: { $0.absoluteString < $1.absoluteString })
+  )
 
   private let userDefaults: UserDefaults
   private let baseURLKey = "anime365-base-url"

@@ -63,6 +63,7 @@ targets:
           - "webcredentials:smotret-anime.net"
           - "webcredentials:smotret-anime.org"
           - "webcredentials:smotret-anime.online"
+          - "webcredentials:smotretanime.ru"
           - "webcredentials:hentai365.ru"
           - "webcredentials:h365-art.org"
     dependencies:
