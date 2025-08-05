@@ -127,6 +127,11 @@ struct ShowService {
       chips: [
         "isAiring": "1",
         "isActive": "1",
+        "type!": [
+          Anime365ApiClient.SeriesType.pv.rawValue,
+          Anime365ApiClient.SeriesType.cm.rawValue,
+          Anime365ApiClient.SeriesType.music.rawValue,
+        ].joined(separator: ","),
       ]
     )
 
