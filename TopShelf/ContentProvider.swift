@@ -1,4 +1,3 @@
-import JikanApiClient
 import OSLog
 import ScraperAPI
 import ShikimoriApiClient
@@ -29,18 +28,9 @@ class ContentProvider: TVTopShelfContentProvider {
     )
   }
 
-  var jikanApiClient: JikanApiClient.ApiClient {
-    .init(
-      baseUrl: ServiceLocator.jikanBaseUrl,
-      userAgent: ServiceLocator.jikanUserAgent,
-      logger: Logger(subsystem: ServiceLocator.applicationId, category: "JikanApiClient")
-    )
-  }
-
   var showReleaseSchedule: ShowReleaseSchedule {
     .init(
-      shikimoriApiClient: self.shikimoriApiClient,
-      jikanApiClient: self.jikanApiClient
+      shikimoriApiClient: self.shikimoriApiClient
     )
   }
 
