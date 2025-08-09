@@ -69,6 +69,8 @@ targets:
       base:
         GENERATE_INFOPLIST_FILE: "YES" # Так как мы свой Info.plist пока не используем, то просим Xcode генерировать Info.plist автоматически, а все параметры добавляем через INFOPLIST_KEY_*
         PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime # Bundle ID этого таргета
+        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: >
+          "App Icon - Gawr Gura"
   TopShelf:
     type: app-extension
     platform: [tvOS]
