@@ -20,7 +20,7 @@ enum CalendarSeason: String {
     }
   }
 
-  func getApiName() -> String {
+  func getAnime365ApiName() -> String {
     switch self {
     case .winter:
       "winter"
@@ -30,6 +30,19 @@ enum CalendarSeason: String {
       "summer"
     case .autumn:
       "autumn"
+    }
+  }
+
+  func getShikimoriApiName() -> String {
+    switch self {
+    case .winter:
+      "winter"
+    case .spring:
+      "spring"
+    case .summer:
+      "summer"
+    case .autumn:
+      "fall"
     }
   }
 }

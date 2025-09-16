@@ -182,7 +182,7 @@ struct ShowService {
       page: page,
       limit: limit,
       order: "popularity",
-      season: "\(nextSeason.calendarSeason.getApiName())_\(nextSeason.year)",
+      season: "\(nextSeason.calendarSeason.getShikimoriApiName())_\(nextSeason.year)",
       censored: true
     )
 
@@ -226,7 +226,7 @@ struct ShowService {
       limit: limit,
       offset: offset,
       chips: [
-        "yearseason": "\(airingSeason.calendarSeason.getApiName())_\(airingSeason.year)"
+        "yearseason": "\(airingSeason.calendarSeason.getAnime365ApiName())_\(airingSeason.year)"
       ]
     )
 
