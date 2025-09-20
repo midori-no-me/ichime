@@ -59,11 +59,15 @@ struct TopScoredSection: View {
   var body: some View {
     SectionWithCards(title: "С высоким рейтингом") {
       ScrollView(.horizontal) {
-        LazyHStack(alignment: .top) {
+        LazyHStack(alignment: .top, spacing: ShowCard.RECOMMENDED_SPACING) {
           ForEach(self.viewModel.shows) { show in
-            ShowCard(show: show, displaySeason: true)
-              .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-              .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
+            ShowCardAnime365(show: show, displaySeason: true)
+              .containerRelativeFrame(
+                .horizontal,
+                count: ShowCard.RECOMMENDED_COUNT_PER_ROW,
+                span: 1,
+                spacing: ShowCard.RECOMMENDED_SPACING
+              )
               .task {
                 if show == self.viewModel.shows.last {
                   await self.viewModel.performLazyLoading()

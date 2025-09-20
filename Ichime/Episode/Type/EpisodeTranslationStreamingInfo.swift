@@ -1,4 +1,4 @@
-import Anime365ApiClient
+import Anime365Kit
 import Foundation
 
 struct EpisodeTranslationStreamingInfo {
@@ -11,7 +11,7 @@ struct EpisodeTranslationStreamingInfo {
     }
 
     static func createValid(
-      anime365ApiTranslationEmbedStream: Anime365ApiClient.TranslationEmbed.Stream
+      anime365ApiTranslationEmbedStream: Anime365Kit.TranslationEmbed.Stream
     ) -> Self? {
       guard let streamingUrl = anime365ApiTranslationEmbedStream.urls.first else {
         return nil
@@ -32,7 +32,7 @@ struct EpisodeTranslationStreamingInfo {
   let streamingQualities: [EpisodeTranslationStreamingQuality]
 
   static func createValid(
-    anime365ApiTranslationEmbed: Anime365ApiClient.TranslationEmbed,
+    anime365ApiTranslationEmbed: Anime365Kit.TranslationEmbed,
     anime365ApiBaseUrl: URL
   ) -> Self? {
     var subtitlesUrl: URL? = nil

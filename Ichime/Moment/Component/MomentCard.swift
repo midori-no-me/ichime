@@ -1,4 +1,3 @@
-import ScraperAPI
 import SwiftUI
 import ThirdPartyVideoPlayer
 
@@ -6,7 +5,7 @@ struct MomentCard: View {
   let moment: Moment
   let displayShowTitle: Bool
 
-  private let scraperApi: ScraperAPI.APIClient = ApplicationDependency.container.resolve()
+  private let momentService: MomentService = ApplicationDependency.container.resolve()
 
   @AppStorage("defaultPlayer") private var selectedPlayer: ThirdPartyVideoPlayerType = .infuse
 
@@ -17,16 +16,7 @@ struct MomentCard: View {
     Button(action: {
       Task {
         do {
-          let momentEmbed = try await scraperApi.sendAPIRequest(
-            ScraperAPI.Request.GetMomentEmbed(momentId: self.moment.id)
-          )
-
-          guard let video = momentEmbed.video.first,
-            let videoHref = video.urls.first,
-            let videoURL = URL(string: videoHref)
-          else {
-            return
-          }
+          let videoURL = try await momentService.getMomentVideoURL(momentId: self.moment.id)
 
           let externalPlayerUniversalLink = DeepLinkFactory.buildUniversalLinkUrl(
             externalPlayerType: self.selectedPlayer,
@@ -102,7 +92,7 @@ struct MomentCard: View {
 
   private func cardLabelView() -> Text {
     if self.displayShowTitle {
-      return Text(self.moment.title) + Text(" " + self.moment.showTitle).foregroundStyle(.secondary)
+      return Text("\(self.moment.title) \(Text(" " + self.moment.showTitle).foregroundStyle(.secondary))")
     }
 
     return Text(self.moment.title)

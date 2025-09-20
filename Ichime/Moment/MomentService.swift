@@ -1,41 +1,34 @@
 import Foundation
 import OrderedCollections
-import ScraperAPI
 
 struct MomentService {
-  private let scraperApi: ScraperAPI.APIClient
+  private let anime365KitFactory: Anime365KitFactory
 
   init(
-    scraperApi: ScraperAPI.APIClient
+    anime365KitFactory: Anime365KitFactory
   ) {
-    self.scraperApi = scraperApi
+    self.anime365KitFactory = anime365KitFactory
   }
 
-  private static func momentSortingToScraperSorting(_ sorting: MomentSorting)
-    -> ScraperAPI.Request.GetMoments.MomentSorting
-  {
-    switch sorting {
-    case .newest:
-      .newest
-    case .popular:
-      .popular
-    }
+  func getMomentVideoURL(momentId: Int) async throws -> URL {
+    let momentEmbed = try await self.anime365KitFactory.createWebClient().getMomentEmbed(momentID: momentId)
+
+    return momentEmbed.videoURL
   }
 
   func getMoments(page: Int, sorting: MomentSorting) async throws -> OrderedSet<Moment> {
-    let anime365Moments = try await self.scraperApi.sendAPIRequest(
-      ScraperAPI.Request.GetMoments(
-        page: page,
-        filter: .init(sort: Self.momentSortingToScraperSorting(sorting))
-      )
+    let anime365Moments = try await self.anime365KitFactory.createWebClient().getMoments(
+      page: page,
+      sort: sorting.anime365
     )
 
     return .init(anime365Moments.map { .init(fromAnime365Moment: $0) })
   }
 
   func getShowMoments(showId: Int, page: Int) async throws -> OrderedSet<Moment> {
-    let anime365Moments = try await self.scraperApi.sendAPIRequest(
-      ScraperAPI.Request.GetMomentsByShow(showId: showId, page: page)
+    let anime365Moments = try await self.anime365KitFactory.createWebClient().getMomentsBySeries(
+      seriesId: showId,
+      page: page,
     )
 
     return .init(anime365Moments.map { .init(fromAnime365Moment: $0) })

@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ContentViewWithTabBar: View {
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
+  @AppStorage(CurrentUserInfo.UserDefaultsKey.NAME) private var userName: String?
 
   var body: some View {
     TabView(selection: self.$selectedTab) {
@@ -30,20 +31,17 @@ struct ContentViewWithTabBar: View {
         Text("Календарь")
       }
 
-      Tab(value: .myLists) {
-        NavigationStackWithRouter {
-          MyListsSelectorView()
-        }
-      } label: {
-        Text("Мой список")
-      }
-
       Tab(value: .profile) {
         NavigationStackWithRouter {
           ProfileView()
         }
       } label: {
-        Text("Профиль")
+        if let userName {
+          Text(userName)
+        }
+        else {
+          Text("Профиль")
+        }
       }
 
       Tab(value: .search, role: .search) {

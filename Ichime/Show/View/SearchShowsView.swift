@@ -156,14 +156,16 @@ struct SearchShowsView: View {
 
       case let .loaded(shows):
         ScrollView(.vertical) {
-          LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 1), spacing: 64) {
+          LazyVGrid(
+            columns: Array(repeating: GridItem(.flexible(), spacing: ShowCard.RECOMMENDED_SPACING), count: 3),
+            spacing: ShowCard.RECOMMENDED_SPACING
+          ) {
             ForEach(shows) { show in
-              ShowCard(
+              ShowCardAnime365(
                 show: show,
                 displaySeason: true,
                 onOpened: self.viewModel.addRecentSearch
               )
-              .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
               .task {
                 if show == shows.last {
                   await self.viewModel.performLazyLoading()

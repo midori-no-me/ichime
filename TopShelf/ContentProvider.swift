@@ -1,22 +1,22 @@
 import OSLog
-import ScraperAPI
 import ShikimoriApiClient
 import TVServices
 
 class ContentProvider: TVTopShelfContentProvider {
-  let cookieStorage: HTTPCookieStorage = .sharedCookieStorage(
-    forGroupContainerIdentifier: ServiceLocator.appGroup
-  )
-
-  var session: ScraperAPI.Session {
-    .init(cookieStorage: self.cookieStorage, baseURL: ServiceLocator.websiteBaseUrl)
+  var anime365BaseURL: Anime365BaseURL {
+    .init()
   }
 
-  var scraperApiClient: ScraperAPI.APIClient {
-    .init(
-      baseURL: ServiceLocator.websiteBaseUrl,
+  var anime365KitFactory: Anime365KitFactory {
+    let urlSessionConfig = URLSessionConfiguration.default
+    urlSessionConfig.httpCookieStorage = .sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
+    let urlSession = URLSession(configuration: urlSessionConfig)
+
+    return .init(
+      anime365BaseURL: self.anime365BaseURL,
       userAgent: ServiceLocator.userAgent,
-      session: self.session
+      logger: Logger(subsystem: ServiceLocator.applicationId, category: "Anime365Kit"),
+      urlSession: urlSession
     )
   }
 
@@ -36,7 +36,7 @@ class ContentProvider: TVTopShelfContentProvider {
 
   var currentlyWatchingService: CurrentlyWatchingService {
     .init(
-      scraperApi: self.scraperApiClient
+      anime365KitFactory: self.anime365KitFactory
     )
   }
 
@@ -105,7 +105,7 @@ class ContentProvider: TVTopShelfContentProvider {
       let topShelfItems = scheduleDay.shows.map {
         let topShelfItem = TVTopShelfSectionedItem(identifier: String($0.id))
 
-        topShelfItem.title = "\(formatTime($0.nextEpisodeReleaseDate)) — \($0.title.translated.japaneseRomaji)"
+        topShelfItem.title = "\(formatTime($0.nextEpisodeReleaseDate)) — \($0.title.getRomajiOrFullName())"
         topShelfItem.setImageURL($0.posterUrl, for: .screenScale1x)
         topShelfItem.setImageURL($0.posterUrl, for: .screenScale2x)
         topShelfItem.imageShape = .poster

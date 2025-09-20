@@ -1,4 +1,4 @@
-import Anime365ApiClient
+import Anime365Kit
 import Foundation
 
 struct ShowPreview: Hashable, Identifiable {
@@ -10,7 +10,7 @@ struct ShowPreview: Hashable, Identifiable {
   let kind: ShowKind?
 
   init(
-    anime365Series: Anime365ApiClient.Series
+    anime365Series: Anime365Kit.Series
   ) {
     self.id = anime365Series.id
 

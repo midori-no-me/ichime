@@ -59,4 +59,11 @@ enum ServiceLocator {
   static var jikanBaseUrl: URL {
     URL(string: "https://api.jikan.moe/v4")!
   }
+
+  static var urlSession: URLSession {
+    let urlSessionConfig = URLSessionConfiguration.default
+    urlSessionConfig.httpCookieStorage = .sharedCookieStorage(forGroupContainerIdentifier: Self.appGroup)
+
+    return .init(configuration: urlSessionConfig)
+  }
 }

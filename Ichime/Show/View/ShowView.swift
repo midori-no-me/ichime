@@ -1,21 +1,6 @@
 import OrderedCollections
-import ScraperAPI
 import SwiftData
 import SwiftUI
-
-typealias UserRateStatus = ScraperAPI.Types.UserRateStatus
-extension ScraperAPI.Types.UserRateStatus {
-  var imageInToolbar: String {
-    switch self {
-    case .deleted: return "plus.circle"
-    case .planned: return "hourglass.circle.fill"
-    case .watching: return "eye.circle.fill"
-    case .completed: return "checkmark.circle.fill"
-    case .onHold: return "pause.circle.fill"
-    case .dropped: return "archivebox.circle.fill"
-    }
-  }
-}
 
 @Observable
 private class ShowViewModel {
@@ -28,7 +13,7 @@ private class ShowViewModel {
         show: ShowDetails,
         moments: OrderedSet<Moment>,
         screenshots: OrderedSet<URL>,
-        characters: OrderedSet<Character>,
+        characters: OrderedSet<CharacterInfo>,
         staffMembers: OrderedSet<StaffMember>,
         relatedShows: OrderedSet<GroupedRelatedShows>
       )
@@ -36,9 +21,7 @@ private class ShowViewModel {
   }
 
   private var _state: State = .idle
-  private var userRate: ScraperAPI.Types.UserRate?
   private let showService: ShowService
-  private let scraperClient: ScraperAPI.APIClient
   private var showId: Int = 0
 
   private(set) var state: State {
@@ -52,21 +35,10 @@ private class ShowViewModel {
     }
   }
 
-  var showRateStatus: UserRateStatus {
-    if let userRate {
-      return userRate.status
-    }
-    else {
-      return .deleted
-    }
-  }
-
   init(
-    showService: ShowService = ApplicationDependency.container.resolve(),
-    scraperClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve()
+    showService: ShowService = ApplicationDependency.container.resolve()
   ) {
     self.showService = showService
-    self.scraperClient = scraperClient
   }
 
   func performInitialLoad(showId: Int) async {
@@ -80,56 +52,9 @@ private class ShowViewModel {
       )
 
       self.state = .loaded(show)
-
-      await self.getUserRate(showId: showId)
     }
     catch {
       self.state = .loadingFailed(error)
-    }
-  }
-
-  func performPullToRefresh() async {
-    do {
-      let show = try await showService.getShowDetails(
-        showId: self.showId
-      )
-
-      await self.getUserRate(showId: self.showId)
-
-      self.state = .loaded(show)
-    }
-    catch {
-      self.state = .loadingFailed(error)
-    }
-  }
-
-  func addToList() async {
-    let request = ScraperAPI.Request.UpdateUserRate(
-      showId: self.showId,
-      userRate: .init(
-        score: self.userRate?.score ?? 0,
-        currentEpisode: self.userRate?.currentEpisode ?? 0,
-        status: .planned,
-        comment: ""
-      )
-    )
-
-    do {
-      self.userRate = try await self.scraperClient.sendAPIRequest(request)
-    }
-    catch {
-      print("\(error.localizedDescription)")
-    }
-  }
-
-  private func getUserRate(showId: Int) async {
-    do {
-      self.userRate = try await self.scraperClient.sendAPIRequest(
-        ScraperAPI.Request.GetUserRate(showId: showId, fullCheck: true)
-      )
-    }
-    catch {
-      print("\(error.localizedDescription)")
     }
   }
 }
@@ -191,7 +116,6 @@ struct ShowView: View {
           characters: characters,
           staffMembers: staffMembers,
           relatedShows: relatedShows,
-          viewModel: self.viewModel
         )
       }
       .onAppear {
@@ -211,16 +135,15 @@ private struct ShowDetailsView: View {
   let show: ShowDetails
   let moments: OrderedSet<Moment>
   let screenshots: OrderedSet<URL>
-  let characters: OrderedSet<Character>
+  let characters: OrderedSet<CharacterInfo>
   let staffMembers: OrderedSet<StaffMember>
   let relatedShows: OrderedSet<GroupedRelatedShows>
-  let viewModel: ShowViewModel
 
   var body: some View {
     VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
       HeadingSectionWithBackground(imageUrl: self.show.posterUrl) {
         VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-          ShowKeyDetailsSection(show: self.show, viewModel: self.viewModel)
+          ShowKeyDetailsSection(show: self.show)
 
           if !self.show.studios.isEmpty || !self.show.descriptions.isEmpty {
             ShowStudiosAndDescriptions(studios: self.show.studios, descriptions: self.show.descriptions)
@@ -258,7 +181,6 @@ private struct ShowDetailsView: View {
 
 private struct ShowKeyDetailsSection: View {
   let show: ShowDetails
-  let viewModel: ShowViewModel
 
   @State private var displayShowCoversSheet: Bool = false
 
@@ -267,7 +189,7 @@ private struct ShowKeyDetailsSection: View {
       VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
         ShowPrimaryAndSecondaryTitles(title: self.show.title)
 
-        ShowActionButtons(show: self.show, viewModel: self.viewModel)
+        ShowActionButtons(show: self.show)
 
         Grid(alignment: .topLeading, horizontalSpacing: 64, verticalSpacing: 32) {
           GridRow {
@@ -349,8 +271,9 @@ private struct ShowKeyDetailsSection: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         .aspectRatio(425 / 600, contentMode: .fit)
         .frame(width: 500)
-        .sheet(isPresented: self.$displayShowCoversSheet) {
+        .fullScreenCover(isPresented: self.$displayShowCoversSheet) {
           CoverGallerySheet(myAnimeListId: self.show.myAnimeListId)
+            .background(.thickMaterial)  // Костыль для обхода бага: .fullScreenCover на tvOS 26 не имеет бекграунда
         }
       }
     }
@@ -389,13 +312,8 @@ private struct ShowPrimaryAndSecondaryTitles: View {
 
 private struct ShowActionButtons: View {
   let show: ShowDetails
-  let viewModel: ShowViewModel
-  @State private var showEdit = false
-  private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
 
-  var isInMyList: Bool {
-    self.viewModel.showRateStatus != UserRateStatus.deleted
-  }
+  private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
 
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
@@ -421,36 +339,11 @@ private struct ShowActionButtons: View {
           .buttonStyle(.card)
         }
 
-        Button(action: {
-          if self.isInMyList {
-            self.showEdit = true
-          }
-          else {
-            Task {
-              await self.viewModel.addToList()
-            }
-          }
-        }) {
-          Group {
-            if self.isInMyList {
-              Label(
-                self.viewModel.showRateStatus.statusDisplayName,
-                systemImage: self.viewModel.showRateStatus.imageInToolbar
-              )
-            }
-            else {
-              Label(
-                UserRateStatus.deleted.statusDisplayName,
-                systemImage: UserRateStatus.deleted.imageInToolbar
-              )
-            }
-          }
-          .font(.headline)
-          .fontWeight(.semibold)
-          .padding(.vertical, 20)
-          .padding(.horizontal, 40)
-        }
-        .buttonStyle(.card)
+        ShowInMyListStatusButton(
+          showId: self.show.id,
+          showName: self.show.title,
+          episodesTotal: self.show.numberOfEpisodes
+        )
       }
       .focusSection()
 
@@ -470,23 +363,6 @@ private struct ShowActionButtons: View {
       .frame(maxWidth: .infinity, alignment: .leading)
       .font(.caption)
     }
-    .sheet(
-      isPresented: self.$showEdit,
-      content: {
-        MyListEditView(
-          show: .init(
-            id: self.show.id,
-            name: self.show.title.getFullName(),
-            totalEpisodes: self.show.numberOfEpisodes ?? nil
-          ),
-          onUpdate: {
-            Task {
-              await self.viewModel.performPullToRefresh()
-            }
-          }
-        )
-      }
-    )
   }
 }
 
@@ -735,8 +611,9 @@ private struct ShowDescriptionCard: View {
         alignment: .topLeading
       )
     }
-    .sheet(isPresented: self.$isSheetPresented) {
+    .fullScreenCover(isPresented: self.$isSheetPresented) {
       ShowDescriptionCardSheet(text: self.text)
+        .background(.thickMaterial)  // Костыль для обхода бага: .fullScreenCover на tvOS 26 не имеет бекграунда
     }
     .buttonStyle(.card)
   }
@@ -815,7 +692,7 @@ private struct ScreenshotsSection: View {
       }
       .scrollClipDisabled()
     }
-    .sheet(isPresented: self.$showSheet) {
+    .fullScreenCover(isPresented: self.$showSheet) {
       NavigationStack {
         TabView(selection: self.$selectedScreenshot) {
           ForEach(self.screenshots, id: \.self) { screenshot in
@@ -852,6 +729,7 @@ private struct ScreenshotsSection: View {
         }
         .tabViewStyle(.page)
       }
+      .background(.thickMaterial)  // Костыль для обхода бага: .fullScreenCover на tvOS 26 не имеет бекграунда
     }
   }
 }
@@ -859,7 +737,7 @@ private struct ScreenshotsSection: View {
 private struct CharactersSection: View {
   private static let SPACING: CGFloat = 64
 
-  let characters: OrderedSet<Character>
+  let characters: OrderedSet<CharacterInfo>
 
   var body: some View {
     SectionWithCards(title: "Персонажи") {
@@ -901,14 +779,18 @@ private struct RelatedShowsSection: View {
 
   var body: some View {
     ScrollView(.horizontal) {
-      LazyHStack(alignment: .top) {
+      LazyHStack(alignment: .top, spacing: ShowCard.RECOMMENDED_SPACING) {
         ForEach(self.relatedShowsGroups) { relatedShowGroup in
           SectionWithCards(title: relatedShowGroup.relationKind.title) {
-            LazyHStack(alignment: .top) {
+            LazyHStack(alignment: .top, spacing: ShowCard.RECOMMENDED_SPACING) {
               ForEach(relatedShowGroup.relatedShows) { relatedShow in
-                RelatedShowCard(relatedShow: relatedShow)
-                  .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-                  .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
+                ShowCardMyAnimeList(relatedShow: relatedShow)
+                  .containerRelativeFrame(
+                    .horizontal,
+                    count: ShowCard.RECOMMENDED_COUNT_PER_ROW,
+                    span: 1,
+                    spacing: ShowCard.RECOMMENDED_SPACING
+                  )
               }
             }
           }

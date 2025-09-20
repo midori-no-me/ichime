@@ -83,11 +83,15 @@ struct CalendarView: View {
           ForEach(scheduleDays) { scheduleDay in
             SectionWithCards(title: formatRelativeDateWithWeekdayNameAndDate(scheduleDay.date)) {
               ScrollView(.horizontal) {
-                LazyHStack(alignment: .top) {
+                LazyHStack(alignment: .top, spacing: ShowCard.RECOMMENDED_SPACING) {
                   ForEach(scheduleDay.shows) { show in
-                    ShowFromCalendarWithExactReleaseDateCard(show: show)
-                      .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
-                      .containerRelativeFrame(.horizontal, count: 2, span: 1, spacing: 64)
+                    ShowCardMyAnimeList(show: show)
+                      .containerRelativeFrame(
+                        .horizontal,
+                        count: ShowCard.RECOMMENDED_COUNT_PER_ROW,
+                        span: 1,
+                        spacing: ShowCard.RECOMMENDED_SPACING
+                      )
                   }
                 }
               }

@@ -1,4 +1,4 @@
-import Anime365ApiClient
+import Anime365Kit
 import Foundation
 import JikanApiClient
 import OrderedCollections
@@ -9,25 +9,25 @@ enum ShowNotFoundError: Error {
 }
 
 struct ShowService {
-  private let anime365ApiClient: Anime365ApiClient.ApiClient
+  private let anime365KitFactory: Anime365KitFactory
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
   private let jikanApiClient: JikanApiClient.ApiClient
   private let momentsService: MomentService
 
   init(
-    anime365ApiClient: Anime365ApiClient.ApiClient,
+    anime365KitFactory: Anime365KitFactory,
     shikimoriApiClient: ShikimoriApiClient.ApiClient,
     jikanApiClient: JikanApiClient.ApiClient,
     momentsService: MomentService
   ) {
-    self.anime365ApiClient = anime365ApiClient
+    self.anime365KitFactory = anime365KitFactory
     self.shikimoriApiClient = shikimoriApiClient
     self.jikanApiClient = jikanApiClient
     self.momentsService = momentsService
   }
 
   func getShowIdByMyAnimeListId(_ myAnimeListId: Int) async throws -> Int {
-    let seriesItems = try await anime365ApiClient.listSeries(myAnimeListId: myAnimeListId)
+    let seriesItems = try await anime365KitFactory.createApiClient().listSeries(myAnimeListId: myAnimeListId)
 
     guard let series = seriesItems.first else {
       throw ShowNotFoundError.notFoundByMyAnimeListId
@@ -56,11 +56,11 @@ struct ShowService {
     show: ShowDetails,
     moments: OrderedSet<Moment>,
     screenshots: OrderedSet<URL>,
-    characters: OrderedSet<Character>,
+    characters: OrderedSet<CharacterInfo>,
     staffMembers: OrderedSet<StaffMember>,
     relatedShows: OrderedSet<GroupedRelatedShows>
   ) {
-    let anime365Series = try await anime365ApiClient.getSeries(
+    let anime365Series = try await anime365KitFactory.createApiClient().getSeries(
       seriesId: showId
     )
 
@@ -121,16 +121,16 @@ struct ShowService {
     offset: Int,
     limit: Int
   ) async throws -> OrderedSet<ShowPreview> {
-    let apiResponse = try await anime365ApiClient.listSeries(
+    let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
       limit: limit,
       offset: offset,
       chips: [
         "isAiring": "1",
         "isActive": "1",
         "type!": [
-          Anime365ApiClient.SeriesType.pv.rawValue,
-          Anime365ApiClient.SeriesType.cm.rawValue,
-          Anime365ApiClient.SeriesType.music.rawValue,
+          Anime365Kit.SeriesType.pv.rawValue,
+          Anime365Kit.SeriesType.cm.rawValue,
+          Anime365Kit.SeriesType.music.rawValue,
         ].joined(separator: ","),
       ]
     )
@@ -142,7 +142,7 @@ struct ShowService {
     offset: Int,
     limit: Int
   ) async throws -> OrderedSet<ShowPreview> {
-    let apiResponse = try await anime365ApiClient.listSeries(
+    let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
       limit: limit,
       offset: offset
     )
@@ -222,7 +222,7 @@ struct ShowService {
     limit: Int,
     airingSeason: AiringSeason
   ) async throws -> [ShowPreview] {
-    let apiResponse = try await anime365ApiClient.listSeries(
+    let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
       limit: limit,
       offset: offset,
       chips: [
@@ -238,7 +238,7 @@ struct ShowService {
     limit: Int,
     studioId: Int
   ) async throws -> [ShowPreview] {
-    let apiResponse = try await anime365ApiClient.listSeries(
+    let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
       limit: limit,
       offset: offset,
       chips: [
@@ -254,7 +254,7 @@ struct ShowService {
     limit: Int,
     genreIds: [Int]
   ) async throws -> [ShowPreview] {
-    let apiResponse = try await anime365ApiClient.listSeries(
+    let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
       limit: limit,
       offset: offset,
       chips: [
@@ -273,7 +273,7 @@ struct ShowService {
     offset: Int,
     limit: Int
   ) async throws -> OrderedSet<ShowPreview> {
-    let apiResponse = try await anime365ApiClient.listSeries(
+    let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
       query: searchQuery,
       limit: limit,
       offset: offset

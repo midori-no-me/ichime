@@ -1,10 +1,9 @@
+import Anime365Kit
 import Foundation
-import ScraperAPI
 
 struct EpisodeFromCurrentlyWatchingList: Hashable, Identifiable {
   let showName: ShowName
   let episodeTitle: String
-  let updateNote: String
   let showId: Int
   let episodeId: Int
   let coverUrl: URL?
@@ -13,17 +12,16 @@ struct EpisodeFromCurrentlyWatchingList: Hashable, Identifiable {
     self.episodeId
   }
 
-  init(fromScraperWatchShow: ScraperAPI.Types.WatchShow) {
+  init(fromAnime365KitNewEpisode: Anime365Kit.NewEpisode) {
     self.showName = .parsed(
-      fromScraperWatchShow.showName.romaji,
-      fromScraperWatchShow.showName.ru
+      fromAnime365KitNewEpisode.seriesTitleRomaji,
+      fromAnime365KitNewEpisode.seriesTitleRu
     )
 
-    self.episodeTitle = fromScraperWatchShow.episodeTitle
-    self.updateNote = fromScraperWatchShow.updateType
-    self.showId = fromScraperWatchShow.showId
-    self.episodeId = fromScraperWatchShow.episodeId
-    self.coverUrl = fromScraperWatchShow.imageURL
+    self.episodeTitle = fromAnime365KitNewEpisode.episodeNumberLabel
+    self.showId = fromAnime365KitNewEpisode.seriesId
+    self.episodeId = fromAnime365KitNewEpisode.episodeId
+    self.coverUrl = fromAnime365KitNewEpisode.seriesPosterURL
   }
 
   static func == (lhs: Self, rhs: Self) -> Bool {

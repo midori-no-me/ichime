@@ -1,4 +1,4 @@
-import Anime365ApiClient
+import Anime365Kit
 import Foundation
 import JikanApiClient
 
@@ -20,7 +20,7 @@ struct EpisodeInfo: Identifiable {
   }
 
   static func createValid(
-    anime365EpisodePreview: Anime365ApiClient.Episode,
+    anime365EpisodePreview: Anime365Kit.Episode,
     jikanEpisode: JikanApiClient.Episode?,
     totalEpisodes: Int?
   ) -> Self? {
@@ -28,7 +28,7 @@ struct EpisodeInfo: Identifiable {
       return nil
     }
 
-    if Anime365ApiClient.ApiDateDecoder.isEmptyDate(anime365EpisodePreview.firstUploadedDateTime) {
+    if Anime365Kit.ApiDateDecoder.isEmptyDate(anime365EpisodePreview.firstUploadedDateTime) {
       return nil
     }
 
