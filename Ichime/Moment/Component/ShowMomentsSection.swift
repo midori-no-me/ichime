@@ -39,7 +39,7 @@ private class ShowMomentsSectionViewModel {
       }
 
       self.page += 1
-      self.moments.append(contentsOf: moments)
+      self.moments = .init(self.moments.elements + moments)
     }
     catch {
       self.stopLazyLoading = true
