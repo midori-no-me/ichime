@@ -57,7 +57,7 @@ struct ShowMomentsSection: View {
     VStack(alignment: .leading) {
       SectionWithCards(title: "Моменты") {
         ScrollView(.horizontal) {
-          LazyHStack(alignment: .top) {
+          LazyHStack(alignment: .top, spacing: 64) {
             ForEach(self.viewModel.moments) { moment in
               MomentCard(moment: moment, displayShowTitle: false)
                 .containerRelativeFrame(.horizontal, count: 4, span: 1, spacing: 64)
