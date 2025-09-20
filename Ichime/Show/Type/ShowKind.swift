@@ -1,4 +1,4 @@
-import Anime365ApiClient
+import Anime365Kit
 import ShikimoriApiClient
 
 enum ShowKind {
@@ -58,7 +58,7 @@ enum ShowKind {
     }
   }
 
-  static func create(_ fromAnime365ApiEnum: Anime365ApiClient.SeriesType) -> Self {
+  static func create(_ fromAnime365ApiEnum: Anime365Kit.SeriesType) -> Self {
     switch fromAnime365ApiEnum {
     case .tv:
       .tv

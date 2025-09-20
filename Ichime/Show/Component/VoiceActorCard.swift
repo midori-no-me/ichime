@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct VoiceActorCard: View {
-  let voiceActor: Character.VoiceActor
+  let voiceActor: CharacterInfo.VoiceActor
 
   var body: some View {
     CircularPortraitButton(

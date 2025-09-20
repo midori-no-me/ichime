@@ -2,13 +2,8 @@ import Foundation
 import ShikimoriApiClient
 
 struct RelatedShow: Identifiable, Hashable {
-  struct TranslatedTitles {
-    let russian: String?
-    let japaneseRomaji: String
-  }
-
   let myAnimeListId: Int
-  let title: TranslatedTitles
+  let title: ShowName
   let posterUrl: URL?
   let score: Float?
   let airingSeason: AiringSeason?
@@ -59,10 +54,7 @@ struct RelatedShow: Identifiable, Hashable {
 
     self.myAnimeListId = anime.id
 
-    self.title = .init(
-      russian: anime.russian,
-      japaneseRomaji: anime.name
-    )
+    self.title = .parsed(anime.name, anime.russian)
 
     self.relationKind = .create(fromShikimoriRelation.relation_russian)
   }

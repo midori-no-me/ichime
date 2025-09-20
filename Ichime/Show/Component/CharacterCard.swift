@@ -3,7 +3,7 @@ import SwiftUI
 struct CharacterCard: View {
   @State private var isSheetPresented = false
 
-  let character: Character
+  let character: CharacterInfo
 
   var body: some View {
     CircularPortraitButton(
@@ -18,14 +18,15 @@ struct CharacterCard: View {
           .lineLimit(1)
       }
     )
-    .sheet(isPresented: self.$isSheetPresented) {
+    .fullScreenCover(isPresented: self.$isSheetPresented) {
       CharacterCardSheet(character: self.character)
+        .background(.thickMaterial)  // Костыль для обхода бага: .fullScreenCover на tvOS 26 не имеет бекграунда
     }
   }
 }
 
 private struct CharacterCardSheet: View {
-  let character: Character
+  let character: CharacterInfo
 
   var body: some View {
     NavigationStack {

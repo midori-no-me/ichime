@@ -5,8 +5,9 @@ struct EpisodeFromCurrentlyWatchingListCard: View {
 
   var body: some View {
     NavigationLink(destination: EpisodeTranslationListView(episodeId: self.episode.episodeId)) {
-      RawShowCard(
-        metadataLineComponents: [self.episode.episodeTitle, self.episode.updateNote],
+      ShowCard(
+        topChips: [self.episode.episodeTitle],
+        bottomChips: [],
         cover: self.episode.coverUrl,
         primaryTitle: self.episode.showName.getRomajiOrFullName(),
         secondaryTitle: self.episode.showName.getRussian()

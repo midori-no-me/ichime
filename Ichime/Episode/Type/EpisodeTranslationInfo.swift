@@ -1,4 +1,4 @@
-import Anime365ApiClient
+import Anime365Kit
 import Foundation
 
 struct EpisodeTranslationInfo: Identifiable {
@@ -68,7 +68,7 @@ struct EpisodeTranslationInfo: Identifiable {
   let isUnderProcessing: Bool
 
   static func createValid(
-    anime365ApiTranslation: Anime365ApiClient.Translation
+    anime365ApiTranslation: Anime365Kit.Translation
   ) -> Self? {
     if anime365ApiTranslation.height == 0 {
       return nil
@@ -79,12 +79,12 @@ struct EpisodeTranslationInfo: Identifiable {
     let translationMethod = TranslationMethod.createFromAnime365ApiString(anime365ApiTranslation.typeKind)
 
     let activatedOnAnime365At =
-      Anime365ApiClient.ApiDateDecoder.isEmptyDate(anime365ApiTranslation.activeDateTime)
+      Anime365Kit.ApiDateDecoder.isEmptyDate(anime365ApiTranslation.activeDateTime)
       ? nil
       : anime365ApiTranslation.activeDateTime
 
     let addedToAnime365At =
-      Anime365ApiClient.ApiDateDecoder.isEmptyDate(anime365ApiTranslation.addedDateTime)
+      Anime365Kit.ApiDateDecoder.isEmptyDate(anime365ApiTranslation.addedDateTime)
       ? nil
       : anime365ApiTranslation.addedDateTime
 

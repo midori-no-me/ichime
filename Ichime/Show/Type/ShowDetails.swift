@@ -1,4 +1,4 @@
-import Anime365ApiClient
+import Anime365Kit
 import Foundation
 import JikanApiClient
 import OrderedCollections
@@ -43,7 +43,6 @@ struct ShowDetails {
   let rank: Int?
   let popularity: Int?
   let members: Int?
-  let favorites: Int?
   let airingSeason: AiringSeason?
   let numberOfEpisodes: Int?
   let latestAiredEpisodeNumber: Int?
@@ -56,7 +55,7 @@ struct ShowDetails {
   let source: String?
 
   init(
-    anime365Series: Anime365ApiClient.SeriesFull,
+    anime365Series: Anime365Kit.SeriesFull,
     shikimoriAnime: ShikimoriApiClient.Anime?,
     shikimoriBaseUrl: URL,
     jikanAnime: JikanApiClient.Anime?
@@ -112,13 +111,6 @@ struct ShowDetails {
       self.members = nil
     }
 
-    if let favorites = jikanAnime?.favorites, favorites > 0 {
-      self.favorites = favorites
-    }
-    else {
-      self.favorites = nil
-    }
-
     self.id = anime365Series.id
     self.myAnimeListId = anime365Series.myAnimeListId
     self.descriptions = (anime365Series.descriptions ?? []).map { description in
@@ -163,7 +155,7 @@ struct ShowDetails {
   }
 
   private static func getLatestAiredEpisodeNumber(
-    anime365Episodes: [Anime365ApiClient.Episode],
+    anime365Episodes: [Anime365Kit.Episode],
     totalEpisodes: Int?
   ) -> Int? {
     var largestEpisodeNumber: Int? = nil
@@ -198,7 +190,7 @@ struct ShowDetails {
   }
 
   private static func calculateShowHasUploadedEpisodesToWatch(
-    anime365Episodes: [Anime365ApiClient.Episode],
+    anime365Episodes: [Anime365Kit.Episode],
     totalEpisodes: Int?
   ) -> Bool {
     for anime365Episode in anime365Episodes {

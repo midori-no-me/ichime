@@ -1,21 +1,24 @@
 import Foundation
 import OrderedCollections
-import ScraperAPI
 
 struct CurrentlyWatchingService {
-  private let scraperApi: ScraperAPI.APIClient
+  private let anime365KitFactory: Anime365KitFactory
 
   init(
-    scraperApi: ScraperAPI.APIClient
+    anime365KitFactory: Anime365KitFactory
   ) {
-    self.scraperApi = scraperApi
+    self.anime365KitFactory = anime365KitFactory
   }
 
   func getEpisodesToWatch(page: Int) async throws -> OrderedSet<EpisodeFromCurrentlyWatchingList> {
-    let scraperApiWatchShows = try await self.scraperApi.sendAPIRequest(
-      ScraperAPI.Request.GetNextToWatch(page: page)
-    )
+    let episodes = try await self.anime365KitFactory
+      .createWebClient()
+      .getNewEpisodes(page: page)
 
-    return .init(scraperApiWatchShows.map { .init(fromScraperWatchShow: $0) })
+    return .init(
+      episodes.map {
+        .init(fromAnime365KitNewEpisode: $0)
+      }
+    )
   }
 }

@@ -1,5 +1,5 @@
+import Anime365Kit
 import Foundation
-import ScraperAPI
 
 struct Moment: Identifiable, Hashable {
   let id: Int
@@ -8,11 +8,11 @@ struct Moment: Identifiable, Hashable {
   let showTitle: String
 
   init(
-    fromAnime365Moment: ScraperAPI.Types.Moment
+    fromAnime365Moment: Anime365Kit.MomentPreview
   ) {
-    self.id = fromAnime365Moment.id
-    self.title = fromAnime365Moment.title
-    self.thumbnailUrl = fromAnime365Moment.preview
-    self.showTitle = fromAnime365Moment.fromAnime
+    self.id = fromAnime365Moment.momentId
+    self.title = fromAnime365Moment.momentTitle
+    self.thumbnailUrl = fromAnime365Moment.coverURL
+    self.showTitle = fromAnime365Moment.sourceDescription
   }
 }

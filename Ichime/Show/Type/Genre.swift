@@ -1,4 +1,4 @@
-import Anime365ApiClient
+import Anime365Kit
 import ShikimoriApiClient
 
 struct Genre: Identifiable, Hashable {
@@ -17,7 +17,7 @@ struct Genre: Identifiable, Hashable {
   }
 
   init(
-    fromAnime365Genre: Anime365ApiClient.SeriesFull.Genre
+    fromAnime365Genre: Anime365Kit.SeriesFull.Genre
   ) {
     self.id = fromAnime365Genre.id
     self.title = fromAnime365Genre.title

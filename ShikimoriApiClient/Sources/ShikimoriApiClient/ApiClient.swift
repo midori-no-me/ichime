@@ -39,7 +39,7 @@ public class ApiClient {
 
     var httpRequest = URLRequest(url: fullURL)
 
-    httpRequest.timeoutInterval = 3
+    httpRequest.timeoutInterval = 5
     httpRequest.httpMethod = httpMethod.rawValue
 
     httpRequest.setValue("application/json", forHTTPHeaderField: "Accept")

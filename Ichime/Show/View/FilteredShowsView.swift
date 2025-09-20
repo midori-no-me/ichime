@@ -133,10 +133,15 @@ struct FilteredShowsView: View {
     case let .loaded(shows):
       ScrollView(.vertical) {
         SectionWithCards(title: self.title) {
-          LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
+          LazyVGrid(
+            columns: Array(
+              repeating: GridItem(.flexible(), spacing: ShowCard.RECOMMENDED_SPACING),
+              count: ShowCard.RECOMMENDED_COUNT_PER_ROW
+            ),
+            spacing: ShowCard.RECOMMENDED_SPACING
+          ) {
             ForEach(shows) { show in
-              ShowCard(show: show, displaySeason: self.displaySeason)
-                .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
+              ShowCardAnime365(show: show, displaySeason: self.displaySeason)
                 .task {
                   if show == shows.last {
                     await self.viewModel.performLazyLoading(fetchShows: self.fetchShows)

@@ -15,14 +15,12 @@ options:
   groupSortPosition: top
   indentWidth: 2
 packages:
-  Anime365ApiClient:
-    path: ./Anime365ApiClient
+  Anime365Kit:
+    path: ./Anime365Kit
   ThirdPartyVideoPlayer:
     path: ./ThirdPartyVideoPlayer
   JikanApiClient:
     path: ./JikanApiClient
-  ScraperAPI:
-    path: ./ScraperAPI
   ShikimoriApiClient:
     path: ./ShikimoriApiClient
   Collections:
@@ -36,7 +34,7 @@ targets:
     type: application
     platform: [tvOS]
     deploymentTarget:
-      tvOS: "18.0"
+      tvOS: "26.0"
     scheme:
       configVariants: # Костыль для того, чтобы в Xcode автоматически создавалась схема этого таргета
     sources:
@@ -58,10 +56,9 @@ targets:
     dependencies:
       - package: DITranquillity
       - package: Collections
-      - package: Anime365ApiClient
+      - package: Anime365Kit
       - package: ThirdPartyVideoPlayer
       - package: JikanApiClient
-      - package: ScraperAPI
       - package: ShikimoriApiClient
       - target: TopShelf_tvOS
         destinationFilters: [tvOS]
@@ -76,8 +73,10 @@ targets:
     platform: [tvOS]
     supportedDestinations: tvOS
     deploymentTarget:
-      tvOS: "18.0"
+      tvOS: "26.0"
     sources:
+      - path: Ichime/Anime365/Anime365BaseURL.swift
+      - path: Ichime/Anime365/Anime365KitFactory.swift
       - path: Ichime/DependencyInjection/ServiceLocator.swift
       - path: Ichime/CurrentlyWatching/Type/EpisodeFromCurrentlyWatchingList.swift
       - path: Ichime/CurrentlyWatching/CurrentlyWatchingService.swift
@@ -101,9 +100,8 @@ targets:
         com.apple.security.application-groups: [group.dev.midorinome.ichime.group] # Application Groups нужны для расшаренных UserDefaults между основным приложением и Top Shelf
     dependencies:
       - package: Collections
-      - package: Anime365ApiClient
+      - package: Anime365Kit
       - package: JikanApiClient
-      - package: ScraperAPI
       - package: ShikimoriApiClient
     settings:
       base:
@@ -116,6 +114,10 @@ settings:
     INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.entertainment # К какой категории относится приложение. When GENERATE_INFOPLIST_FILE is enabled, sets the value of the LSApplicationCategoryType key in the Info.plist file to the value of this build setting.
     MARKETING_VERSION: "1.9.1" # Человекочитабельная версия приложения
     SWIFT_VERSION: "5" # Какую версию Swift использовать для компиляции приложения
+
+    ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: "YES" # From "Update to recommended settings" prompt
+    ENABLE_USER_SCRIPT_SANDBOXING: "YES" # From "Update to recommended settings" prompt
+    LOCALIZATION_PREFERS_STRING_CATALOGS: "YES" # From "Update to recommended settings" prompt
   configs:
     Debug:
       INFOPLIST_KEY_CFBundleDisplayName: Ichime (dev) # Человекочитабельное название приложения. When GENERATE_INFOPLIST_FILE is enabled, sets the value of the CFBundleDisplayName key in the Info.plist file to the value of this build setting.

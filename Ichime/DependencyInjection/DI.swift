@@ -1,9 +1,7 @@
-import Anime365ApiClient
 import DITranquillity
 import Foundation
 import JikanApiClient
 import OSLog
-import ScraperAPI
 import ShikimoriApiClient
 import SwiftData
 
@@ -15,61 +13,10 @@ class ApplicationDependency: DIFramework {
   }()
 
   static func load(container: DIContainer) {
-    container.register {
-      let schema = Schema([
-        UserAnimeListModel.self
-      ])
-
-      let modelConfiguration = ModelConfiguration(
-        schema: schema,
-        groupContainer: .identifier(ServiceLocator.appGroup)
-      )
-
-      do {
-        return try ModelContainer(for: schema, configurations: [modelConfiguration])
-      }
-      catch {
-        fatalError("Could not create ModelContainer: \(error)")
-      }
-    }.lifetime(.single)
-
     container
       .register {
         HTTPCookieStorage.sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
       }
-
-    container
-      .register {
-        ScraperAPI.Session(
-          cookieStorage: $0,
-          baseURL: ServiceLocator.websiteBaseUrl
-        )
-      }
-
-    container
-      .register {
-        ScraperAPI.APIClient(
-          baseURL: ServiceLocator.websiteBaseUrl,
-          userAgent: ServiceLocator.userAgent,
-          session: $0
-        )
-      }
-
-    container.register { UserManager(client: $0) }
-      .lifetime(.single)
-
-    container.register {
-      Anime365ApiClient.ApiClient(
-        baseURL: ServiceLocator.websiteBaseUrl,
-        userAgent: ServiceLocator.userAgent,
-        cookieStorage: $0,
-        logger: Logger(subsystem: ServiceLocator.applicationId, category: "Anime365ApiClient")
-      )
-    }
-
-    container.register {
-      UserAnimeListCache(apiClient: $0, userManager: $1, modelContainer: $2)
-    }
 
     container.register {
       ShikimoriApiClient.ApiClient(
@@ -88,15 +35,15 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowService(anime365ApiClient: $0, shikimoriApiClient: $1, jikanApiClient: $2, momentsService: $3)
+      ShowService(anime365KitFactory: $0, shikimoriApiClient: $1, jikanApiClient: $2, momentsService: $3)
     }
 
     container.register {
-      EpisodeService(anime365ApiClient: $0, jikanApiClient: $1)
+      EpisodeService(anime365KitFactory: $0, jikanApiClient: $1)
     }
 
     container.register {
-      CurrentlyWatchingService(scraperApi: $0)
+      CurrentlyWatchingService(anime365KitFactory: $0)
     }
 
     container.register {
@@ -106,7 +53,7 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowReleaseSchedule(shikimoriApiClient: $0, jikanApiClient: $1)
+      ShowReleaseSchedule(shikimoriApiClient: $0)
     }
 
     container.register {
@@ -114,11 +61,47 @@ class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      MomentService(scraperApi: $0)
+      MomentService(anime365KitFactory: $0)
     }
 
     container.register {
       ShowSearchService(shikimoriApiClient: $0)
+    }
+
+    container.register {
+      Anime365KitFactory(
+        anime365BaseURL: $0,
+        userAgent: ServiceLocator.userAgent,
+        logger: Logger(subsystem: ServiceLocator.applicationId, category: "Anime365Kit"),
+        urlSession: ServiceLocator.urlSession
+      )
+    }
+
+    container.register {
+      AuthenticationManager(
+        anime365KitFactory: $0,
+        currentUserInfo: $1,
+        animeListEntriesCount: $2,
+        urlSession: ServiceLocator.urlSession
+      )
+    }
+
+    container.register {
+      Anime365BaseURL()
+    }
+
+    container.register {
+      CurrentUserInfo()
+    }
+
+    container.register {
+      AnimeListEntriesCount()
+    }
+
+    container.register {
+      AnimeListService(
+        anime365KitFactory: $0
+      )
     }
 
     if !container.makeGraph().checkIsValid() {

@@ -176,10 +176,15 @@ private struct EpisodesGrid: View {
   let loadMore: () async -> Void
 
   var body: some View {
-    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 64), count: 2), spacing: 64) {
+    LazyVGrid(
+      columns: Array(
+        repeating: GridItem(.flexible(), spacing: ShowCard.RECOMMENDED_SPACING),
+        count: ShowCard.RECOMMENDED_COUNT_PER_ROW
+      ),
+      spacing: ShowCard.RECOMMENDED_SPACING
+    ) {
       ForEach(self.episodes) { episode in
         EpisodeFromCurrentlyWatchingListCard(episode: episode)
-          .frame(height: RawShowCard.RECOMMENDED_HEIGHT)
           .task {
             if episode.episodeId == self.episodes.last?.episodeId {
               await self.loadMore()

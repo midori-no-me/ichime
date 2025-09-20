@@ -1,4 +1,3 @@
-import ScraperAPI
 import SwiftUI
 
 private struct MarkEpisodeAsWatchedAlert: ViewModifier {
@@ -10,7 +9,7 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
   @AppStorage("last_watched_translation_id") private var lastWatchedTranslationId: Int = 0
 
   private let episodeService: EpisodeService = ApplicationDependency.container.resolve()
-  private let scraperClient: ScraperAPI.APIClient = ApplicationDependency.container.resolve()
+  private let anime365KitFactory: Anime365KitFactory = ApplicationDependency.container.resolve()
 
   func body(content: Content) -> some View {
     content
@@ -67,9 +66,8 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
       ) { _ in
         Button {
           Task {
-            try? await self.scraperClient.sendAPIRequest(
-              ScraperAPI.Request
-                .UpdateCurrentWatch(translationId: self.lastWatchedTranslationId)
+            try? await self.anime365KitFactory.createWebClient().markEpisodeAsWatched(
+              translationID: self.lastWatchedTranslationId
             )
 
             self.lastWatchedTranslationId = 0
