@@ -49,6 +49,11 @@ targets:
         LSApplicationQueriesSchemes: # Нужно для проверок UIApplication.shared.canOpenURL() в коде
           - infuse
           - vlc-x-callback
+        CFBundleIcons~appleTV:
+          CFBundleAlternateIcons:
+            "App Icon - Gawr Gura":
+              CFBundleIconFiles:
+                - "App Icon - Gawr Gura"
     entitlements:
       path: Ichime/Ichime.entitlements
       properties:
@@ -64,23 +69,10 @@ targets:
         destinationFilters: [tvOS]
     settings:
       base:
-        GENERATE_INFOPLIST_FILE: "YES" # Так как мы свой Info.plist пока не используем, то просим Xcode генерировать Info.plist автоматически, а все параметры добавляем через INFOPLIST_KEY_*
+        GENERATE_INFOPLIST_FILE: "NO" # Используем собственный Info.plist с конфигурацией CFBundleIcons~appleTV
         PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime # Bundle ID этого таргета
         ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: >
           "App Icon - Gawr Gura"
-        INFOPLIST_KEY_CFBundleIcons~appleTV: |
-          <dict>
-            <key>CFBundleAlternateIcons</key>
-            <dict>
-              <key>App Icon - Gawr Gura</key>
-              <dict>
-                <key>CFBundleIconFiles</key>
-                <array>
-                  <string>App Icon - Gawr Gura</string>
-                </array>
-              </dict>
-            </dict>
-          </dict>
       configs:
         Debug:
           ASSETCATALOG_COMPILER_APPICON_NAME: "App Icon & Top Shelf Image (Debug)"
