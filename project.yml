@@ -68,6 +68,19 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime # Bundle ID этого таргета
         ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: >
           "App Icon - Gawr Gura"
+        INFOPLIST_KEY_CFBundleIcons~appleTV: |
+          <dict>
+            <key>CFBundleAlternateIcons</key>
+            <dict>
+              <key>App Icon - Gawr Gura</key>
+              <dict>
+                <key>CFBundleIconFiles</key>
+                <array>
+                  <string>App Icon - Gawr Gura</string>
+                </array>
+              </dict>
+            </dict>
+          </dict>
       configs:
         Debug:
           ASSETCATALOG_COMPILER_APPICON_NAME: "App Icon & Top Shelf Image (Debug)"
@@ -94,6 +107,8 @@ targets:
       properties:
         CFBundleVersion: $(CURRENT_PROJECT_VERSION) # Техническая версия приложения
         CFBundleShortVersionString: $(MARKETING_VERSION) # Человекочитабельная версия приложения
+        UIRequiredDeviceCapabilities: arm64 # нужно чтоб правильно собирался билд для testflight
+        CFBundleDisplayName: $(PRODUCT_NAME) TopShelf # нужно для публикации в testflight
         NSExtension:
           NSExtensionPointIdentifier: com.apple.tv-top-shelf # Тип экстеншена - Top Shelf
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ContentProvider # Класс, являющийся точкой входа в экстеншен
