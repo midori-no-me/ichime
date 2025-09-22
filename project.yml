@@ -49,11 +49,6 @@ targets:
         LSApplicationQueriesSchemes: # Нужно для проверок UIApplication.shared.canOpenURL() в коде
           - infuse
           - vlc-x-callback
-        CFBundleIcons~appleTV:
-          CFBundleAlternateIcons:
-            "App Icon - Gawr Gura":
-              CFBundleIconFiles:
-                - "App Icon - Gawr Gura"
     entitlements:
       path: Ichime/Ichime.entitlements
       properties:
@@ -69,7 +64,7 @@ targets:
         destinationFilters: [tvOS]
     settings:
       base:
-        GENERATE_INFOPLIST_FILE: "NO" # Используем собственный Info.plist с конфигурацией CFBundleIcons~appleTV
+        GENERATE_INFOPLIST_FILE: "YES" # Так как мы свой Info.plist пока не используем, то просим Xcode генерировать Info.plist автоматически, а все параметры добавляем через INFOPLIST_KEY_*
         PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime # Bundle ID этого таргета
         ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: >
           "App Icon - Gawr Gura"
@@ -99,7 +94,8 @@ targets:
       properties:
         CFBundleVersion: $(CURRENT_PROJECT_VERSION) # Техническая версия приложения
         CFBundleShortVersionString: $(MARKETING_VERSION) # Человекочитабельная версия приложения
-        UIRequiredDeviceCapabilities: arm64 # нужно чтоб правильно собирался билд для testflight
+        UIRequiredDeviceCapabilities: 
+        - arm64 # нужно чтоб правильно собирался билд для testflight
         CFBundleDisplayName: $(PRODUCT_NAME) TopShelf # нужно для публикации в testflight
         NSExtension:
           NSExtensionPointIdentifier: com.apple.tv-top-shelf # Тип экстеншена - Top Shelf
