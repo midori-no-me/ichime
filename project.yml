@@ -49,6 +49,7 @@ targets:
         LSApplicationQueriesSchemes: # Нужно для проверок UIApplication.shared.canOpenURL() в коде
           - infuse
           - vlc-x-callback
+        UIRequiredDeviceCapabilities: [arm64] # Требуется для публикации в TestFlight
     entitlements:
       path: Ichime/Ichime.entitlements
       properties:
@@ -92,8 +93,10 @@ targets:
     info:
       path: TopShelf/Info.plist
       properties:
+        CFBundleDisplayName: $(PRODUCT_NAME) TopShelf # Требуется для публикации в TestFlight
         CFBundleVersion: $(CURRENT_PROJECT_VERSION) # Техническая версия приложения
         CFBundleShortVersionString: $(MARKETING_VERSION) # Человекочитабельная версия приложения
+        UIRequiredDeviceCapabilities: [arm64] # Требуется для публикации в TestFlight
         NSExtension:
           NSExtensionPointIdentifier: com.apple.tv-top-shelf # Тип экстеншена - Top Shelf
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ContentProvider # Класс, являющийся точкой входа в экстеншен
