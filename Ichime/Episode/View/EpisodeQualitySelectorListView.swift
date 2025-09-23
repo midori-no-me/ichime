@@ -133,6 +133,8 @@ private struct EpisodeTranslationsStreamingQualities: View {
   // periphery:ignore
   @AppStorage("last_watched_translation_id") private var lastWatchedTranslationId: Int = 0
 
+  @Environment(\.openURL) private var openURL
+
   var body: some View {
     List {
       Section {
@@ -153,7 +155,7 @@ private struct EpisodeTranslationsStreamingQualities: View {
             if !UIApplication.shared.canOpenURL(externalPlayerUniversalLink) {
               print("Opening App Store: \(self.selectedPlayer.appStoreUrl)")
 
-              UIApplication.shared.open(self.selectedPlayer.appStoreUrl)
+              self.openURL(self.selectedPlayer.appStoreUrl)
 
               return
             }
@@ -162,7 +164,7 @@ private struct EpisodeTranslationsStreamingQualities: View {
 
             print("Opening external player: \(externalPlayerUniversalLink.absoluteString)")
 
-            UIApplication.shared.open(externalPlayerUniversalLink)
+            self.openURL(externalPlayerUniversalLink)
           }) {
             Text(streamingQuality.height.formatted(VideoQualityNumberFormatter()))
           }
