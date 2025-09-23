@@ -145,6 +145,7 @@ struct AiringSeason {
 }
 
 struct ShowSeasonService {
+  static let CURRENT_SEASON = 0
   static let NEXT_SEASON = 1
 
   private let currentDate: Date

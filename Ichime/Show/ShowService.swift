@@ -121,18 +121,38 @@ struct ShowService {
     offset: Int,
     limit: Int
   ) async throws -> OrderedSet<ShowPreview> {
+    let visibilityOna = OngoingsVisibilityOna.get()
+
+    var hiddenTypes: Set<Anime365Kit.SeriesType> = [
+      Anime365Kit.SeriesType.pv,
+      Anime365Kit.SeriesType.cm,
+      Anime365Kit.SeriesType.music,
+    ]
+
+    if visibilityOna == .hide {
+      hiddenTypes.insert(Anime365Kit.SeriesType.ona)
+    }
+
+    var chips = [
+      "isAiring": "1",
+      "isActive": "1",
+      "type!": hiddenTypes.map(\.rawValue).joined(separator: ","),
+    ]
+
+    let visibilityOld = OngoingsVisibilityOld.get()
+
+    if visibilityOld == .hide {
+      let seasonYearAgo = ShowSeasonService().getRelativeSeason(shift: -4)
+      let currentSeason = ShowSeasonService().getRelativeSeason(shift: ShowSeasonService.CURRENT_SEASON)
+
+      chips["yearseason"] =
+        "\(seasonYearAgo.calendarSeason.getAnime365ApiName())_\(seasonYearAgo.year)-\(currentSeason.calendarSeason.getAnime365ApiName())_\(currentSeason.year)"
+    }
+
     let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
       limit: limit,
       offset: offset,
-      chips: [
-        "isAiring": "1",
-        "isActive": "1",
-        "type!": [
-          Anime365Kit.SeriesType.pv.rawValue,
-          Anime365Kit.SeriesType.cm.rawValue,
-          Anime365Kit.SeriesType.music.rawValue,
-        ].joined(separator: ","),
-      ]
+      chips: chips
     )
 
     return .init(apiResponse.map { .init(anime365Series: $0) })

@@ -38,6 +38,52 @@
 			<key>File</key>
 			<string>HiddenTranslations</string>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Онгоинги</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>ONA в списке онгоингов</string>
+			<key>Key</key>
+			<string>ongoings_visibility_ona</string>
+			<key>DefaultValue</key>
+			<string>show</string>
+			<key>Titles</key>
+			<array>
+				<string>Показывать</string>
+				<string>Скрыть</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>show</string>
+				<string>hide</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Старые онгоинги</string>
+			<key>Key</key>
+			<string>ongoings_visibility_old</string>
+			<key>DefaultValue</key>
+			<string>show</string>
+			<key>Titles</key>
+			<array>
+				<string>Показывать</string>
+				<string>Скрыть</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>show</string>
+				<string>hide</string>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>

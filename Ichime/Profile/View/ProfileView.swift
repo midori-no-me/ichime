@@ -23,8 +23,12 @@ struct ProfileView: View {
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
 
-  @AppStorage(NavigationStyle.UserDefaultsKey.STYLE) private var navigationStyle: NavigationStyle = NavigationStyle
-    .DEFAULT_STYLE
+  @AppStorage(NavigationStyle.UserDefaultsKey.STYLE) private var navigationStyle: NavigationStyle = .DEFAULT_STYLE
+
+  @AppStorage(OngoingsVisibilityOna.UserDefaultsKey.VISIBILITY) private var ongoingsVisibilityOna:
+    OngoingsVisibilityOna = .DEFAULT_VISIBILITY
+  @AppStorage(OngoingsVisibilityOld.UserDefaultsKey.VISIBILITY) private var ongoingsVisibilityOld:
+    OngoingsVisibilityOld = .DEFAULT_VISIBILITY
 
   @AppStorage(AnimeListEntriesCount.UserDefaultsKey.WATCHING) private var animeListEntriesCountWatching: Int = 0
   @AppStorage(AnimeListEntriesCount.UserDefaultsKey.COMPLETED) private var animeListEntriesCountCompleted: Int = 0
@@ -186,6 +190,24 @@ struct ProfileView: View {
         Text("Настройки приложения")
       } footer: {
         Text("Если приложение работает некорректно, попробуйте поменять адрес сайта.")
+      }
+
+      Section {
+        Picker("ONA в списке онгоингов", selection: self.$ongoingsVisibilityOna) {
+          ForEach(OngoingsVisibilityOna.allCases, id: \.self) { visibility in
+            Text(visibility.name)
+          }
+        }
+        .pickerStyle(.navigationLink)
+
+        Picker("Старые онгоинги", selection: self.$ongoingsVisibilityOld) {
+          ForEach(OngoingsVisibilityOld.allCases, id: \.self) { visibility in
+            Text(visibility.name)
+          }
+        }
+        .pickerStyle(.navigationLink)
+      } header: {
+        Text("Онгоинги")
       }
 
       Section {
