@@ -5,7 +5,7 @@ on: pull_request
 jobs:
   xcodegen:
     name: XcodeGen
-    runs-on: macos-15
+    runs-on: macos-26
 
     steps:
       - name: Checkout Repository
@@ -27,7 +27,7 @@ jobs:
 
   swift_format:
     name: swift-format
-    runs-on: macos-15
+    runs-on: macos-26
 
     steps:
       - name: Checkout Repository
@@ -38,7 +38,7 @@ jobs:
 
   swiftformat:
     name: SwiftFormat
-    runs-on: macos-15
+    runs-on: macos-26
 
     steps:
       - name: Checkout Repository
@@ -49,7 +49,7 @@ jobs:
 
   swiftlint:
     name: SwiftLint
-    runs-on: macos-15
+    runs-on: macos-26
 
     steps:
       - name: Checkout Repository
@@ -63,7 +63,7 @@ jobs:
 
   periphery:
     name: Periphery
-    runs-on: macos-15
+    runs-on: macos-26
     needs: [xcodegen]
 
     steps:
