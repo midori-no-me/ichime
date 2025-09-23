@@ -32,8 +32,7 @@ private class EpisodeTranslationListViewModel {
   }
 
   func performInitialLoad(
-    episodeId: Int,
-    hiddenTranslationsPreference: HiddenTranslationsPreference
+    episodeId: Int
   ) async {
     self.state = .loading
 
@@ -43,8 +42,7 @@ private class EpisodeTranslationListViewModel {
       )
 
       let episodeTranslationGroups = self.episodeService.filterAndGroupEpisodeTranslations(
-        episodeTranslationInfos: episodeTranslationInfos,
-        hiddenTranslationsPreference: hiddenTranslationsPreference
+        episodeTranslationInfos: episodeTranslationInfos
       )
 
       if episodeTranslationGroups.isEmpty {
@@ -65,8 +63,6 @@ struct EpisodeTranslationListView: View {
 
   @State private var viewModel: EpisodeTranslationListViewModel = .init()
 
-  @StateObject private var hiddenTranslationsPreference: HiddenTranslationsPreferenceState = .init()
-
   var body: some View {
     Group {
       switch self.viewModel.state {
@@ -74,8 +70,7 @@ struct EpisodeTranslationListView: View {
         Color.clear.onAppear {
           Task {
             await self.viewModel.performInitialLoad(
-              episodeId: self.episodeId,
-              hiddenTranslationsPreference: self.hiddenTranslationsPreference.getPreference()
+              episodeId: self.episodeId
             )
           }
         }
@@ -94,8 +89,7 @@ struct EpisodeTranslationListView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                episodeId: self.episodeId,
-                hiddenTranslationsPreference: self.hiddenTranslationsPreference.getPreference()
+                episodeId: self.episodeId
               )
             }
           }) {
@@ -113,8 +107,7 @@ struct EpisodeTranslationListView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                episodeId: self.episodeId,
-                hiddenTranslationsPreference: self.hiddenTranslationsPreference.getPreference()
+                episodeId: self.episodeId
               )
             }
           }) {
@@ -141,16 +134,6 @@ struct EpisodeTranslationListView: View {
               .frame(width: 700 - 64)
           }
         }
-      }
-    }
-    .onChange(of: self.hiddenTranslationsPreference.getPreference()) {
-      // Подписываемся на изменения настройки, чтобы перерисовать список переводов, если вдруг настройка изменится
-      // Наверняка это можно как-то получше сделать
-      Task {
-        await self.viewModel.performInitialLoad(
-          episodeId: self.episodeId,
-          hiddenTranslationsPreference: self.hiddenTranslationsPreference.getPreference()
-        )
       }
     }
   }

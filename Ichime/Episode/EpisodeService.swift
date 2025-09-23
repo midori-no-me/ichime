@@ -145,15 +145,14 @@ struct EpisodeService {
   }
 
   func filterAndGroupEpisodeTranslations(
-    episodeTranslationInfos: [EpisodeTranslationInfo],
-    hiddenTranslationsPreference: HiddenTranslationsPreference
+    episodeTranslationInfos: [EpisodeTranslationInfo]
   ) -> [EpisodeTranslationGroup] {
     var groupTypeToEpisodeTranslationInfosDictionary: [EpisodeTranslationGroupType: [EpisodeTranslationInfo]] = [:]
 
     for episodeTranslationInfo in episodeTranslationInfos {
       if episodeTranslationInfo.translatedToLanguage == .russian {
         if episodeTranslationInfo.translationMethod == .subtitles {
-          if hiddenTranslationsPreference.hideRussianSubtitles {
+          if TranslationsRussianSubtitlesVisibility.get() == .hide {
             continue
           }
 
@@ -161,7 +160,7 @@ struct EpisodeService {
         }
 
         if episodeTranslationInfo.translationMethod == .voiceover {
-          if hiddenTranslationsPreference.hideRussianVoiceover {
+          if TranslationsRussianVoiceoverVisibility.get() == .hide {
             continue
           }
 
@@ -170,7 +169,7 @@ struct EpisodeService {
       }
       else if episodeTranslationInfo.translatedToLanguage == .english {
         if episodeTranslationInfo.translationMethod == .subtitles {
-          if hiddenTranslationsPreference.hideEnglishSubtitles {
+          if TranslationsEnglishSubtitlesVisibility.get() == .hide {
             continue
           }
 
@@ -178,7 +177,7 @@ struct EpisodeService {
         }
 
         if episodeTranslationInfo.translationMethod == .voiceover {
-          if hiddenTranslationsPreference.hideEnglishVoiceover {
+          if TranslationsEnglishVoiceoverVisibility.get() == .hide {
             continue
           }
 
@@ -186,14 +185,14 @@ struct EpisodeService {
         }
       }
       else if episodeTranslationInfo.translatedToLanguage == .japanese {
-        if hiddenTranslationsPreference.hideJapanese {
+        if TranslationsJapaneseVisibility.get() == .hide {
           continue
         }
 
         groupTypeToEpisodeTranslationInfosDictionary[.japanese, default: []].append(episodeTranslationInfo)
       }
       else if episodeTranslationInfo.translatedToLanguage == .other {
-        if hiddenTranslationsPreference.hideOther {
+        if TranslationsOtherVisibility.get() == .hide {
           continue
         }
 

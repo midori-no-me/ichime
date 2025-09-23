@@ -30,6 +30,19 @@ struct ProfileView: View {
   @AppStorage(OngoingsVisibilityOld.UserDefaultsKey.VISIBILITY) private var ongoingsVisibilityOld:
     OngoingsVisibilityOld = .DEFAULT_VISIBILITY
 
+  @AppStorage(TranslationsRussianSubtitlesVisibility.UserDefaultsKey.VISIBILITY) private
+    var translationsRussianSubtitlesVisibility: TranslationsRussianSubtitlesVisibility = .DEFAULT_VISIBILITY
+  @AppStorage(TranslationsRussianVoiceoverVisibility.UserDefaultsKey.VISIBILITY) private
+    var translationsRussianVoiceoverVisibility: TranslationsRussianVoiceoverVisibility = .DEFAULT_VISIBILITY
+  @AppStorage(TranslationsEnglishSubtitlesVisibility.UserDefaultsKey.VISIBILITY) private
+    var translationsEnglishSubtitlesVisibility: TranslationsEnglishSubtitlesVisibility = .DEFAULT_VISIBILITY
+  @AppStorage(TranslationsEnglishVoiceoverVisibility.UserDefaultsKey.VISIBILITY) private
+    var translationsEnglishVoiceoverVisibility: TranslationsEnglishVoiceoverVisibility = .DEFAULT_VISIBILITY
+  @AppStorage(TranslationsJapaneseVisibility.UserDefaultsKey.VISIBILITY) private var translationsJapaneseVisibility:
+    TranslationsJapaneseVisibility = .DEFAULT_VISIBILITY
+  @AppStorage(TranslationsOtherVisibility.UserDefaultsKey.VISIBILITY) private var translationsOtherVisibility:
+    TranslationsOtherVisibility = .DEFAULT_VISIBILITY
+
   @AppStorage(AnimeListEntriesCount.UserDefaultsKey.WATCHING) private var animeListEntriesCountWatching: Int = 0
   @AppStorage(AnimeListEntriesCount.UserDefaultsKey.COMPLETED) private var animeListEntriesCountCompleted: Int = 0
   @AppStorage(AnimeListEntriesCount.UserDefaultsKey.ON_HOLD) private var animeListEntriesCountOnHold: Int = 0
@@ -148,8 +161,6 @@ struct ProfileView: View {
       }
 
       Section {
-        NavigationLink("Скрытые переводы", destination: HiddenTranslationsView())
-
         Picker("Навигация", selection: self.$navigationStyle) {
           ForEach(NavigationStyle.allCases, id: \.self) { navigationStyleType in
             Text(navigationStyleType.name)
@@ -208,6 +219,52 @@ struct ProfileView: View {
         .pickerStyle(.navigationLink)
       } header: {
         Text("Онгоинги")
+      }
+
+      Section {
+        Picker("Русские субтитры", selection: self.$translationsRussianSubtitlesVisibility) {
+          ForEach(TranslationsRussianSubtitlesVisibility.allCases, id: \.self) { visibility in
+            Text(visibility.name)
+          }
+        }
+        .pickerStyle(.navigationLink)
+
+        Picker("Русская озвучка", selection: self.$translationsRussianVoiceoverVisibility) {
+          ForEach(TranslationsRussianVoiceoverVisibility.allCases, id: \.self) { visibility in
+            Text(visibility.name)
+          }
+        }
+        .pickerStyle(.navigationLink)
+
+        Picker("Английские субтитры", selection: self.$translationsEnglishSubtitlesVisibility) {
+          ForEach(TranslationsEnglishSubtitlesVisibility.allCases, id: \.self) { visibility in
+            Text(visibility.name)
+          }
+        }
+        .pickerStyle(.navigationLink)
+
+        Picker("Английская озвучка", selection: self.$translationsEnglishVoiceoverVisibility) {
+          ForEach(TranslationsEnglishVoiceoverVisibility.allCases, id: \.self) { visibility in
+            Text(visibility.name)
+          }
+        }
+        .pickerStyle(.navigationLink)
+
+        Picker("Японский", selection: self.$translationsJapaneseVisibility) {
+          ForEach(TranslationsJapaneseVisibility.allCases, id: \.self) { visibility in
+            Text(visibility.name)
+          }
+        }
+        .pickerStyle(.navigationLink)
+
+        Picker("Прочее", selection: self.$translationsOtherVisibility) {
+          ForEach(TranslationsOtherVisibility.allCases, id: \.self) { visibility in
+            Text(visibility.name)
+          }
+        }
+        .pickerStyle(.navigationLink)
+      } header: {
+        Text("Переводы")
       }
 
       Section {

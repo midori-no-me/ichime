@@ -32,14 +32,6 @@
 		</dict>
 		<dict>
 			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-			<key>Title</key>
-			<string>Скрытые переводы</string>
-			<key>File</key>
-			<string>HiddenTranslations</string>
-		</dict>
-		<dict>
-			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>Онгоинги</string>
@@ -71,6 +63,132 @@
 			<string>Старые онгоинги</string>
 			<key>Key</key>
 			<string>ongoings_visibility_old</string>
+			<key>DefaultValue</key>
+			<string>show</string>
+			<key>Titles</key>
+			<array>
+				<string>Показывать</string>
+				<string>Скрыть</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>show</string>
+				<string>hide</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Переводы</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Русские субтитры</string>
+			<key>Key</key>
+			<string>translations_russian_subtitles_visibility</string>
+			<key>DefaultValue</key>
+			<string>show</string>
+			<key>Titles</key>
+			<array>
+				<string>Показывать</string>
+				<string>Скрыть</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>show</string>
+				<string>hide</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Русская озвучка</string>
+			<key>Key</key>
+			<string>translations_russian_voiceover_visibility</string>
+			<key>DefaultValue</key>
+			<string>show</string>
+			<key>Titles</key>
+			<array>
+				<string>Показывать</string>
+				<string>Скрыть</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>show</string>
+				<string>hide</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Английские субтитры</string>
+			<key>Key</key>
+			<string>translations_english_subtitles_visibility</string>
+			<key>DefaultValue</key>
+			<string>show</string>
+			<key>Titles</key>
+			<array>
+				<string>Показывать</string>
+				<string>Скрыть</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>show</string>
+				<string>hide</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Английская озвучка</string>
+			<key>Key</key>
+			<string>translations_english_voiceover_visibility</string>
+			<key>DefaultValue</key>
+			<string>show</string>
+			<key>Titles</key>
+			<array>
+				<string>Показывать</string>
+				<string>Скрыть</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>show</string>
+				<string>hide</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Японский</string>
+			<key>Key</key>
+			<string>translations_japanese_visibility</string>
+			<key>DefaultValue</key>
+			<string>show</string>
+			<key>Titles</key>
+			<array>
+				<string>Показывать</string>
+				<string>Скрыть</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>show</string>
+				<string>hide</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Прочее</string>
+			<key>Key</key>
+			<string>translations_other_visibility</string>
 			<key>DefaultValue</key>
 			<string>show</string>
 			<key>Titles</key>
