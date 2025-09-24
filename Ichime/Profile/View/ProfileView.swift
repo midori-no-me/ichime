@@ -153,7 +153,7 @@ struct ProfileView: View {
           }
           .fullScreenCover(isPresented: self.$showAuthenticationSheet) {
             NavigationStack {
-              AuthenticationSheet()
+              AuthenticationSheet(onSuccessfulAuth: nil)
             }
             .background(.thickMaterial)  // Костыль для обхода бага: .fullScreenCover на tvOS 26 не имеет бекграунда
           }
@@ -186,17 +186,6 @@ struct ProfileView: View {
           }
         }
         .pickerStyle(.navigationLink)
-        .onChange(of: self.anime365BaseURL) { oldValue, newValue in
-          let sharedCookieStorage = HTTPCookieStorage.sharedCookieStorage(
-            forGroupContainerIdentifier: ServiceLocator.appGroup
-          )
-
-          let cookiesForOldBaseURL = sharedCookieStorage.cookies(for: oldValue)
-
-          if let cookiesForOldBaseURL {
-            sharedCookieStorage.setCookies(cookiesForOldBaseURL, for: newValue, mainDocumentURL: newValue)
-          }
-        }
       } header: {
         Text("Настройки приложения")
       } footer: {

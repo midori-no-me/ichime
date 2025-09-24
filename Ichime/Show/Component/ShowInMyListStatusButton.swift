@@ -76,6 +76,8 @@ struct ShowInMyListStatusButton: View {
   @State private var viewModel: ShowInMyListStatusButtonViewModel = .init()
   @State private var showSheet: Bool = false
 
+  @AppStorage(CurrentUserInfo.UserDefaultsKey.ID) private var userId: Int?
+
   let showId: Int
   let showName: ShowName
   let episodesTotal: Int?
@@ -130,6 +132,7 @@ struct ShowInMyListStatusButton: View {
       .padding(.vertical, 20)
       .padding(.horizontal, 40)
     }
+    .disabled(self.userId == nil)
     .fullScreenCover(isPresented: self.$showSheet) {
       NavigationStack {
         EditAnimeListEntrySheet(

@@ -1,8 +1,8 @@
 import Foundation
 
 public enum LoginError: Error {
+  case webClientError(WebClientError)
   case invalidCredentials
-  case unknownError
 }
 
 extension WebClient {
@@ -25,7 +25,7 @@ extension WebClient {
       )
     }
     catch {
-      throw .unknownError
+      throw .webClientError(error)
     }
 
     if html.contains("Неверный E-mail или пароль.") {

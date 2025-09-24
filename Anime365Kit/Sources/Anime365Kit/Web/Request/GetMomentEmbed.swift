@@ -1,34 +1,22 @@
 import Foundation
 import SwiftSoup
 
-public enum GetMomentEmbedError: Error {
-  case unknownError
-  case authenticationRequired
-}
-
 extension WebClient {
-  public func getMomentEmbed(momentID: Int) async throws(GetMomentEmbedError)
+  public func getMomentEmbed(momentID: Int) async throws(WebClientError)
     -> MomentEmbed
   {
-    var html: String
-
-    do {
-      html = try await self.sendRequest(
-        "/moments/embed/\(momentID)",
-        queryItems: [],
-      )
-    }
-    catch {
-      throw .unknownError
-    }
+    let html = try await self.sendRequest(
+      "/moments/embed/\(momentID)",
+      queryItems: [],
+    )
 
     let htmlDocument = try? SwiftSoup.parse(html)
 
     guard let htmlDocument else {
-      throw .unknownError
+      throw .couldNotParseHtml
     }
 
-    if html.contains("Вход или регистрация") {
+    if html.contains("Вход или регистрация") || html.contains("Вход - Anime 365") {
       throw .authenticationRequired
     }
 
@@ -40,7 +28,7 @@ extension WebClient {
         self.logNormalizationError(of: AnimeListEntry.self, message: errorMessage)
       }
 
-      throw .unknownError
+      throw .couldNotParseHtml
     }
   }
 }

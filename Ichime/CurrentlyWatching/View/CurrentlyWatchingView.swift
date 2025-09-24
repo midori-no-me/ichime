@@ -1,3 +1,4 @@
+import Anime365Kit
 import OrderedCollections
 import SwiftData
 import SwiftUI
@@ -121,20 +122,30 @@ struct CurrentlyWatchingView: View {
           .centeredContentFix()
 
       case let .loadingFailed(error):
-        ContentUnavailableView {
-          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-        } description: {
-          Text(error.localizedDescription)
-        } actions: {
-          Button(action: {
+        if case Anime365Kit.WebClientError.authenticationRequired = error {
+          AuthenticationRequiredContentUnavailableView(onSuccessfulAuth: {
             Task {
               await self.viewModel.performInitialLoading()
             }
-          }) {
-            Text("Обновить")
-          }
+          })
+          .centeredContentFix()
         }
-        .centeredContentFix()
+        else {
+          ContentUnavailableView {
+            Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+          } description: {
+            Text(error.localizedDescription)
+          } actions: {
+            Button(action: {
+              Task {
+                await self.viewModel.performInitialLoading()
+              }
+            }) {
+              Text("Обновить")
+            }
+          }
+          .centeredContentFix()
+        }
 
       case .loadedButEmpty:
         ContentUnavailableView {

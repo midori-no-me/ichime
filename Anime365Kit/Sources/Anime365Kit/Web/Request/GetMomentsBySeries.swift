@@ -1,18 +1,11 @@
 import Foundation
 import SwiftSoup
 
-public enum GetMomentsBySeriesError: Error {
-  case unknownError
-  case authenticationRequired
-}
-
 extension WebClient {
   public func getMomentsBySeries(
     seriesId: Int,
     page: Int,
-  ) async throws(GetMomentsBySeriesError) -> [MomentPreview] {
-    var html: String
-
+  ) async throws(WebClientError) -> [MomentPreview] {
     var queryItems: [URLQueryItem] = []
 
     if page == 1 {
@@ -24,23 +17,18 @@ extension WebClient {
       queryItems.append(.init(name: "moments-page", value: "\(page)"))
     }
 
-    do {
-      html = try await self.sendRequest(
-        "/moments/listBySeries/\(seriesId)",
-        queryItems: queryItems,
-      )
-    }
-    catch {
-      throw .unknownError
-    }
+    let html = try await self.sendRequest(
+      "/moments/listBySeries/\(seriesId)",
+      queryItems: queryItems,
+    )
 
     let htmlDocument = try? SwiftSoup.parse(html)
 
     guard let htmlDocument else {
-      throw .unknownError
+      throw .couldNotParseHtml
     }
 
-    if html.contains("Вход или регистрация") {
+    if html.contains("Вход или регистрация") || html.contains("Вход - Anime 365") {
       throw .authenticationRequired
     }
 

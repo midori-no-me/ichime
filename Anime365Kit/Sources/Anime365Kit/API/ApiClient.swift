@@ -28,7 +28,7 @@ public class ApiClient {
   func sendRequest<T: Decodable>(
     endpoint: String,
     queryItems: [URLQueryItem]
-  ) async throws -> T {
+  ) async throws(ApiClientError) -> T {
     // Составляем URL запроса
     var fullURL = self.baseURL.appendingPathComponent("/api" + endpoint)
 
@@ -44,14 +44,37 @@ public class ApiClient {
     httpRequest.setValue("application/json", forHTTPHeaderField: "Accept")
     httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
 
-    let (data, httpResponse) = try await self.urlSession.data(for: httpRequest)
+    var data: Data
+    var urlResponse: URLResponse
 
-    if let httpResponse = httpResponse as? HTTPURLResponse {
+    do {
+      (data, urlResponse) = try await self.urlSession.data(for: httpRequest)
+    }
+    catch {
+      self.logger.debug("Error after sending \(URLSession.self) request: \(error)")
+      throw .requestFailed
+    }
+
+    if let httpResponse = urlResponse as? HTTPURLResponse {
       self.logger.debug("API request: \(httpRequest.httpMethod!) \(httpRequest.url!) [\(httpResponse.statusCode)]")
     }
 
+    let apiErrorResponse = try? self.jsonDecoder.decode(ApiErrorResponse.self, from: data)
+
+    if let apiErrorResponse {
+      let debugApiResponse = String(data: data, encoding: .utf8) ?? "Unable to convert response body to a string"
+
+      self.logger.warning("API error:\n\n\(debugApiResponse)")
+
+      if apiErrorResponse.error.code == 403 {
+        throw .apiError(.authenticationRequired)
+      }
+
+      throw .apiError(.other(apiErrorResponse.error.code, apiErrorResponse.error.message))
+    }
+
     do {
-      let apiResponse = try self.jsonDecoder.decode(ApiResponse<T>.self, from: data)
+      let apiResponse = try self.jsonDecoder.decode(ApiSuccessfulResponse<T>.self, from: data)
 
       return apiResponse.data
     }
@@ -59,10 +82,10 @@ public class ApiClient {
       let debugApiResponse = String(data: data, encoding: .utf8) ?? "Unable to convert response body to a string"
 
       self.logger.error(
-        "Decoding JSON into \(ApiResponse<T>.self) error:\n\n\(error)\n\nAPI response:\n\n\(debugApiResponse)"
+        "Decoding JSON into \(ApiSuccessfulResponse<T>.self) error:\n\n\(error)\n\nAPI response:\n\n\(debugApiResponse)"
       )
 
-      throw ApiClientError.canNotDecodeResponseJson
+      throw .canNotDecodeResponseJson
     }
   }
 }

@@ -1,31 +1,19 @@
 import Foundation
 import SwiftSoup
 
-public enum GetProfileError: Error {
-  case unknownError
-  case authenticationRequired
-}
-
 extension WebClient {
-  public func getProfile() async throws(GetProfileError) -> Profile {
-    var html: String
-
-    do {
-      html = try await self.sendRequest(
-        "/users/profile",
-        queryItems: [
-          .init(name: "dynpage", value: "1")
-        ],
-      )
-    }
-    catch {
-      throw .unknownError
-    }
+  public func getProfile() async throws(WebClientError) -> Profile {
+    let html = try await self.sendRequest(
+      "/users/profile",
+      queryItems: [
+        .init(name: "dynpage", value: "1")
+      ],
+    )
 
     let htmlDocument = try? SwiftSoup.parse(html)
 
     guard let htmlDocument else {
-      throw .unknownError
+      throw .couldNotParseHtml
     }
 
     let profileIdString = html.firstMatch(of: #/ID аккаунта: (?<accountId>\d+)/#)?.output.accountId
@@ -33,19 +21,19 @@ extension WebClient {
     guard let profileIdString else {
       self.logNormalizationError(of: Profile.self, message: "Could not find account ID on page")
 
-      throw .unknownError
+      throw .couldNotParseHtml
     }
 
     guard let profileId = Int(profileIdString) else {
       self.logNormalizationError(of: Profile.self, message: "Could not convert account ID to Int")
 
-      throw .unknownError
+      throw .couldNotParseHtml
     }
 
     guard let name = try? htmlDocument.select("content .m-small-title").first()?.text() else {
       self.logNormalizationError(of: Profile.self, message: "Could not find name on page")
 
-      throw .unknownError
+      throw .couldNotParseHtml
     }
 
     guard
@@ -53,7 +41,7 @@ extension WebClient {
     else {
       self.logNormalizationError(of: Profile.self, message: "Could not find avatar on page")
 
-      throw .unknownError
+      throw .couldNotParseHtml
     }
 
     let avatarURL = self.baseURL.appendingPathComponent(avatarSrc)

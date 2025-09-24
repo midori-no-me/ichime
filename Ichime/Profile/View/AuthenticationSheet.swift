@@ -49,6 +49,8 @@ struct AuthenticationSheet: View {
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
   @Environment(\.dismiss) private var dismissSheet
 
+  let onSuccessfulAuth: (() -> Void)?
+
   var body: some View {
     Form {
       Section {
@@ -76,6 +78,10 @@ struct AuthenticationSheet: View {
           Task {
             if await self.viewModel.performAuthentication() {
               self.dismissSheet()
+
+              if let onSuccessfulAuth = self.onSuccessfulAuth {
+                onSuccessfulAuth()
+              }
             }
           }
         }

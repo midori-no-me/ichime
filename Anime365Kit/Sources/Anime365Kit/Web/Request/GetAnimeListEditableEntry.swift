@@ -1,13 +1,8 @@
 import Foundation
 import SwiftSoup
 
-public enum GetAnimeListEditableEntryError: Error {
-  case unknownError
-  case authenticationRequired
-}
-
 extension WebClient {
-  public func getAnimeListEditableEntry(seriesID: Int) async throws(GetAnimeListEditableEntryError)
+  public func getAnimeListEditableEntry(seriesID: Int) async throws(WebClientError)
     -> AnimeListEditableEntry
   {
     var html: String
@@ -16,23 +11,18 @@ extension WebClient {
       .init(name: "mode", value: "mini")
     ]
 
-    do {
-      html = try await self.sendRequest(
-        "/animelist/edit/\(seriesID)",
-        queryItems: queryItems,
-      )
-    }
-    catch {
-      throw .unknownError
-    }
+    html = try await self.sendRequest(
+      "/animelist/edit/\(seriesID)",
+      queryItems: queryItems,
+    )
 
     let htmlDocument = try? SwiftSoup.parse(html)
 
     guard let htmlDocument else {
-      throw .unknownError
+      throw .couldNotParseHtml
     }
 
-    if html.contains("Вход или регистрация") {
+    if html.contains("Вход или регистрация") || html.contains("Вход - Anime 365") {
       throw .authenticationRequired
     }
 
@@ -48,7 +38,7 @@ extension WebClient {
         self.logNormalizationError(of: AnimeListEntry.self, message: errorMessage)
       }
 
-      throw .unknownError
+      throw .couldNotParseHtml
     }
   }
 }

@@ -1,15 +1,8 @@
 import Foundation
 import SwiftSoup
 
-public enum GetNewEpisodesError: Error {
-  case unknownError
-  case authenticationRequired
-}
-
 extension WebClient {
-  public func getNewEpisodes(page: Int) async throws(GetNewEpisodesError) -> [NewEpisode] {
-    var html: String
-
+  public func getNewEpisodes(page: Int) async throws(WebClientError) -> [NewEpisode] {
     var queryItems: [URLQueryItem] = [
       .init(name: "ajax", value: "m-index-personal-episodes")
     ]
@@ -18,23 +11,18 @@ extension WebClient {
       queryItems.append(URLQueryItem(name: "pageP", value: String(page)))
     }
 
-    do {
-      html = try await self.sendRequest(
-        "/",
-        queryItems: queryItems,
-      )
-    }
-    catch {
-      throw .unknownError
-    }
+    let html = try await self.sendRequest(
+      "/",
+      queryItems: queryItems,
+    )
 
     let htmlDocument = try? SwiftSoup.parse(html)
 
     guard let htmlDocument else {
-      throw .unknownError
+      throw .couldNotParseHtml
     }
 
-    if html.contains("Вход или регистрация") {
+    if html.contains("Вход или регистрация") || html.contains("Вход - Anime 365") {
       throw .authenticationRequired
     }
 

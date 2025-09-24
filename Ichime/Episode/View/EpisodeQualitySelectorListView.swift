@@ -1,3 +1,4 @@
+import Anime365Kit
 import SwiftData
 import SwiftUI
 import ThirdPartyVideoPlayer
@@ -77,22 +78,34 @@ struct EpisodeQualitySelectorListView: View {
         .centeredContentFix()
 
     case let .loadingFailed(error):
-      ContentUnavailableView {
-        Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-      } description: {
-        Text(error.localizedDescription)
-      } actions: {
-        Button(action: {
+      if case let Anime365Kit.ApiClientError.apiError(apiError) = error, case .authenticationRequired = apiError {
+        AuthenticationRequiredContentUnavailableView(onSuccessfulAuth: {
           Task {
             await self.viewModel.performInitialLoad(
               translationId: self.translationId
             )
           }
-        }) {
-          Text("Обновить")
-        }
+        })
+        .centeredContentFix()
       }
-      .centeredContentFix()
+      else {
+        ContentUnavailableView {
+          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+        } description: {
+          Text(error.localizedDescription)
+        } actions: {
+          Button(action: {
+            Task {
+              await self.viewModel.performInitialLoad(
+                translationId: self.translationId
+              )
+            }
+          }) {
+            Text("Обновить")
+          }
+        }
+        .centeredContentFix()
+      }
 
     case .loadedButEmpty:
       ContentUnavailableView {

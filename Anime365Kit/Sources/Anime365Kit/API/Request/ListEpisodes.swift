@@ -5,7 +5,7 @@ extension ApiClient {
     seriesId: Int? = nil,
     limit: Int? = nil,
     offset: Int? = nil
-  ) async throws -> [Episode] {
+  ) async throws(ApiClientError) -> [Episode] {
     var queryItems: [URLQueryItem] = []
 
     if let seriesId {
