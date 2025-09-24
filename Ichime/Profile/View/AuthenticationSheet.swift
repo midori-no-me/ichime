@@ -3,7 +3,7 @@ import SwiftUI
 @Observable
 private class AuthenticationSheetViewModel {
   var email: String = ""
-  var password: String = "tYbcy4"
+  var password: String = ""
 
   var showInvalidCredentialsAlert: Bool = false
   var showUnexpectedErrorAlert: Bool = false
