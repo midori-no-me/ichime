@@ -4,7 +4,7 @@ import JikanApiClient
 import OrderedCollections
 import ShikimoriApiClient
 
-enum ShowNotFoundError: Error {
+enum GetShowByIdError: Error {
   case notFoundByMyAnimeListId
 }
 
@@ -30,7 +30,7 @@ struct ShowService {
     let seriesItems = try await anime365KitFactory.createApiClient().listSeries(myAnimeListId: myAnimeListId)
 
     guard let series = seriesItems.first else {
-      throw ShowNotFoundError.notFoundByMyAnimeListId
+      throw GetShowByIdError.notFoundByMyAnimeListId
     }
 
     return series.id

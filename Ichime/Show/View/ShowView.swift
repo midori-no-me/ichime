@@ -90,22 +90,42 @@ struct ShowView: View {
         .centeredContentFix()
 
     case let .loadingFailed(error):
-      ContentUnavailableView {
-        Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-      } description: {
-        Text(error.localizedDescription)
-      } actions: {
-        Button(action: {
-          Task {
-            await self.viewModel.performInitialLoad(
-              showId: self.showId
-            )
+      if case GetShowByIdError.notFoundByMyAnimeListId = error {
+        ContentUnavailableView {
+          Label("Ничего не нашлось", systemImage: "exclamationmark.triangle")
+        } description: {
+          Text("Возможно, этого тайтла не существует.\nЛибо он был удален из базы данных Anime 365.")
+        } actions: {
+          Button(action: {
+            Task {
+              await self.viewModel.performInitialLoad(
+                showId: self.showId
+              )
+            }
+          }) {
+            Text("Обновить")
           }
-        }) {
-          Text("Обновить")
         }
+        .centeredContentFix()
       }
-      .centeredContentFix()
+      else {
+        ContentUnavailableView {
+          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+        } description: {
+          Text(error.localizedDescription)
+        } actions: {
+          Button(action: {
+            Task {
+              await self.viewModel.performInitialLoad(
+                showId: self.showId
+              )
+            }
+          }) {
+            Text("Обновить")
+          }
+        }
+        .centeredContentFix()
+      }
 
     case let .loaded((show, moments, screenshots, characters, staffMembers, relatedShows)):
       ScrollView(.vertical) {

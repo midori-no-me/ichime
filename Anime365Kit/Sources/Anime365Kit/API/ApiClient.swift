@@ -70,6 +70,10 @@ public class ApiClient {
         throw .apiError(.authenticationRequired)
       }
 
+      if apiErrorResponse.error.code == 404 {
+        throw .apiError(.notFound)
+      }
+
       throw .apiError(.other(apiErrorResponse.error.code, apiErrorResponse.error.message))
     }
 

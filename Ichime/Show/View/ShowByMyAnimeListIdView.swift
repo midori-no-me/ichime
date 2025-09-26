@@ -65,22 +65,44 @@ struct ShowByMyAnimeListIdView: View {
         .centeredContentFix()
 
     case let .loadingFailed(error):
-      ContentUnavailableView {
-        Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
-      } description: {
-        Text(error.localizedDescription)
-      } actions: {
-        Button(action: {
-          Task {
-            await self.viewModel.performInitialLoad(
-              myAnimeListId: self.myAnimeListId
-            )
+      if case GetShowByIdError.notFoundByMyAnimeListId = error {
+        ContentUnavailableView {
+          Label("Ничего не нашлось", systemImage: "exclamationmark.triangle")
+        } description: {
+          Text(
+            "Возможно, этого тайтла не существует.\nЛибо он ещё не появился в базе данных Anime 365 — это может занять до нескольких суток."
+          )
+        } actions: {
+          Button(action: {
+            Task {
+              await self.viewModel.performInitialLoad(
+                myAnimeListId: self.myAnimeListId
+              )
+            }
+          }) {
+            Text("Обновить")
           }
-        }) {
-          Text("Обновить")
         }
+        .centeredContentFix()
       }
-      .centeredContentFix()
+      else {
+        ContentUnavailableView {
+          Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+        } description: {
+          Text(error.localizedDescription)
+        } actions: {
+          Button(action: {
+            Task {
+              await self.viewModel.performInitialLoad(
+                myAnimeListId: self.myAnimeListId
+              )
+            }
+          }) {
+            Text("Обновить")
+          }
+        }
+        .centeredContentFix()
+      }
 
     case let .loaded(showId):
       ShowView(showId: showId)
