@@ -4,7 +4,7 @@ import SwiftData
 import SwiftUI
 
 @Observable @MainActor
-private class CurrentlyWatchingViewModel {
+private final class CurrentlyWatchingViewModel {
   enum State {
     case idle
     case loading

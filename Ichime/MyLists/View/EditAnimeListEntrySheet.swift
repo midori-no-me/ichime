@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable @MainActor
-private class EditAnimeListEntrySheetViewModel {
+private final class EditAnimeListEntrySheetViewModel {
   enum State {
     case idle
     case loading

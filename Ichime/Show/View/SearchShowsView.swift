@@ -2,7 +2,7 @@ import OrderedCollections
 import SwiftUI
 
 @Observable @MainActor
-private class SearchShowsViewModel {
+private final class SearchShowsViewModel {
   enum State {
     case idle
     case loading

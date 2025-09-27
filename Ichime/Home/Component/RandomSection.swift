@@ -2,7 +2,7 @@ import OrderedCollections
 import SwiftUI
 
 @Observable @MainActor
-private class RandomSectionViewModel {
+private final class RandomSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 
   var shows: OrderedSet<ShowPreviewShikimori> = []

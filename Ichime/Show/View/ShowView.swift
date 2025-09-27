@@ -3,7 +3,7 @@ import SwiftData
 import SwiftUI
 
 @Observable @MainActor
-private class ShowViewModel {
+private final class ShowViewModel {
   enum State {
     case idle
     case loading

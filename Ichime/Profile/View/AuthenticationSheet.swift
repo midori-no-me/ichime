@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable @MainActor
-private class AuthenticationSheetViewModel {
+private final class AuthenticationSheetViewModel {
   var email: String = ""
   var password: String = ""
 

@@ -3,7 +3,7 @@ import SwiftData
 import SwiftUI
 
 @Observable @MainActor
-private class AnimeListViewModel {
+private final class AnimeListViewModel {
   enum State {
     case idle
     case loading

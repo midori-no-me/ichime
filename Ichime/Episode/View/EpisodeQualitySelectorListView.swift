@@ -4,7 +4,7 @@ import SwiftUI
 import ThirdPartyVideoPlayer
 
 @Observable @MainActor
-private class EpisodeQualitySelectorListViewModel {
+private final class EpisodeQualitySelectorListViewModel {
   enum State {
     case idle
     case loading

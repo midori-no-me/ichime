@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable @MainActor
-private class CoverGallerySheetViewModel {
+private final class CoverGallerySheetViewModel {
   enum State {
     case idle
     case loading

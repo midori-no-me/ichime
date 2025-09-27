@@ -5,7 +5,7 @@ import OSLog
 import ShikimoriApiClient
 import SwiftData
 
-class ApplicationDependency: DIFramework {
+final class ApplicationDependency: DIFramework {
   static let container: DIContainer = {
     let container = DIContainer()
     container.append(framework: ApplicationDependency.self)

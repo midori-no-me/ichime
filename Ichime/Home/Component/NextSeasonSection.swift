@@ -2,7 +2,7 @@ import OrderedCollections
 import SwiftUI
 
 @Observable @MainActor
-private class NextSeasonSectionViewModel {
+private final class NextSeasonSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 
   var shows: OrderedSet<ShowPreviewShikimori> = []

@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable @MainActor
-private class FilteredShowsViewModel {
+private final class FilteredShowsViewModel {
   enum State {
     case idle
     case loading

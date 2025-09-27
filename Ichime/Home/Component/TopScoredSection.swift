@@ -3,7 +3,7 @@ import SwiftUI
 
 @Observable
 @MainActor
-private class TopScoredSectionViewModel {
+private final class TopScoredSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 
   var shows: OrderedSet<ShowPreview> = []

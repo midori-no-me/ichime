@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable @MainActor
-private class ProfileViewModel {
+private final class ProfileViewModel {
   private let authenticationManager: AuthenticationManager
 
   init(

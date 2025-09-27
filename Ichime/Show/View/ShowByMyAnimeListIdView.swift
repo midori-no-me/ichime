@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable @MainActor
-private class ShowByMyAnimeListIdViewModel {
+private final class ShowByMyAnimeListIdViewModel {
   enum State {
     case idle
     case loading

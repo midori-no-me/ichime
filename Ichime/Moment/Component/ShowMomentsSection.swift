@@ -2,7 +2,7 @@ import OrderedCollections
 import SwiftUI
 
 @Observable @MainActor
-private class ShowMomentsSectionViewModel {
+private final class ShowMomentsSectionViewModel {
   var moments: OrderedSet<Moment> = []
 
   private var page: Int = 1

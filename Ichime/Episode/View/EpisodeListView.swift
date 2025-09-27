@@ -2,7 +2,7 @@ import SwiftData
 import SwiftUI
 
 @Observable @MainActor
-private class EpisodeListViewModel {
+private final class EpisodeListViewModel {
   enum State {
     case idle
     case loading

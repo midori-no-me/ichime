@@ -2,7 +2,7 @@ import OrderedCollections
 import SwiftUI
 
 @Observable @MainActor
-private class ShowInMyListStatusButtonViewModel {
+private final class ShowInMyListStatusButtonViewModel {
   enum State {
     case idle
     case loading

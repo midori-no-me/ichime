@@ -2,7 +2,7 @@ import OrderedCollections
 import SwiftUI
 
 @Observable @MainActor
-private class HomeViewModel {
+private final class HomeViewModel {
   enum State {
     case idle
     case loading

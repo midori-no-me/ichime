@@ -2,7 +2,7 @@ import OrderedCollections
 import SwiftUI
 
 @Observable @MainActor
-private class CalendarViewModel {
+private final class CalendarViewModel {
   enum State {
     case idle
     case loading
