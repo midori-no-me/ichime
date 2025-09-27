@@ -6,7 +6,7 @@ enum AuthenticationError: Error {
   case unknown
 }
 
-struct AuthenticationManager {
+actor AuthenticationManager {
   private let anime365KitFactory: Anime365KitFactory
   private let currentUserInfo: CurrentUserInfo
   private let animeListEntriesCount: AnimeListEntriesCount
@@ -50,7 +50,7 @@ struct AuthenticationManager {
       throw .unknown
     }
 
-    self.currentUserInfo.save(
+    await self.currentUserInfo.save(
       id: profile.id,
       name: profile.name,
       avatarURLPath: profile.avatarURL.path()
@@ -58,8 +58,8 @@ struct AuthenticationManager {
   }
 
   func logout() async -> Void {
-    self.currentUserInfo.clear()
-    self.animeListEntriesCount.clear()
+    await self.currentUserInfo.clear()
+    await self.animeListEntriesCount.clear()
 
     let cookieStorage = self.urlSession.configuration.httpCookieStorage
     for cookie in cookieStorage?.cookies ?? [] {

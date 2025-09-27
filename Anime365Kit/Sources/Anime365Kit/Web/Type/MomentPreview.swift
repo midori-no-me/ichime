@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSoup
 
-public struct MomentPreview {
+public struct MomentPreview: Sendable {
   public let momentId: Int
   public let coverURL: URL
   public let momentTitle: String

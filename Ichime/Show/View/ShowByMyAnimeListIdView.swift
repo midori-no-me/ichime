@@ -1,6 +1,6 @@
 import SwiftUI
 
-@Observable
+@Observable @MainActor
 private class ShowByMyAnimeListIdViewModel {
   enum State {
     case idle

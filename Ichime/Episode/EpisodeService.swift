@@ -123,7 +123,7 @@ struct EpisodeService {
       }
 
       episode = EpisodeInfo.createValid(
-        anime365EpisodePreview: anime365Episode.asEpisode,
+        anime365EpisodePreview: anime365Episode,
         jikanEpisode: jikanEpisode,
         totalEpisodes: anime365Series.numberOfEpisodes == 0 ? nil : anime365Series.numberOfEpisodes
       )
@@ -225,7 +225,7 @@ struct EpisodeService {
 
     let episodeTranslationStreamingInfo = EpisodeTranslationStreamingInfo.createValid(
       anime365ApiTranslationEmbed: anime365TranslationEmbed,
-      anime365ApiBaseUrl: self.anime365KitFactory.baseURL()
+      anime365ApiBaseUrl: await self.anime365KitFactory.baseURL()
     )
 
     return episodeTranslationStreamingInfo!

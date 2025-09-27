@@ -1,7 +1,7 @@
 import Anime365Kit
 import OSLog
 
-struct Anime365KitFactory {
+struct Anime365KitFactory: Sendable {
   private let anime365BaseURL: Anime365BaseURL
   private let userAgent: String
   private let logger: Logger
@@ -19,25 +19,25 @@ struct Anime365KitFactory {
     self.urlSession = urlSession
   }
 
-  func createWebClient() -> Anime365Kit.WebClient {
+  func createWebClient() async -> Anime365Kit.WebClient {
     .init(
-      baseURL: self.anime365BaseURL.get(),
+      baseURL: await self.anime365BaseURL.get(),
       userAgent: self.userAgent,
       logger: self.logger,
       urlSession: self.urlSession
     )
   }
 
-  func createApiClient() -> Anime365Kit.ApiClient {
+  func createApiClient() async -> Anime365Kit.ApiClient {
     .init(
-      baseURL: self.anime365BaseURL.get(),
+      baseURL: await self.anime365BaseURL.get(),
       userAgent: self.userAgent,
       logger: self.logger,
       urlSession: self.urlSession
     )
   }
 
-  func baseURL() -> URL {
-    self.anime365BaseURL.get()
+  func baseURL() async -> URL {
+    await self.anime365BaseURL.get()
   }
 }

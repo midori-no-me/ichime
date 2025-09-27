@@ -1,7 +1,7 @@
 import Foundation
 import OrderedCollections
 
-struct CurrentlyWatchingService {
+struct CurrentlyWatchingService: Sendable {
   private let anime365KitFactory: Anime365KitFactory
 
   init(

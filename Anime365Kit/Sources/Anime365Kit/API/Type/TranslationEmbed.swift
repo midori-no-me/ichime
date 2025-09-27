@@ -1,7 +1,7 @@
 import Foundation
 
-public struct TranslationEmbed: Decodable {
-  public struct Stream: Decodable {
+public struct TranslationEmbed: Sendable, Decodable {
+  public struct Stream: Sendable, Decodable {
     public let height: Int
     public let urls: [URL]
   }

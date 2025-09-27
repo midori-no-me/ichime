@@ -1,6 +1,6 @@
 import Foundation
 
-struct AnimeListEntriesCount {
+actor AnimeListEntriesCount {
   struct UserDefaultsKey {
     static let WATCHING = "anime_list_entries_count:watching"
     static let COMPLETED = "anime_list_entries_count:completed"

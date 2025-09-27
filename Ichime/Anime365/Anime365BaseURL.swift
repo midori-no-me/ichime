@@ -1,7 +1,7 @@
 import Foundation
 import OrderedCollections
 
-struct Anime365BaseURL {
+actor Anime365BaseURL {
   struct UserDefaultsKey {
     static let BASE_URL = "anime365_base_url"
   }

@@ -1,5 +1,5 @@
 import Foundation
 
-public struct ImageVariants: Decodable {
+public struct ImageVariants: Sendable, Decodable {
   public let original: String
 }

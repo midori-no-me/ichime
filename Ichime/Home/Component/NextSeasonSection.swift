@@ -1,7 +1,7 @@
 import OrderedCollections
 import SwiftUI
 
-@Observable
+@Observable @MainActor
 private class NextSeasonSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 

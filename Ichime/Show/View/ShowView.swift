@@ -2,7 +2,7 @@ import OrderedCollections
 import SwiftData
 import SwiftUI
 
-@Observable
+@Observable @MainActor
 private class ShowViewModel {
   enum State {
     case idle

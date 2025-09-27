@@ -1,4 +1,4 @@
-public enum AnimeListCategory {
+public enum AnimeListCategory: Sendable {
   case watching
   case completed
   case onHold

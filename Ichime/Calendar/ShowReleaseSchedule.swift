@@ -2,7 +2,7 @@ import Foundation
 import OrderedCollections
 import ShikimoriApiClient
 
-struct ShowReleaseSchedule {
+struct ShowReleaseSchedule: Sendable {
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
 
   init(

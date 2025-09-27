@@ -1,7 +1,7 @@
 import Foundation
 
-public struct Anime: Decodable {
-  public struct Broadcast: Decodable {
+public struct Anime: Sendable, Decodable {
+  public struct Broadcast: Sendable, Decodable {
     public let day: String?
     public let time: String?
     public let timezone: String?

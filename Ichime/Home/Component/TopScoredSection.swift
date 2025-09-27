@@ -2,6 +2,7 @@ import OrderedCollections
 import SwiftUI
 
 @Observable
+@MainActor
 private class TopScoredSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 

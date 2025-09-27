@@ -1,5 +1,5 @@
-public struct Genre: Decodable {
-  public enum EntryType: String, Decodable {
+public struct Genre: Sendable, Decodable {
+  public enum EntryType: String, Sendable, Decodable {
     case manga = "Manga"
     case anime = "Anime"
   }

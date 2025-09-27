@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSoup
 
-public struct AnimeListEditableEntry {
+public struct AnimeListEditableEntry: Sendable {
   public let episodesWatched: Int
   public let status: AnimeListEntryStatus
   public let score: Int?

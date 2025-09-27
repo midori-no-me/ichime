@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Translation: Decodable {
+public struct Translation: Sendable, Decodable {
   public let id: Int
   public let activeDateTime: Date
   public let addedDateTime: Date
@@ -12,7 +12,7 @@ public struct Translation: Decodable {
   public let height: Int
 }
 
-public struct TranslationFull: Decodable {
+public struct TranslationFull: Sendable, Decodable {
   public let episode: Episode
   public let series: Series
 }

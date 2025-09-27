@@ -1,11 +1,11 @@
 import Foundation
 
-public struct Anime: Decodable {
+public struct Anime: Sendable, Decodable {
   public let studios: [Studio]
   public let next_episode_at: Date?
 }
 
-public struct AnimePreview: Decodable {
+public struct AnimePreview: Sendable, Decodable {
   public let id: Int
   public let name: String
   public let russian: String?

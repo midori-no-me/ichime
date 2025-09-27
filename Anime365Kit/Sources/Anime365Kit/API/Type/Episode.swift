@@ -1,6 +1,16 @@
 import Foundation
 
-public struct Episode: Decodable {
+public protocol EpisodeProtocol {
+  var id: Int { get }
+  var episodeFull: String { get }
+  var episodeInt: String { get }
+  var episodeType: String { get }
+  var firstUploadedDateTime: Date { get }
+  var isActive: Int { get }
+  var isFirstUploaded: Int { get }
+}
+
+public struct Episode: Sendable, Decodable, EpisodeProtocol {
   public let id: Int
   public let episodeFull: String
   public let episodeInt: String
@@ -10,7 +20,7 @@ public struct Episode: Decodable {
   public let isFirstUploaded: Int
 }
 
-public struct EpisodeFull: Decodable {
+public struct EpisodeFull: Sendable, Decodable, EpisodeProtocol {
   public let id: Int
   public let episodeFull: String
   public let episodeInt: String
@@ -20,16 +30,4 @@ public struct EpisodeFull: Decodable {
   public let isFirstUploaded: Int
   public let seriesId: Int
   public let translations: [Translation]
-
-  public var asEpisode: Episode {
-    .init(
-      id: self.id,
-      episodeFull: self.episodeFull,
-      episodeInt: self.episodeInt,
-      episodeType: self.episodeType,
-      firstUploadedDateTime: self.firstUploadedDateTime,
-      isActive: self.isActive,
-      isFirstUploaded: self.isFirstUploaded
-    )
-  }
 }
