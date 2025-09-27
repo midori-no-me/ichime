@@ -1,11 +1,28 @@
 import Foundation
 import JikanApiClient
 
-enum CalendarSeason: String {
+enum CalendarSeason: String, Comparable {
   case winter
   case spring
   case summer
   case autumn
+
+  var orderedValue: Int {
+    switch self {
+    case .winter:
+      return 0
+    case .spring:
+      return 1
+    case .summer:
+      return 2
+    case .autumn:
+      return 3
+    }
+  }
+
+  static func < (lhs: Self, rhs: Self) -> Bool {
+    lhs.orderedValue < rhs.orderedValue
+  }
 
   func getLocalizedTranslation() -> String {
     switch self {
@@ -47,7 +64,7 @@ enum CalendarSeason: String {
   }
 }
 
-struct AiringSeason {
+struct AiringSeason: Comparable, Equatable {
   let calendarSeason: CalendarSeason
   let year: Int
 
@@ -137,6 +154,18 @@ struct AiringSeason {
     }
 
     self.year = year
+  }
+
+  static func < (lhs: Self, rhs: Self) -> Bool {
+    if lhs.year < rhs.year {
+      return true
+    }
+
+    return lhs.calendarSeason < rhs.calendarSeason
+  }
+
+  static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.year == rhs.year && lhs.calendarSeason == rhs.calendarSeason
   }
 
   func getLocalizedTranslation() -> String {

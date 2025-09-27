@@ -67,7 +67,6 @@ struct OngoingsSection: View {
       ScrollView(.horizontal) {
         LazyHStack(alignment: .top, spacing: ShowCard.RECOMMENDED_SPACING) {
           ForEach(self.viewModel.shows) { show in
-            ShowCardAnime365(show: show, displaySeason: Self.isCurrentSeason(show: show))
               .containerRelativeFrame(
                 .horizontal,
                 count: ShowCard.RECOMMENDED_COUNT_PER_ROW,
@@ -79,6 +78,10 @@ struct OngoingsSection: View {
                   await self.viewModel.performLazyLoading()
                 }
               }
+            ShowCardAnime365(
+              show: show,
+              displaySeason: !Self.isCurrentSeason(show: show),
+            )
           }
         }
       }
@@ -90,8 +93,12 @@ struct OngoingsSection: View {
   }
 
   private static func isCurrentSeason(show: ShowPreview) -> Bool {
-    let currentSeason = ShowSeasonService().getRelativeSeason(shift: 0).calendarSeason
+    let currentAiringSeason = ShowSeasonService().getRelativeSeason(shift: 0)
 
-    return show.airingSeason?.calendarSeason != currentSeason
+    guard let airingSeason = show.airingSeason else {
+      return false
+    }
+
+    return currentAiringSeason == airingSeason
   }
 }
