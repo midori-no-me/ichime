@@ -1,5 +1,5 @@
 import Foundation
 
-public struct ImageInDifferentFormats: Decodable {
+public struct ImageInDifferentFormats: Sendable, Decodable {
   public let jpg: ImageFormat
 }

@@ -1,4 +1,4 @@
-public enum AnimeListEntryStatus {
+public enum AnimeListEntryStatus: Sendable {
   case watching
   case completed
   case onHold

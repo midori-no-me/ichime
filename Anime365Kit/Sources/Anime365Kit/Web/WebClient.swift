@@ -1,7 +1,7 @@
 import Foundation
 import OSLog
 
-public class WebClient {
+public struct WebClient: Sendable {
   private static let COOKIE_NAME_CSRF = "csrf"
   private static let FORM_DATA_FIELD_CSRF = "csrf"
 

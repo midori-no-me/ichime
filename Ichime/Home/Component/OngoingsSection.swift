@@ -2,7 +2,7 @@ import OSLog
 import OrderedCollections
 import SwiftUI
 
-@Observable
+@Observable @MainActor
 private class OngoingsSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 

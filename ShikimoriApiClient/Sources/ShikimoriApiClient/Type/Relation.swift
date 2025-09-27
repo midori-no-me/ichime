@@ -1,7 +1,7 @@
 import Foundation
 
-public struct Relation: Decodable {
-  public struct Anime: Decodable {
+public struct Relation: Sendable, Decodable {
+  public struct Anime: Sendable, Decodable {
     public let id: Int
     public let name: String
     public let russian: String?

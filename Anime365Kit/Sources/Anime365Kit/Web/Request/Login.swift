@@ -1,6 +1,6 @@
 import Foundation
 
-public enum LoginError: Error {
+public enum LoginError: Error, Sendable {
   case webClientError(WebClientError)
   case invalidCredentials
 }

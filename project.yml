@@ -119,7 +119,7 @@ settings:
     INFOPLIST_KEY_CFBundleDisplayName: Ichime # Человекочитабельное название приложения. When GENERATE_INFOPLIST_FILE is enabled, sets the value of the CFBundleDisplayName key in the Info.plist file to the value of this build setting.
     INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.entertainment # К какой категории относится приложение. When GENERATE_INFOPLIST_FILE is enabled, sets the value of the LSApplicationCategoryType key in the Info.plist file to the value of this build setting.
     MARKETING_VERSION: "1.10.0" # Человекочитабельная версия приложения
-    SWIFT_VERSION: "5" # Какую версию Swift использовать для компиляции приложения
+    SWIFT_VERSION: "6" # Какую версию Swift использовать для компиляции приложения
 
     ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: "YES" # From "Update to recommended settings" prompt
     ENABLE_USER_SCRIPT_SANDBOXING: "YES" # From "Update to recommended settings" prompt

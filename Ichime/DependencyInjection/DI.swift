@@ -1,4 +1,4 @@
-import DITranquillity
+@preconcurrency import DITranquillity
 import Foundation
 import JikanApiClient
 import OSLog

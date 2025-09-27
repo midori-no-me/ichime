@@ -1,4 +1,4 @@
-public enum ScheduleFilter: String {
+public enum ScheduleFilter: String, Sendable {
   case monday
   case tuesday
   case wednesday

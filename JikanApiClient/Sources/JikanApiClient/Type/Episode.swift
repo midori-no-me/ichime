@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Episode: Decodable {
+public struct Episode: Sendable, Decodable {
   public let mal_id: Int
   public let title: String
   public let aired: Date?

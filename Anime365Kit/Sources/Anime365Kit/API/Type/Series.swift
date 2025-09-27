@@ -1,11 +1,11 @@
 import Foundation
 
-public struct Titles: Decodable {
+public struct Titles: Sendable, Decodable {
   public let ru: String?
   public let romaji: String?
 }
 
-public struct Series: Decodable {
+public struct Series: Sendable, Decodable {
   public let id: Int
   public let title: String
   public let titles: Titles
@@ -15,13 +15,13 @@ public struct Series: Decodable {
   public let type: SeriesType?
 }
 
-public struct SeriesFull: Decodable {
-  public struct Genre: Decodable {
+public struct SeriesFull: Sendable, Decodable {
+  public struct Genre: Sendable, Decodable {
     public let id: Int
     public let title: String
   }
 
-  public struct Description: Decodable {
+  public struct Description: Sendable, Decodable {
     public let source: String
     public let value: String
   }

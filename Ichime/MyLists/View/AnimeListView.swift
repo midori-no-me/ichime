@@ -2,7 +2,7 @@ import OrderedCollections
 import SwiftData
 import SwiftUI
 
-@Observable
+@Observable @MainActor
 private class AnimeListViewModel {
   enum State {
     case idle
@@ -44,7 +44,7 @@ private class AnimeListViewModel {
         self.state = .loaded(animeListEntriesGroups)
 
         if UserDefaults.standard.integer(forKey: CurrentUserInfo.UserDefaultsKey.ID) == userId {
-          self.animeListEntriesCount.save(
+          await self.animeListEntriesCount.save(
             count: count,
             category: category
           )
@@ -73,7 +73,7 @@ private class AnimeListViewModel {
         self.state = .loaded(animeListEntriesGroups)
 
         if UserDefaults.standard.integer(forKey: CurrentUserInfo.UserDefaultsKey.ID) == userId {
-          self.animeListEntriesCount.save(
+          await self.animeListEntriesCount.save(
             count: count,
             category: category
           )

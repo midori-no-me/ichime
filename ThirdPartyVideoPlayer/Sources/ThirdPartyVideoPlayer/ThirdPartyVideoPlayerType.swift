@@ -1,6 +1,6 @@
 import Foundation
 
-public enum ThirdPartyVideoPlayerType: String, CaseIterable, Identifiable {
+public enum ThirdPartyVideoPlayerType: String, CaseIterable, Identifiable, Sendable {
   case infuse
   case vlc
 

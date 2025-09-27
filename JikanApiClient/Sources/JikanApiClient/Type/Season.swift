@@ -1,4 +1,4 @@
-public enum Season: String, Decodable {
+public enum Season: String, Sendable, Decodable {
   case summer
   case winter
   case spring

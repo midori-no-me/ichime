@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSoup
 
-public struct AnimeListEntry {
+public struct AnimeListEntry: Sendable {
   public let seriesId: Int
   public let seriesTitleFull: String
   public let episodesWatched: Int

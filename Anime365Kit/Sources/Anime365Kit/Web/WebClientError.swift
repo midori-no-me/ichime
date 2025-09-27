@@ -1,4 +1,4 @@
-public enum WebClientError: Error {
+public enum WebClientError: Error, Sendable {
   case couldNotConvertResponseToHttpResponse
   case couldNotConvertResponseDataToString
   case badStatusCode

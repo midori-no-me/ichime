@@ -1,6 +1,6 @@
 import Foundation
 
-struct CurrentUserInfo {
+actor CurrentUserInfo {
   struct UserDefaultsKey {
     static let ID = "current_user_info:id"
     static let NAME = "current_user_info:name"

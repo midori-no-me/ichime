@@ -1,7 +1,7 @@
 import SwiftData
 import SwiftUI
 
-@Observable
+@Observable @MainActor
 private class EpisodeTranslationListViewModel {
   enum State {
     case idle

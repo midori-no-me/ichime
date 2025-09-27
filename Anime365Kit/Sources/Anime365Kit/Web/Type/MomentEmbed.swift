@@ -1,12 +1,12 @@
 import Foundation
 import SwiftSoup
 
-public struct VideoSource: Codable {
+public struct VideoSource: Sendable, Decodable {
   public let height: Int
   public let urls: [URL]
 }
 
-public struct MomentEmbed {
+public struct MomentEmbed: Sendable {
   public let videoURL: URL
 
   init(htmlElement: Element) throws(WebClientTypeNormalizationError) {

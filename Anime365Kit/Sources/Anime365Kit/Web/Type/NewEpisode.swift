@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSoup
 
-public struct NewEpisode {
+public struct NewEpisode: Sendable {
   public let seriesId: Int
   public let seriesPosterURL: URL
   public let seriesTitleRu: String

@@ -1,6 +1,6 @@
 import Foundation
 
-public enum AnimeKind: String, Decodable {
+public enum AnimeKind: String, Sendable, Decodable {
   case tv
   case movie
   case ova

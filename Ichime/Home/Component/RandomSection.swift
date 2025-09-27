@@ -1,7 +1,7 @@
 import OrderedCollections
 import SwiftUI
 
-@Observable
+@Observable @MainActor
 private class RandomSectionViewModel {
   private static let SHOWS_PER_PAGE = 10
 

@@ -20,7 +20,7 @@ struct EpisodeInfo: Identifiable {
   }
 
   static func createValid(
-    anime365EpisodePreview: Anime365Kit.Episode,
+    anime365EpisodePreview: Anime365Kit.EpisodeProtocol,
     jikanEpisode: JikanApiClient.Episode?,
     totalEpisodes: Int?
   ) -> Self? {

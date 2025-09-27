@@ -1,7 +1,7 @@
 import Foundation
 import OSLog
 
-public class ApiClient {
+public struct ApiClient: Sendable {
   private let baseURL: URL
   private let userAgent: String
   private let urlSession: URLSession
