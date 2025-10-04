@@ -51,7 +51,6 @@ struct ShowService {
 
   func getShowDetails(showId: Int) async throws -> (
     show: ShowDetails,
-    screenshots: OrderedSet<URL>,
     characters: OrderedSet<CharacterInfo>,
     staffMembers: OrderedSet<StaffMember>,
   ) {
@@ -60,10 +59,6 @@ struct ShowService {
     )
 
     async let shikimoriAnimeFuture = self.shikimoriApiClient.getAnimeById(
-      animeId: anime365Series.myAnimeListId
-    )
-
-    async let shikimoriScreenshotsFuture = self.shikimoriApiClient.getAnimeScreenshotsById(
       animeId: anime365Series.myAnimeListId
     )
 
@@ -81,7 +76,6 @@ struct ShowService {
 
     let shikimoriAnime = try? await shikimoriAnimeFuture
     let jikanAnime = try? await jikanAnimeFuture
-    let shikimoriScreenshots = (try? await shikimoriScreenshotsFuture) ?? []
     let jikanCharacterRoles = (try? await jikanCharacterRolesFuture) ?? []
     let jikanStaffMembers = (try? await jikanStaffMembersFuture) ?? []
 
@@ -91,11 +85,6 @@ struct ShowService {
         shikimoriAnime: shikimoriAnime,
         shikimoriBaseUrl: self.shikimoriApiClient.baseUrl,
         jikanAnime: jikanAnime
-      ),
-      screenshots: .init(
-        shikimoriScreenshots.map { screenshot in
-          URL(string: self.shikimoriApiClient.baseUrl.absoluteString + screenshot.original)!
-        }
       ),
       characters: .init(jikanCharacterRoles.map { .init(fromJikanCharacterRole: $0) }),
       staffMembers: .init(jikanStaffMembers.map { .init(fromJikanStaffMember: $0) })
@@ -246,6 +235,20 @@ struct ShowService {
     )
 
     return self.convertShikimoriRelationsToGroupedRelatedShows(shikimoriRelations)
+  }
+
+  func getScreenshots(
+    myAnimeListId: Int
+  ) async throws -> OrderedSet<URL> {
+    let shikimoriScreenshots = try await self.shikimoriApiClient.getAnimeScreenshotsById(
+      animeId: myAnimeListId
+    )
+
+    return .init(
+      shikimoriScreenshots.map { screenshot in
+        URL(string: self.shikimoriApiClient.baseUrl.absoluteString + screenshot.original)!
+      }
+    )
   }
 
   func getStudio(

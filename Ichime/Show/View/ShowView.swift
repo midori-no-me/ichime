@@ -11,7 +11,6 @@ private final class ShowViewModel {
     case loaded(
       (
         show: ShowDetails,
-        screenshots: OrderedSet<URL>,
         characters: OrderedSet<CharacterInfo>,
         staffMembers: OrderedSet<StaffMember>
       )
@@ -125,11 +124,10 @@ struct ShowView: View {
         .centeredContentFix()
       }
 
-    case let .loaded((show, screenshots, characters, staffMembers)):
+    case let .loaded((show, characters, staffMembers)):
       ScrollView(.vertical) {
         ShowDetailsView(
           show: show,
-          screenshots: screenshots,
           characters: characters,
           staffMembers: staffMembers
         )
@@ -149,7 +147,6 @@ private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
 
 private struct ShowDetailsView: View {
   let show: ShowDetails
-  let screenshots: OrderedSet<URL>
   let characters: OrderedSet<CharacterInfo>
   let staffMembers: OrderedSet<StaffMember>
 
@@ -170,9 +167,7 @@ private struct ShowDetailsView: View {
         .padding(.bottom, SPACING_BETWEEN_SECTIONS)
       }
 
-      if !self.screenshots.isEmpty {
-        ScreenshotsSection(screenshots: self.screenshots)
-      }
+      ScreenshotCardsSection(myAnimeListId: self.show.myAnimeListId)
 
       ShowMomentsSection(showId: self.show.id)
 
@@ -646,100 +641,6 @@ private struct ShowDescriptionCardSheet: View {
         }
         .frame(maxWidth: 1000, alignment: .center)
       }
-    }
-  }
-}
-
-private struct ScreenshotsSection: View {
-  private static let SPACING: CGFloat = 64
-
-  @State private var selectedScreenshot: URL? = nil
-  @State private var showSheet: Bool = false
-
-  let screenshots: OrderedSet<URL>
-
-  var body: some View {
-    SectionWithCards(title: "Скриншоты") {
-      ScrollView(.horizontal) {
-        LazyHStack(alignment: .top, spacing: Self.SPACING) {
-          ForEach(self.screenshots, id: \.self) { screenshot in
-            Button(action: {
-              self.selectedScreenshot = screenshot
-              self.showSheet = true
-            }) {
-              AsyncImage(
-                url: screenshot,
-                transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
-              ) { phase in
-                switch phase {
-                case .empty:
-                  Color.clear
-
-                case let .success(image):
-                  image
-                    .resizable()
-                    .scaledToFit()
-
-                case .failure:
-                  Color.clear
-
-                @unknown default:
-                  Color.clear
-                }
-              }
-              .frame(
-                maxWidth: .infinity,
-                maxHeight: .infinity
-              )
-              .aspectRatio(16 / 9, contentMode: .fit)
-              .background(Color.black)
-              .hoverEffect(.highlight)
-            }
-            .buttonStyle(.borderless)
-            .containerRelativeFrame(.horizontal, count: 3, span: 1, spacing: Self.SPACING)
-          }
-        }
-      }
-      .scrollClipDisabled()
-    }
-    .fullScreenCover(isPresented: self.$showSheet) {
-      NavigationStack {
-        TabView(selection: self.$selectedScreenshot) {
-          ForEach(self.screenshots, id: \.self) { screenshot in
-            AsyncImage(
-              url: screenshot,
-              transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
-            ) { phase in
-              switch phase {
-              case .empty:
-                ProgressView()
-
-              case let .success(image):
-                image
-                  .resizable()
-                  .scaledToFit()
-
-              case .failure:
-                Image(systemName: "photo.badge.exclamationmark")
-                  .font(.title)
-                  .foregroundColor(.secondary)
-
-              @unknown default:
-                Color.clear
-              }
-            }
-            .focusable()
-            .frame(
-              maxWidth: .infinity,
-              maxHeight: .infinity
-            )
-            .ignoresSafeArea()
-            .tag(screenshot)
-          }
-        }
-        .tabViewStyle(.page)
-      }
-      .background(.thickMaterial)  // Костыль для обхода бага: .fullScreenCover на tvOS 26 не имеет бекграунда
     }
   }
 }
