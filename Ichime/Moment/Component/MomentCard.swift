@@ -162,6 +162,9 @@ struct MomentCard: View {
       )
     }
     .buttonStyle(.borderless)
+    .contextMenu {
+      MomentCardContextMenu(momentId: self.moment.id)
+    }
     .alert("Ошибка при открытии момента", isPresented: self.$showErrorAlert, presenting: self.error) { _ in
       Button(action: {
         self.error = nil

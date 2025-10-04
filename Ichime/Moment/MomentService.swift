@@ -16,6 +16,12 @@ struct MomentService {
     return momentEmbed.videoURL
   }
 
+  func getMomentDetails(momentId: Int) async throws -> MomentDetails {
+    let momentDetails = try await self.anime365KitFactory.createWebClient().getMomentDetails(momentID: momentId)
+
+    return .init(fromAnime365MomentDetails: momentDetails)
+  }
+
   func getMoments(page: Int, sorting: MomentSorting) async throws -> OrderedSet<Moment> {
     let anime365Moments = try await self.anime365KitFactory.createWebClient().getMoments(
       page: page,
