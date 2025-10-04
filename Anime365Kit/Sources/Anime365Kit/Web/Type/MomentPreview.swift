@@ -6,6 +6,7 @@ public struct MomentPreview: Sendable {
   public let coverURL: URL
   public let momentTitle: String
   public let sourceDescription: String
+  public let duration: Duration
 
   init(htmlElement: Element, anime365BaseURL: URL) throws(WebClientTypeNormalizationError) {
     if let momentTitle = try? htmlElement.select(".m-moment__title a").first()?.text() {
@@ -50,6 +51,32 @@ public struct MomentPreview: Sendable {
       throw .failedCreatingDTOFromHTMLElement(
         "Could not normalize moment ID because there is no `.m-moment__title a` element with `href` attribute, or `href` attribute contains unsupported path, or ID is not a valid number"
       )
+    }
+
+    if let durationString = try? htmlElement.select(".m-moment__duration").first()?.text(),
+      let duration = Self.convertStringToDuration(durationString: durationString.trimmingCharacters(in: .whitespaces))
+    {
+      self.duration = duration
+    }
+    else {
+      throw .failedCreatingDTOFromHTMLElement(
+        "Could not normalize moment duration because there is no `.m-moment__duration` element"
+      )
+    }
+  }
+
+  private static func convertStringToDuration(durationString: String) -> Duration? {
+    let parts = durationString.split(separator: ":").compactMap { Int($0) }
+
+    switch parts.count {
+    case 2:  // mm:ss
+      return .seconds(parts[0] * 60 + parts[1])
+
+    case 3:  // hh:mm:ss
+      return .seconds(parts[0] * 3600 + parts[1] * 60 + parts[2])
+
+    default:
+      return nil
     }
   }
 }

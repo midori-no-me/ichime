@@ -6,6 +6,7 @@ struct Moment: Identifiable, Hashable {
   let title: String
   let thumbnailUrl: URL
   let showTitle: String
+  let duration: Duration
 
   init(
     fromAnime365Moment: Anime365Kit.MomentPreview
@@ -14,5 +15,6 @@ struct Moment: Identifiable, Hashable {
     self.title = fromAnime365Moment.momentTitle
     self.thumbnailUrl = fromAnime365Moment.coverURL
     self.showTitle = fromAnime365Moment.sourceDescription
+    self.duration = fromAnime365Moment.duration
   }
 }

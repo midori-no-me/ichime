@@ -11,47 +11,69 @@ struct MomentCardRaw: View {
 
   private let coverURL: URL?
   private let isCompact: Bool
+  private let bottomChips: [String]
   @ViewBuilder private let label: () -> Text
 
   init(
     coverURL: URL?,
     isCompact: Bool,
+    bottomChips: [String],
     @ViewBuilder label: @escaping () -> Text,
   ) {
     self.coverURL = coverURL
     self.isCompact = isCompact
+    self.bottomChips = bottomChips
     self.label = label
   }
 
   var body: some View {
-    AsyncImage(
-      url: self.coverURL,
-      transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
-    ) { phase in
-      switch phase {
-      case .empty:
-        ImagePlaceholder()
+    ZStack {
+      AsyncImage(
+        url: self.coverURL,
+        transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
+      ) { phase in
+        switch phase {
+        case .empty:
+          ImagePlaceholder()
 
-      case let .success(image):
-        image
-          .resizable()
-          .scaledToFit()
+        case let .success(image):
+          image
+            .resizable()
+            .scaledToFit()
 
-      case .failure:
-        Image(systemName: "photo")
-          .font(.title)
-          .foregroundStyle(Color.white)
+        case .failure:
+          Image(systemName: "photo")
+            .font(.title)
+            .foregroundStyle(Color.white)
 
-      @unknown default:
-        ImagePlaceholder()
+        @unknown default:
+          ImagePlaceholder()
+        }
       }
+      .frame(
+        maxWidth: .infinity,
+        maxHeight: .infinity
+      )
+      .background(Color.black)
+      .aspectRatio(Self.RECOMMENDED_IMAGE_ASPECT_RATIO, contentMode: .fit)
+
+      VStack(alignment: .leading, spacing: 4) {
+        if !self.bottomChips.isEmpty {
+          HStack(alignment: .center, spacing: 4) {
+            ForEach(self.bottomChips, id: \.self) { bottomChip in
+              MomentCardChip(label: bottomChip)
+            }
+          }
+          .padding(.bottom)
+          .padding(.horizontal)
+        }
+      }
+      .frame(
+        maxWidth: .infinity,
+        maxHeight: .infinity,
+        alignment: .bottomTrailing
+      )
     }
-    .frame(
-      maxWidth: .infinity,
-      maxHeight: .infinity
-    )
-    .background(Color.black)
-    .aspectRatio(Self.RECOMMENDED_IMAGE_ASPECT_RATIO, contentMode: .fit)
     .hoverEffect(.highlight)
 
     self.label()
@@ -67,11 +89,25 @@ struct MomentCardRaw: View {
     Self.init(
       coverURL: nil,
       isCompact: isCompact,
+      bottomChips: [],
       label: {
         Text(String(repeating: " ", count: 50))
       }
     )
     .redacted(reason: .placeholder)
+  }
+}
+
+private struct MomentCardChip: View {
+  let label: String
+
+  var body: some View {
+    Text(self.label)
+      .font(.caption2)
+      .padding(.horizontal, 8)
+      .padding(.vertical, 4)
+      .background(.ultraThickMaterial)
+      .clipShape(RoundedRectangle(cornerRadius: 8))
   }
 }
 
@@ -119,6 +155,7 @@ struct MomentCard: View {
       MomentCardRaw(
         coverURL: self.moment.thumbnailUrl,
         isCompact: !self.displayShowTitle,
+        bottomChips: [self.moment.duration.formatted(DurationShortFormatStyle())],
         label: {
           self.cardLabelView()
         }
