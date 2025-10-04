@@ -1,6 +1,80 @@
 import SwiftUI
 import ThirdPartyVideoPlayer
 
+struct MomentCardRaw: View {
+  static let RECOMMENDED_SPACING: CGFloat = 64
+  static let RECOMMENDED_IMAGE_ASPECT_RATIO: CGSize = .init(width: 16, height: 9)
+  static let RECOMMENDED_COUNT_PER_ROW_EXPANDED: Int = 3
+  static let RECOMMENDED_COUNT_PER_ROW_COMPACT: Int = 4
+  static let RECOMMENDED_LABEL_LINE_LIMIT_COMPACT = 1
+  static let RECOMMENDED_LABEL_LINE_LIMIT_EXPANDED = 3
+
+  private let coverURL: URL?
+  private let isCompact: Bool
+  @ViewBuilder private let label: () -> Text
+
+  init(
+    coverURL: URL?,
+    isCompact: Bool,
+    @ViewBuilder label: @escaping () -> Text,
+  ) {
+    self.coverURL = coverURL
+    self.isCompact = isCompact
+    self.label = label
+  }
+
+  var body: some View {
+    AsyncImage(
+      url: self.coverURL,
+      transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
+    ) { phase in
+      switch phase {
+      case .empty:
+        ImagePlaceholder()
+
+      case let .success(image):
+        image
+          .resizable()
+          .scaledToFit()
+
+      case .failure:
+        Image(systemName: "photo")
+          .font(.title)
+          .foregroundStyle(Color.white)
+
+      @unknown default:
+        ImagePlaceholder()
+      }
+    }
+    .frame(
+      maxWidth: .infinity,
+      maxHeight: .infinity
+    )
+    .background(Color.black)
+    .aspectRatio(Self.RECOMMENDED_IMAGE_ASPECT_RATIO, contentMode: .fit)
+    .hoverEffect(.highlight)
+
+    self.label()
+      .lineLimit(
+        self.isCompact ? Self.RECOMMENDED_LABEL_LINE_LIMIT_COMPACT : Self.RECOMMENDED_LABEL_LINE_LIMIT_EXPANDED,
+        reservesSpace: true
+      )
+      .frame(maxWidth: .infinity, alignment: .center)
+      .multilineTextAlignment(.center)
+  }
+
+  static func placeholder(isCompact: Bool) -> some View {
+    Self.init(
+      coverURL: nil,
+      isCompact: isCompact,
+      label: {
+        Text(String(repeating: " ", count: 50))
+      }
+    )
+    .redacted(reason: .placeholder)
+  }
+}
+
 struct MomentCard: View {
   let moment: Moment
   let displayShowTitle: Bool
@@ -42,41 +116,13 @@ struct MomentCard: View {
         }
       }
     }) {
-      VStack {
-        AsyncImage(
-          url: self.moment.thumbnailUrl,
-          transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
-        ) { phase in
-          switch phase {
-          case .empty:
-            Color.clear
-
-          case let .success(image):
-            image
-              .resizable()
-              .scaledToFit()
-
-          case .failure:
-            Image(systemName: "photo")
-              .font(.title)
-              .foregroundStyle(Color.white)
-
-          @unknown default:
-            Color.clear
-          }
+      MomentCardRaw(
+        coverURL: self.moment.thumbnailUrl,
+        isCompact: !self.displayShowTitle,
+        label: {
+          self.cardLabelView()
         }
-        .frame(
-          maxWidth: .infinity,
-          maxHeight: .infinity
-        )
-        .aspectRatio(16 / 9, contentMode: .fit)
-        .background(Color.black)
-        .hoverEffect(.highlight)
-      }
-
-      self.cardLabelView()
-        .lineLimit(self.displayShowTitle ? 3 : 1, reservesSpace: true)
-        .multilineTextAlignment(.center)
+      )
     }
     .buttonStyle(.borderless)
     .alert("Ошибка при открытии момента", isPresented: self.$showErrorAlert, presenting: self.error) { _ in
@@ -92,7 +138,7 @@ struct MomentCard: View {
 
   private func cardLabelView() -> Text {
     if self.displayShowTitle {
-      return Text("\(self.moment.title) \(Text(" " + self.moment.showTitle).foregroundStyle(.secondary))")
+      return Text("\(self.moment.title) \(Text(self.moment.showTitle).foregroundStyle(.secondary))")
     }
 
     return Text(self.moment.title)

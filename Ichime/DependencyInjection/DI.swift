@@ -35,7 +35,7 @@ final class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowService(anime365KitFactory: $0, shikimoriApiClient: $1, jikanApiClient: $2, momentsService: $3)
+      ShowService(anime365KitFactory: $0, shikimoriApiClient: $1, jikanApiClient: $2)
     }
 
     container.register {
@@ -54,10 +54,6 @@ final class ApplicationDependency: DIFramework {
 
     container.register {
       ShowReleaseSchedule(shikimoriApiClient: $0)
-    }
-
-    container.register {
-      HomeService(showService: $0, momentService: $1)
     }
 
     container.register {

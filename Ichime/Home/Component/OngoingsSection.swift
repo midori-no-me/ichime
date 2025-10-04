@@ -4,12 +4,17 @@ import SwiftUI
 
 @Observable @MainActor
 private final class OngoingsSectionViewModel {
+  enum State {
+    case idle
+    case loading
+    case loadingFailed(Error)
+    case loadedButEmpty
+    case loaded(shows: OrderedSet<ShowPreview>, hasMore: Bool)
+  }
+
   private static let SHOWS_PER_PAGE = 10
 
-  var shows: OrderedSet<ShowPreview> = []
-
-  private var offset: Int = 0
-  private var stopLazyLoading: Bool = false
+  private(set) var state: State = .idle
 
   private let showService: ShowService
   private let logger: Logger
@@ -22,62 +27,119 @@ private final class OngoingsSectionViewModel {
     self.logger = logger
   }
 
-  func performInitialLoad(preloadedShows: OrderedSet<ShowPreview>) {
-    if !self.shows.isEmpty {
-      return
-    }
+  func performInitialLoading() async {
+    self.updateState(.loading)
 
-    self.shows = preloadedShows
-    self.offset += preloadedShows.count
+    do {
+      let shows = try await showService.getOngoings(
+        offset: 0,
+        limit: Self.SHOWS_PER_PAGE
+      )
+
+      if shows.isEmpty {
+        self.updateState(.loadedButEmpty)
+      }
+      else {
+        self.updateState(
+          .loaded(
+            shows: shows,
+            hasMore: shows.count == Self.SHOWS_PER_PAGE
+          )
+        )
+      }
+    }
+    catch {
+      self.updateState(.loadingFailed(error))
+    }
   }
 
   func performLazyLoading() async {
-    if self.stopLazyLoading {
+    guard case let .loaded(alreadyLoadedShows, hasMore) = state else {
+      return
+    }
+
+    if !hasMore {
       return
     }
 
     do {
       let shows = try await showService.getOngoings(
-        offset: self.offset,
+        offset: alreadyLoadedShows.count,
         limit: Self.SHOWS_PER_PAGE
       )
 
-      if shows.count < Self.SHOWS_PER_PAGE {
-        self.logger.debug("Stop lazy loading because next page has less than \(Self.SHOWS_PER_PAGE) items")
-        self.stopLazyLoading = true
-      }
-
-      self.offset += shows.count
-      self.shows = .init(self.shows.elements + shows)
+      self.updateState(
+        .loaded(
+          shows: .init(alreadyLoadedShows.elements + shows),
+          hasMore: shows.count == Self.SHOWS_PER_PAGE
+        )
+      )
     }
     catch {
       self.logger.debug("Stop lazy loading due to exception: \(error)")
-      self.stopLazyLoading = true
+    }
+  }
+
+  private func updateState(_ state: State) {
+    withAnimation(.default.speed(0.5)) {
+      self.state = state
     }
   }
 }
 
 struct OngoingsSection: View {
-  let preloadedShows: OrderedSet<ShowPreview>
-
   @State private var viewModel: OngoingsSectionViewModel = .init()
 
   var body: some View {
     SectionWithCards(title: "Онгоинги") {
       ScrollView(.horizontal) {
-        LazyHStack(alignment: .top, spacing: ShowCard.RECOMMENDED_SPACING) {
-          ForEach(self.viewModel.shows) { show in
-              .containerRelativeFrame(
-                .horizontal,
-                count: ShowCard.RECOMMENDED_COUNT_PER_ROW,
-                span: 1,
-                spacing: ShowCard.RECOMMENDED_SPACING
-              )
-              .task {
-                if show == self.viewModel.shows.last {
-                  await self.viewModel.performLazyLoading()
-                }
+        switch self.viewModel.state {
+        case .idle:
+          ShowCardHStackInteractiveSkeleton()
+            .onAppear {
+              Task {
+                await self.viewModel.performInitialLoading()
               }
+            }
+
+        case .loading:
+          ShowCardHStackInteractiveSkeleton()
+
+        case let .loadingFailed(error):
+          ShowCardHStackContentUnavailable {
+            Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+          } description: {
+            Text(error.localizedDescription)
+          } actions: {
+            Button(action: {
+              Task {
+                await self.viewModel.performInitialLoading()
+              }
+            }) {
+              Text("Обновить")
+            }
+          }
+
+        case .loadedButEmpty:
+          ShowCardHStackContentUnavailable {
+            Label("Пусто", systemImage: "rectangle.portrait.on.rectangle.portrait.angled")
+          } description: {
+            Text("Ничего не нашлось")
+          } actions: {
+            Button(action: {
+              Task {
+                await self.viewModel.performInitialLoading()
+              }
+            }) {
+              Text("Обновить")
+            }
+          }
+
+        case let .loaded(shows, _):
+          ShowCardHStack(
+            cards: shows.elements,
+            loadMore: { await self.viewModel.performLazyLoading() }
+          ) { show in
             ShowCardAnime365(
               show: show,
               displaySeason: !Self.isCurrentSeason(show: show),
@@ -85,10 +147,8 @@ struct OngoingsSection: View {
           }
         }
       }
+      .focusSection()
       .scrollClipDisabled()
-    }
-    .onAppear {
-      self.viewModel.performInitialLoad(preloadedShows: self.preloadedShows)
     }
   }
 

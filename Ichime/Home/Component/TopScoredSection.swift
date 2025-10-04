@@ -1,86 +1,164 @@
+import OSLog
 import OrderedCollections
 import SwiftUI
 
-@Observable
-@MainActor
+@Observable @MainActor
 private final class TopScoredSectionViewModel {
-  private static let SHOWS_PER_PAGE = 10
-
-  var shows: OrderedSet<ShowPreview> = []
-
-  private var offset: Int = 0
-  private var stopLazyLoading: Bool = false
-
-  private let showService: ShowService
-
-  init(
-    showService: ShowService = ApplicationDependency.container.resolve()
-  ) {
-    self.showService = showService
+  enum State {
+    case idle
+    case loading
+    case loadingFailed(Error)
+    case loadedButEmpty
+    case loaded(shows: OrderedSet<ShowPreview>, hasMore: Bool)
   }
 
-  func performInitialLoad(preloadedShows: OrderedSet<ShowPreview>) {
-    if !self.shows.isEmpty {
-      return
-    }
+  private static let SHOWS_PER_PAGE = 10
 
-    self.shows = preloadedShows
-    self.offset += preloadedShows.count
+  private(set) var state: State = .idle
+
+  private let showService: ShowService
+  private let logger: Logger
+
+  init(
+    showService: ShowService = ApplicationDependency.container.resolve(),
+    logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "TopScoredSectionViewModel")
+  ) {
+    self.showService = showService
+    self.logger = logger
+  }
+
+  func performInitialLoading() async {
+    self.updateState(.loading)
+
+    do {
+      let shows = try await showService.getTopScored(
+        offset: 0,
+        limit: Self.SHOWS_PER_PAGE
+      )
+
+      if shows.isEmpty {
+        self.updateState(.loadedButEmpty)
+      }
+      else {
+        self.updateState(
+          .loaded(
+            shows: shows,
+            hasMore: shows.count == Self.SHOWS_PER_PAGE
+          )
+        )
+      }
+    }
+    catch {
+      self.updateState(.loadingFailed(error))
+    }
   }
 
   func performLazyLoading() async {
-    if self.stopLazyLoading {
+    guard case let .loaded(alreadyLoadedShows, hasMore) = state else {
+      return
+    }
+
+    if !hasMore {
       return
     }
 
     do {
       let shows = try await showService.getTopScored(
-        offset: self.offset,
+        offset: alreadyLoadedShows.count,
         limit: Self.SHOWS_PER_PAGE
       )
 
-      if shows.count < Self.SHOWS_PER_PAGE {
-        self.stopLazyLoading = true
-      }
-
-      self.offset += shows.count
-      self.shows = .init(self.shows.elements + shows)
+      self.updateState(
+        .loaded(
+          shows: .init(alreadyLoadedShows.elements + shows),
+          hasMore: shows.count == Self.SHOWS_PER_PAGE
+        )
+      )
     }
     catch {
-      self.stopLazyLoading = true
+      self.logger.debug("Stop lazy loading due to exception: \(error)")
+    }
+  }
+
+  private func updateState(_ state: State) {
+    withAnimation(.default.speed(0.5)) {
+      self.state = state
     }
   }
 }
 
 struct TopScoredSection: View {
-  let preloadedShows: OrderedSet<ShowPreview>
-
   @State private var viewModel: TopScoredSectionViewModel = .init()
 
   var body: some View {
     SectionWithCards(title: "С высоким рейтингом") {
       ScrollView(.horizontal) {
-        LazyHStack(alignment: .top, spacing: ShowCard.RECOMMENDED_SPACING) {
-          ForEach(self.viewModel.shows) { show in
-            ShowCardAnime365(show: show, displaySeason: true)
-              .containerRelativeFrame(
-                .horizontal,
-                count: ShowCard.RECOMMENDED_COUNT_PER_ROW,
-                span: 1,
-                spacing: ShowCard.RECOMMENDED_SPACING
-              )
-              .task {
-                if show == self.viewModel.shows.last {
-                  await self.viewModel.performLazyLoading()
-                }
+        switch self.viewModel.state {
+        case .idle:
+          ShowCardHStackInteractiveSkeleton()
+            .onAppear {
+              Task {
+                await self.viewModel.performInitialLoading()
               }
+            }
+
+        case .loading:
+          ShowCardHStackInteractiveSkeleton()
+
+        case let .loadingFailed(error):
+          ShowCardHStackContentUnavailable {
+            Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+          } description: {
+            Text(error.localizedDescription)
+          } actions: {
+            Button(action: {
+              Task {
+                await self.viewModel.performInitialLoading()
+              }
+            }) {
+              Text("Обновить")
+            }
+          }
+
+        case .loadedButEmpty:
+          ShowCardHStackContentUnavailable {
+            Label("Пусто", systemImage: "rectangle.portrait.on.rectangle.portrait.angled")
+          } description: {
+            Text("Ничего не нашлось")
+          } actions: {
+            Button(action: {
+              Task {
+                await self.viewModel.performInitialLoading()
+              }
+            }) {
+              Text("Обновить")
+            }
+          }
+
+        case let .loaded(shows, _):
+          ShowCardHStack(
+            cards: shows.elements,
+            loadMore: { await self.viewModel.performLazyLoading() }
+          ) { show in
+            ShowCardAnime365(
+              show: show,
+              displaySeason: !Self.isCurrentSeason(show: show),
+            )
           }
         }
       }
+      .focusSection()
       .scrollClipDisabled()
     }
-    .onAppear {
-      self.viewModel.performInitialLoad(preloadedShows: self.preloadedShows)
+  }
+
+  private static func isCurrentSeason(show: ShowPreview) -> Bool {
+    let currentAiringSeason = ShowSeasonService().getRelativeSeason(shift: 0)
+
+    guard let airingSeason = show.airingSeason else {
+      return false
     }
+
+    return currentAiringSeason == airingSeason
   }
 }

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ShowCard: View {
+  static let RECOMMENDED_ASPECT_RATIO: CGFloat = 0.7123
   static let RECOMMENDED_SPACING: CGFloat = 40
   static let RECOMMENDED_COUNT_PER_ROW: Int = 5
 
@@ -33,7 +34,7 @@ struct ShowCard: View {
       Rectangle()
         .fill(
           LinearGradient(
-            gradient: Gradient(colors: [Color.clear, Color.clear, Color.black]),
+            gradient: .init(colors: [.clear, .clear, .black.opacity(0.75)]),
             startPoint: .center,
             endPoint: .bottom
           )
@@ -80,7 +81,7 @@ struct ShowCard: View {
       ) { phase in
         switch phase {
         case .empty:
-          Color.clear
+          ImagePlaceholder()
 
         case let .success(image):
           if let uiImage = ImageRenderer(content: image).uiImage, uiImage.size.width >= uiImage.size.height {
@@ -96,8 +97,7 @@ struct ShowCard: View {
 
         case .failure:
           Group {
-            RoundedRectangle(cornerRadius: 16)
-              .foregroundStyle(Color(UIColor.systemGray))
+            ImagePlaceholder()
               .overlay {
                 Image(systemName: "photo")
                   .font(.title)
@@ -106,11 +106,11 @@ struct ShowCard: View {
           }
 
         @unknown default:
-          Color.clear
+          ImagePlaceholder()
         }
       }
     }
-    .aspectRatio(0.7123, contentMode: .fit)
+    .aspectRatio(Self.RECOMMENDED_ASPECT_RATIO, contentMode: .fit)
     .clipped()
     .hoverEffect(.highlight)
     .onChange(of: self.isFocused) { _, newValue in
@@ -125,6 +125,17 @@ struct ShowCard: View {
         }
       }
     }
+  }
+
+  static func placeholder() -> some View {
+    Self.init(
+      topChips: [],
+      bottomChips: [],
+      cover: nil,
+      primaryTitle: String(repeating: " ", count: 15),
+      secondaryTitle: nil
+    )
+    .redacted(reason: .placeholder)
   }
 }
 

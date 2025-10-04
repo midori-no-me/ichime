@@ -11,11 +11,9 @@ private final class ShowViewModel {
     case loaded(
       (
         show: ShowDetails,
-        moments: OrderedSet<Moment>,
         screenshots: OrderedSet<URL>,
         characters: OrderedSet<CharacterInfo>,
-        staffMembers: OrderedSet<StaffMember>,
-        relatedShows: OrderedSet<GroupedRelatedShows>
+        staffMembers: OrderedSet<StaffMember>
       )
     )
   }
@@ -127,15 +125,13 @@ struct ShowView: View {
         .centeredContentFix()
       }
 
-    case let .loaded((show, moments, screenshots, characters, staffMembers, relatedShows)):
+    case let .loaded((show, screenshots, characters, staffMembers)):
       ScrollView(.vertical) {
         ShowDetailsView(
           show: show,
-          moments: moments,
           screenshots: screenshots,
           characters: characters,
-          staffMembers: staffMembers,
-          relatedShows: relatedShows,
+          staffMembers: staffMembers
         )
       }
       .onAppear {
@@ -153,11 +149,9 @@ private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
 
 private struct ShowDetailsView: View {
   let show: ShowDetails
-  let moments: OrderedSet<Moment>
   let screenshots: OrderedSet<URL>
   let characters: OrderedSet<CharacterInfo>
   let staffMembers: OrderedSet<StaffMember>
-  let relatedShows: OrderedSet<GroupedRelatedShows>
 
   var body: some View {
     VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
@@ -180,9 +174,7 @@ private struct ShowDetailsView: View {
         ScreenshotsSection(screenshots: self.screenshots)
       }
 
-      if !self.moments.isEmpty {
-        ShowMomentsSection(showId: self.show.id, preloadedMoments: self.moments)
-      }
+      ShowMomentsSection(showId: self.show.id)
 
       if !self.characters.isEmpty {
         CharactersSection(characters: self.characters)
@@ -192,9 +184,7 @@ private struct ShowDetailsView: View {
         StaffMembersSection(staffMembers: self.staffMembers)
       }
 
-      if !self.relatedShows.isEmpty {
-        RelatedShowsSection(relatedShowsGroups: self.relatedShows)
-      }
+      RelatedShowsSection(myAnimeListId: self.show.myAnimeListId)
     }
   }
 }
@@ -791,33 +781,5 @@ private struct StaffMembersSection: View {
       }
       .scrollClipDisabled()
     }
-  }
-}
-
-private struct RelatedShowsSection: View {
-  let relatedShowsGroups: OrderedSet<GroupedRelatedShows>
-
-  var body: some View {
-    ScrollView(.horizontal) {
-      LazyHStack(alignment: .top, spacing: ShowCard.RECOMMENDED_SPACING) {
-        ForEach(self.relatedShowsGroups) { relatedShowGroup in
-          SectionWithCards(title: relatedShowGroup.relationKind.title) {
-            LazyHStack(alignment: .top, spacing: ShowCard.RECOMMENDED_SPACING) {
-              ForEach(relatedShowGroup.relatedShows) { relatedShow in
-                ShowCardMyAnimeList(relatedShow: relatedShow)
-                  .containerRelativeFrame(
-                    .horizontal,
-                    count: ShowCard.RECOMMENDED_COUNT_PER_ROW,
-                    span: 1,
-                    spacing: ShowCard.RECOMMENDED_SPACING
-                  )
-              }
-            }
-          }
-        }
-      }
-    }
-    .focusSection()
-    .scrollClipDisabled()
   }
 }

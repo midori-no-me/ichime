@@ -1,88 +1,179 @@
+import OSLog
 import OrderedCollections
 import SwiftUI
 
 @Observable @MainActor
 private final class MomentsSectionViewModel {
-  var moments: OrderedSet<Moment> = []
-
-  private var page: Int = 1
-  private var stopLazyLoading: Bool = false
-
-  private let momentService: MomentService
-
-  init(
-    momentService: MomentService = ApplicationDependency.container.resolve()
-  ) {
-    self.momentService = momentService
+  enum State {
+    case idle
+    case loading
+    case loadingFailed(Error)
+    case loadedButEmpty
+    case loaded(moments: OrderedSet<Moment>, page: Int, hasMore: Bool)
   }
 
-  func performInitialLoad(preloadedMoments: OrderedSet<Moment>) {
-    if !self.moments.isEmpty {
+  private(set) var state: State = .idle
+
+  private let momentService: MomentService
+  private let logger: Logger
+  private let sorting: MomentSorting
+
+  init(
+    momentService: MomentService = ApplicationDependency.container.resolve(),
+    logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "MomentsSectionViewModel"),
+    sorting: MomentSorting
+  ) {
+    self.momentService = momentService
+    self.logger = logger
+    self.sorting = sorting
+  }
+
+  func performInitialLoading() async {
+    self.updateState(.loading)
+
+    do {
+      let moments = try await momentService.getMoments(
+        page: 1,
+        sorting: self.sorting
+      )
+
+      if moments.isEmpty {
+        self.updateState(.loadedButEmpty)
+      }
+      else {
+        self.updateState(
+          .loaded(
+            moments: moments,
+            page: 1,
+            hasMore: true
+          )
+        )
+      }
+    }
+    catch {
+      self.updateState(.loadingFailed(error))
+    }
+  }
+
+  func performLazyLoading() async {
+    guard case let .loaded(alreadyLoadedMoments, page, hasMore) = state else {
       return
     }
 
-    self.moments = preloadedMoments
-    self.page += 1
-  }
-
-  func performLazyLoading(sorting: MomentSorting) async {
-    if self.stopLazyLoading {
+    if !hasMore {
       return
     }
 
     do {
-      let moments = try await momentService.getMoments(page: self.page, sorting: sorting)
+      let moments = try await momentService.getMoments(
+        page: page + 1,
+        sorting: self.sorting
+      )
 
-      if moments.last?.id == self.moments.last?.id {
-        self.stopLazyLoading = true
-        return
-      }
-
-      self.page += 1
-      self.moments = .init(self.moments.elements + moments)
+      self.updateState(
+        .loaded(
+          moments: .init(alreadyLoadedMoments.elements + moments),
+          page: page + 1,
+          hasMore: moments.last?.id != alreadyLoadedMoments.last?.id
+        )
+      )
     }
     catch {
-      self.stopLazyLoading = true
+      self.logger.debug("Stop lazy loading due to exception: \(error)")
+    }
+  }
+
+  private func updateState(_ state: State) {
+    withAnimation(.easeInOut(duration: 0.5)) {
+      self.state = state
     }
   }
 }
 
 struct MomentsSection: View {
-  let preloadedMoments: OrderedSet<Moment>
-  let sorting: MomentSorting
+  @State private var viewModel: MomentsSectionViewModel
 
-  @State private var viewModel: MomentsSectionViewModel = .init()
+  private let sorting: MomentSorting
+
+  private init(
+    viewModel: MomentsSectionViewModel,
+    sorting: MomentSorting
+  ) {
+    self.viewModel = viewModel
+    self.sorting = sorting
+  }
 
   var body: some View {
-    VStack(alignment: .leading) {
-      SectionWithCards(title: self.sectionTitle()) {
-        ScrollView(.horizontal) {
-          LazyHStack(alignment: .top, spacing: 64) {
-            ForEach(self.viewModel.moments) { moment in
-              MomentCard(moment: moment, displayShowTitle: true)
-                .containerRelativeFrame(.horizontal, count: 3, span: 1, spacing: 64)
-                .task {
-                  if moment == self.viewModel.moments.last {
-                    await self.viewModel.performLazyLoading(sorting: self.sorting)
-                  }
-                }
+    SectionWithCards(title: self.sorting == .popular ? "Популярные моменты" : "Моменты") {
+      ScrollView(.horizontal) {
+        switch self.viewModel.state {
+        case .idle:
+          MomentCardHStackInteractiveSkeleton(isCompact: false)
+            .onAppear {
+              Task {
+                await self.viewModel.performInitialLoading()
+              }
+            }
+
+        case .loading:
+          MomentCardHStackInteractiveSkeleton(isCompact: false)
+
+        case let .loadingFailed(error):
+          MomentCardHStackContentUnavailable(isCompact: false) {
+            Label("Ошибка при загрузке", systemImage: "exclamationmark.triangle")
+          } description: {
+            Text(error.localizedDescription)
+          } actions: {
+            Button(action: {
+              Task {
+                await self.viewModel.performInitialLoading()
+              }
+            }) {
+              Text("Обновить")
             }
           }
+
+        case .loadedButEmpty:
+          MomentCardHStackContentUnavailable(isCompact: false) {
+            Label("Пусто", systemImage: "rectangle.on.rectangle.angled")
+          } description: {
+            Text("Ничего не нашлось")
+          } actions: {
+            Button(action: {
+              Task {
+                await self.viewModel.performInitialLoading()
+              }
+            }) {
+              Text("Обновить")
+            }
+          }
+
+        case let .loaded(moments, _, _):
+          MomentCardHStack(
+            cards: moments.elements,
+            isCompact: false,
+            loadMore: { await self.viewModel.performLazyLoading() }
+          ) { moment, isCompact in
+            MomentCard(
+              moment: moment,
+              displayShowTitle: !isCompact
+            )
+          }
         }
-        .scrollClipDisabled()
       }
-    }
-    .onAppear {
-      self.viewModel.performInitialLoad(preloadedMoments: self.preloadedMoments)
+      .scrollClipDisabled()
     }
   }
 
-  private func sectionTitle() -> String {
-    switch self.sorting {
-    case .newest:
-      "Моменты"
-    case .popular:
-      "Популярные моменты"
-    }
+  public static func withRandomSorting() -> Self {
+    let momentSorting: MomentSorting =
+      Int.random(in: 1...100) <= 10
+      ? .popular
+      : .newest
+
+    return .init(
+      viewModel: .init(sorting: momentSorting),
+      sorting: momentSorting
+    )
   }
 }

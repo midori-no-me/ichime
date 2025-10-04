@@ -12,18 +12,15 @@ struct ShowService {
   private let anime365KitFactory: Anime365KitFactory
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
   private let jikanApiClient: JikanApiClient.ApiClient
-  private let momentsService: MomentService
 
   init(
     anime365KitFactory: Anime365KitFactory,
     shikimoriApiClient: ShikimoriApiClient.ApiClient,
-    jikanApiClient: JikanApiClient.ApiClient,
-    momentsService: MomentService
+    jikanApiClient: JikanApiClient.ApiClient
   ) {
     self.anime365KitFactory = anime365KitFactory
     self.shikimoriApiClient = shikimoriApiClient
     self.jikanApiClient = jikanApiClient
-    self.momentsService = momentsService
   }
 
   func getShowIdByMyAnimeListId(_ myAnimeListId: Int) async throws -> Int {
@@ -54,27 +51,19 @@ struct ShowService {
 
   func getShowDetails(showId: Int) async throws -> (
     show: ShowDetails,
-    moments: OrderedSet<Moment>,
     screenshots: OrderedSet<URL>,
     characters: OrderedSet<CharacterInfo>,
     staffMembers: OrderedSet<StaffMember>,
-    relatedShows: OrderedSet<GroupedRelatedShows>
   ) {
     let anime365Series = try await anime365KitFactory.createApiClient().getSeries(
       seriesId: showId
     )
-
-    async let momentsFuture = self.momentsService.getShowMoments(showId: showId, page: 1)
 
     async let shikimoriAnimeFuture = self.shikimoriApiClient.getAnimeById(
       animeId: anime365Series.myAnimeListId
     )
 
     async let shikimoriScreenshotsFuture = self.shikimoriApiClient.getAnimeScreenshotsById(
-      animeId: anime365Series.myAnimeListId
-    )
-
-    async let shikimoriRelationsFuture = self.shikimoriApiClient.getAnimeRelatedById(
       animeId: anime365Series.myAnimeListId
     )
 
@@ -90,11 +79,9 @@ struct ShowService {
       id: anime365Series.myAnimeListId
     )
 
-    let moments = (try? await momentsFuture) ?? []
     let shikimoriAnime = try? await shikimoriAnimeFuture
     let jikanAnime = try? await jikanAnimeFuture
     let shikimoriScreenshots = (try? await shikimoriScreenshotsFuture) ?? []
-    let shikimoriRelations = (try? await shikimoriRelationsFuture) ?? []
     let jikanCharacterRoles = (try? await jikanCharacterRolesFuture) ?? []
     let jikanStaffMembers = (try? await jikanStaffMembersFuture) ?? []
 
@@ -105,15 +92,13 @@ struct ShowService {
         shikimoriBaseUrl: self.shikimoriApiClient.baseUrl,
         jikanAnime: jikanAnime
       ),
-      moments: moments,
       screenshots: .init(
         shikimoriScreenshots.map { screenshot in
           URL(string: self.shikimoriApiClient.baseUrl.absoluteString + screenshot.original)!
         }
       ),
       characters: .init(jikanCharacterRoles.map { .init(fromJikanCharacterRole: $0) }),
-      staffMembers: .init(jikanStaffMembers.map { .init(fromJikanStaffMember: $0) }),
-      relatedShows: self.convertShikimoriRelationsToGroupedRelatedShows(shikimoriRelations)
+      staffMembers: .init(jikanStaffMembers.map { .init(fromJikanStaffMember: $0) })
     )
   }
 
@@ -251,6 +236,16 @@ struct ShowService {
     )
 
     return apiResponse.map { .init(anime365Series: $0) }
+  }
+
+  func getRelatedShows(
+    myAnimeListId: Int
+  ) async throws -> OrderedSet<GroupedRelatedShows> {
+    let shikimoriRelations = try await self.shikimoriApiClient.getAnimeRelatedById(
+      animeId: myAnimeListId
+    )
+
+    return self.convertShikimoriRelationsToGroupedRelatedShows(shikimoriRelations)
   }
 
   func getStudio(
