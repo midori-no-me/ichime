@@ -81,7 +81,7 @@ struct ShowCard: View {
       ) { phase in
         switch phase {
         case .empty:
-          ImagePlaceholder()
+          ImagePlaceholder.color
 
         case let .success(image):
           if let uiImage = ImageRenderer(content: image).uiImage, uiImage.size.width >= uiImage.size.height {
@@ -97,7 +97,7 @@ struct ShowCard: View {
 
         case .failure:
           Group {
-            ImagePlaceholder()
+            ImagePlaceholder.color
               .overlay {
                 Image(systemName: "photo")
                   .font(.title)
@@ -106,7 +106,7 @@ struct ShowCard: View {
           }
 
         @unknown default:
-          ImagePlaceholder()
+          ImagePlaceholder.color
         }
       }
     }

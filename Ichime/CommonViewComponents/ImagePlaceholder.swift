@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct ImagePlaceholder: View {
-  var body: some View {
+struct ImagePlaceholder {
+  static var color: Color {
     Color(uiColor: .darkGray)
       .opacity(0.7)
   }

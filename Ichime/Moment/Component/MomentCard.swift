@@ -34,7 +34,7 @@ struct MomentCardRaw: View {
       ) { phase in
         switch phase {
         case .empty:
-          ImagePlaceholder()
+          ImagePlaceholder.color
 
         case let .success(image):
           image
@@ -47,7 +47,7 @@ struct MomentCardRaw: View {
             .foregroundStyle(Color.white)
 
         @unknown default:
-          ImagePlaceholder()
+          ImagePlaceholder.color
         }
       }
       .frame(

@@ -15,7 +15,7 @@ struct ScreenshotCardRaw: View {
     ) { phase in
       switch phase {
       case .empty:
-        ImagePlaceholder()
+        ImagePlaceholder.color
 
       case let .success(image):
         image
@@ -23,10 +23,10 @@ struct ScreenshotCardRaw: View {
           .scaledToFit()
 
       case .failure:
-        ImagePlaceholder()
+        ImagePlaceholder.color
 
       @unknown default:
-        ImagePlaceholder()
+        ImagePlaceholder.color
       }
     }
     .frame(
