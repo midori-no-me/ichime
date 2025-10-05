@@ -49,11 +49,7 @@ struct ShowService {
     return coverUrls
   }
 
-  func getShowDetails(showId: Int) async throws -> (
-    show: ShowDetails,
-    characters: OrderedSet<CharacterInfo>,
-    staffMembers: OrderedSet<StaffMember>,
-  ) {
+  func getShowDetails(showId: Int) async throws -> (ShowDetails) {
     let anime365Series = try await anime365KitFactory.createApiClient().getSeries(
       seriesId: showId
     )
@@ -66,29 +62,16 @@ struct ShowService {
       id: anime365Series.myAnimeListId
     )
 
-    async let jikanCharacterRolesFuture = self.jikanApiClient.getAnimeCharacters(
-      id: anime365Series.myAnimeListId
-    )
-
-    async let jikanStaffMembersFuture = self.jikanApiClient.getAnimeStaff(
-      id: anime365Series.myAnimeListId
-    )
-
     let shikimoriAnime = try? await shikimoriAnimeFuture
     let jikanAnime = try? await jikanAnimeFuture
-    let jikanCharacterRoles = (try? await jikanCharacterRolesFuture) ?? []
-    let jikanStaffMembers = (try? await jikanStaffMembersFuture) ?? []
 
-    return (
-      show: .init(
+    return
+      (.init(
         anime365Series: anime365Series,
         shikimoriAnime: shikimoriAnime,
         shikimoriBaseUrl: self.shikimoriApiClient.baseUrl,
         jikanAnime: jikanAnime
-      ),
-      characters: .init(jikanCharacterRoles.map { .init(fromJikanCharacterRole: $0) }),
-      staffMembers: .init(jikanStaffMembers.map { .init(fromJikanStaffMember: $0) })
-    )
+      ))
   }
 
   func getOngoings(
@@ -249,6 +232,22 @@ struct ShowService {
         URL(string: self.shikimoriApiClient.baseUrl.absoluteString + screenshot.original)!
       }
     )
+  }
+
+  func getCharacters(myAnimeListId: Int) async throws -> OrderedSet<CharacterInfo> {
+    let jikanCharacterRoles = try await self.jikanApiClient.getAnimeCharacters(
+      id: myAnimeListId
+    )
+
+    return .init(jikanCharacterRoles.map { .init(fromJikanCharacterRole: $0) })
+  }
+
+  func getStaffMembers(myAnimeListId: Int) async throws -> OrderedSet<StaffMember> {
+    let jikanStaffMembers = try await self.jikanApiClient.getAnimeStaff(
+      id: myAnimeListId
+    )
+
+    return .init(jikanStaffMembers.map { .init(fromJikanStaffMember: $0) })
   }
 
   func getStudio(

@@ -4,19 +4,11 @@ struct VoiceActorCard: View {
   let voiceActor: CharacterInfo.VoiceActor
 
   var body: some View {
-    CircularPortraitButton(
+    CircularPortraitButton.button(
       imageUrl: self.voiceActor.image,
+      label: self.voiceActor.name,
+      secondaryLabel: self.voiceActor.language,
       action: {},
-      label: {
-        VStack {
-          Text(self.voiceActor.name)
-            .lineLimit(1)
-
-          Text(self.voiceActor.language)
-            .foregroundStyle(.secondary)
-            .lineLimit(1)
-        }
-      }
     )
   }
 }

@@ -6,17 +6,11 @@ struct CharacterCard: View {
   let character: CharacterInfo
 
   var body: some View {
-    CircularPortraitButton(
+    CircularPortraitButton.button(
       imageUrl: self.character.image,
+      label: self.character.name,
+      secondaryLabel: self.character.role,
       action: { self.isSheetPresented = true },
-      label: {
-        Text(self.character.name)
-          .lineLimit(1)
-
-        Text(self.character.role)
-          .foregroundStyle(.secondary)
-          .lineLimit(1)
-      }
     )
     .fullScreenCover(isPresented: self.$isSheetPresented) {
       CharacterCardSheet(character: self.character)

@@ -10,9 +10,7 @@ private final class ShowViewModel {
     case loadingFailed(Error)
     case loaded(
       (
-        show: ShowDetails,
-        characters: OrderedSet<CharacterInfo>,
-        staffMembers: OrderedSet<StaffMember>
+        ShowDetails
       )
     )
   }
@@ -124,12 +122,10 @@ struct ShowView: View {
         .centeredContentFix()
       }
 
-    case let .loaded((show, characters, staffMembers)):
+    case let .loaded((show)):
       ScrollView(.vertical) {
         ShowDetailsView(
-          show: show,
-          characters: characters,
-          staffMembers: staffMembers
+          show: show
         )
       }
       .onAppear {
@@ -147,11 +143,9 @@ private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
 
 private struct ShowDetailsView: View {
   let show: ShowDetails
-  let characters: OrderedSet<CharacterInfo>
-  let staffMembers: OrderedSet<StaffMember>
 
   var body: some View {
-    VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
+    LazyVStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
       HeadingSectionWithBackground(imageUrl: self.show.posterUrl) {
         VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
           ShowKeyDetailsSection(show: self.show)
@@ -171,13 +165,9 @@ private struct ShowDetailsView: View {
 
       ShowMomentsSection(showId: self.show.id)
 
-      if !self.characters.isEmpty {
-        CharactersSection(characters: self.characters)
-      }
+      CharacterCardsSection(myAnimeListId: self.show.myAnimeListId)
 
-      if !self.staffMembers.isEmpty {
-        StaffMembersSection(staffMembers: self.staffMembers)
-      }
+      StaffMemberCardsSection(myAnimeListId: self.show.myAnimeListId)
 
       RelatedShowsSection(myAnimeListId: self.show.myAnimeListId)
     }
@@ -641,26 +631,6 @@ private struct ShowDescriptionCardSheet: View {
         }
         .frame(maxWidth: 1000, alignment: .center)
       }
-    }
-  }
-}
-
-private struct CharactersSection: View {
-  private static let SPACING: CGFloat = 64
-
-  let characters: OrderedSet<CharacterInfo>
-
-  var body: some View {
-    SectionWithCards(title: "Персонажи") {
-      ScrollView(.horizontal) {
-        LazyHStack(alignment: .top, spacing: Self.SPACING) {
-          ForEach(self.characters) { character in
-            CharacterCard(character: character)
-              .containerRelativeFrame(.horizontal, count: 6, span: 1, spacing: Self.SPACING)
-          }
-        }
-      }
-      .scrollClipDisabled()
     }
   }
 }
