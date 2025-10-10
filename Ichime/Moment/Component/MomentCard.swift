@@ -57,11 +57,11 @@ struct MomentCardRaw: View {
       .background(Color.black)
       .aspectRatio(Self.RECOMMENDED_IMAGE_ASPECT_RATIO, contentMode: .fit)
 
-      VStack(alignment: .leading, spacing: 4) {
+      VStack(alignment: .leading) {
         if !self.bottomChips.isEmpty {
-          HStack(alignment: .center, spacing: 4) {
+          HStack(alignment: .center, spacing: Chip.RECOMMENDED_SPACING) {
             ForEach(self.bottomChips, id: \.self) { bottomChip in
-              MomentCardChip(label: bottomChip)
+              Chip.filled(label: bottomChip)
             }
           }
           .padding(.bottom)
@@ -95,19 +95,6 @@ struct MomentCardRaw: View {
       }
     )
     .redacted(reason: .placeholder)
-  }
-}
-
-private struct MomentCardChip: View {
-  let label: String
-
-  var body: some View {
-    Text(self.label)
-      .font(.caption2)
-      .padding(.horizontal, 8)
-      .padding(.vertical, 4)
-      .background(.ultraThickMaterial)
-      .clipShape(RoundedRectangle(cornerRadius: 8))
   }
 }
 

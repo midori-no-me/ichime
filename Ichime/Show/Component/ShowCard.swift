@@ -40,11 +40,11 @@ struct ShowCard: View {
           )
         )
 
-      VStack(alignment: .leading, spacing: 4) {
+      VStack(alignment: .leading, spacing: 8) {
         if !self.topChips.isEmpty {
-          HStack(alignment: .center, spacing: 4) {
+          HStack(alignment: .center, spacing: Chip.RECOMMENDED_SPACING) {
             ForEach(self.topChips, id: \.self) { topChip in
-              ShowCardChip(label: topChip)
+              Chip.filled(label: topChip)
             }
           }
           .padding(.top)
@@ -54,13 +54,12 @@ struct ShowCard: View {
         Spacer()
 
         if !self.bottomChips.isEmpty {
-          HStack(alignment: .center, spacing: 4) {
+          HStack(alignment: .center, spacing: Chip.RECOMMENDED_SPACING) {
             ForEach(self.bottomChips, id: \.self) { bottomChip in
-              ShowCardChip(label: bottomChip)
+              Chip.filled(label: bottomChip)
             }
           }
           .padding(.horizontal)
-          .padding(.bottom, 4)
         }
 
         Text(self.title)
@@ -184,19 +183,6 @@ struct ShowCard: View {
       }
     }
     .background(Color.gray.ignoresSafeArea())
-  }
-}
-
-private struct ShowCardChip: View {
-  let label: String
-
-  var body: some View {
-    Text(self.label)
-      .font(.caption2)
-      .padding(.horizontal, 8)
-      .padding(.vertical, 4)
-      .background(.ultraThickMaterial)
-      .clipShape(RoundedRectangle(cornerRadius: 8))
   }
 }
 
