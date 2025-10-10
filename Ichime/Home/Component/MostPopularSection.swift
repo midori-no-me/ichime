@@ -149,7 +149,6 @@ struct MostPopularSection: View {
           }
         }
       }
-      .focusSection()
       .scrollClipDisabled()
     }
   }

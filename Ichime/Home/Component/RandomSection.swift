@@ -150,7 +150,6 @@ struct RandomSection: View {
           }
         }
       }
-      .focusSection()
       .scrollClipDisabled()
     }
   }

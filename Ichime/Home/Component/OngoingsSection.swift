@@ -147,7 +147,6 @@ struct OngoingsSection: View {
           }
         }
       }
-      .focusSection()
       .scrollClipDisabled()
     }
   }

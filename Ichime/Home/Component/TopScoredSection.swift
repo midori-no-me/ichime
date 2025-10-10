@@ -147,7 +147,6 @@ struct TopScoredSection: View {
           }
         }
       }
-      .focusSection()
       .scrollClipDisabled()
     }
   }

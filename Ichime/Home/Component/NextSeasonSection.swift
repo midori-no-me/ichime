@@ -149,7 +149,6 @@ struct NextSeasonSection: View {
           }
         }
       }
-      .focusSection()
       .scrollClipDisabled()
     }
   }
