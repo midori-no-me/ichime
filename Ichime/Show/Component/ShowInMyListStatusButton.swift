@@ -98,17 +98,20 @@ struct ShowInMyListStatusButton: View {
       Group {
         switch self.viewModel.state {
         case .idle:
-          Text("Добавить в список")
+          Label("Добавить в список", systemImage: "plus")
+            .labelStyle(.iconOnly)
             .onAppear {
               Task {
                 await self.viewModel.performInitialLoad(showId: self.showId)
               }
             }
         case .loading:
-          Text("Добавить в список")
+          Label("Добавить в список", systemImage: "plus")
+            .labelStyle(.iconOnly)
 
         case .loadingFailed(_):
-          Text("Добавить в список")
+          Label("Добавить в список", systemImage: "plus")
+            .labelStyle(.iconOnly)
 
         case let .loaded(animeListEditableEntry):
           switch animeListEditableEntry.status {
@@ -123,14 +126,12 @@ struct ShowInMyListStatusButton: View {
           case .planned:
             Text("Запланировано")
           case .notInList:
-            Text("Добавить в список")
+            Label("Добавить в список", systemImage: "plus")
+              .labelStyle(.iconOnly)
           }
         }
       }
       .font(.headline)
-      .fontWeight(.semibold)
-      .padding(.vertical, 20)
-      .padding(.horizontal, 40)
     }
     .disabled(self.userId == nil)
     .fullScreenCover(isPresented: self.$showSheet) {
@@ -146,6 +147,5 @@ struct ShowInMyListStatusButton: View {
       }
       .background(.thickMaterial)
     }
-    .buttonStyle(.card)
   }
 }

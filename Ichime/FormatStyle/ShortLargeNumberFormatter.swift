@@ -1,5 +1,6 @@
 import Foundation
 
+// periphery:ignore
 struct ShortLargeNumberFormatter: FormatStyle {
   typealias FormatInput = Int
 

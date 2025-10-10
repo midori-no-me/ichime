@@ -9,6 +9,10 @@ struct ShowDetails {
     let text: String
     let source: String
 
+    var singleLineText: String {
+      self.text.replacing("\n", with: " ").replacing(/\ +/, with: " ")
+    }
+
     static func == (lhs: Self, rhs: Self) -> Bool {
       lhs.text == rhs.text
     }
@@ -39,20 +43,14 @@ struct ShowDetails {
   let descriptions: [Description]
   let posterUrl: URL?
   let score: Float?
-  let scoredBy: Int?
-  let rank: Int?
-  let popularity: Int?
-  let members: Int?
   let airingSeason: AiringSeason?
   let numberOfEpisodes: Int?
   let latestAiredEpisodeNumber: Int?
   let hasEpisodes: Bool
   let kind: ShowKind?
   let genres: OrderedSet<Genre>
-  let isOngoing: Bool
   let studios: OrderedSet<Studio>
   let nextEpisodeReleasesAt: Date?
-  let source: String?
 
   init(
     anime365Series: Anime365Kit.SeriesFull,
@@ -81,34 +79,6 @@ struct ShowDetails {
     }
     else {
       self.score = nil
-    }
-
-    if let scoredBy = jikanAnime?.scored_by, scoredBy > 0 {
-      self.scoredBy = scoredBy
-    }
-    else {
-      self.scoredBy = nil
-    }
-
-    if let rank = jikanAnime?.rank, rank > 0 {
-      self.rank = rank
-    }
-    else {
-      self.rank = nil
-    }
-
-    if let popularity = jikanAnime?.popularity, popularity > 0 {
-      self.popularity = popularity
-    }
-    else {
-      self.popularity = nil
-    }
-
-    if let members = jikanAnime?.members, members > 0 {
-      self.members = members
-    }
-    else {
-      self.members = nil
     }
 
     self.id = anime365Series.id
@@ -144,14 +114,12 @@ struct ShowDetails {
       totalEpisodes: totalEpisodes
     )
     self.genres = .init((anime365Series.genres ?? []).map { .init(fromAnime365Genre: $0) })
-    self.isOngoing = anime365Series.isAiring == 1
     self.studios = .init(
       (shikimoriAnime?.studios ?? []).map {
         .init(fromShikimoriStudio: $0, shikimoriBaseUrl: shikimoriBaseUrl)
       }
     )
     self.nextEpisodeReleasesAt = shikimoriAnime?.next_episode_at
-    self.source = jikanAnime?.source
   }
 
   private static func getLatestAiredEpisodeNumber(

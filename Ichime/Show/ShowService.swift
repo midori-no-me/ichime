@@ -194,6 +194,7 @@ struct ShowService {
     )
   }
 
+  // periphery:ignore
   func getSeason(
     offset: Int,
     limit: Int,

@@ -8,76 +8,69 @@ private final class ShowViewModel {
     case idle
     case loading
     case loadingFailed(Error)
-    case loaded(
-      (
-        ShowDetails
-      )
-    )
+    case loaded(ShowDetails)
   }
 
-  private var _state: State = .idle
+  private(set) var state: State = .idle
+
   private let showService: ShowService
-  private var showId: Int = 0
-
-  private(set) var state: State {
-    get {
-      self._state
-    }
-    set {
-      withAnimation {
-        self._state = newValue
-      }
-    }
-  }
+  private let showId: Int
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve()
+    showService: ShowService = ApplicationDependency.container.resolve(),
+    showId: Int
   ) {
     self.showService = showService
+    self.showId = showId
   }
 
-  func performInitialLoad(showId: Int) async {
-    self.state = .loading
-
-    self.showId = showId
+  func performInitialLoading() async {
+    self.updateState(.loading)
 
     do {
       let show = try await showService.getShowDetails(
-        showId: showId
+        showId: self.showId
       )
 
-      self.state = .loaded(show)
+      self.updateState(.loaded(show))
     }
     catch {
-      self.state = .loadingFailed(error)
+      self.updateState(.loadingFailed(error))
+    }
+  }
+
+  private func updateState(_ state: State) {
+    withAnimation(.default.speed(0.5)) {
+      self.state = state
     }
   }
 }
 
 struct ShowView: View {
-  @State private var viewModel: ShowViewModel = .init()
+  @State private var viewModel: ShowViewModel
+  @State private var displayShowCoversSheet: Bool = false
 
-  private let showId: Int
   private let onOpened: (() -> Void)?
 
   init(
     showId: Int,
     onOpened: (() -> Void)? = nil
   ) {
-    self.showId = showId
     self.onOpened = onOpened
+    self.viewModel = .init(showId: showId)
   }
 
   var body: some View {
     switch self.viewModel.state {
     case .idle:
-      Color.clear.onAppear {
-        Task {
-          await self.viewModel.performInitialLoad(
-            showId: self.showId
-          )
+      ProgressView()
+        .focusable()
+        .centeredContentFix()
+        .onAppear {
+          Task {
+            await self.viewModel.performInitialLoading()
+          }
         }
-      }
 
     case .loading:
       ProgressView()
@@ -93,9 +86,7 @@ struct ShowView: View {
         } actions: {
           Button(action: {
             Task {
-              await self.viewModel.performInitialLoad(
-                showId: self.showId
-              )
+              await self.viewModel.performInitialLoading()
             }
           }) {
             Text("Обновить")
@@ -111,9 +102,7 @@ struct ShowView: View {
         } actions: {
           Button(action: {
             Task {
-              await self.viewModel.performInitialLoad(
-                showId: self.showId
-              )
+              await self.viewModel.performInitialLoading()
             }
           }) {
             Text("Обновить")
@@ -122,11 +111,179 @@ struct ShowView: View {
         .centeredContentFix()
       }
 
-    case let .loaded((show)):
-      ScrollView(.vertical) {
-        ShowDetailsView(
-          show: show
-        )
+    case let .loaded(show):
+      GeometryReader { proxy in
+        ScrollView(.vertical) {
+          VStack(spacing: 64) {
+            // MARK: Top full screen section
+
+            ZStack {
+              // MARK: Top full screen section - Background image
+              AsyncImage(
+                url: show.posterUrl,
+                transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION)),
+                content: { phase in
+                  switch phase {
+                  case .empty:
+                    Color.clear
+
+                  case let .success(image):
+                    image
+                      .resizable()
+
+                  case .failure:
+                    Color.clear
+
+                  @unknown default:
+                    Color.clear
+                  }
+                }
+              )
+              .opacity(0.5)
+              .blur(radius: 100, opaque: false)
+
+              // MARK: Top full screen section - Content
+              HStack(alignment: .top, spacing: 64) {
+                VStack(alignment: .leading, spacing: 32) {
+                  VStack(alignment: .leading, spacing: 8) {
+                    Group {
+                      switch show.title {
+                      case let .parsed(romaji, russian):
+                        Text(romaji)
+                          .font(.title2)
+
+                        if let russian {
+                          Text(russian)
+                            .font(.title3)
+                            .foregroundStyle(.secondary)
+                        }
+                      case let .unparsed(fullName):
+                        Text(fullName)
+                          .font(.title2)
+                      }
+                    }
+                    .lineLimit(2)
+                    .truncationMode(.tail)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                  }
+
+                  HStack(spacing: 32) {
+                    NavigationLink(
+                      destination: EpisodeListView(
+                        showId: show.id,
+                        myAnimeListId: show.myAnimeListId,
+                        totalEpisodes: show.numberOfEpisodes,
+                        nextEpisodeReleasesAt: show.nextEpisodeReleasesAt
+                      )
+                    ) {
+                      Label("Смотреть", systemImage: "play.fill")
+                        .labelIconToTitleSpacing(16)
+                        .font(.headline)
+                    }
+                    .buttonStyle(.glass)
+                    .buttonBorderShape(.capsule)
+                    .controlSize(.extraLarge)
+
+                    ShowInMyListStatusButton(
+                      showId: show.id,
+                      showName: show.title,
+                      episodesTotal: show.numberOfEpisodes
+                    )
+                    .buttonStyle(.glass)
+                    .buttonBorderShape(.capsule)
+                    .controlSize(.extraLarge)
+                  }
+                  .frame(maxWidth: .infinity, alignment: .leading)
+                  .focusSection()
+
+                  if let episodeStatus = Self.formatCurrentEpisodeStatus(show: show) {
+                    Text(episodeStatus)
+                      .foregroundStyle(.secondary)
+                      .frame(maxWidth: .infinity, alignment: .leading)
+                      .font(.caption)
+                  }
+
+                  VStack(alignment: .leading, spacing: 16) {
+                    if let chips = Optional(Self.prepareChips(show: show)), chips.count > 0 {
+                      HStack(spacing: Chip.RECOMMENDED_SPACING) {
+                        ForEach(chips, id: \.self) { chip in
+                          Chip.outlined(label: chip)
+                        }
+                      }
+                    }
+
+                    if let description = show.descriptions.first {
+                      Text(description.singleLineText)
+                        .foregroundStyle(.secondary)
+                        .font(.caption)
+                    }
+
+                    if show.genres.count > 0 {
+                      Text((show.genres.map(\.title)).joined(separator: " • "))
+                        .font(.caption)
+                    }
+                  }
+                  .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                }
+
+                Button(action: {
+                  self.displayShowCoversSheet = true
+                }) {
+                  AsyncImage(
+                    url: show.posterUrl,
+                    transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION)),
+                    content: { phase in
+                      switch phase {
+                      case .empty:
+                        Color.clear
+
+                      case let .success(image):
+                        image
+                          .resizable()
+                          .scaledToFit()
+
+                      case .failure:
+                        Color.clear
+
+                      @unknown default:
+                        Color.clear
+                      }
+                    }
+                  )
+                }
+                .buttonStyle(.borderless)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                .aspectRatio(ShowCard.RECOMMENDED_ASPECT_RATIO, contentMode: .fit)
+                .fullScreenCover(isPresented: self.$displayShowCoversSheet) {
+                  CoverGallerySheet(myAnimeListId: show.myAnimeListId)
+                    .background(.thickMaterial)
+                }
+              }
+              .focusSection()
+              .padding(.top, proxy.safeAreaInsets.top)
+              .padding(.bottom, proxy.safeAreaInsets.bottom)
+              .padding(.leading, proxy.safeAreaInsets.leading)
+              .padding(.trailing, proxy.safeAreaInsets.trailing)
+            }
+            .ignoresSafeArea(edges: .horizontal)
+            .frame(
+              height: proxy.size.height + proxy.safeAreaInsets.top + proxy.safeAreaInsets.bottom,
+            )
+
+            // MARK: Lazy-loadable sections
+            ScreenshotCardsSection(myAnimeListId: show.myAnimeListId)
+            ShowMomentsSection(showId: show.id)
+            CharacterCardsSection(myAnimeListId: show.myAnimeListId)
+            StaffMemberCardsSection(myAnimeListId: show.myAnimeListId)
+            RelatedShowsSection(myAnimeListId: show.myAnimeListId)
+
+            if !show.studios.isEmpty || !show.descriptions.isEmpty {
+              ShowStudiosAndDescriptionsSection(studios: show.studios, descriptions: show.descriptions)
+            }
+          }
+          .padding(.bottom, proxy.safeAreaInsets.bottom)
+        }
+        .ignoresSafeArea(edges: .vertical)
       }
       .onAppear {
         guard let onOpened = self.onOpened else {
@@ -137,384 +294,64 @@ struct ShowView: View {
       }
     }
   }
-}
 
-private let SPACING_BETWEEN_SECTIONS: CGFloat = 50
+  private static func prepareChips(show: ShowDetails) -> [String] {
+    var items: [String] = []
 
-private struct ShowDetailsView: View {
-  let show: ShowDetails
+    if let score = show.score {
+      items.append("★ \(score.formatted(.number.precision(.fractionLength(2))))")
+    }
 
-  var body: some View {
-    LazyVStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-      HeadingSectionWithBackground(imageUrl: self.show.posterUrl) {
-        VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-          ShowKeyDetailsSection(show: self.show)
+    if let season = show.airingSeason?.getLocalizedTranslation() {
+      items.append(season)
+    }
 
-          if !self.show.studios.isEmpty || !self.show.descriptions.isEmpty {
-            ShowStudiosAndDescriptions(studios: self.show.studios, descriptions: self.show.descriptions)
-          }
+    if let kind = show.kind {
+      items.append(kind.title)
+    }
 
-          if !self.show.genres.isEmpty {
-            ShowGenres(genres: self.show.genres)
-          }
-        }
-        .padding(.bottom, SPACING_BETWEEN_SECTIONS)
+    if let episodes = show.numberOfEpisodes {
+      items.append("\(episodes.formatted()) эп.")
+    }
+
+    if let studio = Self.formatStudioLabel(show: show) {
+      items.append(studio)
+    }
+
+    return items
+  }
+
+  private static func formatStudioLabel(show: ShowDetails) -> String? {
+    if show.studios.count == 1 {
+      return show.studios.first?.name
+    }
+
+    if show.studios.count > 1 {
+      return "\(show.studios[0].name) +\(show.studios.count - 1)"
+    }
+
+    return nil
+  }
+
+  private static func formatCurrentEpisodeStatus(show: ShowDetails) -> String? {
+    if let nextEpisodeReleasesAt = show.nextEpisodeReleasesAt {
+      if let latestAiredEpisodeNumber = show.latestAiredEpisodeNumber {
+        return
+          "Вышло \(latestAiredEpisodeNumber.formatted()) эп., следующий: \(formatRelativeDateWithWeekdayNameAndDateAndTime(nextEpisodeReleasesAt).lowercased())."
       }
 
-      ScreenshotCardsSection(myAnimeListId: self.show.myAnimeListId)
-
-      ShowMomentsSection(showId: self.show.id)
-
-      CharacterCardsSection(myAnimeListId: self.show.myAnimeListId)
-
-      StaffMemberCardsSection(myAnimeListId: self.show.myAnimeListId)
-
-      RelatedShowsSection(myAnimeListId: self.show.myAnimeListId)
+      return "Следующий эпизод: \(formatRelativeDateWithWeekdayNameAndDateAndTime(nextEpisodeReleasesAt).lowercased())."
     }
+
+    if !show.hasEpisodes {
+      return "У этого тайтла пока что нет загруженных серий."
+    }
+
+    return nil
   }
 }
 
-private struct ShowKeyDetailsSection: View {
-  let show: ShowDetails
-
-  @State private var displayShowCoversSheet: Bool = false
-
-  var body: some View {
-    HStack(alignment: .top, spacing: SPACING_BETWEEN_SECTIONS) {
-      VStack(alignment: .leading, spacing: SPACING_BETWEEN_SECTIONS) {
-        ShowPrimaryAndSecondaryTitles(title: self.show.title)
-
-        ShowActionButtons(show: self.show)
-
-        Grid(alignment: .topLeading, horizontalSpacing: 64, verticalSpacing: 32) {
-          GridRow {
-            RatingProperty(
-              score: self.show.score,
-              scoredBy: self.show.scoredBy,
-              rank: self.show.rank
-            )
-
-            if self.show.popularity != nil || self.show.members != nil {
-              PopularityProperty(
-                popularity: self.show.popularity,
-                members: self.show.members
-              )
-            }
-          }
-
-          GridRow {
-            ShowProperty(
-              label: "Тип",
-              value: self.show.kind?.title ?? "???"
-            )
-
-            EpisodesShowProperty(
-              totalEpisodes: self.show.numberOfEpisodes,
-              latestAiredEpisodeNumber: self.show.latestAiredEpisodeNumber,
-              isOngoing: self.show.isOngoing
-            )
-          }
-
-          GridRow {
-            ShowProperty(
-              label: "Источник",
-              value: self.show.source ?? "???"
-            )
-          }
-
-          GridRow {
-            if let airingSeason = self.show.airingSeason {
-              SeasonShowProperty(airingSeason: airingSeason)
-            }
-            else {
-              ShowProperty(
-                label: "Сезон",
-                value: "???"
-              )
-            }
-          }
-        }
-      }
-      .frame(maxHeight: .infinity, alignment: .topLeading)
-
-      if let coverUrl = self.show.posterUrl {
-        Button(action: {
-          self.displayShowCoversSheet = true
-        }) {
-          AsyncImage(
-            url: coverUrl,
-            transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
-          ) { phase in
-            switch phase {
-            case .empty:
-              Color.clear
-
-            case let .success(image):
-              image
-                .resizable()
-                .scaledToFit()
-
-            case .failure:
-              Color.clear
-
-            @unknown default:
-              Color.clear
-            }
-          }
-        }
-        .buttonStyle(.borderless)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-        .aspectRatio(425 / 600, contentMode: .fit)
-        .frame(width: 500)
-        .fullScreenCover(isPresented: self.$displayShowCoversSheet) {
-          CoverGallerySheet(myAnimeListId: self.show.myAnimeListId)
-            .background(.thickMaterial)  // Костыль для обхода бага: .fullScreenCover на tvOS 26 не имеет бекграунда
-        }
-      }
-    }
-    .fixedSize(horizontal: false, vertical: true)
-    .focusSection()
-  }
-}
-
-private struct ShowPrimaryAndSecondaryTitles: View {
-  let title: ShowName
-
-  var body: some View {
-    VStack {
-      Group {
-        switch self.title {
-        case let .parsed(romaji, russian):
-          Text(romaji)
-            .font(.title2)
-
-          if let russian {
-            Text(russian)
-              .font(.title3)
-              .foregroundStyle(.secondary)
-          }
-        case let .unparsed(fullName):
-          Text(fullName)
-            .font(.title2)
-        }
-      }
-      .lineLimit(2)
-      .truncationMode(.tail)
-      .frame(maxWidth: .infinity, alignment: .leading)
-    }
-  }
-}
-
-private struct ShowActionButtons: View {
-  let show: ShowDetails
-
-  private let SPACING_BETWEEN_BUTTONS: CGFloat = 40
-
-  var body: some View {
-    VStack(alignment: .leading, spacing: 10) {
-      HStack(alignment: .center, spacing: self.SPACING_BETWEEN_BUTTONS) {
-        if self.show.hasEpisodes {
-          NavigationLink(
-            destination: EpisodeListView(
-              showId: self.show.id,
-              myAnimeListId: self.show.myAnimeListId,
-              totalEpisodes: self.show.numberOfEpisodes,
-              nextEpisodeReleasesAt: self.show.nextEpisodeReleasesAt
-            )
-          ) {
-            Label(
-              "Смотреть",
-              systemImage: "play.fill"
-            )
-            .font(.headline)
-            .fontWeight(.semibold)
-            .padding(.vertical, 20)
-            .padding(.horizontal, 40)
-          }
-          .buttonStyle(.card)
-        }
-
-        ShowInMyListStatusButton(
-          showId: self.show.id,
-          showName: self.show.title,
-          episodesTotal: self.show.numberOfEpisodes
-        )
-      }
-      .focusSection()
-
-      Group {
-        if let nextEpisodeReleasesAt = self.show.nextEpisodeReleasesAt {
-          Text(
-            "Следующая серия: \(formatRelativeDateWithWeekdayNameAndDateAndTime(nextEpisodeReleasesAt).lowercased())."
-          )
-        }
-        else if !self.show.hasEpisodes {
-          Text(
-            "У этого тайтла пока что нет загруженных серий."
-          )
-        }
-      }
-      .foregroundStyle(.secondary)
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .font(.caption)
-    }
-  }
-}
-
-private struct ShowProperty: View {
-  let label: String
-  let value: String
-
-  var body: some View {
-    VStack(alignment: .leading) {
-      HStack(alignment: .center, spacing: 4) {
-        Text(self.label)
-          .foregroundStyle(.secondary)
-          .font(.caption)
-          .fontWeight(.medium)
-      }
-
-      Text(self.value)
-        .font(.caption)
-    }
-  }
-}
-
-private struct SeasonShowProperty: View {
-  let airingSeason: AiringSeason
-  let showService: ShowService
-
-  init(
-    airingSeason: AiringSeason,
-    showService: ShowService = ApplicationDependency.container.resolve()
-  ) {
-    self.airingSeason = airingSeason
-    self.showService = showService
-  }
-
-  var body: some View {
-    NavigationLink(
-      destination: FilteredShowsView(
-        title: self.airingSeason.getLocalizedTranslation(),
-        displaySeason: false,
-        fetchShows: self.getShowsBySeason()
-      )
-    ) {
-      ShowProperty(
-        label: "Сезон",
-        value: self.airingSeason.getLocalizedTranslation()
-      )
-    }
-    .buttonStyle(.plain)
-  }
-
-  private func getShowsBySeason() -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
-    func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
-      try await self.showService.getSeason(
-        offset: offset,
-        limit: limit,
-        airingSeason: self.airingSeason
-      )
-    }
-
-    return fetchFunction
-  }
-}
-
-private struct RatingProperty: View {
-  let score: Float?
-  let scoredBy: Int?
-  let rank: Int?
-
-  var body: some View {
-    ShowProperty(
-      label: self.formatLabel(),
-      value: self.formatPropertyValue()
-    )
-  }
-
-  private func formatLabel() -> String {
-    if let rank = self.rank {
-      return "Топ \(rank.formatted(ShortLargeNumberFormatter())) по рейтингу"
-    }
-
-    return "Рейтинг"
-  }
-
-  private func formatPropertyValue() -> String {
-    var components: [String] = []
-
-    if let score = self.score {
-      components.append("★ \(score.formatted(.number.precision(.fractionLength(2))))")
-    }
-
-    if let scoredBy = self.scoredBy {
-      components.append("\(scoredBy.formatted(ShortLargeNumberFormatter())) оценок")
-    }
-
-    if components.isEmpty {
-      return "???"
-    }
-
-    return components.joined(separator: " • ")
-  }
-}
-
-private struct PopularityProperty: View {
-  let popularity: Int?
-  let members: Int?
-
-  var body: some View {
-    ShowProperty(
-      label: self.formatLabel(),
-      value: self.formatPropertyValue()
-    )
-  }
-
-  private func formatLabel() -> String {
-    if let popularity = self.popularity {
-      return "Топ \(popularity.formatted(ShortLargeNumberFormatter())) по популярности"
-    }
-
-    return "Популярность"
-  }
-
-  private func formatPropertyValue() -> String {
-    if let members = self.members {
-      return "\(members.formatted(ShortLargeNumberFormatter())) зрителей"
-    }
-
-    return "??? зрителей"
-  }
-}
-
-private struct EpisodesShowProperty: View {
-  let totalEpisodes: Int?
-  let latestAiredEpisodeNumber: Int?
-  let isOngoing: Bool
-
-  var body: some View {
-    ShowProperty(
-      label: "Количество эпизодов",
-      value: self.formatString()
-    )
-  }
-
-  private func formatString() -> String {
-    if let latestAiredEpisodeNumber = self.latestAiredEpisodeNumber, self.isOngoing {
-      return
-        "Вышло \(latestAiredEpisodeNumber.formatted()) из \(totalEpisodes?.formatted() ?? EpisodeService.formatUnknownEpisodeCountBasedOnAlreadyAiredEpisodeCount(latestAiredEpisodeNumber))"
-    }
-
-    if let totalEpisodes {
-      return totalEpisodes.formatted()
-    }
-
-    return "???"
-  }
-}
-
-private struct ShowStudiosAndDescriptions: View {
+private struct ShowStudiosAndDescriptionsSection: View {
   let studios: OrderedSet<Studio>
   let descriptions: [ShowDetails.Description]
 
@@ -542,7 +379,8 @@ private struct ShowStudiosAndDescriptions: View {
               ForEach(self.descriptions, id: \.self) { description in
                 ShowDescriptionCard(
                   title: description.source,
-                  text: description.text
+                  text: description.text,
+                  textPreview: description.singleLineText,
                 )
                 .frame(width: 600, height: 300)
               }
@@ -556,26 +394,10 @@ private struct ShowStudiosAndDescriptions: View {
   }
 }
 
-private struct ShowGenres: View {
-  let genres: OrderedSet<Genre>
-
-  var body: some View {
-    SectionWithCards(title: "Жанры") {
-      ScrollView(.horizontal) {
-        LazyHStack(alignment: .top, spacing: 32) {
-          ForEach(self.genres) { genre in
-            GenreCard(id: genre.id, title: genre.title)
-          }
-        }
-      }
-      .scrollClipDisabled()
-    }
-  }
-}
-
 private struct ShowDescriptionCard: View {
   let title: String
   let text: String
+  let textPreview: String
 
   @State private var isSheetPresented = false
 
@@ -591,7 +413,7 @@ private struct ShowDescriptionCard: View {
             .font(.body)
             .fontWeight(.bold)
 
-          Text(self.text)
+          Text(self.textPreview)
             .lineLimit(6)
             .truncationMode(.tail)
             .font(.callout)
@@ -608,7 +430,7 @@ private struct ShowDescriptionCard: View {
     }
     .fullScreenCover(isPresented: self.$isSheetPresented) {
       ShowDescriptionCardSheet(text: self.text)
-        .background(.thickMaterial)  // Костыль для обхода бага: .fullScreenCover на tvOS 26 не имеет бекграунда
+        .background(.thickMaterial)
     }
     .buttonStyle(.card)
   }
@@ -631,26 +453,6 @@ private struct ShowDescriptionCardSheet: View {
         }
         .frame(maxWidth: 1000, alignment: .center)
       }
-    }
-  }
-}
-
-private struct StaffMembersSection: View {
-  private static let SPACING: CGFloat = 64
-
-  let staffMembers: OrderedSet<StaffMember>
-
-  var body: some View {
-    SectionWithCards(title: "Авторы") {
-      ScrollView(.horizontal) {
-        LazyHStack(alignment: .top, spacing: Self.SPACING) {
-          ForEach(self.staffMembers) { staffMember in
-            StaffMemberCard(staffMember: staffMember)
-              .containerRelativeFrame(.horizontal, count: 6, span: 1, spacing: Self.SPACING)
-          }
-        }
-      }
-      .scrollClipDisabled()
     }
   }
 }
