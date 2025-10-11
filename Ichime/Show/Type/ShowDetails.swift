@@ -51,6 +51,7 @@ struct ShowDetails {
   let genres: OrderedSet<Genre>
   let studios: OrderedSet<Studio>
   let nextEpisodeReleasesAt: Date?
+  let ageRating: AgeRating?
 
   init(
     anime365Series: Anime365Kit.SeriesFull,
@@ -120,6 +121,13 @@ struct ShowDetails {
       }
     )
     self.nextEpisodeReleasesAt = shikimoriAnime?.next_episode_at
+
+    if let shikimoriRating = shikimoriAnime?.rating {
+      self.ageRating = .create(fromShikimoriString: shikimoriRating)
+    }
+    else {
+      self.ageRating = nil
+    }
   }
 
   private static func getLatestAiredEpisodeNumber(

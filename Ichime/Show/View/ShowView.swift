@@ -302,6 +302,10 @@ struct ShowView: View {
       items.append("★ \(score.formatted(.number.precision(.fractionLength(2))))")
     }
 
+    if let ageRating = show.ageRating {
+      items.append(ageRating.shortLabel)
+    }
+
     if let season = show.airingSeason?.getLocalizedTranslation() {
       items.append(season)
     }
