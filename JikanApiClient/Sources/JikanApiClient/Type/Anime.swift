@@ -19,4 +19,5 @@ public struct Anime: Sendable, Decodable {
   public let source: String?
   public let season: Season?
   public let year: Int?
+  public let aired: DateRange
 }

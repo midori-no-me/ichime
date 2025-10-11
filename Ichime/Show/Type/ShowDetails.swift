@@ -43,6 +43,7 @@ struct ShowDetails {
   let descriptions: [Description]
   let posterUrl: URL?
   let score: Float?
+  let airingYear: Int?
   let airingSeason: AiringSeason?
   let numberOfEpisodes: Int?
   let latestAiredEpisodeNumber: Int?
@@ -103,6 +104,13 @@ struct ShowDetails {
     }
     else {
       self.airingSeason = .init(fromTranslatedString: anime365Series.season)
+    }
+
+    if let jikanAnime, let jikanYear = jikanAnime.aired.prop.from.year {
+      self.airingYear = jikanYear
+    }
+    else {
+      self.airingYear = nil
     }
 
     self.numberOfEpisodes = totalEpisodes
