@@ -3,19 +3,16 @@ import OSLog
 
 public struct ApiClient: Sendable {
   private let baseURL: URL
-  private let userAgent: String
   private let urlSession: URLSession
   private let jsonDecoder: JSONDecoder
   private let logger: Logger
 
   public init(
     baseURL: URL,
-    userAgent: String,
     logger: Logger,
     urlSession: URLSession
   ) {
     self.baseURL = baseURL
-    self.userAgent = userAgent
 
     let jsonDecoder = JSONDecoder.init()
     jsonDecoder.dateDecodingStrategy = ApiDateDecoder.getDateDecodingStrategy()
@@ -42,7 +39,6 @@ public struct ApiClient: Sendable {
     httpRequest.httpMethod = "GET"
 
     httpRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-    httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
 
     var data: Data
     var urlResponse: URLResponse

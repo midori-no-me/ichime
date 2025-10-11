@@ -12,16 +12,16 @@ enum HttpMethod: String {
 public struct ApiClient: Sendable {
   public let baseUrl: URL
 
-  private let userAgent: String
+  private let urlSession: URLSession
   private let logger: Logger
 
   public init(
     baseUrl: URL,
-    userAgent: String,
+    urlSession: URLSession,
     logger: Logger
   ) {
     self.baseUrl = baseUrl
-    self.userAgent = userAgent
+    self.urlSession = urlSession
     self.logger = logger
   }
 
@@ -43,7 +43,6 @@ public struct ApiClient: Sendable {
     httpRequest.httpMethod = httpMethod.rawValue
 
     httpRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-    httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
 
     if let requestBody = requestBody {
       httpRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -58,7 +57,7 @@ public struct ApiClient: Sendable {
       }
     }
 
-    let (data, httpResponse) = try await URLSession.shared.data(for: httpRequest)
+    let (data, httpResponse) = try await self.urlSession.data(for: httpRequest)
 
     if let requestUrl = httpRequest.url?.absoluteString,
       let httpResponse = httpResponse as? HTTPURLResponse

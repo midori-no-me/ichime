@@ -4,16 +4,16 @@ import OSLog
 public struct ApiClient: Sendable {
   public let baseUrl: URL
 
-  private let userAgent: String
+  private let urlSession: URLSession
   private let logger: Logger
 
   public init(
     baseUrl: URL,
-    userAgent: String,
+    urlSession: URLSession,
     logger: Logger
   ) {
     self.baseUrl = baseUrl
-    self.userAgent = userAgent
+    self.urlSession = urlSession
     self.logger = logger
   }
 
@@ -49,9 +49,8 @@ public struct ApiClient: Sendable {
     httpRequest.timeoutInterval = 3
     httpRequest.httpMethod = "GET"
     httpRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-    httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
 
-    let (data, httpResponse) = try await URLSession.shared.data(for: httpRequest)
+    let (data, httpResponse) = try await self.urlSession.data(for: httpRequest)
 
     if let requestUrl = httpRequest.url?.absoluteString,
       let httpResponse = httpResponse as? HTTPURLResponse

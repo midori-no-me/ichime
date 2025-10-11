@@ -15,13 +15,17 @@ final class ApplicationDependency: DIFramework {
   static func load(container: DIContainer) {
     container
       .register {
-        HTTPCookieStorage.sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
+        let urlSessionConfig = URLSessionConfiguration.default
+        urlSessionConfig.httpCookieStorage = .sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
+        urlSessionConfig.httpAdditionalHeaders?["User-Agent"] = ServiceLocator.userAgent
+
+        return URLSession(configuration: urlSessionConfig)
       }
 
     container.register {
       ShikimoriApiClient.ApiClient(
         baseUrl: ServiceLocator.shikimoriBaseUrl,
-        userAgent: ServiceLocator.shikimoriUserAgent,
+        urlSession: $0,
         logger: Logger(subsystem: ServiceLocator.applicationId, category: "ShikimoriApiClient")
       )
     }
@@ -29,7 +33,7 @@ final class ApplicationDependency: DIFramework {
     container.register {
       JikanApiClient.ApiClient(
         baseUrl: ServiceLocator.jikanBaseUrl,
-        userAgent: ServiceLocator.jikanUserAgent,
+        urlSession: $0,
         logger: Logger(subsystem: ServiceLocator.applicationId, category: "JikanApiClient")
       )
     }
@@ -67,9 +71,8 @@ final class ApplicationDependency: DIFramework {
     container.register {
       Anime365KitFactory(
         anime365BaseURL: $0,
-        userAgent: ServiceLocator.userAgent,
         logger: Logger(subsystem: ServiceLocator.applicationId, category: "Anime365Kit"),
-        urlSession: ServiceLocator.urlSession
+        urlSession: $1
       )
     }
 
@@ -78,7 +81,7 @@ final class ApplicationDependency: DIFramework {
         anime365KitFactory: $0,
         currentUserInfo: $1,
         animeListEntriesCount: $2,
-        urlSession: ServiceLocator.urlSession
+        urlSession: $3
       )
     }
 

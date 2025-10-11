@@ -9,17 +9,14 @@ public struct WebClient: Sendable {
 
   let logger: Logger
 
-  private let userAgent: String
   private let urlSession: URLSession
 
   public init(
     baseURL: URL,
-    userAgent: String,
     logger: Logger,
     urlSession: URLSession
   ) {
     self.baseURL = baseURL
-    self.userAgent = userAgent
     self.urlSession = urlSession
     self.logger = logger
   }
@@ -40,7 +37,6 @@ public struct WebClient: Sendable {
     httpRequest.httpMethod = "GET"
 
     httpRequest.setValue("text/html", forHTTPHeaderField: "Accept")
-    httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
 
     var data: Data
     var urlResponse: URLResponse
@@ -91,7 +87,6 @@ public struct WebClient: Sendable {
 
     httpRequest.setValue("text/html", forHTTPHeaderField: "Accept")
     httpRequest.setValue("application/x-www-form-urlencoded; charset=UTF-8", forHTTPHeaderField: "Content-Type")
-    httpRequest.setValue(self.userAgent, forHTTPHeaderField: "User-Agent")
 
     var formDataComponents = URLComponents()
     formDataComponents.queryItems = formData

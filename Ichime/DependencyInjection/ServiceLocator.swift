@@ -41,29 +41,14 @@ enum ServiceLocator {
   }
 
   static var userAgent: String {
-    "\(applicationName) (\(applicationVersion) / Contact: petr@flaks.xyz"
-  }
-
-  static var shikimoriUserAgent: String {
-    "Ichime"
+    "\(applicationName) (\(applicationVersion)) / Contact: petr@flaks.xyz"
   }
 
   static var shikimoriBaseUrl: URL {
     URL(string: "https://shikimori.one")!
   }
 
-  static var jikanUserAgent: String {
-    "Ichime"
-  }
-
   static var jikanBaseUrl: URL {
     URL(string: "https://api.jikan.moe/v4")!
-  }
-
-  static var urlSession: URLSession {
-    let urlSessionConfig = URLSessionConfiguration.default
-    urlSessionConfig.httpCookieStorage = .sharedCookieStorage(forGroupContainerIdentifier: Self.appGroup)
-
-    return .init(configuration: urlSessionConfig)
   }
 }

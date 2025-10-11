@@ -3,38 +3,41 @@ import ShikimoriApiClient
 import TVServices
 
 final class ContentProvider: TVTopShelfContentProvider {
-  static var anime365BaseURL: Anime365BaseURL {
+  private static var anime365BaseURL: Anime365BaseURL {
     .init()
   }
 
-  static var anime365KitFactory: Anime365KitFactory {
+  private static var urlSession: URLSession {
     let urlSessionConfig = URLSessionConfiguration.default
     urlSessionConfig.httpCookieStorage = .sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
-    let urlSession = URLSession(configuration: urlSessionConfig)
+    urlSessionConfig.httpAdditionalHeaders?["User-Agent"] = ServiceLocator.userAgent
 
-    return .init(
+    return .init(configuration: urlSessionConfig)
+  }
+
+  private static var anime365KitFactory: Anime365KitFactory {
+    .init(
       anime365BaseURL: self.anime365BaseURL,
-      userAgent: ServiceLocator.userAgent,
       logger: Logger(subsystem: ServiceLocator.applicationId, category: "Anime365Kit"),
       urlSession: urlSession
     )
   }
 
-  static var shikimoriApiClient: ShikimoriApiClient.ApiClient {
+  private static var shikimoriApiClient: ShikimoriApiClient.ApiClient {
     .init(
       baseUrl: ServiceLocator.shikimoriBaseUrl,
-      userAgent: ServiceLocator.shikimoriUserAgent,
+      urlSession: Self.urlSession,
       logger: Logger(subsystem: ServiceLocator.applicationId, category: "ShikimoriApiClient")
     )
   }
 
-  static var showReleaseSchedule: ShowReleaseSchedule {
+  private static var showReleaseSchedule: ShowReleaseSchedule {
     .init(
       shikimoriApiClient: self.shikimoriApiClient
     )
   }
 
-  static var currentlyWatchingService: CurrentlyWatchingService {
+  private static var currentlyWatchingService: CurrentlyWatchingService {
     .init(
       anime365KitFactory: self.anime365KitFactory
     )
