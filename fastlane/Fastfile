@@ -25,8 +25,8 @@ platform :tvos do
         method: "app-store",
         destination: "upload",
         provisioningProfiles: {
-          "dev.midorinome.ichime" => "Ichime Distribution",
-          "dev.midorinome.ichime.TopShelf" => "Ichime TopShelf Distribution"
+          "dev.midorinome.ichime" => "dev.midorinome.ichime",
+          "dev.midorinome.ichime.TopShelf" => "dev.midorinome.ichime.TopShelf"
         },
         signingStyle: "manual",
         teamID: "YBBAN7R28K"
