@@ -100,3 +100,73 @@ make lint
 ```bash
 make hooks
 ```
+
+### Релизы и автоматическая публикация в TestFlight
+
+Приложение автоматически публикуется в TestFlight при создании git тега с версией.
+
+#### Процесс создания релиза
+
+1. **Убедитесь, что все изменения зафиксированы и код готов к релизу**
+
+2. **Создайте релиз с помощью скрипта (рекомендуется):**
+   ```bash
+   ./scripts/release.sh 1.11.0
+   ```
+   
+   **Или создайте git тег вручную:**
+   ```bash
+   git tag 1.11.0
+   git push origin 1.11.0
+   ```
+
+3. **GitHub Actions автоматически:**
+   - Соберет приложение для App Store
+   - Автоматически увеличит build number
+   - Загрузит билд в TestFlight
+   - Создаст GitHub Release с описанием
+
+#### Тестирование процесса сборки
+
+Для тестирования без создания релиза используйте ручной запуск workflow:
+
+1. Перейдите в [Actions → Deploy to TestFlight](../../actions/workflows/deploy.yml)
+2. Нажмите "Run workflow"
+3. Укажите версию для тестирования (например, `1.11.0-test`)
+4. Включите "Test mode" чтобы пропустить загрузку в TestFlight
+
+#### Настройка GitHub Secrets
+
+Для работы автоматической публикации нужно настроить следующие secrets в Settings → Secrets and variables → Actions:
+
+**Apple Developer:**
+- `APPLE_API_KEY`: App Store Connect API ключ (.p8 файл в base64)
+- `APPLE_API_KEY_ID`: Key ID из App Store Connect
+- `APPLE_API_ISSUER_ID`: Issuer ID из App Store Connect
+
+**Сертификаты и профили подписи:**
+- `CERTIFICATES_P12`: Distribution сертификат (.p12 файл в base64)
+- `CERTIFICATES_PASSWORD`: пароль от .p12 файла
+- `PROVISIONING_PROFILE_ICHIME`: Provisioning profile для основного приложения (в base64)
+- `PROVISIONING_PROFILE_TOPSHELF`: Provisioning profile для TopShelf расширения (в base64)
+
+#### Получение base64 для файлов
+
+```bash
+# Для .p8 файла API ключа
+base64 -i AuthKey_XXXXXXXXXX.p8
+
+# Для .p12 сертификата  
+base64 -i certificates.p12
+
+# Для .mobileprovision файлов
+base64 -i dev_midorinome_ichime.mobileprovision
+base64 -i dev_midorinome_ichime_TopShelf.mobileprovision
+```
+
+#### Управление версиями
+
+- **Marketing Version** (например, `1.11.0`) берется из git тега
+- **Build Number** автоматически увеличивается: базовое значение (101000) + номер GitHub Actions run
+- Версии автоматически обновляются в `project.yml` при сборке
+- Приложение собирается и публикуется для **tvOS платформы**

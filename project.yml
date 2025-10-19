@@ -29,6 +29,9 @@ packages:
   DITranquillity:
     url: https://github.com/ivlevAstef/DITranquillity.git
     from: "4.5.0"
+  SwiftLazy:
+    url: https://github.com/ivlevAstef/SwiftLazy.git
+    from: "1.6.1"
 targets:
   Ichime:
     type: application
@@ -115,12 +118,16 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime.TopShelf # Bundle ID этого таргета
 settings:
   base:
-    CURRENT_PROJECT_VERSION: 101000 # Техническая версия приложения
+    CURRENT_PROJECT_VERSION: 101000 # Техническая версия приложения (автоматически обновляется при CI/CD)
     DEVELOPMENT_TEAM: YBBAN7R28K # ID аккаунта команды Apple Developer
     INFOPLIST_KEY_CFBundleDisplayName: Ichime # Человекочитабельное название приложения. When GENERATE_INFOPLIST_FILE is enabled, sets the value of the CFBundleDisplayName key in the Info.plist file to the value of this build setting.
     INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.entertainment # К какой категории относится приложение. When GENERATE_INFOPLIST_FILE is enabled, sets the value of the LSApplicationCategoryType key in the Info.plist file to the value of this build setting.
-    MARKETING_VERSION: "1.10.0" # Человекочитабельная версия приложения
+    MARKETING_VERSION: "1.10.0" # Человекочитабельная версия приложения (обновляется из git тега)
     SWIFT_VERSION: "6" # Какую версию Swift использовать для компиляции приложения
+
+    # Code Signing настройки для CI/CD
+    CODE_SIGN_STYLE: Automatic # В CI/CD переопределяется на Manual
+    CODE_SIGN_IDENTITY: "Apple Development" # В CI/CD переопределяется на "Apple Distribution"
 
     ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: "YES" # From "Update to recommended settings" prompt
     ENABLE_USER_SCRIPT_SANDBOXING: "YES" # From "Update to recommended settings" prompt
