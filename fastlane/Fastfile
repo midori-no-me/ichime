@@ -21,12 +21,7 @@ platform :tvos do
       archive_path: "./build/Ichime.xcarchive",
       export_method: "app-store",
       
-      # Переопределяем настройки подписи для архивирования:
-      codesigning_identity: "Apple Distribution",
-      xcargs: {
-        "CODE_SIGN_STYLE" => "Manual",
-        "CODE_SIGN_IDENTITY" => "Apple Distribution"
-      },
+      xcargs: "-allowProvisioningUpdates",
       
       export_options: {
         method: "app-store",
