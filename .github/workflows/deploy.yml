@@ -60,17 +60,17 @@ jobs:
       - name: Install Provisioning Profiles
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          echo "${{ secrets.PROVISIONING_PROFILE_ICHIME }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/Ichime.mobileprovision
-          echo "${{ secrets.PROVISIONING_PROFILE_TOPSHELF }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/TopShelf.mobileprovision
+          echo "${{ secrets.PROVISIONING_PROFILE_ICHIME }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime\ Distribution.mobileprovision
+          echo "${{ secrets.PROVISIONING_PROFILE_TOPSHELF }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf\ Distribution.mobileprovision
 
       - name: Verify Provisioning Profiles
         run: |
           echo "=== Checking provisioning profiles ==="
           ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
           echo "=== Ichime profile info ==="
-          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/Ichime.mobileprovision | head -20
+          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime\ Distribution.mobileprovision | head -20
           echo "=== TopShelf profile info ==="
-          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/TopShelf.mobileprovision | head -20
+          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf\ Distribution.mobileprovision | head -20
 
       - name: Setup App Store Connect API Key
         run: |
@@ -118,8 +118,8 @@ jobs:
         if: always()
         run: |
           security delete-keychain build.keychain || true
-          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/Ichime.mobileprovision || true
-          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/TopShelf.mobileprovision || true
+          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime\ Distribution.mobileprovision || true
+          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf\ Distribution.mobileprovision || true
           rm -f ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APPLE_API_KEY_ID }}.p8 || true
 
       - name: Create GitHub Release
