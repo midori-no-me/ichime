@@ -63,6 +63,15 @@ jobs:
           echo "${{ secrets.PROVISIONING_PROFILE_ICHIME }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/Ichime.mobileprovision
           echo "${{ secrets.PROVISIONING_PROFILE_TOPSHELF }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/TopShelf.mobileprovision
 
+      - name: Verify Provisioning Profiles
+        run: |
+          echo "=== Checking provisioning profiles ==="
+          ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
+          echo "=== Ichime profile info ==="
+          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/Ichime.mobileprovision | head -20
+          echo "=== TopShelf profile info ==="
+          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/TopShelf.mobileprovision | head -20
+
       - name: Setup App Store Connect API Key
         run: |
           mkdir -p ~/.appstoreconnect/private_keys
