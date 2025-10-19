@@ -75,6 +75,12 @@ jobs:
           security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.mobileprovision | head -20
           echo "=== TopShelf profile info ==="
           security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf.mobileprovision | head -20
+          # Проверить, что в профилях есть нужная группа
+          /usr/libexec/PlistBuddy -c 'Print :Entitlements:com.apple.security.application-groups' \
+            ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.mobileprovision
+          /usr/libexec/PlistBuddy -c 'Print :Entitlements:com.apple.security.application-groups' \
+            ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf.mobileprovision
+
 
       - name: Setup App Store Connect API Key
         run: |
@@ -97,7 +103,7 @@ jobs:
         run: |
           cd fastlane
           bundle install
-          bundle exec fastlane tvos deploy version:$VERSION build_number:$BUILD_NUMBER
+          bundle exec fastlane ios deploy version:$VERSION build_number:$BUILD_NUMBER
 
       - name: Test Build Only
         if: ${{ github.event.inputs.test_mode }}
@@ -107,7 +113,7 @@ jobs:
         run: |
           cd fastlane
           bundle install
-          bundle exec fastlane tvos test_build version:$VERSION build_number:$BUILD_NUMBER
+          bundle exec fastlane ios test_build version:$VERSION build_number:$BUILD_NUMBER
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
@@ -122,8 +128,7 @@ jobs:
         if: always()
         run: |
           security delete-keychain build.keychain || true
-          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/Ichime\ Distribution.mobileprovision || true
-          rm -f ~/Library/MobileDevice/Provisioning\ Profiles/Ichime\ TopShelf\ Distribution.mobileprovision || true
+          rm -rf ~/Library/MobileDevice/Provisioning\ Profiles/ || true
           rm -f ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APPLE_API_KEY_ID }}.p8 || true
 
       - name: Create GitHub Release
