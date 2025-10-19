@@ -24,8 +24,8 @@ platform :tvos do
         method: "app-store",
         destination: "upload",
         provisioningProfiles: {
-          "dev.midorinome.ichime" => "dev.midorinome.ichime Distribution",
-          "dev.midorinome.ichime.TopShelf" => "dev.midorinome.ichime.TopShelf Distribution"
+          "dev.midorinome.ichime" => "Ichime Distribution",
+          "dev.midorinome.ichime.TopShelf" => "Ichime TopShelf Distribution"
         },
         signingStyle: "manual",
         teamID: "YBBAN7R28K"
@@ -69,8 +69,8 @@ platform :tvos do
         method: "app-store",
         destination: "export",
         provisioningProfiles: {
-          "dev.midorinome.ichime" => "dev.midorinome.ichime Distribution",
-          "dev.midorinome.ichime.TopShelf" => "dev.midorinome.ichime.TopShelf Distribution"
+          "dev.midorinome.ichime" => "Ichime Distribution",
+          "dev.midorinome.ichime.TopShelf" => "Ichime TopShelf Distribution"
         },
         signingStyle: "manual",
         teamID: "YBBAN7R28K"
