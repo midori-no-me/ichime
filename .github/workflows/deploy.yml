@@ -3,16 +3,16 @@ name: Deploy to TestFlight
 on:
   pull_request:
   # push:
-    # tags:
-    #   - '[0-9]+.[0-9]+.[0-9]+*'  # Триггер на теги типа 1.10.0, 1.10.1, etc.
-  workflow_dispatch:  # Ручной запуск для тестирования
+  # tags:
+  #   - '[0-9]+.[0-9]+.[0-9]+*'  # Триггер на теги типа 1.10.0, 1.10.1, etc.
+  workflow_dispatch: # Ручной запуск для тестирования
     inputs:
       version:
-        description: 'Version to deploy (e.g., 1.10.0)'
+        description: "Version to deploy (e.g., 1.10.0)"
         required: true
-        default: '1.10.0'
+        default: "1.10.0"
       test_mode:
-        description: 'Test mode (skip TestFlight upload)'
+        description: "Test mode (skip TestFlight upload)"
         required: false
         default: false
         type: boolean
@@ -23,7 +23,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout Repository 
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Set Version Variables
@@ -63,21 +63,16 @@ jobs:
           echo "${{ secrets.PROVISIONING_PROFILE_ICHIME }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/Ichime.mobileprovision
           echo "${{ secrets.PROVISIONING_PROFILE_TOPSHELF }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/TopShelf.mobileprovision
 
-      - name: Install Bundle Dependencies
-        run: |
-          pwd
-          ls -la
-          if [ ! -f "Gemfile" ]; then
-            echo "Gemfile not found! Creating basic Gemfile..."
-            echo 'source "https://rubygems.org"' > Gemfile
-            echo 'gem "fastlane", ">= 2.200.0"' >> Gemfile
-          fi
-          bundle install
-
       - name: Setup App Store Connect API Key
         run: |
           mkdir -p ~/.appstoreconnect/private_keys
           echo "${{ secrets.APPLE_API_KEY }}" | base64 --decode > ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APPLE_API_KEY_ID }}.p8
+
+      - name: Install Bundle Dependencies
+        run: bundle install
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
 
       - name: Build and Upload to TestFlight
         if: ${{ !github.event.inputs.test_mode }}
@@ -89,7 +84,7 @@ jobs:
         run: |
           cd fastlane
           bundle install
-          bundle exec fastlane testflight version:$VERSION build_number:$BUILD_NUMBER
+          bundle exec fastlane tvos deploy version:$VERSION build_number:$BUILD_NUMBER
 
       - name: Test Build Only
         if: ${{ github.event.inputs.test_mode }}
@@ -99,7 +94,7 @@ jobs:
         run: |
           cd fastlane
           bundle install
-          bundle exec fastlane test_build version:$VERSION build_number:$BUILD_NUMBER
+          bundle exec fastlane tvos test_build version:$VERSION build_number:$BUILD_NUMBER
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
@@ -128,9 +123,9 @@ jobs:
           release_name: Release ${{ env.VERSION }}
           body: |
             ## Изменения в версии ${{ env.VERSION }}
-            
+
             Сборка автоматически загружена в TestFlight.
-            
+
             **Build Number:** ${{ env.BUILD_NUMBER }}
             **Дата сборки:** ${{ github.run_id }}
           draft: false

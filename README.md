@@ -169,3 +169,4 @@ base64 -i dev_midorinome_ichime_TopShelf.mobileprovision
 - **Marketing Version** (например, `1.11.0`) берется из git тега
 - **Build Number** автоматически увеличивается: базовое значение (101000) + номер GitHub Actions run
 - Версии автоматически обновляются в `project.yml` при сборке
+- Приложение собирается и публикуется для **tvOS платформы**

@@ -41,7 +41,7 @@ setup-ci:
 
 test-build:
 	bundle install
-	cd fastlane && bundle exec fastlane test_build version:test build_number:1
+	xcodegen generate && cd fastlane && bundle exec fastlane tvos test_build version:test build_number:1
 
 # Development setup
 setup:
