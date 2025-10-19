@@ -72,14 +72,9 @@ jobs:
           echo "=== Checking provisioning profiles ==="
           ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
           echo "=== Ichime profile info ==="
-          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.mobileprovision | head -20
+          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.mobileprovision | head -50
           echo "=== TopShelf profile info ==="
-          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf.mobileprovision | head -20
-          # Проверить, что в профилях есть нужная группа
-          /usr/libexec/PlistBuddy -c 'Print :Entitlements:com.apple.security.application-groups' \
-            ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.mobileprovision
-          /usr/libexec/PlistBuddy -c 'Print :Entitlements:com.apple.security.application-groups' \
-            ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf.mobileprovision
+          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf.mobileprovision | head -50
 
 
       - name: Setup App Store Connect API Key
