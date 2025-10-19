@@ -21,12 +21,19 @@ platform :tvos do
       archive_path: "./build/Ichime.xcarchive",
       export_method: "app-store",
       
+      # Переопределяем настройки подписи для архивирования:
+      codesigning_identity: "Apple Distribution",
+      xcargs: {
+        "CODE_SIGN_STYLE" => "Manual",
+        "CODE_SIGN_IDENTITY" => "Apple Distribution"
+      },
+      
       export_options: {
         method: "app-store",
         destination: "upload",
         provisioningProfiles: {
-          "dev.midorinome.ichime" => "dev.midorinome.ichime",
-          "dev.midorinome.ichime.TopShelf" => "dev.midorinome.ichime.TopShelf"
+          "dev.midorinome.ichime" => "Ichime Distribution",
+          "dev.midorinome.ichime.TopShelf" => "Ichime TopShelf Distribution"
         },
         signingStyle: "manual",
         teamID: "YBBAN7R28K"
