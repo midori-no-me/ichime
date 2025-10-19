@@ -25,8 +25,6 @@ jobs:
     steps:
       - name: Checkout Repository 
         uses: actions/checkout@v4
-        with:
-          ref: '1.10.0'
 
       - name: Set Version Variables
         run: |
@@ -66,7 +64,15 @@ jobs:
           echo "${{ secrets.PROVISIONING_PROFILE_TOPSHELF }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/TopShelf.mobileprovision
 
       - name: Install Bundle Dependencies
-        run: bundle install
+        run: |
+          pwd
+          ls -la
+          if [ ! -f "Gemfile" ]; then
+            echo "Gemfile not found! Creating basic Gemfile..."
+            echo 'source "https://rubygems.org"' > Gemfile
+            echo 'gem "fastlane", ">= 2.200.0"' >> Gemfile
+          fi
+          bundle install
 
       - name: Setup App Store Connect API Key
         run: |
