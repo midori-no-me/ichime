@@ -21,8 +21,6 @@ platform :tvos do
       archive_path: "./build/Ichime.xcarchive",
       export_method: "app-store",
       
-      xcargs: "-allowProvisioningUpdates",
-      
       export_options: {
         method: "app-store",
         destination: "upload",
