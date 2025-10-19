@@ -23,10 +23,6 @@ platform :tvos do
       
       # Переопределяем настройки подписи для архивирования:
       codesigning_identity: "Apple Distribution",
-      xcargs: {
-        "CODE_SIGN_STYLE" => "Manual",
-        "CODE_SIGN_IDENTITY" => "Apple Distribution"
-      },
       
       export_options: {
         method: "app-store",
