@@ -56,6 +56,10 @@ jobs:
           security import certificate.p12 -k build.keychain -P "${{ secrets.CERTIFICATES_PASSWORD }}" -A
           security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
           rm certificate.p12
+          
+          # Проверяем что сертификат импортировался
+          echo "=== Imported certificates ==="
+          security find-identity -v -p codesigning build.keychain
 
       - name: Install Provisioning Profiles
         run: |

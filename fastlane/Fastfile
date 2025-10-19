@@ -21,9 +21,6 @@ platform :tvos do
       archive_path: "./build/Ichime.xcarchive",
       export_method: "app-store",
       
-      # Переопределяем настройки подписи для архивирования:
-      codesigning_identity: "Apple Distribution",
-      
       export_options: {
         method: "app-store",
         destination: "upload",
