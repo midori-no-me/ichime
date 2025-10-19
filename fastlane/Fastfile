@@ -20,6 +20,15 @@ platform :tvos do
       destination: "generic/platform=tvOS",
       archive_path: "./build/Ichime.xcarchive",
       export_method: "app-store",
+      
+      # Переопределяем настройки подписи для архивирования:
+      codesigning_identity: "Apple Distribution",
+      xcargs: {
+        "CODE_SIGN_STYLE" => "Manual",
+        "CODE_SIGN_IDENTITY" => "Apple Distribution",
+        "PROVISIONING_PROFILE_SPECIFIER[sdk=appletvos*]" => "Ichime Distribution"
+      },
+      
       export_options: {
         method: "app-store",
         destination: "upload",
@@ -65,6 +74,15 @@ platform :tvos do
       archive_path: "./build/Ichime.xcarchive",
       export_method: "app-store",
       skip_package_ipa: false,
+      
+      # Переопределяем настройки подписи для архивирования:
+      codesigning_identity: "Apple Distribution",
+      xcargs: {
+        "CODE_SIGN_STYLE" => "Manual",
+        "CODE_SIGN_IDENTITY" => "Apple Distribution",
+        "PROVISIONING_PROFILE_SPECIFIER[sdk=appletvos*]" => "Ichime Distribution"
+      },
+      
       export_options: {
         method: "app-store",
         destination: "export",
