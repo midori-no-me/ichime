@@ -64,19 +64,17 @@ jobs:
       - name: Install Provisioning Profiles
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf
-          echo "${{ secrets.PROVISIONING_PROFILE_ICHIME }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime/Ichime\ Distribution.mobileprovision
-          echo "${{ secrets.PROVISIONING_PROFILE_TOPSHELF }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf/Ichime\ TopShelf\ Distribution.mobileprovision
+          echo "${{ secrets.PROVISIONING_PROFILE_ICHIME }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.mobileprovision
+          echo "${{ secrets.PROVISIONING_PROFILE_TOPSHELF }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf.mobileprovision
 
       - name: Verify Provisioning Profiles
         run: |
           echo "=== Checking provisioning profiles ==="
           ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
           echo "=== Ichime profile info ==="
-          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime/Ichime\ Distribution.mobileprovision | head -20
+          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.mobileprovision | head -20
           echo "=== TopShelf profile info ==="
-          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf/Ichime\ TopShelf\ Distribution.mobileprovision | head -20
+          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf.mobileprovision | head -20
 
       - name: Setup App Store Connect API Key
         run: |
