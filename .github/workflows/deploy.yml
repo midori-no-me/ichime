@@ -56,7 +56,7 @@ jobs:
           security import certificate.p12 -k build.keychain -P "${{ secrets.CERTIFICATES_PASSWORD }}" -A
           security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
           rm certificate.p12
-          
+
           # Проверяем что сертификат импортировался
           echo "=== Imported certificates ==="
           security find-identity -v -p codesigning build.keychain
@@ -64,17 +64,17 @@ jobs:
       - name: Install Provisioning Profiles
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          echo "${{ secrets.PROVISIONING_PROFILE_ICHIME }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/Ichime\ Distribution.mobileprovision
-          echo "${{ secrets.PROVISIONING_PROFILE_TOPSHELF }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/Ichime\ TopShelf\ Distribution.mobileprovision
+          echo "${{ secrets.PROVISIONING_PROFILE_ICHIME }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime/Ichime\ Distribution.mobileprovision
+          echo "${{ secrets.PROVISIONING_PROFILE_TOPSHELF }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf/Ichime\ TopShelf\ Distribution.mobileprovision
 
       - name: Verify Provisioning Profiles
         run: |
           echo "=== Checking provisioning profiles ==="
           ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
           echo "=== Ichime profile info ==="
-          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/Ichime\ Distribution.mobileprovision | head -20
+          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime/Ichime\ Distribution.mobileprovision | head -20
           echo "=== TopShelf profile info ==="
-          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/Ichime\ TopShelf\ Distribution.mobileprovision | head -20
+          security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf/Ichime\ TopShelf\ Distribution.mobileprovision | head -20
 
       - name: Setup App Store Connect API Key
         run: |
