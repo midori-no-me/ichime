@@ -13,15 +13,6 @@ platform :tvos do
     update_project_version(version: version, build_number: build_number)
 
 
-    match(
-        app_identifier: ["dev.midorinome.ichime","dev.midorinome.ichime.TopShelf"],
-        type: "development",
-    )
-    match(
-        app_identifier: ["dev.midorinome.ichime","dev.midorinome.ichime.TopShelf"],
-        type: "appstore",
-    )
-
     # Build the app
     build_app(
       project: "Ichime.xcodeproj",
