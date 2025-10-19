@@ -12,9 +12,6 @@ platform :ios do
     # Update project configuration
     update_project_version(version: version, build_number: build_number)
 
-    sigh(app_identifier: "dev.midorinome.ichime", provisioning_name: "Ichime Distribution", platform: "ios")
-    sigh(app_identifier: "dev.midorinome.ichime.TopShelf", provisioning_name: "Ichime TopShelf Distribution", platform: "ios")
-
 
     # Build the app
     build_app(
