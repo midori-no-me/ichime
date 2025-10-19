@@ -20,7 +20,7 @@ on:
 jobs:
   deploy:
     name: Build and Deploy to TestFlight
-    runs-on: macos-latest
+    runs-on: macos-26
 
     steps:
       - name: Checkout Repository
