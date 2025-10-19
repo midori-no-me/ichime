@@ -64,6 +64,8 @@ jobs:
       - name: Install Provisioning Profiles
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf
           echo "${{ secrets.PROVISIONING_PROFILE_ICHIME }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime/Ichime\ Distribution.mobileprovision
           echo "${{ secrets.PROVISIONING_PROFILE_TOPSHELF }}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/dev.midorinome.ichime.TopShelf/Ichime\ TopShelf\ Distribution.mobileprovision
 
