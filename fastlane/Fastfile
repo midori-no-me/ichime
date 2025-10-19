@@ -16,7 +16,7 @@ platform :tvos do
     # Build the app
     build_app(
       project: "Ichime.xcodeproj",
-      scheme: "Ichime",
+      scheme: "Ichime_tvOS",
       destination: "generic/platform=tvOS",
       archive_path: "./build/Ichime.xcarchive",
       export_method: "app-store",
@@ -60,7 +60,7 @@ platform :tvos do
     # Build the app
     build_app(
       project: "Ichime.xcodeproj",
-      scheme: "Ichime",
+      scheme: "Ichime_tvOS",
       destination: "generic/platform=tvOS",
       archive_path: "./build/Ichime.xcarchive",
       export_method: "app-store",
