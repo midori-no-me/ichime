@@ -11,6 +11,7 @@ actor Anime365BaseURL {
     [
       URL(string: "https://anime365.ru")!,
       URL(string: "https://anime-365.ru")!,
+      URL(string: "https://smotret-anime.app")!,
       URL(string: "https://smotret-anime.org")!,
       URL(string: "https://smotret-anime.com")!,
       URL(string: "https://smotret-anime.online")!,
