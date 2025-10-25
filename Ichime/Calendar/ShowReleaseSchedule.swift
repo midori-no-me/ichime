@@ -47,7 +47,7 @@ struct ShowReleaseSchedule: Sendable {
   }
 
   private func getScheduleFromShikimori() async throws -> Set<ShowFromCalendarWithExactReleaseDate> {
-    var items: Set<ShowFromCalendarWithExactReleaseDate> = []
+    var items = Set<ShowFromCalendarWithExactReleaseDate>()
 
     let shikimoriCalendarEntries = try await shikimoriApiClient.getCalendar()
 

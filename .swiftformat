@@ -7,7 +7,6 @@
 --enable blankLinesBetweenScopes
 --enable fileHeader
 --header strip
---enable propertyTypes
 --propertytypes infer-locals-only
 --enable redundantSelf
 --self insert
