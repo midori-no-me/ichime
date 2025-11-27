@@ -148,6 +148,7 @@ struct TopScoredSection: View {
         }
       }
       .scrollClipDisabled()
+      .scrollIndicators(.hidden)
     }
   }
 

@@ -16,6 +16,8 @@ struct SectionWithCards<Content: View>: View {
         self.content
       }
     }
+    #if os(tvOS)
     .focusSection()
+    #endif
   }
 }

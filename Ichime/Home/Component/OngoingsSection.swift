@@ -148,6 +148,7 @@ struct OngoingsSection: View {
         }
       }
       .scrollClipDisabled()
+      .scrollIndicators(.hidden)
     }
   }
 

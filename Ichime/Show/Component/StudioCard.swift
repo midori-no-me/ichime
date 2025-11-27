@@ -70,7 +70,9 @@ struct StudioCard: View {
         alignment: .leading
       )
     }
+#if os(tvOS)
     .buttonStyle(.card)
+    #endif
   }
 
   private func getShowsByStudio(_ studioId: Int) -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {

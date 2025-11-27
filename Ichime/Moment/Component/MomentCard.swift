@@ -74,7 +74,9 @@ struct MomentCardRaw: View {
         alignment: .bottomTrailing
       )
     }
+    #if os(tvOS)
     .hoverEffect(.highlight)
+    #endif
 
     self.label()
       .lineLimit(

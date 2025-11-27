@@ -4,6 +4,7 @@ struct ContentView: View {
   @AppStorage(NavigationStyle.UserDefaultsKey.STYLE) private var navigationStyle: NavigationStyle = .tabBar
 
   var body: some View {
+    #if os(tvOS)
     switch self.navigationStyle {
     case .tabBar:
       ContentViewWithTabBar()
@@ -12,5 +13,9 @@ struct ContentView: View {
       ContentViewWithSideBar()
         .markEpisodeAsWatchedAlert()
     }
+    #else
+    ContentViewWithSideBar()
+      .markEpisodeAsWatchedAlert()
+    #endif
   }
 }

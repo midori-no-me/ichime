@@ -88,7 +88,7 @@ struct CalendarView: View {
                     ShowCardMyAnimeList(show: show)
                       .containerRelativeFrame(
                         .horizontal,
-                        count: ShowCard.RECOMMENDED_COUNT_PER_ROW,
+                        count: ShowCard.RECOMMENDED_COUNT_PER_ROW_REGULAR,
                         span: 1,
                         spacing: ShowCard.RECOMMENDED_SPACING
                       )
@@ -96,6 +96,7 @@ struct CalendarView: View {
                 }
               }
               .scrollClipDisabled()
+              .scrollIndicators(.hidden)
             }
           }
         }

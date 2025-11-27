@@ -32,7 +32,7 @@ packages:
 targets:
   Ichime:
     type: application
-    platform: [tvOS]
+    platform: [iOS, tvOS]
     deploymentTarget:
       tvOS: "26.0"
     scheme:

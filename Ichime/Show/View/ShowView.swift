@@ -194,7 +194,9 @@ struct ShowView: View {
                     .controlSize(.extraLarge)
                   }
                   .frame(maxWidth: .infinity, alignment: .leading)
+#if os(tvOS)
                   .focusSection()
+                  #endif
 
                   if let episodeStatus = Self.formatCurrentEpisodeStatus(show: show) {
                     Text(episodeStatus)
@@ -259,7 +261,9 @@ struct ShowView: View {
                     .background(.thickMaterial)
                 }
               }
+#if os(tvOS)
               .focusSection()
+              #endif
               .padding(.top, proxy.safeAreaInsets.top)
               .padding(.bottom, proxy.safeAreaInsets.bottom)
               .padding(.leading, proxy.safeAreaInsets.leading)
@@ -396,8 +400,11 @@ private struct ShowStudiosAndDescriptionsSection: View {
         }
       }
     }
+#if os(tvOS)
     .focusSection()
+    #endif
     .scrollClipDisabled()
+    .scrollIndicators(.hidden)
   }
 }
 
@@ -439,7 +446,9 @@ private struct ShowDescriptionCard: View {
       ShowDescriptionCardSheet(text: self.text)
         .background(.thickMaterial)
     }
+#if os(tvOS)
     .buttonStyle(.card)
+    #endif
   }
 }
 

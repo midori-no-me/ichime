@@ -67,6 +67,7 @@ struct SearchSuggestionsView: View {
                 }
               }
               .scrollClipDisabled()
+              .scrollIndicators(.hidden)
             }
           }
 
@@ -85,6 +86,7 @@ struct SearchSuggestionsView: View {
                 }
               }
               .scrollClipDisabled()
+              .scrollIndicators(.hidden)
             }
           }
         }

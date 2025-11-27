@@ -27,7 +27,9 @@ struct GenreCard: View {
       Text(self.title)
         .padding(16)
     }
+#if os(tvOS)
     .buttonStyle(.card)
+    #endif
   }
 
   private func getShowsByGenre(_ genreId: Int) -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
