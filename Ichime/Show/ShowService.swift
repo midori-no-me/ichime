@@ -11,15 +11,18 @@ enum GetShowByIdError: Error {
 struct ShowService {
   private let anime365KitFactory: Anime365KitFactory
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
+  private let shikimoriGraphQLClient: ShikimoriApiClient.GraphQLClient
   private let jikanApiClient: JikanApiClient.ApiClient
 
   init(
     anime365KitFactory: Anime365KitFactory,
     shikimoriApiClient: ShikimoriApiClient.ApiClient,
+    shikimoriGraphQLClient: ShikimoriApiClient.GraphQLClient,
     jikanApiClient: JikanApiClient.ApiClient
   ) {
     self.anime365KitFactory = anime365KitFactory
     self.shikimoriApiClient = shikimoriApiClient
+    self.shikimoriGraphQLClient = shikimoriGraphQLClient
     self.jikanApiClient = jikanApiClient
   }
 
@@ -131,7 +134,7 @@ struct ShowService {
     page: Int,
     limit: Int
   ) async throws -> OrderedSet<ShowPreviewShikimori> {
-    let shikimoriAnimes = try await shikimoriApiClient.listAnimes(
+    let response = try await shikimoriGraphQLClient.getPreviews(
       page: page,
       limit: limit,
       order: "popularity",
@@ -139,10 +142,9 @@ struct ShowService {
     )
 
     return .init(
-      shikimoriAnimes.map {
-        .init(
-          anime: $0,
-          shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
+      response.animes.compactMap {
+        ShowPreviewShikimori(
+          graphqlAnimePreview: $0,
         )
       }
     )
@@ -155,7 +157,7 @@ struct ShowService {
     let showSeasonService = ShowSeasonService()
     let nextSeason = showSeasonService.getRelativeSeason(shift: ShowSeasonService.NEXT_SEASON)
 
-    let shikimoriAnimes = try await shikimoriApiClient.listAnimes(
+    let response = try await shikimoriGraphQLClient.getPreviews(
       page: page,
       limit: limit,
       order: "popularity",
@@ -164,10 +166,9 @@ struct ShowService {
     )
 
     return .init(
-      shikimoriAnimes.map {
-        .init(
-          anime: $0,
-          shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
+      response.animes.compactMap {
+        ShowPreviewShikimori(
+          graphqlAnimePreview: $0,
         )
       }
     )
@@ -177,7 +178,7 @@ struct ShowService {
     page: Int,
     limit: Int
   ) async throws -> OrderedSet<ShowPreviewShikimori> {
-    let shikimoriAnimes = try await shikimoriApiClient.listAnimes(
+    let response = try await shikimoriGraphQLClient.getPreviews(
       page: page,
       limit: limit,
       order: "random",
@@ -185,10 +186,9 @@ struct ShowService {
     )
 
     return .init(
-      shikimoriAnimes.map {
-        .init(
-          anime: $0,
-          shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
+      response.animes.compactMap {
+        ShowPreviewShikimori(
+          graphqlAnimePreview: $0,
         )
       }
     )

@@ -138,6 +138,52 @@ struct AiringSeason: Comparable, Equatable {
     self.year = year
   }
 
+  init?(fromShikimoriSeasonString: String) {
+    if fromShikimoriSeasonString.isEmpty {
+      return nil
+    }
+
+    let stringParts = fromShikimoriSeasonString.split(separator: "_", maxSplits: 2)
+
+    if stringParts.count != 2 {
+      return nil
+    }
+
+    let calendarSeasonString = stringParts[0]
+    let yearString = stringParts[1]
+
+    let calendarSeason: CalendarSeason? =
+      switch calendarSeasonString {
+      case "winter":
+        .winter
+      case "spring":
+        .spring
+      case "summer":
+        .summer
+      case "autumn":
+        .autumn
+      default:
+        nil
+      }
+
+    guard let calendarSeason else {
+      return nil
+    }
+
+    let year = Int(yearString)
+
+    guard let year else {
+      return nil
+    }
+
+    if year < 1900 {
+      return nil
+    }
+
+    self.calendarSeason = calendarSeason
+    self.year = year
+  }
+
   init(fromDate: Date) {
     let year = Calendar.current.component(.year, from: fromDate)
     let monthNumber = Calendar.current.component(.month, from: fromDate)
