@@ -31,6 +31,14 @@ final class ApplicationDependency: DIFramework {
     }
 
     container.register {
+      ShikimoriApiClient.GraphQLClient(
+        baseUrl: ServiceLocator.shikimoriBaseUrl,
+        urlSession: $0,
+        logger: Logger(subsystem: ServiceLocator.applicationId, category: "ShikimoriGraphQLClient")
+      )
+    }
+
+    container.register {
       JikanApiClient.ApiClient(
         baseUrl: ServiceLocator.jikanBaseUrl,
         urlSession: $0,
@@ -39,7 +47,7 @@ final class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowService(anime365KitFactory: $0, shikimoriApiClient: $1, jikanApiClient: $2)
+      ShowService(anime365KitFactory: $0, shikimoriApiClient: $1, shikimoriGraphQLClient: $2, jikanApiClient: $3)
     }
 
     container.register {

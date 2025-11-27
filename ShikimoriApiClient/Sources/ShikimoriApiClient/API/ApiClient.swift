@@ -62,7 +62,7 @@ public struct ApiClient: Sendable {
     if let requestUrl = httpRequest.url?.absoluteString,
       let httpResponse = httpResponse as? HTTPURLResponse
     {
-      self.logger.info("API request: GET \(requestUrl) [\(httpResponse.statusCode)]")
+      self.logger.info("API request: \(httpMethod.rawValue) \(requestUrl) [\(httpResponse.statusCode)]")
     }
 
     do {
