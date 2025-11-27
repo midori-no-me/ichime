@@ -160,7 +160,7 @@ struct AiringSeason: Comparable, Equatable {
         .spring
       case "summer":
         .summer
-      case "autumn":
+      case "fall":
         .autumn
       default:
         nil
