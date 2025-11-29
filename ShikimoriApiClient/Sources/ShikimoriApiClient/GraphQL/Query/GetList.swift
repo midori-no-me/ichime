@@ -27,14 +27,13 @@ extension GraphQLClient {
       }
       """
 
-    let variables: [String: AnyEncodable] = [
-      "page": AnyEncodable(page),
-      "limit": AnyEncodable(limit),
-      "order": AnyEncodable(order),
-      "season": AnyEncodable(season),
-      "censored": AnyEncodable(censored),
-      "rating": AnyEncodable(rating),
-    ].compactMapValues { $0 }
+    var variables: [String: AnyEncodable] = [:]
+    if let page = page { variables["page"] = AnyEncodable(page) }
+    if let limit = limit { variables["limit"] = AnyEncodable(limit) }
+    if let order = order { variables["order"] = AnyEncodable(order) }
+    if let season = season { variables["season"] = AnyEncodable(season) }
+    if let censored = censored { variables["censored"] = AnyEncodable(censored) }
+    if let rating = rating { variables["rating"] = AnyEncodable(rating) }
 
     return try await sendRequest(
       operationName: "GetPreviews",
