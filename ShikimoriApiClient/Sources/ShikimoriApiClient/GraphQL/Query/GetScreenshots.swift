@@ -1,7 +1,15 @@
 import Foundation
 
 public struct GetScreenshotsResponse: Sendable, Decodable {
-  public let animes: [GraphQLAnimeScreenshot]
+  public struct AnimeFields: Sendable, Decodable {
+    public struct Screenshot: Sendable, Decodable {
+      public let originalUrl: URL
+    }
+
+    public let screenshots: [Screenshot]
+  }
+
+  public let animes: [AnimeFields]
 }
 
 extension GraphQLClient {

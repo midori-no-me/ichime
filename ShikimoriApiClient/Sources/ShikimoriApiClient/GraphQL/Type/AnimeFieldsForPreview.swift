@@ -1,6 +1,6 @@
 import Foundation
 
-public struct GraphQLAnimePreview: Sendable, Decodable {
+public struct AnimeFieldsForPreview: Sendable, Decodable {
   public struct Poster: Sendable, Decodable {
     public let previewAlt2xUrl: URL
   }

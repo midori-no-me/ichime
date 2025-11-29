@@ -10,7 +10,7 @@ struct RelatedShow: Identifiable, Hashable {
   }
 
   init?(
-    fromShikimoriRelation: ShikimoriApiClient.GraphQLAnimeWithRelations.Relation,
+    fromShikimoriRelation: ShikimoriApiClient.GetRelatedResponse.AnimeFields.Relation,
   ) {
     guard let anime = fromShikimoriRelation.anime else {
       return nil

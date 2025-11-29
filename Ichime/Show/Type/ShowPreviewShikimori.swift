@@ -10,7 +10,7 @@ struct ShowPreviewShikimori: Hashable, Identifiable {
   let kind: ShowKind?
 
   init?(
-    graphqlAnimePreview: ShikimoriApiClient.GraphQLAnimePreview
+    graphqlAnimePreview: ShikimoriApiClient.AnimeFieldsForPreview
   ) {
     guard let malIDString = graphqlAnimePreview.malId else {
       return nil

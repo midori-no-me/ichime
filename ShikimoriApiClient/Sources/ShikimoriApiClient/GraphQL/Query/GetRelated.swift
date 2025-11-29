@@ -1,7 +1,16 @@
 import Foundation
 
 public struct GetRelatedResponse: Sendable, Decodable {
-  public let animes: [GraphQLAnimeWithRelations]
+  public struct AnimeFields: Sendable, Decodable {
+    public struct Relation: Sendable, Decodable {
+      public let relationKind: RelationKind
+      public let anime: AnimeFieldsForPreview?
+    }
+
+    public let related: [Relation]
+  }
+
+  public let animes: [AnimeFields]
 }
 
 extension GraphQLClient {

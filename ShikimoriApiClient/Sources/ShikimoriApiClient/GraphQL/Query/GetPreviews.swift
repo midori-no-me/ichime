@@ -1,7 +1,7 @@
 import Foundation
 
 public struct GetPreviewsResponse: Sendable, Decodable {
-  public let animes: [GraphQLAnimePreview]
+  public let animes: [AnimeFieldsForPreview]
 }
 
 extension GraphQLClient {

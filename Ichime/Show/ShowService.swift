@@ -309,7 +309,7 @@ struct ShowService {
   }
 
   private func convertShikimoriRelationsToGroupedRelatedShows(
-    _ shikimoriRelations: [ShikimoriApiClient.GraphQLAnimeWithRelations.Relation]
+    _ shikimoriRelations: [ShikimoriApiClient.GetRelatedResponse.AnimeFields.Relation]
   ) -> OrderedSet<GroupedRelatedShows> {
     var relationTitleToRelatedShows: [ShowRelationKind: [RelatedShow]] = [:]
 
