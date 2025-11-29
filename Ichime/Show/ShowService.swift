@@ -240,19 +240,23 @@ struct ShowService {
   }
 
   func getCharacters(myAnimeListId: Int) async throws -> OrderedSet<CharacterInfo> {
-    let jikanCharacterRoles = try await self.jikanApiClient.getAnimeCharacters(
-      id: myAnimeListId
-    )
+    let response = try await self.shikimoriGraphQLClient.getCharacters(id: myAnimeListId)
 
-    return .init(jikanCharacterRoles.map { .init(fromJikanCharacterRole: $0) })
+    if response.animes.isEmpty {
+      return .init()
+    }
+
+    return .init(response.animes[0].characterRoles.map { .init(fromShikimoriCharacterRole: $0) })
   }
 
   func getStaffMembers(myAnimeListId: Int) async throws -> OrderedSet<StaffMember> {
-    let jikanStaffMembers = try await self.jikanApiClient.getAnimeStaff(
-      id: myAnimeListId
-    )
+    let response = try await self.shikimoriGraphQLClient.getStaff(id: myAnimeListId)
 
-    return .init(jikanStaffMembers.map { .init(fromJikanStaffMember: $0) })
+    if response.animes.isEmpty {
+      return .init()
+    }
+
+    return .init(response.animes[0].personRoles.map { .init(fromShikimoriPersonRole: $0) })
   }
 
   func getStudio(

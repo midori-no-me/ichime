@@ -1,24 +1,24 @@
 import Foundation
-import JikanApiClient
+import ShikimoriApiClient
 
 struct StaffMember: Identifiable, Hashable {
-  let id: Int
+  let id: String
   let image: URL?
   let name: String
   let roles: [String]
 
   init(
-    fromJikanStaffMember: JikanApiClient.StaffMember
+    fromShikimoriPersonRole: ShikimoriApiClient.GetStaffResponse.AnimeFields.PersonRole
   ) {
-    if let imageUrl = fromJikanStaffMember.person.images.jpg.image_url, !imageUrl.path().contains("questionmark") {
-      self.image = imageUrl
+    if let poster = fromShikimoriPersonRole.person.poster {
+      self.image = poster.mainAlt2xUrl
     }
     else {
       self.image = nil
     }
 
-    self.id = fromJikanStaffMember.person.mal_id
-    self.name = fromJikanStaffMember.person.name
-    self.roles = fromJikanStaffMember.positions
+    self.id = fromShikimoriPersonRole.id
+    self.name = fromShikimoriPersonRole.person.name
+    self.roles = fromShikimoriPersonRole.rolesRu
   }
 }
