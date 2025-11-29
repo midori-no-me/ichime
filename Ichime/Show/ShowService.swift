@@ -224,13 +224,15 @@ struct ShowService {
   func getScreenshots(
     myAnimeListId: Int
   ) async throws -> OrderedSet<URL> {
-    let shikimoriScreenshots = try await self.shikimoriApiClient.getAnimeScreenshotsById(
-      animeId: myAnimeListId
-    )
+    let response = try await self.shikimoriGraphQLClient.getScreenshots(id: myAnimeListId)
+
+    if response.animes.isEmpty {
+      return .init()
+    }
 
     return .init(
-      shikimoriScreenshots.map { screenshot in
-        URL(string: self.shikimoriApiClient.baseUrl.absoluteString + screenshot.original)!
+      response.animes[0].screenshots.map { screenshot in
+        screenshot.originalUrl
       }
     )
   }

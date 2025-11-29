@@ -12,17 +12,6 @@ extension ApiClient {
     )
   }
 
-  public func getAnimeScreenshotsById(
-    animeId: Int
-  ) async throws -> [ImageVariants] {
-    try await sendRequest(
-      httpMethod: .GET,
-      endpoint: "/api/animes/\(animeId)/screenshots",
-      queryItems: [],
-      requestBody: nil
-    )
-  }
-
   public func getAnimeRelatedById(
     animeId: Int
   ) async throws -> [Relation] {
