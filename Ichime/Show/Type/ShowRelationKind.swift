@@ -1,3 +1,5 @@
+import ShikimoriApiClient
+
 enum ShowRelationKind {
   case adaptation
   case alternativeSetting
@@ -70,34 +72,32 @@ enum ShowRelationKind {
     }
   }
 
-  static func create(_ fromShikimoriApiString: String) -> Self {
-    switch fromShikimoriApiString {
-    case "Адаптация":
-      .adaptation
-    case "Альтернативная вселенная":
-      .alternativeSetting
-    case "Альтернативная история":
-      .alternativeVersion
-    case "Общий персонаж":
-      .sharedCharacters
-    case "Развёрнутая история":
-      .fullStory
-    case "Прочее":
-      .other
-    case "Изначальная история":
-      .parentStory
-    case "Предыстория":
-      .prequel
-    case "Продолжение":
-      .sequel
-    case "Другая история":
-      .sideStory
-    case "Ответвление от оригинала":
-      .spinOff
-    case "Обобщение":
-      .summary
+  static func create(_ fromShikimoriRelationKind: ShikimoriApiClient.RelationKind) -> Self {
+    switch fromShikimoriRelationKind {
+    case .adaptation:
+      return .adaptation
+    case .alternative_setting:
+      return .alternativeSetting
+    case .alternative_version:
+      return .alternativeVersion
+    case .character:
+      return .sharedCharacters
+    case .full_story:
+      return .fullStory
+    case .parent_story:
+      return .parentStory
+    case .prequel:
+      return .prequel
+    case .sequel:
+      return .sequel
+    case .side_story:
+      return .sideStory
+    case .spin_off:
+      return .spinOff
+    case .summary:
+      return .summary
     default:
-      .other
+      return .other
     }
   }
 }

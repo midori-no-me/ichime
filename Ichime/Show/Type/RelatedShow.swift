@@ -2,61 +2,28 @@ import Foundation
 import ShikimoriApiClient
 
 struct RelatedShow: Identifiable, Hashable {
-  let myAnimeListId: Int
-  let title: ShowName
-  let posterUrl: URL?
-  let score: Float?
-  let airingSeason: AiringSeason?
   let relationKind: ShowRelationKind
-  let kind: ShowKind?
+  let preview: ShowPreviewShikimori
 
   var id: Int {
-    self.myAnimeListId
+    self.preview.id
   }
 
   init?(
-    fromShikimoriRelation: ShikimoriApiClient.Relation,
-    shikimoriBaseUrl: URL
+    fromShikimoriRelation: ShikimoriApiClient.GraphQLAnimeWithRelations.Relation,
   ) {
     guard let anime = fromShikimoriRelation.anime else {
       return nil
     }
 
-    let dateWithoutTimeFormatter = ShikimoriApiClient.ApiDateDecoder.getDateWithoutTimeFormatter()
-
-    if let airedOnString = anime.aired_on, let airedAt = dateWithoutTimeFormatter.date(from: airedOnString) {
-      self.airingSeason = .init(fromDate: airedAt)
+    if let preview = ShowPreviewShikimori(graphqlAnimePreview: anime) {
+      self.preview = preview
     }
     else {
-      self.airingSeason = nil
+      return nil
     }
 
-    if let image = anime.image {
-      self.posterUrl = URL(string: shikimoriBaseUrl.absoluteString + image.original)
-    }
-    else {
-      self.posterUrl = nil
-    }
-
-    if let scoreString = anime.score, let parsedScore = Float(scoreString), parsedScore > 0 {
-      self.score = parsedScore
-    }
-    else {
-      self.score = nil
-    }
-
-    if let shikimoriAnimeKind = anime.kind {
-      self.kind = .create(shikimoriAnimeKind)
-    }
-    else {
-      self.kind = nil
-    }
-
-    self.myAnimeListId = anime.id
-
-    self.title = .parsed(anime.name, anime.russian)
-
-    self.relationKind = .create(fromShikimoriRelation.relation_russian)
+    self.relationKind = .create(fromShikimoriRelation.relationKind)
   }
 
   static func == (lhs: Self, rhs: Self) -> Bool {

@@ -214,11 +214,13 @@ struct ShowService {
   func getRelatedShows(
     myAnimeListId: Int
   ) async throws -> OrderedSet<GroupedRelatedShows> {
-    let shikimoriRelations = try await self.shikimoriApiClient.getAnimeRelatedById(
-      animeId: myAnimeListId
-    )
+    let response = try await self.shikimoriGraphQLClient.getRelated(id: myAnimeListId)
 
-    return self.convertShikimoriRelationsToGroupedRelatedShows(shikimoriRelations)
+    if response.animes.isEmpty {
+      return .init()
+    }
+
+    return self.convertShikimoriRelationsToGroupedRelatedShows(response.animes[0].related)
   }
 
   func getScreenshots(
@@ -303,17 +305,12 @@ struct ShowService {
   }
 
   private func convertShikimoriRelationsToGroupedRelatedShows(
-    _ shikimoriRelations: [ShikimoriApiClient.Relation]
+    _ shikimoriRelations: [ShikimoriApiClient.GraphQLAnimeWithRelations.Relation]
   ) -> OrderedSet<GroupedRelatedShows> {
     var relationTitleToRelatedShows: [ShowRelationKind: [RelatedShow]] = [:]
 
     for shikimoriRelation in shikimoriRelations {
-      guard
-        let relatedShow = RelatedShow(
-          fromShikimoriRelation: shikimoriRelation,
-          shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
-        )
-      else {
+      guard let relatedShow = RelatedShow(fromShikimoriRelation: shikimoriRelation) else {
         continue
       }
 

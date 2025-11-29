@@ -39,35 +39,6 @@ struct ShowCardMyAnimeList: View {
   }
 
   init(
-    relatedShow: RelatedShow
-  ) {
-    self.myAnimeListId = relatedShow.id
-
-    var topChips: [String] = []
-
-    if let score = relatedShow.score {
-      topChips.append("★ \(score.formatted(.number.precision(.fractionLength(2))))")
-    }
-
-    if let airingSeason = relatedShow.airingSeason {
-      topChips.append(airingSeason.getLocalizedTranslation())
-    }
-
-    self.topChips = topChips
-
-    var bottomChips: [String] = []
-
-    if let kind = relatedShow.kind {
-      bottomChips.append(kind.title)
-    }
-
-    self.bottomChips = bottomChips
-    self.cover = relatedShow.posterUrl
-    self.primaryTitle = relatedShow.title.getRomajiOrFullName()
-    self.secondaryTitle = relatedShow.title.getRussian()
-  }
-
-  init(
     show: ShowFromCalendarWithExactReleaseDate
   ) {
     self.myAnimeListId = show.id

@@ -116,7 +116,7 @@ struct RelatedShowsSection: View {
           ForEach(relatedShowsGroups) { relatedShowGroup in
             SectionWithCards(title: relatedShowGroup.relationKind.title) {
               ShowCardHStack(cards: relatedShowGroup.relatedShows.elements, loadMore: nil) { relatedShow in
-                ShowCardMyAnimeList(relatedShow: relatedShow)
+                ShowCardMyAnimeList(show: relatedShow.preview, displaySeason: true)
               }
             }
           }
