@@ -3,15 +3,18 @@ import SwiftUI
 struct ShowCardAnime365: View {
   private let show: ShowPreview
   private let displaySeason: Bool
+  private let hiddenKindChips: Set<ShowKind>
   private let onOpened: (() -> Void)?
 
   init(
     show: ShowPreview,
     displaySeason: Bool,
+    hiddenKindChips: Set<ShowKind> = .init(),
     onOpened: (() -> Void)? = nil
   ) {
     self.show = show
     self.displaySeason = displaySeason
+    self.hiddenKindChips = hiddenKindChips
     self.onOpened = onOpened
   }
 
@@ -56,7 +59,7 @@ struct ShowCardAnime365: View {
   private func formatBottomChips() -> [String] {
     var metadataLineComponents: [String] = []
 
-    if let kind = show.kind, kind != .tv {
+    if let kind = show.kind, !self.hiddenKindChips.contains(kind) {
       metadataLineComponents.append(kind.title)
     }
 

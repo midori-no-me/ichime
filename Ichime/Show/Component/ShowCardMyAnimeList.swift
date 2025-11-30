@@ -10,7 +10,8 @@ struct ShowCardMyAnimeList: View {
 
   init(
     show: ShowPreviewShikimori,
-    displaySeason: Bool
+    displaySeason: Bool,
+    hiddenKindChips: Set<ShowKind> = .init(),
   ) {
     self.myAnimeListId = show.id
 
@@ -28,7 +29,7 @@ struct ShowCardMyAnimeList: View {
 
     var bottomChips: [String] = []
 
-    if let kind = show.kind, kind != .tv {
+    if let kind = show.kind, !hiddenKindChips.contains(kind) {
       bottomChips.append(kind.title)
     }
 

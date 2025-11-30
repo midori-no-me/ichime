@@ -35,6 +35,12 @@ struct ShowPreviewShikimori: Hashable, Identifiable {
     if let season = graphqlAnimePreview.season {
       self.airingSeason = .init(fromShikimoriSeasonString: season)
     }
+    else if graphqlAnimePreview.airedOn.month > 0 && graphqlAnimePreview.airedOn.year > 1900 {
+      self.airingSeason = .init(
+        monthNumber: graphqlAnimePreview.airedOn.month,
+        year: graphqlAnimePreview.airedOn.year,
+      )
+    }
     else {
       self.airingSeason = nil
     }

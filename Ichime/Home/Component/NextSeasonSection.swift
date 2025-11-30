@@ -27,13 +27,14 @@ private final class NextSeasonSectionViewModel {
     self.logger = logger
   }
 
-  func performInitialLoading() async {
+  func performInitialLoading(adultOnly: Bool) async {
     self.updateState(.loading)
 
     do {
       let shows = try await showService.getNextSeason(
         page: 1,
-        limit: Self.SHOWS_PER_PAGE
+        limit: Self.SHOWS_PER_PAGE,
+        adultOnly: adultOnly,
       )
 
       if shows.isEmpty {
@@ -54,7 +55,7 @@ private final class NextSeasonSectionViewModel {
     }
   }
 
-  func performLazyLoading() async {
+  func performLazyLoading(adultOnly: Bool) async {
     guard case let .loaded(alreadyLoadedShows, page, hasMore) = state else {
       return
     }
@@ -66,7 +67,8 @@ private final class NextSeasonSectionViewModel {
     do {
       let shows = try await showService.getNextSeason(
         page: page + 1,
-        limit: Self.SHOWS_PER_PAGE
+        limit: Self.SHOWS_PER_PAGE,
+        adultOnly: adultOnly,
       )
 
       self.updateState(
@@ -92,6 +94,9 @@ private final class NextSeasonSectionViewModel {
 struct NextSeasonSection: View {
   @State private var viewModel: NextSeasonSectionViewModel = .init()
 
+  @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
+    var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+
   var body: some View {
     SectionWithCards(title: "Следующий сезон") {
       ScrollView(.horizontal) {
@@ -100,7 +105,9 @@ struct NextSeasonSection: View {
           ShowCardHStackInteractiveSkeleton()
             .onAppear {
               Task {
-                await self.viewModel.performInitialLoading()
+                await self.viewModel.performInitialLoading(
+                  adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
+                )
               }
             }
 
@@ -115,7 +122,9 @@ struct NextSeasonSection: View {
           } actions: {
             Button(action: {
               Task {
-                await self.viewModel.performInitialLoading()
+                await self.viewModel.performInitialLoading(
+                  adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
+                )
               }
             }) {
               Text("Обновить")
@@ -130,7 +139,9 @@ struct NextSeasonSection: View {
           } actions: {
             Button(action: {
               Task {
-                await self.viewModel.performInitialLoading()
+                await self.viewModel.performInitialLoading(
+                  adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
+                )
               }
             }) {
               Text("Обновить")
@@ -140,11 +151,16 @@ struct NextSeasonSection: View {
         case let .loaded(shows, _, _):
           ShowCardHStack(
             cards: shows.elements,
-            loadMore: { await self.viewModel.performLazyLoading() }
+            loadMore: {
+              await self.viewModel.performLazyLoading(
+                adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
+              )
+            }
           ) { show in
             ShowCardMyAnimeList(
               show: show,
               displaySeason: false,
+              hiddenKindChips: Anime365BaseURL.isAdultDomain(self.anime365BaseURL) ? .init([.ova]) : .init([.tv]),
             )
           }
         }

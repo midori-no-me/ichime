@@ -11,5 +11,6 @@ public struct AnimeFieldsForPreview: Sendable, Decodable {
   public let kind: AnimeKind?
   public let score: Float?
   public let season: String?
+  public let airedOn: IncompleteDate
   public let poster: Poster?
 }

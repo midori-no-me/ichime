@@ -6,7 +6,7 @@ actor Anime365BaseURL {
     static let BASE_URL = "anime365_base_url"
   }
 
-  static let DEFAULT_BASE_URL: URL = .init(string: "https://smotret-anime.org")!
+  static let DEFAULT_BASE_URL: URL = .init(string: "https://smotret-anime.app")!
   static let ALL_KNOWN_ANIME_365_BASE_URLS: OrderedSet<URL> = .init(
     [
       URL(string: "https://anime365.ru")!,
@@ -18,6 +18,29 @@ actor Anime365BaseURL {
       URL(string: "https://smotret-anime.net")!,
       URL(string: "https://smotret-anime.ru")!,
       URL(string: "https://smotretanime.ru")!,
+    ].sorted(by: { $0.absoluteString < $1.absoluteString })
+  )
+
+  static let ALL_KNOWN_HENTAI_365_BASE_URLS: OrderedSet<URL> = .init(
+    [
+      URL(string: "https://hentai365.ru")!,
+      URL(string: "https://h365-art.org")!,
+    ].sorted(by: { $0.absoluteString < $1.absoluteString })
+  )
+
+  static let ALL_KNOWN_ANIME_365_AND_HENTAI_365_BASE_URLS: OrderedSet<URL> = .init(
+    [
+      URL(string: "https://anime365.ru")!,
+      URL(string: "https://anime-365.ru")!,
+      URL(string: "https://smotret-anime.app")!,
+      URL(string: "https://smotret-anime.org")!,
+      URL(string: "https://smotret-anime.com")!,
+      URL(string: "https://smotret-anime.online")!,
+      URL(string: "https://smotret-anime.net")!,
+      URL(string: "https://smotret-anime.ru")!,
+      URL(string: "https://smotretanime.ru")!,
+      URL(string: "https://hentai365.ru")!,
+      URL(string: "https://h365-art.org")!,
     ].sorted(by: { $0.absoluteString < $1.absoluteString })
   )
 
@@ -33,6 +56,10 @@ actor Anime365BaseURL {
     }
 
     return userDefaults
+  }
+
+  static func isAdultDomain(_ baseURL: URL) -> Bool {
+    Self.ALL_KNOWN_HENTAI_365_BASE_URLS.contains(baseURL)
   }
 
   func get() -> URL {

@@ -46,6 +46,8 @@ struct ProfileView: View {
   @AppStorage(AnimeListEntriesCount.UserDefaultsKey.ON_HOLD) private var animeListEntriesCountOnHold: Int = 0
   @AppStorage(AnimeListEntriesCount.UserDefaultsKey.DROPPED) private var animeListEntriesCountDropped: Int = 0
   @AppStorage(AnimeListEntriesCount.UserDefaultsKey.PLANNED) private var animeListEntriesCountPlanned: Int = 0
+  @AppStorage(RevealHiddenAnime365Domains.UserDefaultsKey.VISIBILITY) private var revealHiddenAnime365Domains: Bool =
+    false
 
   @State private var viewModel: ProfileViewModel = .init()
   @State private var showAuthenticationSheet: Bool = false
@@ -179,11 +181,29 @@ struct ProfileView: View {
         }
 
         Picker("Адрес сайта", selection: self.$anime365BaseURL) {
-          ForEach(Anime365BaseURL.ALL_KNOWN_ANIME_365_BASE_URLS, id: \.self) { anime365BaseURL in
+          ForEach(
+            self.revealHiddenAnime365Domains
+              ? Anime365BaseURL.ALL_KNOWN_ANIME_365_AND_HENTAI_365_BASE_URLS
+              : Anime365BaseURL.ALL_KNOWN_ANIME_365_BASE_URLS,
+            id: \.self
+          ) { anime365BaseURL in
             Text(anime365BaseURL.host()!)
           }
         }
         .pickerStyle(.navigationLink)
+        .contextMenu(menuItems: {
+          if self.revealHiddenAnime365Domains {
+            Button("Скрыть скрытые домены", systemImage: "eye.slash") {
+              self.revealHiddenAnime365Domains = false
+            }
+          }
+          else {
+            Button("Показать скрытые домены", systemImage: "eye") {
+              self.revealHiddenAnime365Domains = true
+            }
+          }
+
+        })
       } header: {
         Text("Настройки приложения")
       } footer: {

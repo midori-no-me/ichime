@@ -202,6 +202,21 @@ struct AiringSeason: Comparable, Equatable {
   //    self.year = year
   //  }
 
+  init(monthNumber: Int, year: Int) {
+    switch monthNumber {
+    case 1, 2, 3:  // January, February, March
+      self.calendarSeason = .winter
+    case 4, 5, 6:  // April, May, June
+      self.calendarSeason = .spring
+    case 7, 8, 9:  // July, August, September
+      self.calendarSeason = .summer
+    default:  // October, November, December
+      self.calendarSeason = .autumn
+    }
+
+    self.year = year
+  }
+
   static func < (lhs: Self, rhs: Self) -> Bool {
     if lhs.year < rhs.year {
       return true

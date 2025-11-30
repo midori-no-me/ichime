@@ -79,7 +79,8 @@ struct ShowService {
 
   func getOngoings(
     offset: Int,
-    limit: Int
+    limit: Int,
+    adultOnly: Bool,
   ) async throws -> OrderedSet<ShowPreview> {
     let visibilityOna = OngoingsVisibilityOna.get()
 
@@ -89,7 +90,7 @@ struct ShowService {
       Anime365Kit.SeriesType.music,
     ]
 
-    if visibilityOna == .hide {
+    if !adultOnly && visibilityOna == .hide {
       hiddenTypes.insert(Anime365Kit.SeriesType.ona)
     }
 
@@ -132,13 +133,15 @@ struct ShowService {
 
   func getMostPopular(
     page: Int,
-    limit: Int
+    limit: Int,
+    adultOnly: Bool,
   ) async throws -> OrderedSet<ShowPreviewShikimori> {
     let response = try await shikimoriGraphQLClient.getPreviews(
       page: page,
       limit: limit,
       order: "popularity",
-      censored: true
+      censored: !adultOnly,
+      rating: adultOnly ? "rx" : nil,
     )
 
     return .init(
@@ -152,7 +155,8 @@ struct ShowService {
 
   func getNextSeason(
     page: Int,
-    limit: Int
+    limit: Int,
+    adultOnly: Bool,
   ) async throws -> OrderedSet<ShowPreviewShikimori> {
     let showSeasonService = ShowSeasonService()
     let nextSeason = showSeasonService.getRelativeSeason(shift: ShowSeasonService.NEXT_SEASON)
@@ -162,7 +166,8 @@ struct ShowService {
       limit: limit,
       order: "popularity",
       season: "\(nextSeason.calendarSeason.getShikimoriApiName())_\(nextSeason.year)",
-      censored: true
+      censored: !adultOnly,
+      rating: adultOnly ? "rx" : nil,
     )
 
     return .init(
@@ -176,13 +181,15 @@ struct ShowService {
 
   func getRandom(
     page: Int,
-    limit: Int
+    limit: Int,
+    adultOnly: Bool,
   ) async throws -> OrderedSet<ShowPreviewShikimori> {
     let response = try await shikimoriGraphQLClient.getPreviews(
       page: page,
       limit: limit,
       order: "random",
-      censored: true
+      censored: !adultOnly,
+      rating: adultOnly ? "rx" : nil,
     )
 
     return .init(

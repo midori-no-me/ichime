@@ -90,6 +90,9 @@ private final class TopScoredSectionViewModel {
 struct TopScoredSection: View {
   @State private var viewModel: TopScoredSectionViewModel = .init()
 
+  @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
+    var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+
   var body: some View {
     SectionWithCards(title: "С высоким рейтингом") {
       ScrollView(.horizontal) {
@@ -143,6 +146,7 @@ struct TopScoredSection: View {
             ShowCardAnime365(
               show: show,
               displaySeason: !Self.isCurrentSeason(show: show),
+              hiddenKindChips: Anime365BaseURL.isAdultDomain(self.anime365BaseURL) ? .init([.ova]) : .init([.tv]),
             )
           }
         }

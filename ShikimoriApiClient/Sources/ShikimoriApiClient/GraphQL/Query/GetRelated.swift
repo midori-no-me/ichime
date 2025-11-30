@@ -28,6 +28,7 @@ extension GraphQLClient {
               russian
               kind
               score
+              airedOn { month, year }
               season
               poster {
                 previewAlt2xUrl
