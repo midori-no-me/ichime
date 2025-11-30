@@ -156,6 +156,7 @@ struct ShowMomentsSection: View {
         }
       }
       .scrollClipDisabled()
+      .scrollIndicators(.hidden)
     }
   }
 }

@@ -166,6 +166,7 @@ struct MostPopularSection: View {
         }
       }
       .scrollClipDisabled()
+      .scrollIndicators(.hidden)
     }
   }
 

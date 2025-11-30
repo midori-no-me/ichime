@@ -30,7 +30,15 @@ struct ShowCardAnime365: View {
         secondaryTitle: self.show.title.getRussian()
       )
     }
+    #if os(tvOS)
     .buttonStyle(.borderless)
+    #else
+    .clipShape(.rect(cornerRadius: 16, style: .continuous))
+    .overlay(
+      RoundedRectangle(cornerRadius: 16, style: .continuous)
+        .stroke(.secondary.opacity(0.5), lineWidth: 1)
+        )
+    #endif
     .contextMenu {
       NavigationLink(destination: ShowView(showId: self.show.id, onOpened: self.onOpened)) {
         Label(self.show.title.getRomajiOrFullName(), systemImage: "info.circle")

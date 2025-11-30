@@ -113,6 +113,7 @@ struct StaffMemberCardsSection: View {
         }
       }
       .scrollClipDisabled()
+      .scrollIndicators(.hidden)
     }
   }
 }

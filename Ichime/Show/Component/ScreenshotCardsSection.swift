@@ -161,6 +161,7 @@ struct ScreenshotCardsSection: View {
         }
       }
       .scrollClipDisabled()
+      .scrollIndicators(.hidden)
     }
   }
 }

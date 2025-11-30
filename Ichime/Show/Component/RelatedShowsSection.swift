@@ -123,7 +123,10 @@ struct RelatedShowsSection: View {
         }
       }
     }
+#if os(tvOS)
     .focusSection()
+    #endif
     .scrollClipDisabled()
+    .scrollIndicators(.hidden)
   }
 }

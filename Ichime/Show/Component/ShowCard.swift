@@ -2,8 +2,13 @@ import SwiftUI
 
 struct ShowCard: View {
   static let RECOMMENDED_ASPECT_RATIO: CGFloat = 0.7123
+  #if os(tvOS)
   static let RECOMMENDED_SPACING: CGFloat = 40
-  static let RECOMMENDED_COUNT_PER_ROW: Int = 5
+  #else
+  static let RECOMMENDED_SPACING: CGFloat = 16
+  #endif
+  static let RECOMMENDED_COUNT_PER_ROW_REGULAR: Int = 5
+  static let RECOMMENDED_COUNT_PER_ROW_COMPACT: Int = 3
 
   @Environment(\.isFocused) private var isFocused
   @State private var title: String
@@ -42,6 +47,7 @@ struct ShowCard: View {
 
       VStack(alignment: .leading, spacing: 8) {
         if !self.topChips.isEmpty {
+          #if os(tvOS)
           HStack(alignment: .center, spacing: Chip.RECOMMENDED_SPACING) {
             ForEach(self.topChips, id: \.self) { topChip in
               Chip.filled(label: topChip)
@@ -49,26 +55,47 @@ struct ShowCard: View {
           }
           .padding(.top)
           .padding(.horizontal)
+          #else
+          Chip.filled(label: self.topChips.joined(separator: " • "))
+            .padding(.top, 8)
+            .padding(.horizontal, 8)
+          #endif
         }
 
         Spacer()
 
         if !self.bottomChips.isEmpty {
-          HStack(alignment: .center, spacing: Chip.RECOMMENDED_SPACING) {
-            ForEach(self.bottomChips, id: \.self) { bottomChip in
-              Chip.filled(label: bottomChip)
-            }
-          }
-          .padding(.horizontal)
+#if os(tvOS)
+HStack(alignment: .center, spacing: Chip.RECOMMENDED_SPACING) {
+  ForEach(self.bottomChips, id: \.self) { bottonChip in
+    Chip.filled(label: bottonChip)
+  }
+}
+.padding(.horizontal)
+#else
+Chip.filled(label: self.bottomChips.joined(separator: " • "))
+  .padding(.horizontal, 8)
+#endif
         }
 
         Text(self.title)
           .frame(maxWidth: .infinity, alignment: .topLeading)
           .foregroundStyle(.white)
+          .multilineTextAlignment(.leading)
+#if os(tvOS)
           .font(.caption)
+        #else
+          .font(.caption2)
+        #endif
+        
           .lineLimit(2)
+        #if os(tvOS)
           .padding(.horizontal, 18)
           .padding(.bottom)
+        #else
+          .padding(.horizontal, 8)
+          .padding(.bottom, 8)
+        #endif
           .id(self.title)
           .transition(.push(from: self.isFocused ? .bottom : .top))
       }
@@ -167,7 +194,7 @@ struct ShowCard: View {
       LazyVGrid(
         columns: Array(
           repeating: GridItem(.flexible(), spacing: ShowCard.RECOMMENDED_SPACING),
-          count: ShowCard.RECOMMENDED_COUNT_PER_ROW
+          count: ShowCard.RECOMMENDED_COUNT_PER_ROW_REGULAR
         ),
         spacing: ShowCard.RECOMMENDED_SPACING
       ) {
@@ -224,13 +251,14 @@ struct ShowCard: View {
             )
             .containerRelativeFrame(
               .horizontal,
-              count: ShowCard.RECOMMENDED_COUNT_PER_ROW,
+              count: ShowCard.RECOMMENDED_COUNT_PER_ROW_REGULAR,
               span: 1,
               spacing: ShowCard.RECOMMENDED_SPACING
             )
           }
         }
         .scrollClipDisabled()
+        .scrollIndicators(.hidden)
       }
     }
     .background(Color.gray.ignoresSafeArea())

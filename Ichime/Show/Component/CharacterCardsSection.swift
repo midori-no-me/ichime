@@ -113,6 +113,7 @@ struct CharacterCardsSection: View {
         }
       }
       .scrollClipDisabled()
+      .scrollIndicators(.hidden)
     }
   }
 }

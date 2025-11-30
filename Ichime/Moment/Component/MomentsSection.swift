@@ -162,6 +162,7 @@ struct MomentsSection: View {
         }
       }
       .scrollClipDisabled()
+      .scrollIndicators(.hidden)
     }
   }
 

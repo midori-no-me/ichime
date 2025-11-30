@@ -4,6 +4,7 @@ struct ShowCardHStack<InputData: Hashable & Equatable, Content: View>: View {
   let cards: [InputData]
   let loadMore: (() async -> Void)?
   let renderCard: (InputData) -> Content
+  @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
   var body: some View {
     LazyHStack(alignment: .top, spacing: ShowCard.RECOMMENDED_SPACING) {
@@ -12,7 +13,7 @@ struct ShowCardHStack<InputData: Hashable & Equatable, Content: View>: View {
           .aspectRatio(ShowCard.RECOMMENDED_ASPECT_RATIO, contentMode: .fit)
           .containerRelativeFrame(
             .horizontal,
-            count: ShowCard.RECOMMENDED_COUNT_PER_ROW,
+            count: horizontalSizeClass == .regular ? ShowCard.RECOMMENDED_COUNT_PER_ROW_REGULAR : ShowCard.RECOMMENDED_COUNT_PER_ROW_COMPACT,
             span: 1,
             spacing: ShowCard.RECOMMENDED_SPACING
           )
@@ -27,9 +28,11 @@ struct ShowCardHStack<InputData: Hashable & Equatable, Content: View>: View {
 }
 
 struct ShowCardHStackInteractiveSkeleton: View {
+  @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
   var body: some View {
     ShowCardHStack(
-      cards: Array(1...ShowCard.RECOMMENDED_COUNT_PER_ROW),
+      cards: Array(1...(horizontalSizeClass == .regular ? ShowCard.RECOMMENDED_COUNT_PER_ROW_REGULAR : ShowCard.RECOMMENDED_COUNT_PER_ROW_COMPACT)),
       loadMore: nil
     ) { index in
       ShowCard.placeholder()
@@ -42,6 +45,7 @@ struct ShowCardHStackContentUnavailable<Label: View, Description: View, Actions:
   private let label: () -> Label
   private let description: () -> Description
   private let actions: () -> Actions
+  @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
   init(
     @ViewBuilder label: @escaping () -> Label,
@@ -55,7 +59,7 @@ struct ShowCardHStackContentUnavailable<Label: View, Description: View, Actions:
 
   var body: some View {
     ShowCardHStack(
-      cards: Array(1...ShowCard.RECOMMENDED_COUNT_PER_ROW),
+      cards: Array(1...(horizontalSizeClass == .regular ? ShowCard.RECOMMENDED_COUNT_PER_ROW_REGULAR : ShowCard.RECOMMENDED_COUNT_PER_ROW_COMPACT)),
       loadMore: nil
     ) { index in
       ShowCard.placeholder()

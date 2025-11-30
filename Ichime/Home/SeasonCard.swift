@@ -87,7 +87,9 @@ struct SeasonCard: View {
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
+#if os(tvOS)
     .buttonStyle(.card)
+    #endif
   }
 }
 
@@ -115,6 +117,7 @@ struct SeasonCard: View {
           }
         }
         .scrollClipDisabled()
+        .scrollIndicators(.hidden)
       }
     }
     .background(Color.gray.ignoresSafeArea())

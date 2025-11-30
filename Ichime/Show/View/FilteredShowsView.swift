@@ -136,7 +136,7 @@ struct FilteredShowsView: View {
           LazyVGrid(
             columns: Array(
               repeating: GridItem(.flexible(), spacing: ShowCard.RECOMMENDED_SPACING),
-              count: ShowCard.RECOMMENDED_COUNT_PER_ROW
+              count: ShowCard.RECOMMENDED_COUNT_PER_ROW_REGULAR
             ),
             spacing: ShowCard.RECOMMENDED_SPACING
           ) {

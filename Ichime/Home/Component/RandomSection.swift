@@ -166,6 +166,7 @@ struct RandomSection: View {
         }
       }
       .scrollClipDisabled()
+      .scrollIndicators(.hidden)
     }
   }
 }
