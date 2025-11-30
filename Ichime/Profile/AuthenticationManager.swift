@@ -36,7 +36,7 @@ actor AuthenticationManager {
     }
     catch {
       if case Anime365Kit.WebClientError.authenticationRequired = error {
-        currentUserStore.user = nil
+        currentUserStore.setUser(user: nil)
 
         return
       }
@@ -44,7 +44,7 @@ actor AuthenticationManager {
       throw error
     }
 
-    currentUserStore.user = User(id: profile.id, name: profile.name, avatar: profile.avatarURL)
+    currentUserStore.setUser(user: .init(id: profile.id, name: profile.name, avatar: profile.avatarURL))
   }
 
   @MainActor
@@ -75,7 +75,7 @@ actor AuthenticationManager {
       throw .unknown
     }
 
-    currentUserStore.user = User(id: profile.id, name: profile.name, avatar: profile.avatarURL)
+    currentUserStore.setUser(user: .init(id: profile.id, name: profile.name, avatar: profile.avatarURL))
   }
 
   @MainActor
@@ -87,6 +87,6 @@ actor AuthenticationManager {
       cookieStorage?.deleteCookie(cookie)
     }
 
-    currentUserStore.user = nil
+    currentUserStore.setUser(user: nil)
   }
 }
