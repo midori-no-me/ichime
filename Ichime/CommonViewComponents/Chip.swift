@@ -8,8 +8,7 @@ struct Chip {
       .font(.caption2)
       .padding(.horizontal, 8)
       .padding(.vertical, 4)
-      .background(.ultraThickMaterial)
-      .clipShape(RoundedRectangle(cornerRadius: 8))
+      .glassEffect()
   }
 
   static func outlined(label: String) -> some View {
