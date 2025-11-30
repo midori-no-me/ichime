@@ -3,12 +3,15 @@ import OrderedCollections
 
 enum AppIcon: CaseIterable {
   case anime365
+  case hentai365
   case gawrGura
 
   var systemIdentifier: String? {
     switch self {
     case .anime365:
       nil
+    case .hentai365:
+      "App Icon - Hentai 365"
     case .gawrGura:
       "App Icon - Gawr Gura"
     }
@@ -18,6 +21,8 @@ enum AppIcon: CaseIterable {
     switch self {
     case .anime365:
       "Anime 365"
+    case .hentai365:
+      "Hentai 365"
     case .gawrGura:
       "Gawr Gura"
     }

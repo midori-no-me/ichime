@@ -170,7 +170,8 @@ struct ProfileView: View {
 
         if UIApplication.shared.supportsAlternateIcons {
           Picker("Иконка приложения", selection: self.$currentAppIcon) {
-            ForEach(AppIcon.allCases, id: \.self) { appIcon in
+            ForEach(AppIcon.allCases.filter({ self.revealHiddenAnime365Domains ? true : $0 != .hentai365 }), id: \.self)
+            { appIcon in
               Text(appIcon.name)
             }
           }

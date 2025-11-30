@@ -69,6 +69,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: dev.midorinome.ichime # Bundle ID этого таргета
         ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: >
           "App Icon - Gawr Gura"
+          "App Icon - Hentai 365"
       configs:
         Debug:
           ASSETCATALOG_COMPILER_APPICON_NAME: "App Icon & Top Shelf Image (Debug)"

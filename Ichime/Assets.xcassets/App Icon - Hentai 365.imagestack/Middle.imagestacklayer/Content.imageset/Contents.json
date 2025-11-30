@@ -1,0 +1,18 @@
+{
+  "images" : [
+    {
+      "filename" : "App Icon - Hentai 365 (Middle, 1x).png.png",
+      "idiom" : "tv",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "App Icon - Hentai 365 (Middle, 2x).png",
+      "idiom" : "tv",
+      "scale" : "2x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
