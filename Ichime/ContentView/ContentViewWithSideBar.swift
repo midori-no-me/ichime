@@ -3,11 +3,7 @@ import SwiftUI
 
 struct ContentViewWithSideBar: View {
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
-  @AppStorage(CurrentUserInfo.UserDefaultsKey.NAME) private var userName: String?
-  @AppStorage(CurrentUserInfo.UserDefaultsKey.AVATAR_URL_PATH) private var avatarUrlPath: String?
-
-  @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
-    var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+  @Environment(\.currentUserStore) private var currentUserStore
 
   var body: some View {
     TabView(selection: self.$selectedTab) {
@@ -35,16 +31,16 @@ struct ContentViewWithSideBar: View {
         }
       } label: {
         Label(title: {
-          if let userName {
+          if let userName = currentUserStore.user?.name {
             Text(userName)
           }
           else {
             Text("Профиль")
           }
         }) {
-          if let avatarUrlPath = self.avatarUrlPath {
+          if let avatarUrl = currentUserStore.user?.avatar {
             AsyncImage(
-              url: self.anime365BaseURL.appendingPathComponent(avatarUrlPath),
+              url: avatarUrl,
               transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
             ) { phase in
               switch phase {

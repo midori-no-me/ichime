@@ -87,18 +87,13 @@ final class ApplicationDependency: DIFramework {
     container.register {
       AuthenticationManager(
         anime365KitFactory: $0,
-        currentUserInfo: $1,
-        animeListEntriesCount: $2,
-        urlSession: $3
+        animeListEntriesCount: $1,
+        urlSession: $2
       )
     }
 
     container.register {
       Anime365BaseURL()
-    }
-
-    container.register {
-      CurrentUserInfo()
     }
 
     container.register {

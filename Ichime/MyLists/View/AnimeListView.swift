@@ -26,6 +26,7 @@ private final class AnimeListViewModel {
   }
 
   func performInitialLoad(
+    currentUserId: Int?,
     userId: Int,
     category: AnimeListCategory
   ) async {
@@ -43,7 +44,7 @@ private final class AnimeListViewModel {
       else {
         self.state = .loaded(animeListEntriesGroups)
 
-        if UserDefaults.standard.integer(forKey: CurrentUserInfo.UserDefaultsKey.ID) == userId {
+        if currentUserId == userId {
           await self.animeListEntriesCount.save(
             count: count,
             category: category
@@ -57,6 +58,7 @@ private final class AnimeListViewModel {
   }
 
   func performRefresh(
+    currentUserId: Int?,
     userId: Int,
     category: AnimeListCategory
   ) async {
@@ -72,7 +74,7 @@ private final class AnimeListViewModel {
       else {
         self.state = .loaded(animeListEntriesGroups)
 
-        if UserDefaults.standard.integer(forKey: CurrentUserInfo.UserDefaultsKey.ID) == userId {
+        if currentUserId == userId {
           await self.animeListEntriesCount.save(
             count: count,
             category: category
@@ -91,6 +93,7 @@ struct AnimeListView: View {
   let animeListCategory: AnimeListCategory
 
   @State private var viewModel: AnimeListViewModel = .init()
+  @Environment(\.currentUserStore) private var currentUserStore
 
   var body: some View {
     Group {
@@ -99,6 +102,7 @@ struct AnimeListView: View {
         Color.clear.onAppear {
           Task {
             await self.viewModel.performInitialLoad(
+              currentUserId: self.currentUserStore.user?.id,
               userId: self.userId,
               category: self.animeListCategory
             )
@@ -119,6 +123,7 @@ struct AnimeListView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
+                currentUserId: self.currentUserStore.user?.id,
                 userId: self.userId,
                 category: self.animeListCategory
               )
@@ -138,6 +143,7 @@ struct AnimeListView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
+                currentUserId: self.currentUserStore.user?.id,
                 userId: self.userId,
                 category: self.animeListCategory
               )
@@ -156,7 +162,11 @@ struct AnimeListView: View {
                 AnimeListEntryRowView(
                   animeListEntry: animeListEntry,
                   onUpdate: {
-                    await self.viewModel.performRefresh(userId: self.userId, category: self.animeListCategory)
+                    await self.viewModel.performRefresh(
+                      currentUserId: self.currentUserStore.user?.id,
+                      userId: self.userId,
+                      category: self.animeListCategory
+                    )
                   }
                 )
               }
@@ -170,6 +180,7 @@ struct AnimeListView: View {
         .refreshOnAppear {
           Task {
             await self.viewModel.performRefresh(
+              currentUserId: self.currentUserStore.user?.id,
               userId: self.userId,
               category: self.animeListCategory
             )

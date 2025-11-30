@@ -3,7 +3,7 @@ import SwiftUI
 
 struct ContentViewWithTabBar: View {
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
-  @AppStorage(CurrentUserInfo.UserDefaultsKey.NAME) private var userName: String?
+  @Environment(\.currentUserStore) private var currentUserStore
 
   var body: some View {
     TabView(selection: self.$selectedTab) {
@@ -36,7 +36,7 @@ struct ContentViewWithTabBar: View {
           ProfileView()
         }
       } label: {
-        if let userName {
+        if let userName = currentUserStore.user?.name {
           Text(userName)
         }
         else {

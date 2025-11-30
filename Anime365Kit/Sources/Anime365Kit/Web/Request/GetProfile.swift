@@ -16,6 +16,10 @@ extension WebClient {
       throw .couldNotParseHtml
     }
 
+    if html.contains("Вход по паролю") {
+      throw .authenticationRequired
+    }
+
     let profileIdString = html.firstMatch(of: #/ID аккаунта: (?<accountId>\d+)/#)?.output.accountId
 
     guard let profileIdString else {

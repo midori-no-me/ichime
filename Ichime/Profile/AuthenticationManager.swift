@@ -8,30 +8,57 @@ enum AuthenticationError: Error {
 
 actor AuthenticationManager {
   private let anime365KitFactory: Anime365KitFactory
-  private let currentUserInfo: CurrentUserInfo
   private let animeListEntriesCount: AnimeListEntriesCount
   private let urlSession: URLSession
 
   init(
     anime365KitFactory: Anime365KitFactory,
-    currentUserInfo: CurrentUserInfo,
     animeListEntriesCount: AnimeListEntriesCount,
     urlSession: URLSession
   ) {
     self.anime365KitFactory = anime365KitFactory
-    self.currentUserInfo = currentUserInfo
     self.animeListEntriesCount = animeListEntriesCount
     self.urlSession = urlSession
   }
 
+  @MainActor
+  func fetchCurrentUser(
+    currentUserStore: CurrentUserStore,
+    baseURL: URL,
+  ) async throws -> Void {
+    let anime365WebClient = await self.anime365KitFactory
+      .createWebClient(withBaseURL: baseURL)
+
+    let profile: Profile
+
+    do {
+      profile = try await anime365WebClient.getProfile()
+    }
+    catch {
+      if case Anime365Kit.WebClientError.authenticationRequired = error {
+        currentUserStore.user = nil
+
+        return
+      }
+
+      throw error
+    }
+
+    currentUserStore.user = User(id: profile.id, name: profile.name, avatar: profile.avatarURL)
+  }
+
+  @MainActor
   func authenticate(
+    currentUserStore: CurrentUserStore,
+    baseURL: URL,
     email: String,
     password: String
   ) async throws(AuthenticationError) -> Void {
+    let anime365WebClient = await self.anime365KitFactory
+      .createWebClient(withBaseURL: baseURL)
+
     do {
-      try await self.anime365KitFactory
-        .createWebClient()
-        .login(username: email, password: password)
+      try await anime365WebClient.login(username: email, password: password)
     }
     catch {
       switch error {
@@ -42,28 +69,24 @@ actor AuthenticationManager {
       }
     }
 
-    let profile = try? await self.anime365KitFactory
-      .createWebClient()
-      .getProfile()
+    let profile = try? await anime365WebClient.getProfile()
 
     guard let profile else {
       throw .unknown
     }
 
-    await self.currentUserInfo.save(
-      id: profile.id,
-      name: profile.name,
-      avatarURLPath: profile.avatarURL.path()
-    )
+    currentUserStore.user = User(id: profile.id, name: profile.name, avatar: profile.avatarURL)
   }
 
-  func logout() async -> Void {
-    await self.currentUserInfo.clear()
+  @MainActor
+  func logout(currentUserStore: CurrentUserStore) async -> Void {
     await self.animeListEntriesCount.clear()
 
     let cookieStorage = self.urlSession.configuration.httpCookieStorage
     for cookie in cookieStorage?.cookies ?? [] {
       cookieStorage?.deleteCookie(cookie)
     }
+
+    currentUserStore.user = nil
   }
 }

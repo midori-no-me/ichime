@@ -10,15 +10,13 @@ private final class ProfileViewModel {
     self.authenticationManager = authenticationManager
   }
 
-  func logout() async -> Void {
-    await self.authenticationManager.logout()
+  func logout(currentUserStore: CurrentUserStore) async -> Void {
+    await self.authenticationManager.logout(currentUserStore: currentUserStore)
   }
 }
 
 struct ProfileView: View {
-  @AppStorage(CurrentUserInfo.UserDefaultsKey.ID) private var userId: Int?
-  @AppStorage(CurrentUserInfo.UserDefaultsKey.NAME) private var userName: String?
-  @AppStorage(CurrentUserInfo.UserDefaultsKey.AVATAR_URL_PATH) private var userAvatarURLPath: String?
+  @Environment(\.currentUserStore) private var currentUserStore
 
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
@@ -70,9 +68,9 @@ struct ProfileView: View {
 
   var body: some View {
     List {
-      if let userId {
+      if let currentUser = self.currentUserStore.user {
         Section("Мой список") {
-          NavigationLink(destination: AnimeListView(userId: userId, animeListCategory: .watching)) {
+          NavigationLink(destination: AnimeListView(userId: currentUser.id, animeListCategory: .watching)) {
             HStack {
               Text(AnimeListCategory.watching.label)
 
@@ -85,7 +83,7 @@ struct ProfileView: View {
             }
           }
 
-          NavigationLink(destination: AnimeListView(userId: userId, animeListCategory: .completed)) {
+          NavigationLink(destination: AnimeListView(userId: currentUser.id, animeListCategory: .completed)) {
             HStack {
               Text(AnimeListCategory.completed.label)
 
@@ -98,7 +96,7 @@ struct ProfileView: View {
             }
           }
 
-          NavigationLink(destination: AnimeListView(userId: userId, animeListCategory: .onHold)) {
+          NavigationLink(destination: AnimeListView(userId: currentUser.id, animeListCategory: .onHold)) {
             HStack {
               Text(AnimeListCategory.onHold.label)
 
@@ -111,7 +109,7 @@ struct ProfileView: View {
             }
           }
 
-          NavigationLink(destination: AnimeListView(userId: userId, animeListCategory: .dropped)) {
+          NavigationLink(destination: AnimeListView(userId: currentUser.id, animeListCategory: .dropped)) {
             HStack {
               Text(AnimeListCategory.dropped.label)
 
@@ -124,7 +122,7 @@ struct ProfileView: View {
             }
           }
 
-          NavigationLink(destination: AnimeListView(userId: userId, animeListCategory: .planned)) {
+          NavigationLink(destination: AnimeListView(userId: currentUser.id, animeListCategory: .planned)) {
             HStack {
               Text(AnimeListCategory.planned.label)
 
@@ -140,10 +138,10 @@ struct ProfileView: View {
       }
 
       Section("Настройки аккаунта") {
-        if userId != nil {
+        if self.currentUserStore.user != nil {
           Button("Выйти из аккаунта", role: .destructive) {
             Task {
-              await self.viewModel.logout()
+              await self.viewModel.logout(currentUserStore: self.currentUserStore)
             }
           }
         }
@@ -189,7 +187,9 @@ struct ProfileView: View {
       } header: {
         Text("Настройки приложения")
       } footer: {
-        Text("Если приложение работает некорректно, попробуйте поменять адрес сайта.")
+        Text(
+          "Если приложение работает некорректно, попробуйте поменять адрес сайта. Может потребоваться повторная авторизация."
+        )
       }
 
       Section {
@@ -269,7 +269,7 @@ struct ProfileView: View {
           .foregroundStyle(Color(UIColor.systemGray))
           .overlay(
             AsyncImage(
-              url: self.userAvatarURLPath != nil ? self.anime365BaseURL.appending(path: self.userAvatarURLPath!) : nil,
+              url: self.currentUserStore.user?.avatar,
               transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
             ) { phase in
               switch phase {
@@ -292,7 +292,7 @@ struct ProfileView: View {
           )
           .clipShape(.circle)
 
-        Text(self.userName ?? "Гость")
+        Text(self.currentUserStore.user?.name ?? "Гость")
           .font(.headline)
           .fontWeight(.bold)
       }

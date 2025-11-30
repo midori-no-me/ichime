@@ -6,7 +6,9 @@ import SwiftUI
 struct IchimeApp: App {
   var body: some Scene {
     WindowGroup {
-      ContentView()
+      AuthenticatedUserWrapperView {
+        ContentView()
+      }
     }
   }
 }

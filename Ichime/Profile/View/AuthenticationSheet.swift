@@ -16,9 +16,11 @@ private final class AuthenticationSheetViewModel {
     self.authenticationManager = authenticationManager
   }
 
-  func performAuthentication() async -> Bool {
+  func performAuthentication(currentUserStore: CurrentUserStore, baseURL: URL) async -> Bool {
     do {
       try await self.authenticationManager.authenticate(
+        currentUserStore: currentUserStore,
+        baseURL: baseURL,
         email: self.email,
         password: self.password
       )
@@ -47,6 +49,7 @@ struct AuthenticationSheet: View {
   @State private var viewModel: AuthenticationSheetViewModel = .init()
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+  @Environment(\.currentUserStore) private var currentUserStore
   @Environment(\.dismiss) private var dismissSheet
 
   let onSuccessfulAuth: (() -> Void)?
@@ -76,7 +79,10 @@ struct AuthenticationSheet: View {
       Section {
         Button("Войти") {
           Task {
-            if await self.viewModel.performAuthentication() {
+            if await self.viewModel.performAuthentication(
+              currentUserStore: self.currentUserStore,
+              baseURL: self.anime365BaseURL
+            ) {
               self.dismissSheet()
 
               if let onSuccessfulAuth = self.onSuccessfulAuth {

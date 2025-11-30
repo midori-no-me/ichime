@@ -24,6 +24,14 @@ struct Anime365KitFactory: Sendable {
     )
   }
 
+  func createWebClient(withBaseURL: URL) async -> Anime365Kit.WebClient {
+    .init(
+      baseURL: withBaseURL,
+      logger: self.logger,
+      urlSession: self.urlSession
+    )
+  }
+
   func createApiClient() async -> Anime365Kit.ApiClient {
     .init(
       baseURL: await self.anime365BaseURL.get(),
