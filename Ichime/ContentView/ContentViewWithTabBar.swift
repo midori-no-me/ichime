@@ -25,14 +25,14 @@ struct ContentViewWithTabBar: View {
         } label: {
           Text("К просмотру")
         }
+      }
 
-        Tab(value: .calendar) {
-          NavigationStackWithRouter {
-            CalendarView()
-          }
-        } label: {
-          Text("Календарь")
+      Tab(value: .calendar) {
+        NavigationStackWithRouter {
+          CalendarView()
         }
+      } label: {
+        Text("Календарь")
       }
 
       Tab(value: .profile) {

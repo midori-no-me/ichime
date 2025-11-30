@@ -33,7 +33,8 @@ final class ContentProvider: TVTopShelfContentProvider {
 
   private static var showReleaseSchedule: ShowReleaseSchedule {
     .init(
-      shikimoriApiClient: self.shikimoriApiClient
+      shikimoriApiClient: self.shikimoriApiClient,
+      anime365BaseURL: self.anime365BaseURL,
     )
   }
 

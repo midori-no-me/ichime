@@ -4,11 +4,14 @@ import ShikimoriApiClient
 
 struct ShowReleaseSchedule: Sendable {
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
+  private let anime365BaseURL: Anime365BaseURL
 
   init(
-    shikimoriApiClient: ShikimoriApiClient.ApiClient
+    shikimoriApiClient: ShikimoriApiClient.ApiClient,
+    anime365BaseURL: Anime365BaseURL
   ) {
     self.shikimoriApiClient = shikimoriApiClient
+    self.anime365BaseURL = anime365BaseURL
   }
 
   func getSchedule() async -> OrderedSet<ShowsFromCalendarGroupedByDate> {
@@ -49,7 +52,9 @@ struct ShowReleaseSchedule: Sendable {
   private func getScheduleFromShikimori() async throws -> Set<ShowFromCalendarWithExactReleaseDate> {
     var items = Set<ShowFromCalendarWithExactReleaseDate>()
 
-    let shikimoriCalendarEntries = try await shikimoriApiClient.getCalendar()
+    let shikimoriCalendarEntries = try await shikimoriApiClient.getCalendar(
+      censored: !Anime365BaseURL.isAdultDomain(self.anime365BaseURL.get()),
+    )
 
     for shikimoriCalendarEntry in shikimoriCalendarEntries {
       let item = ShowFromCalendarWithExactReleaseDate(

@@ -65,7 +65,7 @@ final class ApplicationDependency: DIFramework {
     }
 
     container.register {
-      ShowReleaseSchedule(shikimoriApiClient: $0)
+      ShowReleaseSchedule(shikimoriApiClient: $0, anime365BaseURL: $1)
     }
 
     container.register {

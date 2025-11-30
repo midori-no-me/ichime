@@ -21,11 +21,11 @@ struct ContentViewWithSideBar: View {
             CurrentlyWatchingView()
           }
         }
+      }
 
-        Tab("Календарь", systemImage: "calendar", value: .calendar) {
-          NavigationStackWithRouter {
-            CalendarView()
-          }
+      Tab("Календарь", systemImage: "calendar", value: .calendar) {
+        NavigationStackWithRouter {
+          CalendarView()
         }
       }
 
