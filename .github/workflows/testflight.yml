@@ -32,9 +32,19 @@ jobs:
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
           # Import certificate and provisioning profiles from secrets
-          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
-          echo -n "$BUILD_PROVISION_PROFILE_ICHIME_BASE64" | base64 --decode -o $PP_ICHIME_PATH
-          echo -n "$BUILD_PROVISION_PROFILE_TOPSHELF_BASE64" | base64 --decode -o $PP_TOPSHELF_PATH
+          echo "$BUILD_CERTIFICATE_BASE64" | base64 -D -o $CERTIFICATE_PATH
+          echo "$BUILD_PROVISION_PROFILE_ICHIME_BASE64" | base64 -D -o $PP_ICHIME_PATH
+          echo "$BUILD_PROVISION_PROFILE_TOPSHELF_BASE64" | base64 -D -o $PP_TOPSHELF_PATH
+
+          # Verify files were created and are not empty
+          if [ ! -s "$PP_ICHIME_PATH" ]; then
+            echo "Error: Provisioning Profile (Ichime) is empty. Check PROVISIONING_PROFILE_ICHIME secret."
+            exit 1
+          fi
+          if [ ! -s "$PP_TOPSHELF_PATH" ]; then
+             echo "Error: Provisioning Profile (TopShelf) is empty. Check PROVISIONING_PROFILE_TOPSHELF secret."
+             exit 1
+          fi
 
           # Create temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
@@ -55,18 +65,18 @@ jobs:
         run: |
           # Extract profile names from the provisioning profiles
           # We use security cms to decode the profile (it is a signed plist)
-          
+
           PP_ICHIME_PATH=$RUNNER_TEMP/build_pp_ichime.mobileprovision
           PP_TOPSHELF_PATH=$RUNNER_TEMP/build_pp_topshelf.mobileprovision
-          
+
           # Extract names using PlistBuddy
           # Note: security cms -D -i ... outputs the plist content
           NAME_ICHIME=$(security cms -D -i "$PP_ICHIME_PATH" | /usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin)
           NAME_TOPSHELF=$(security cms -D -i "$PP_TOPSHELF_PATH" | /usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin)
-          
+
           echo "Found Profile Name (Ichime): $NAME_ICHIME"
           echo "Found Profile Name (TopShelf): $NAME_TOPSHELF"
-          
+
           # Generate ExportOptions.plist
           cat <<EOF > ExportOptions.plist
           <?xml version="1.0" encoding="UTF-8"?>
@@ -93,7 +103,7 @@ jobs:
           </dict>
           </plist>
           EOF
-          
+
           # Print for debugging (careful not to expose secrets if any, but here only names are used)
           cat ExportOptions.plist
 
@@ -123,8 +133,12 @@ jobs:
           ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
           API_PRIVATE_KEY_BASE64: ${{ secrets.APPLE_API_KEY }}
         run: |
-          API_KEY_PATH=$RUNNER_TEMP/AuthKey_${API_KEY_ID}.p8
-          echo -n "$API_PRIVATE_KEY_BASE64" | base64 --decode -o $API_KEY_PATH
+          # Create the private_keys directory where altool looks for the key
+          mkdir -p ~/private_keys
+
+          # Save the key with the required naming format: AuthKey_<KeyID>.p8
+          API_KEY_PATH=~/private_keys/AuthKey_${API_KEY_ID}.p8
+          echo "$API_PRIVATE_KEY_BASE64" | base64 -D -o $API_KEY_PATH
 
           xcrun altool --upload-app \
             -f build/Ichime.ipa \
