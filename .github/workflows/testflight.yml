@@ -64,15 +64,57 @@ jobs:
         id: export_options
         run: |
           # Extract profile names from the provisioning profiles
-          # We use security cms to decode the profile (it is a signed plist)
-
           PP_ICHIME_PATH=$RUNNER_TEMP/build_pp_ichime.mobileprovision
           PP_TOPSHELF_PATH=$RUNNER_TEMP/build_pp_topshelf.mobileprovision
 
-          # Extract names using PlistBuddy
-          # Note: security cms -D -i ... outputs the plist content
-          NAME_ICHIME=$(security cms -D -i "$PP_ICHIME_PATH" | /usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin)
-          NAME_TOPSHELF=$(security cms -D -i "$PP_TOPSHELF_PATH" | /usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin)
+          # Debug: Check file existence and type
+          echo "Checking provisioning profiles..."
+          ls -l "$PP_ICHIME_PATH" "$PP_TOPSHELF_PATH"
+          file "$PP_ICHIME_PATH"
+          file "$PP_TOPSHELF_PATH"
+
+          # Function to extract name with fallback
+          get_profile_name() {
+              local path=$1
+              local name=""
+
+              # Method 1: Try security cms (standard way)
+              # We suppress stderr to avoid confusion if it fails, but we will log if fallback is used
+              if decoded=$(security cms -D -i "$path" 2>/dev/null); then
+                  name=$(echo "$decoded" | /usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin 2>/dev/null)
+                  if [ -n "$name" ]; then
+                      echo "$name"
+                      return 0
+                  fi
+              fi
+
+              # Method 2: Fallback using strings and grep (robust for simple extraction)
+              echo "Warning: 'security cms' failed to decode profile at $path. Attempting fallback extraction." >&2
+              # Search for <key>Name</key> followed by <string>Value</string>
+              # We use tr to remove newlines to handle cases where they are on different lines easily,
+              # or just grep context. Let's stick to grep context on the raw strings output.
+              name=$(strings "$path" | grep -A1 "<key>Name</key>" | grep "<string>" | sed -E 's/.*<string>(.*)<\/string>.*/\1/' | head -n 1)
+
+              if [ -n "$name" ]; then
+                  echo "$name"
+                  return 0
+              fi
+
+              return 1
+          }
+
+          echo "Extracting profile names..."
+          NAME_ICHIME=$(get_profile_name "$PP_ICHIME_PATH")
+          NAME_TOPSHELF=$(get_profile_name "$PP_TOPSHELF_PATH")
+
+          if [ -z "$NAME_ICHIME" ]; then
+              echo "Error: Could not extract name from Ichime profile ($PP_ICHIME_PATH)"
+              exit 1
+          fi
+          if [ -z "$NAME_TOPSHELF" ]; then
+              echo "Error: Could not extract name from TopShelf profile ($PP_TOPSHELF_PATH)"
+              exit 1
+          fi
 
           echo "Found Profile Name (Ichime): $NAME_ICHIME"
           echo "Found Profile Name (TopShelf): $NAME_TOPSHELF"
