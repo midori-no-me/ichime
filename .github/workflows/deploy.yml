@@ -67,6 +67,7 @@ jobs:
           APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
           APPLE_API_ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
         run: |
+          echo $MATCH_PASSWORD
           cd fastlane
           bundle install
           bundle exec fastlane ios deploy version:$VERSION build_number:$BUILD_NUMBER
