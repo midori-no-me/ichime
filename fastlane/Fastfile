@@ -30,7 +30,21 @@ platform :ios do
       clean: true,
       export_method: "app-store",
       include_bitcode: false,
-      include_symbols: true
+      include_symbols: true,
+
+      # Переопределяем настройки подписи для CI
+      codesigning_identity: "Apple Distribution",
+      xcargs: "CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='' -allowProvisioningUpdates",
+
+      export_options: {
+        method: "app-store",
+        signingStyle: "manual",
+        teamID: "YBBAN7R28K",
+        provisioningProfiles: {
+          "dev.midorinome.ichime" => "match AppStore dev.midorinome.ichime tvos",
+          "dev.midorinome.ichime.TopShelf" => "match AppStore dev.midorinome.ichime.TopShelf tvos"
+        }
+      }
     )
 
     # Upload to TestFlight
@@ -75,14 +89,14 @@ platform :ios do
 
       # Переопределяем настройки подписи для архивирования:
       codesigning_identity: "Apple Distribution",
-      xcargs: "-allowProvisioningUpdates", # Разрешаем обновления профилей (хотя match делает это заранее)
+      xcargs: "CODE_SIGN_STYLE=Manual PROVISIONING_PROFILE_SPECIFIER='' -allowProvisioningUpdates",
 
       export_options: {
         method: "app-store",
         destination: "export",
         provisioningProfiles: {
-          "dev.midorinome.ichime" => "match AppStore dev.midorinome.ichime",
-          "dev.midorinome.ichime.TopShelf" => "match AppStore dev.midorinome.ichime.TopShelf"
+          "dev.midorinome.ichime" => "match AppStore dev.midorinome.ichime tvos",
+          "dev.midorinome.ichime.TopShelf" => "match AppStore dev.midorinome.ichime.TopShelf tvos"
         },
         signingStyle: "manual",
         teamID: "YBBAN7R28K"
