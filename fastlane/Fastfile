@@ -17,6 +17,7 @@ platform :ios do
     # Explicitly specifying readonly to ensure CI behavior
     match(
       type: 'appstore',
+      platform: 'tvos',
       readonly: is_ci,
       app_identifier: ["dev.midorinome.ichime", "dev.midorinome.ichime.TopShelf"]
     )
@@ -24,7 +25,8 @@ platform :ios do
     # Build the app
     build_app(
       workspace: "Ichime.xcodeproj/project.xcworkspace",
-      scheme: "Ichime",
+      scheme: "Ichime_tvOS",
+      destination: "generic/platform=tvOS",
       clean: true,
       export_method: "app-store",
       include_bitcode: false,
@@ -57,6 +59,7 @@ platform :ios do
 
     match(
       type: 'appstore',
+      platform: 'tvos',
       readonly: is_ci,
       app_identifier: ["dev.midorinome.ichime", "dev.midorinome.ichime.TopShelf"]
     )
@@ -64,7 +67,7 @@ platform :ios do
     # Build the app
     build_app(
       project: "Ichime.xcodeproj",
-      scheme: "Ichime", # Исправлено имя схемы
+      scheme: "Ichime_tvOS",
       destination: "generic/platform=tvOS",
       archive_path: "./build/Ichime.xcarchive",
       export_method: "app-store",
@@ -100,5 +103,9 @@ platform :ios do
     # Update project.yml
     sh("sed -i '' 's/MARKETING_VERSION: \".*\"/MARKETING_VERSION: \"#{version}\"/' ../project.yml")
     sh("sed -i '' 's/CURRENT_PROJECT_VERSION: [0-9]\\+/CURRENT_PROJECT_VERSION: #{build_number}/' ../project.yml")
+
+    # Regenerate Xcode project after updating version in project.yml
+    UI.message("🔄 Regenerating Xcode project with updated version...")
+    sh("cd .. && xcodegen generate")
   end
 end

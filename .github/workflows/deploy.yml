@@ -30,8 +30,11 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "push" ]; then
             VERSION=${GITHUB_REF#refs/tags/}
-          else
+          elif [ -n "${{ github.event.inputs.version }}" ]; then
             VERSION="${{ github.event.inputs.version }}"
+          else
+            # Fallback для pull_request и других событий без версии
+            VERSION="0.0.0-pr${{ github.event.pull_request.number }}"
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "BUILD_NUMBER=$((${{ github.run_number }} + 101000))" >> $GITHUB_ENV
