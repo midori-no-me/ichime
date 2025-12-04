@@ -22,6 +22,26 @@ platform :ios do
       app_identifier: ["dev.midorinome.ichime", "dev.midorinome.ichime.TopShelf"]
     )
 
+    # Явно устанавливаем provisioning profiles в Xcode проекте
+    # Это решает проблему https://github.com/fastlane/fastlane/issues/20165
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Ichime.xcodeproj",
+      team_id: "YBBAN7R28K",
+      code_sign_identity: "Apple Distribution",
+      targets: ["Ichime_tvOS"],
+      profile_name: "match AppStore dev.midorinome.ichime tvos"
+    )
+
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Ichime.xcodeproj",
+      team_id: "YBBAN7R28K",
+      code_sign_identity: "Apple Distribution",
+      targets: ["TopShelf_tvOS"],
+      profile_name: "match AppStore dev.midorinome.ichime.TopShelf tvos"
+    )
+
     # Build the app
     build_app(
       workspace: "Ichime.xcodeproj/project.xcworkspace",
@@ -76,6 +96,25 @@ platform :ios do
       platform: 'tvos',
       readonly: is_ci,
       app_identifier: ["dev.midorinome.ichime", "dev.midorinome.ichime.TopShelf"]
+    )
+
+    # Явно устанавливаем provisioning profiles в Xcode проекте
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Ichime.xcodeproj",
+      team_id: "YBBAN7R28K",
+      code_sign_identity: "Apple Distribution",
+      targets: ["Ichime_tvOS"],
+      profile_name: "match AppStore dev.midorinome.ichime tvos"
+    )
+
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Ichime.xcodeproj",
+      team_id: "YBBAN7R28K",
+      code_sign_identity: "Apple Distribution",
+      targets: ["TopShelf_tvOS"],
+      profile_name: "match AppStore dev.midorinome.ichime.TopShelf tvos"
     )
 
     # Build the app
