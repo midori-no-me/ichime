@@ -43,7 +43,7 @@ extension WebClient {
         }
         catch {
           if case WebClientTypeNormalizationError.failedCreatingDTOFromHTMLElement(let errorMessage) = error {
-            self.logNormalizationError(of: NewEpisode.self, message: errorMessage)
+            self.logNormalizationError(of: MomentPreview.self, message: errorMessage)
           }
 
           return nil

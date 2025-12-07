@@ -13,7 +13,7 @@ struct CurrentlyWatchingService: Sendable {
   func getEpisodesToWatch(page: Int) async throws -> OrderedSet<EpisodeFromCurrentlyWatchingList> {
     let episodes = try await self.anime365KitFactory
       .createWebClient()
-      .getNewEpisodes(page: page)
+      .getPersonalEpisodes(page: page)
 
     return .init(
       episodes.map {

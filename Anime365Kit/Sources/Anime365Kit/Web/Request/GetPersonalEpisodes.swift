@@ -2,7 +2,7 @@ import Foundation
 import SwiftSoup
 
 extension WebClient {
-  public func getNewEpisodes(page: Int) async throws(WebClientError) -> [NewEpisode] {
+  public func getPersonalEpisodes(page: Int) async throws(WebClientError) -> [NewPersonalEpisode] {
     var queryItems: [URLQueryItem] = [
       .init(name: "ajax", value: "m-index-personal-episodes")
     ]
@@ -33,7 +33,7 @@ extension WebClient {
         }
         catch {
           if case WebClientTypeNormalizationError.failedCreatingDTOFromHTMLElement(let errorMessage) = error {
-            self.logNormalizationError(of: NewEpisode.self, message: errorMessage)
+            self.logNormalizationError(of: NewPersonalEpisode.self, message: errorMessage)
           }
 
           return nil

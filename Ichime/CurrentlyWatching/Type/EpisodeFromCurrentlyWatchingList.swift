@@ -12,7 +12,7 @@ struct EpisodeFromCurrentlyWatchingList: Hashable, Identifiable {
     self.episodeId
   }
 
-  init(fromAnime365KitNewEpisode: Anime365Kit.NewEpisode) {
+  init(fromAnime365KitNewEpisode: Anime365Kit.NewPersonalEpisode) {
     self.showName = .parsed(
       fromAnime365KitNewEpisode.seriesTitleRomaji,
       fromAnime365KitNewEpisode.seriesTitleRu
