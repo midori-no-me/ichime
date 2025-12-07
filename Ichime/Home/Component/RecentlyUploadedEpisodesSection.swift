@@ -3,49 +3,48 @@ import OrderedCollections
 import SwiftUI
 
 @Observable @MainActor
-private final class NextSeasonSectionViewModel {
+private final class RecentlyUploadedEpisodesSectionViewModel {
   enum State {
     case idle
     case loading
     case loadingFailed(Error)
     case loadedButEmpty
-    case loaded(shows: OrderedSet<ShowPreviewShikimori>, page: Int, hasMore: Bool)
+    case loaded(shows: OrderedSet<RecentlyUploadedEpisode>, page: Int, hasMore: Bool)
   }
-
-  private static let SHOWS_PER_PAGE = 10
 
   private(set) var state: State = .idle
 
-  private let showService: ShowService
+  private let episodeService: EpisodeService
   private let logger: Logger
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve(),
-    logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "NextSeasonSectionViewModel")
+    episodeService: EpisodeService = ApplicationDependency.container.resolve(),
+    logger: Logger = .init(
+      subsystem: ServiceLocator.applicationId,
+      category: "RecentlyUploadedEpisodesSectionViewModel"
+    )
   ) {
-    self.showService = showService
+    self.episodeService = episodeService
     self.logger = logger
   }
 
-  func performInitialLoading(adultOnly: Bool) async {
+  func performInitialLoading() async {
     self.updateState(.loading)
 
     do {
-      let shows = try await showService.getNextSeason(
+      let episodes = try await episodeService.getRecentEpisodes(
         page: 1,
-        limit: Self.SHOWS_PER_PAGE,
-        adultOnly: adultOnly,
       )
 
-      if shows.isEmpty {
+      if episodes.isEmpty {
         self.updateState(.loadedButEmpty)
       }
       else {
         self.updateState(
           .loaded(
-            shows: shows,
+            shows: episodes,
             page: 1,
-            hasMore: shows.count == Self.SHOWS_PER_PAGE
+            hasMore: true
           )
         )
       }
@@ -55,8 +54,8 @@ private final class NextSeasonSectionViewModel {
     }
   }
 
-  func performLazyLoading(adultOnly: Bool) async {
-    guard case let .loaded(alreadyLoadedShows, page, hasMore) = state else {
+  func performLazyLoading() async {
+    guard case let .loaded(alreadyLoadedEpisodes, page, hasMore) = state else {
       return
     }
 
@@ -65,17 +64,15 @@ private final class NextSeasonSectionViewModel {
     }
 
     do {
-      let shows = try await showService.getNextSeason(
+      let episodes = try await episodeService.getRecentEpisodes(
         page: page + 1,
-        limit: Self.SHOWS_PER_PAGE,
-        adultOnly: adultOnly,
       )
 
       self.updateState(
         .loaded(
-          shows: .init(alreadyLoadedShows.elements + shows),
+          shows: .init(alreadyLoadedEpisodes.elements + episodes),
           page: page + 1,
-          hasMore: shows.count == Self.SHOWS_PER_PAGE
+          hasMore: episodes.last?.episodeId == alreadyLoadedEpisodes.last?.episodeId
         )
       )
     }
@@ -85,29 +82,27 @@ private final class NextSeasonSectionViewModel {
   }
 
   private func updateState(_ state: State) {
-    withAnimation(.easeInOut(duration: 0.5)) {
+    withAnimation(.default.speed(0.5)) {
       self.state = state
     }
   }
 }
 
-struct NextSeasonSection: View {
-  @State private var viewModel: NextSeasonSectionViewModel = .init()
+struct RecentlyUploadedEpisodesSection: View {
+  @State private var viewModel: RecentlyUploadedEpisodesSectionViewModel = .init()
 
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
 
   var body: some View {
-    SectionWithCards(title: "Следующий сезон") {
+    SectionWithCards(title: "Новые серии") {
       ScrollView(.horizontal) {
         switch self.viewModel.state {
         case .idle:
           ShowCardHStackInteractiveSkeleton()
             .onAppear {
               Task {
-                await self.viewModel.performInitialLoading(
-                  adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
-                )
+                await self.viewModel.performInitialLoading()
               }
             }
 
@@ -122,9 +117,7 @@ struct NextSeasonSection: View {
           } actions: {
             Button(action: {
               Task {
-                await self.viewModel.performInitialLoading(
-                  adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
-                )
+                await self.viewModel.performInitialLoading()
               }
             }) {
               Text("Обновить")
@@ -139,29 +132,21 @@ struct NextSeasonSection: View {
           } actions: {
             Button(action: {
               Task {
-                await self.viewModel.performInitialLoading(
-                  adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
-                )
+                await self.viewModel.performInitialLoading()
               }
             }) {
               Text("Обновить")
             }
           }
 
-        case let .loaded(shows, _, _):
+        case let .loaded(episodes, _, _):
           ShowCardHStack(
-            cards: shows.elements,
+            cards: episodes.elements,
             loadMore: {
-              await self.viewModel.performLazyLoading(
-                adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
-              )
+              await self.viewModel.performLazyLoading()
             }
-          ) { show in
-            ShowCardMyAnimeList(
-              show: show,
-              displaySeason: false,
-              hiddenKindChips: Anime365BaseURL.isAdultDomain(self.anime365BaseURL) ? .init([.ova]) : .init([.tv]),
-            )
+          ) { episode in
+            RecentlyUploadedEpisodeCard(episode: episode)
           }
         }
       }
@@ -169,9 +154,7 @@ struct NextSeasonSection: View {
     }
     .onChange(of: self.anime365BaseURL) {
       Task {
-        await self.viewModel.performInitialLoading(
-          adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL),
-        )
+        await self.viewModel.performInitialLoading()
       }
     }
   }

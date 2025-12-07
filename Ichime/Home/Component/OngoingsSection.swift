@@ -27,14 +27,13 @@ private final class OngoingsSectionViewModel {
     self.logger = logger
   }
 
-  func performInitialLoading(adultOnly: Bool) async {
+  func performInitialLoading() async {
     self.updateState(.loading)
 
     do {
       let shows = try await showService.getOngoings(
         offset: 0,
         limit: Self.SHOWS_PER_PAGE,
-        adultOnly: adultOnly,
       )
 
       if shows.isEmpty {
@@ -54,7 +53,7 @@ private final class OngoingsSectionViewModel {
     }
   }
 
-  func performLazyLoading(adultOnly: Bool) async {
+  func performLazyLoading() async {
     guard case let .loaded(alreadyLoadedShows, hasMore) = state else {
       return
     }
@@ -67,7 +66,6 @@ private final class OngoingsSectionViewModel {
       let shows = try await showService.getOngoings(
         offset: alreadyLoadedShows.count,
         limit: Self.SHOWS_PER_PAGE,
-        adultOnly: adultOnly,
       )
 
       self.updateState(
@@ -103,9 +101,7 @@ struct OngoingsSection: View {
           ShowCardHStackInteractiveSkeleton()
             .onAppear {
               Task {
-                await self.viewModel.performInitialLoading(
-                  adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL),
-                )
+                await self.viewModel.performInitialLoading()
               }
             }
 
@@ -120,9 +116,7 @@ struct OngoingsSection: View {
           } actions: {
             Button(action: {
               Task {
-                await self.viewModel.performInitialLoading(
-                  adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL),
-                )
+                await self.viewModel.performInitialLoading()
               }
             }) {
               Text("Обновить")
@@ -137,9 +131,7 @@ struct OngoingsSection: View {
           } actions: {
             Button(action: {
               Task {
-                await self.viewModel.performInitialLoading(
-                  adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL),
-                )
+                await self.viewModel.performInitialLoading()
               }
             }) {
               Text("Обновить")
@@ -150,20 +142,24 @@ struct OngoingsSection: View {
           ShowCardHStack(
             cards: shows.elements,
             loadMore: {
-              await self.viewModel.performLazyLoading(
-                adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL),
-              )
+              await self.viewModel.performLazyLoading()
             }
           ) { show in
             ShowCardAnime365(
               show: show,
-              displaySeason: !Self.isCurrentSeason(show: show),
+              displaySeason: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
+                ? true : !Self.isCurrentSeason(show: show),
               hiddenKindChips: Anime365BaseURL.isAdultDomain(self.anime365BaseURL) ? .init([.ova]) : .init([.tv]),
             )
           }
         }
       }
       .scrollClipDisabled()
+    }
+    .onChange(of: self.anime365BaseURL) {
+      Task {
+        await self.viewModel.performInitialLoading()
+      }
     }
   }
 

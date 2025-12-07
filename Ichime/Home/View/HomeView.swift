@@ -7,21 +7,44 @@ struct HomeView: View {
   var body: some View {
     ScrollView(.vertical) {
       LazyVStack(alignment: .leading, spacing: 64) {
-        OngoingsSection()
+        if Anime365BaseURL.isAdultDomain(self.anime365BaseURL) {
+          RecentlyUploadedEpisodesSection()
+        }
+        else {
+          OngoingsSection()
+        }
 
         MomentsSection.withRandomSorting()
 
         if Anime365BaseURL.isAdultDomain(self.anime365BaseURL) {
           RandomSection()
-        }
 
-        NextSeasonSection()
+          YearSection(year: Self.currentYear())
+          YearSection(year: Self.shiftedYear(shift: -1))
+        }
+        else {
+          NextSeasonSection()
+        }
 
         TopScoredSection()
 
         MostPopularSection()
       }
     }
-    .id(self.anime365BaseURL)
+  }
+
+  private static func currentYear() -> Int {
+    let now = Date.now
+    let calendar = Calendar.current
+
+    return calendar.component(.year, from: now)
+  }
+
+  private static func shiftedYear(shift: Int) -> Int {
+    let now = Date.now
+    let calendar = Calendar.current
+    let nextYearDate = calendar.date(byAdding: .year, value: shift, to: now)!
+
+    return calendar.component(.year, from: nextYearDate)
   }
 }

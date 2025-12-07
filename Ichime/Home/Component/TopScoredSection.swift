@@ -145,13 +145,19 @@ struct TopScoredSection: View {
           ) { show in
             ShowCardAnime365(
               show: show,
-              displaySeason: !Self.isCurrentSeason(show: show),
+              displaySeason: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
+                ? true : !Self.isCurrentSeason(show: show),
               hiddenKindChips: Anime365BaseURL.isAdultDomain(self.anime365BaseURL) ? .init([.ova]) : .init([.tv]),
             )
           }
         }
       }
       .scrollClipDisabled()
+    }
+    .onChange(of: self.anime365BaseURL) {
+      Task {
+        await self.viewModel.performInitialLoading()
+      }
     }
   }
 

@@ -93,6 +93,9 @@ private final class MomentsSectionViewModel {
 struct MomentsSection: View {
   @State private var viewModel: MomentsSectionViewModel
 
+  @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
+    var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+
   private let sorting: MomentSorting
 
   private init(
@@ -162,6 +165,11 @@ struct MomentsSection: View {
         }
       }
       .scrollClipDisabled()
+    }
+    .onChange(of: self.anime365BaseURL) {
+      Task {
+        await self.viewModel.performInitialLoading()
+      }
     }
   }
 

@@ -80,7 +80,6 @@ struct ShowService {
   func getOngoings(
     offset: Int,
     limit: Int,
-    adultOnly: Bool,
   ) async throws -> OrderedSet<ShowPreview> {
     let visibilityOna = OngoingsVisibilityOna.get()
 
@@ -90,7 +89,7 @@ struct ShowService {
       Anime365Kit.SeriesType.music,
     ]
 
-    if !adultOnly && visibilityOna == .hide {
+    if visibilityOna == .hide {
       hiddenTypes.insert(Anime365Kit.SeriesType.ona)
     }
 
@@ -114,6 +113,24 @@ struct ShowService {
       limit: limit,
       offset: offset,
       chips: chips
+    )
+
+    return .init(apiResponse.map { .init(anime365Series: $0) })
+  }
+
+  func getReleasedInYear(
+    year: Int,
+    offset: Int,
+    limit: Int,
+  ) async throws -> OrderedSet<ShowPreview> {
+    let chips = [
+      "yearseason": String(year)
+    ]
+
+    let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
+      limit: limit,
+      offset: offset,
+      chips: chips,
     )
 
     return .init(apiResponse.map { .init(anime365Series: $0) })

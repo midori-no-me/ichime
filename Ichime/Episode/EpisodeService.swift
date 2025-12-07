@@ -1,6 +1,7 @@
 import Anime365Kit
 import Foundation
 import JikanApiClient
+import OrderedCollections
 
 struct EpisodeService {
   private let anime365KitFactory: Anime365KitFactory
@@ -241,6 +242,18 @@ struct EpisodeService {
     return (
       anime365Translation.episode.episodeFull, anime365Translation.series.titles.romaji,
       anime365Translation.series.titles.ru
+    )
+  }
+
+  func getRecentEpisodes(page: Int) async throws -> OrderedSet<RecentlyUploadedEpisode> {
+    let episodes = try await self.anime365KitFactory
+      .createWebClient()
+      .getRecentEpisodes(page: page)
+
+    return .init(
+      episodes.map {
+        .init(fromAnime365KitNewEpisode: $0)
+      }
     )
   }
 }

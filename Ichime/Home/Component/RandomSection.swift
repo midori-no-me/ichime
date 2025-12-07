@@ -167,5 +167,12 @@ struct RandomSection: View {
       }
       .scrollClipDisabled()
     }
+    .onChange(of: self.anime365BaseURL) {
+      Task {
+        await self.viewModel.performInitialLoading(
+          adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
+        )
+      }
+    }
   }
 }
