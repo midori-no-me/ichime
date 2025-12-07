@@ -8,7 +8,7 @@ struct Chip {
       .font(.caption2)
       .padding(.horizontal, 8)
       .padding(.vertical, 4)
-      .glassEffect()
+      .glassEffect(.clear, in: .rect(cornerRadius: 8))
   }
 
   static func outlined(label: String) -> some View {
@@ -16,7 +16,7 @@ struct Chip {
       .font(.caption2)
       .padding(.horizontal, 8)
       .padding(.vertical, 4)
-      .clipShape(RoundedRectangle(cornerRadius: 8))
+      .clipShape(.rect(cornerRadius: 8))
       .overlay {
         RoundedRectangle(cornerRadius: 8)
           .strokeBorder(.secondary, lineWidth: 1)
