@@ -1,0 +1,189 @@
+name: TestFlight
+
+on:
+  push:
+    branches: [ "feat/testflight" ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Install Apple Certificate and Provisioning Profiles
+        env:
+          # Using user's specific secret names
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.CERTIFICATES_P12 }}
+          P12_PASSWORD: ${{ secrets.CERTIFICATES_PASSWORD }}
+          BUILD_PROVISION_PROFILE_ICHIME_BASE64: ${{ secrets.PROVISIONING_PROFILE_ICHIME }}
+          BUILD_PROVISION_PROFILE_TOPSHELF_BASE64: ${{ secrets.PROVISIONING_PROFILE_TOPSHELF }}
+          KEYCHAIN_PASSWORD: "temporary_keychain_password" # Temporary password for the runner's keychain
+        run: |
+          # Create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_ICHIME_PATH=$RUNNER_TEMP/build_pp_ichime.mobileprovision
+          PP_TOPSHELF_PATH=$RUNNER_TEMP/build_pp_topshelf.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # Import certificate and provisioning profiles from secrets
+          echo "$BUILD_CERTIFICATE_BASE64" | base64 -D -o $CERTIFICATE_PATH
+          echo "$BUILD_PROVISION_PROFILE_ICHIME_BASE64" | base64 -D -o $PP_ICHIME_PATH
+          echo "$BUILD_PROVISION_PROFILE_TOPSHELF_BASE64" | base64 -D -o $PP_TOPSHELF_PATH
+
+          # Verify files were created and are not empty
+          if [ ! -s "$PP_ICHIME_PATH" ]; then
+            echo "Error: Provisioning Profile (Ichime) is empty. Check PROVISIONING_PROFILE_ICHIME secret."
+            exit 1
+          fi
+          if [ ! -s "$PP_TOPSHELF_PATH" ]; then
+             echo "Error: Provisioning Profile (TopShelf) is empty. Check PROVISIONING_PROFILE_TOPSHELF secret."
+             exit 1
+          fi
+
+          # Create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # Import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # Apply provisioning profiles
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_ICHIME_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_TOPSHELF_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+      - name: Generate ExportOptions.plist
+        id: export_options
+        run: |
+          # Extract profile names from the provisioning profiles
+          PP_ICHIME_PATH=$RUNNER_TEMP/build_pp_ichime.mobileprovision
+          PP_TOPSHELF_PATH=$RUNNER_TEMP/build_pp_topshelf.mobileprovision
+
+          # Debug: Check file existence and type
+          echo "Checking provisioning profiles..."
+          ls -l "$PP_ICHIME_PATH" "$PP_TOPSHELF_PATH"
+          file "$PP_ICHIME_PATH"
+          file "$PP_TOPSHELF_PATH"
+
+          # Function to extract name with fallback
+          get_profile_name() {
+              local path=$1
+              local name=""
+
+              # Method 1: Try security cms (standard way)
+              # We suppress stderr to avoid confusion if it fails, but we will log if fallback is used
+              if decoded=$(security cms -D -i "$path" 2>/dev/null); then
+                  name=$(echo "$decoded" | /usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin 2>/dev/null)
+                  if [ -n "$name" ]; then
+                      echo "$name"
+                      return 0
+                  fi
+              fi
+
+              # Method 2: Fallback using strings and grep (robust for simple extraction)
+              echo "Warning: 'security cms' failed to decode profile at $path. Attempting fallback extraction." >&2
+              # Search for <key>Name</key> followed by <string>Value</string>
+              # We use tr to remove newlines to handle cases where they are on different lines easily,
+              # or just grep context. Let's stick to grep context on the raw strings output.
+              name=$(strings "$path" | grep -A1 "<key>Name</key>" | grep "<string>" | sed -E 's/.*<string>(.*)<\/string>.*/\1/' | head -n 1)
+
+              if [ -n "$name" ]; then
+                  echo "$name"
+                  return 0
+              fi
+
+              return 1
+          }
+
+          echo "Extracting profile names..."
+          NAME_ICHIME=$(get_profile_name "$PP_ICHIME_PATH")
+          NAME_TOPSHELF=$(get_profile_name "$PP_TOPSHELF_PATH")
+
+          if [ -z "$NAME_ICHIME" ]; then
+              echo "Error: Could not extract name from Ichime profile ($PP_ICHIME_PATH)"
+              exit 1
+          fi
+          if [ -z "$NAME_TOPSHELF" ]; then
+              echo "Error: Could not extract name from TopShelf profile ($PP_TOPSHELF_PATH)"
+              exit 1
+          fi
+
+          echo "Found Profile Name (Ichime): $NAME_ICHIME"
+          echo "Found Profile Name (TopShelf): $NAME_TOPSHELF"
+
+          # Generate ExportOptions.plist
+          cat <<EOF > ExportOptions.plist
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>destination</key>
+              <string>export</string>
+              <key>method</key>
+              <string>app-store</string>
+              <key>provisioningProfiles</key>
+              <dict>
+                  <key>dev.midorinome.ichime</key>
+                  <string>$NAME_ICHIME</string>
+                  <key>dev.midorinome.ichime.TopShelf</key>
+                  <string>$NAME_TOPSHELF</string>
+              </dict>
+              <key>signingCertificate</key>
+              <string>Apple Distribution</string>
+              <key>signingStyle</key>
+              <string>manual</string>
+              <key>teamID</key>
+              <string>YBBAN7R28K</string>
+          </dict>
+          </plist>
+          EOF
+
+          # Print for debugging (careful not to expose secrets if any, but here only names are used)
+          cat ExportOptions.plist
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build and Archive
+        run: |
+          xcodebuild archive \
+            -project Ichime.xcodeproj \
+            -scheme Ichime \
+            -destination "generic/platform=tvOS" \
+            -archivePath build/Ichime.xcarchive \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="Apple Distribution"
+
+      - name: Export IPA
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath build/Ichime.xcarchive \
+            -exportOptionsPlist ExportOptions.plist \
+            -exportPath build
+
+      - name: Upload to TestFlight
+        env:
+          API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
+          API_PRIVATE_KEY_BASE64: ${{ secrets.APPLE_API_KEY }}
+        run: |
+          # Create the private_keys directory where altool looks for the key
+          mkdir -p ~/private_keys
+
+          # Save the key with the required naming format: AuthKey_<KeyID>.p8
+          API_KEY_PATH=~/private_keys/AuthKey_${API_KEY_ID}.p8
+          echo "$API_PRIVATE_KEY_BASE64" | base64 -D -o $API_KEY_PATH
+
+          xcrun altool --upload-app \
+            -f build/Ichime.ipa \
+            -t tvos \
+            --apiKey "$API_KEY_ID" \
+            --apiIssuer "$ISSUER_ID"
