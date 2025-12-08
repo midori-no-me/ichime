@@ -1,0 +1,118 @@
+name: Deploy to TestFlight
+
+on:
+  pull_request:
+  # push:
+  # tags:
+  #   - '[0-9]+.[0-9]+.[0-9]+*'  # Триггер на теги типа 1.10.0, 1.10.1, etc.
+  workflow_dispatch: # Ручной запуск для тестирования
+    inputs:
+      version:
+        description: "Version to deploy (e.g., 1.10.0)"
+        required: true
+        default: "1.10.0"
+      test_mode:
+        description: "Test mode (skip TestFlight upload)"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  deploy:
+    name: Build and Deploy to TestFlight
+    runs-on: macos-26
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Version Variables
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          elif [ -n "${{ github.event.inputs.version }}" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            # Fallback для pull_request и других событий без версии
+            VERSION="0.0.0-pr${{ github.event.pull_request.number }}"
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$((${{ github.run_number }} + 101000))" >> $GITHUB_ENV
+          echo "Deploying version: $VERSION"
+          echo "Build number: $((${{ github.run_number }} + 101000))"
+
+      - name: Install Dependencies
+        run: |
+          brew install xcodegen
+          brew install fastlane
+
+      - name: Setup SSH Key for Fastlane Match
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.MATCH_DEPLOY_KEY }}
+
+      - name: Install Bundle Dependencies
+        run: bundle install
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build and Upload to TestFlight
+        if: ${{ !github.event.inputs.test_mode }}
+        env:
+          VERSION: ${{ env.VERSION }}
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
+        run: |
+          echo $MATCH_PASSWORD
+          cd fastlane
+          bundle install
+          bundle exec fastlane ios deploy version:$VERSION build_number:$BUILD_NUMBER
+
+      - name: Test Build Only
+        if: ${{ github.event.inputs.test_mode }}
+        env:
+          VERSION: ${{ env.VERSION }}
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+        run: |
+          cd fastlane
+          bundle install
+          bundle exec fastlane ios test_build version:$VERSION build_number:$BUILD_NUMBER
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ichime-build-${{ env.VERSION }}
+          path: |
+            build/Ichime.ipa
+            build/Ichime.xcarchive
+          retention-days: 30
+
+      - name: Cleanup
+        if: always()
+        run: |
+          security delete-keychain build.keychain || true
+          rm -rf ~/Library/MobileDevice/Provisioning\ Profiles/ || true
+          rm -f ~/.appstoreconnect/private_keys/AuthKey_${{ secrets.APPLE_API_KEY_ID }}.p8 || true
+
+      - name: Create GitHub Release
+        if: github.event_name == 'push' && !github.event.inputs.test_mode
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}
+          body: |
+            ## Изменения в версии ${{ env.VERSION }}
+
+            Сборка автоматически загружена в TestFlight.
+
+            **Build Number:** ${{ env.BUILD_NUMBER }}
+            **Дата сборки:** ${{ github.run_id }}
+          draft: false
+          prerelease: false

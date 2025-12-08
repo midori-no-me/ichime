@@ -1,0 +1,11 @@
+git_url("git@github.com:midori-no-me/ichime-sertificates.git")
+
+storage_mode("git")
+
+type("appstore") # appstore для App Store/TestFlight
+platform("tvos") # tvOS платформа
+
+app_identifier(["dev.midorinome.ichime", "dev.midorinome.ichime.TopShelf"])
+
+# For all available options run `fastlane match --help`
+# The docs are available on https://docs.fastlane.tools/actions/match
