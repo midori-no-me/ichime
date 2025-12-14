@@ -21,8 +21,13 @@ struct ShowCardMyAnimeList: View {
       topChips.append("★ \(score.formatted(.number.precision(.fractionLength(2))))")
     }
 
-    if let airingSeason = show.airingSeason, displaySeason {
-      topChips.append(airingSeason.getLocalizedTranslation())
+    if displaySeason {
+      if let airingSeason = show.airingSeason {
+        topChips.append(airingSeason.getLocalizedTranslation())
+      }
+      else if let year = show.year {
+        topChips.append("\(year) г.")
+      }
     }
 
     self.topChips = topChips

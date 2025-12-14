@@ -49,8 +49,13 @@ struct ShowCardAnime365: View {
       metadataLineComponents.append("★ \(score.formatted(.number.precision(.fractionLength(2))))")
     }
 
-    if let airingSeason = show.airingSeason, displaySeason {
-      metadataLineComponents.append(airingSeason.getLocalizedTranslation())
+    if self.displaySeason {
+      if let airingSeason = show.airingSeason {
+        metadataLineComponents.append(airingSeason.getLocalizedTranslation())
+      }
+      else if let year = show.year {
+        metadataLineComponents.append("\(year) г.")
+      }
     }
 
     return metadataLineComponents

@@ -8,6 +8,7 @@ struct ShowPreviewShikimori: Hashable, Identifiable {
   let score: Float?
   let airingSeason: AiringSeason?
   let kind: ShowKind?
+  let year: Int?
 
   init?(
     graphqlAnimePreview: ShikimoriApiClient.AnimeFieldsForPreview
@@ -57,6 +58,13 @@ struct ShowPreviewShikimori: Hashable, Identifiable {
     }
     else {
       self.posterUrl = nil
+    }
+
+    if let airedOnYear = graphqlAnimePreview.airedOn.year {
+      self.year = airedOnYear
+    }
+    else {
+      self.year = nil
     }
   }
 

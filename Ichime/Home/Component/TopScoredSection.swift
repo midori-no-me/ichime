@@ -145,8 +145,7 @@ struct TopScoredSection: View {
           ) { show in
             ShowCardAnime365(
               show: show,
-              displaySeason: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
-                ? true : !Self.isCurrentSeason(show: show),
+              displaySeason: true,
               hiddenKindChips: Anime365BaseURL.isAdultDomain(self.anime365BaseURL) ? .init([.ova]) : .init([.tv]),
             )
           }
@@ -159,15 +158,5 @@ struct TopScoredSection: View {
         await self.viewModel.performInitialLoading()
       }
     }
-  }
-
-  private static func isCurrentSeason(show: ShowPreview) -> Bool {
-    let currentAiringSeason = ShowSeasonService().getRelativeSeason(shift: 0)
-
-    guard let airingSeason = show.airingSeason else {
-      return false
-    }
-
-    return currentAiringSeason == airingSeason
   }
 }

@@ -13,6 +13,7 @@ public struct Series: Sendable, Decodable {
   public let myAnimeListScore: String
   public let season: String
   public let type: SeriesType?
+  public let year: Int?
 }
 
 public struct SeriesFull: Sendable, Decodable {

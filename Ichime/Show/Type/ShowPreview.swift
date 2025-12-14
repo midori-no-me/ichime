@@ -8,6 +8,7 @@ struct ShowPreview: Hashable, Identifiable {
   let score: Float?
   let airingSeason: AiringSeason?
   let kind: ShowKind?
+  let year: Int?
 
   init(
     anime365Series: Anime365Kit.Series
@@ -37,6 +38,13 @@ struct ShowPreview: Hashable, Identifiable {
     }
     else {
       self.kind = nil
+    }
+
+    if let year = anime365Series.year, year > 0 {
+      self.year = year
+    }
+    else {
+      self.year = nil
     }
   }
 
