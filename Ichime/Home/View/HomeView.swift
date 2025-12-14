@@ -29,6 +29,8 @@ struct HomeView: View {
         TopScoredSection()
 
         MostPopularSection()
+
+        MostAnticipatedSection()
       }
     }
   }

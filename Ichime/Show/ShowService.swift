@@ -170,6 +170,29 @@ struct ShowService {
     )
   }
 
+  func getMostAnticipated(
+    page: Int,
+    limit: Int,
+    adultOnly: Bool,
+  ) async throws -> OrderedSet<ShowPreviewShikimori> {
+    let response = try await shikimoriGraphQLClient.getPreviews(
+      page: page,
+      limit: limit,
+      order: "popularity",
+      censored: !adultOnly,
+      rating: adultOnly ? "rx" : nil,
+      status: "anons",
+    )
+
+    return .init(
+      response.animes.compactMap {
+        ShowPreviewShikimori(
+          graphqlAnimePreview: $0,
+        )
+      }
+    )
+  }
+
   func getNextSeason(
     page: Int,
     limit: Int,

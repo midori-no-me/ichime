@@ -11,11 +11,12 @@ extension GraphQLClient {
     order: String? = nil,
     season: String? = nil,
     censored: Bool? = nil,
-    rating: String? = nil
+    rating: String? = nil,
+    status: String? = nil,
   ) async throws -> GetPreviewsResponse {
     let query = """
-      query GetPreviews($page: PositiveInt, $limit: PositiveInt, $order: OrderEnum, $season: SeasonString, $censored: Boolean, $rating: RatingString) {
-        animes(page: $page, limit: $limit, order: $order, season: $season, censored: $censored, rating: $rating) {
+      query GetPreviews($page: PositiveInt, $limit: PositiveInt, $order: OrderEnum, $season: SeasonString, $censored: Boolean, $rating: RatingString, $status: AnimeStatusString) {
+        animes(page: $page, limit: $limit, order: $order, season: $season, censored: $censored, rating: $rating, status: $status) {
           malId
           name
           russian
@@ -35,6 +36,7 @@ extension GraphQLClient {
     if let season = season { variables["season"] = AnyEncodable(season) }
     if let censored = censored { variables["censored"] = AnyEncodable(censored) }
     if let rating = rating { variables["rating"] = AnyEncodable(rating) }
+    if let status = status { variables["status"] = AnyEncodable(status) }
 
     return try await sendRequest(
       operationName: "GetPreviews",
