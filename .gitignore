@@ -9,3 +9,23 @@
 *.plist
 *.xcscheme
 !Settings.bundle/Root.plist
+
+# Build artifacts
+/build/
+*.xcarchive
+ExportOptions.plist
+
+# Fastlane
+/fastlane/report.xml
+/fastlane/Preview.html
+/fastlane/screenshots/**/*.png
+/fastlane/test_output
+
+# Ruby/Bundler
+Gemfile.lock
+.bundle/
+vendor/
+
+# Temporary files
+*.tmp
+*.temp
