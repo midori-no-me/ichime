@@ -79,7 +79,7 @@ struct CalendarView: View {
 
     case let .loaded(scheduleDays):
       ScrollView(.vertical) {
-        VStack(alignment: .leading, spacing: 64) {
+        LazyVStack(alignment: .leading, spacing: 64) {
           ForEach(scheduleDays) { scheduleDay in
             SectionWithCards(title: formatRelativeDateWithWeekdayNameAndDate(scheduleDay.date)) {
               ScrollView(.horizontal) {
