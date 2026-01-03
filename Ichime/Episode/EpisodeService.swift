@@ -35,7 +35,6 @@ struct EpisodeService {
   private static func mapAnime365EpisodesToJikanEpisodes(
     anime365EpisodePreviews: [Anime365Kit.Episode],
     jikanEpisodes: [JikanApiClient.Episode],
-    totalEpisodes: Int? = nil
   ) -> [EpisodeInfo] {
     var jikanEpisodeNumberToEpisode: [Int: JikanApiClient.Episode] = [:]
 
@@ -59,15 +58,10 @@ struct EpisodeService {
       let episodeInfo = EpisodeInfo.createValid(
         anime365EpisodePreview: anime365EpisodePreview,
         jikanEpisode: jikanEpisode,
-        totalEpisodes: totalEpisodes
       )
 
       guard let episodeInfo else {
         continue
-      }
-
-      if let anime365EpisodeNumber {
-        jikanEpisodeNumberToEpisode.removeValue(forKey: anime365EpisodeNumber)
       }
 
       episodeInfos.append(episodeInfo)
@@ -78,31 +72,26 @@ struct EpisodeService {
 
   func getEpisodeList(
     showId: Int,
-    myAnimeListId: Int,
-    page: Int,
-    totalEpisodes: Int?
-  ) async throws -> (episodes: [EpisodeInfo], hasMore: Bool) {
-    async let anime365EpisodesFuture = self.anime365KitFactory.createApiClient().listEpisodes(
-      seriesId: showId,
-      limit: 100,
-      offset: 100 * (page - 1)
-    )
+  ) async throws -> OrderedSet<EpisodeInfo> {
+    let anime365Series = try await self.anime365KitFactory.createApiClient()
+      .getSeries(seriesId: showId)
 
-    async let jikanEpisodesFuture = self.jikanApiClient.getAnimeEpisodes(
-      id: myAnimeListId,
-      page: page
-    )
+    var jikanEpisodes: [JikanApiClient.Episode] = []
 
-    let anime365Episodes = try await anime365EpisodesFuture
-    let jikanEpisodes = (try? await jikanEpisodesFuture) ?? []
+    if anime365Series.numberOfEpisodes <= 100 {
+      jikanEpisodes =
+        (try? await self.jikanApiClient.getAnimeEpisodes(
+          id: anime365Series.myAnimeListId,
+          page: 1
+        )) ?? []
+    }
 
     let episodes = Self.mapAnime365EpisodesToJikanEpisodes(
-      anime365EpisodePreviews: anime365Episodes,
+      anime365EpisodePreviews: anime365Series.episodes ?? [],
       jikanEpisodes: jikanEpisodes,
-      totalEpisodes: totalEpisodes
     )
 
-    return (episodes: episodes, hasMore: episodes.count >= 100)
+    return .init(episodes)
   }
 
   func getEpisodeTranslations(
@@ -126,7 +115,6 @@ struct EpisodeService {
       episode = EpisodeInfo.createValid(
         anime365EpisodePreview: anime365Episode,
         jikanEpisode: jikanEpisode,
-        totalEpisodes: anime365Series.numberOfEpisodes == 0 ? nil : anime365Series.numberOfEpisodes
       )
     }
 

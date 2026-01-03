@@ -171,8 +171,6 @@ struct ShowView: View {
                     NavigationLink(
                       destination: EpisodeListView(
                         showId: show.id,
-                        myAnimeListId: show.myAnimeListId,
-                        totalEpisodes: show.numberOfEpisodes,
                         nextEpisodeReleasesAt: show.nextEpisodeReleasesAt
                       )
                     ) {

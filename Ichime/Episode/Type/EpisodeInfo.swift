@@ -2,7 +2,7 @@ import Anime365Kit
 import Foundation
 import JikanApiClient
 
-struct EpisodeInfo: Identifiable {
+struct EpisodeInfo: Identifiable, Hashable {
   let anime365Id: Int
   let episodeNumber: Int?
   let anime365Title: String
@@ -22,7 +22,6 @@ struct EpisodeInfo: Identifiable {
   static func createValid(
     anime365EpisodePreview: Anime365Kit.EpisodeProtocol,
     jikanEpisode: JikanApiClient.Episode?,
-    totalEpisodes: Int?
   ) -> Self? {
     if anime365EpisodePreview.isActive != 1 || anime365EpisodePreview.isFirstUploaded != 1 {
       return nil
@@ -33,11 +32,6 @@ struct EpisodeInfo: Identifiable {
     }
 
     let anime365EpisodeNumber = Int(anime365EpisodePreview.episodeInt)
-
-    // Если номер эпизода больше, чем общее количество эпизодов, заявленных в тайтле, то считаем такой эпизод не валидным
-    if let anime365EpisodeNumber, let totalEpisodes, anime365EpisodeNumber > totalEpisodes {
-      return nil
-    }
 
     let isTrailer = anime365EpisodePreview.episodeType == "preview"
 
@@ -62,10 +56,6 @@ struct EpisodeInfo: Identifiable {
 
       if let scoreString = jikanEpisode?.score {
         myAnimeListScore = Float(scoreString)
-
-        if myAnimeListScore == nil {
-          return nil
-        }
       }
 
       if let filler = jikanEpisode?.filler {

@@ -114,13 +114,11 @@ struct ShowDetails {
     }
 
     self.numberOfEpisodes = totalEpisodes
-    self.latestAiredEpisodeNumber = Self.getLatestAiredEpisodeNumber(
-      anime365Episodes: anime365Series.episodes ?? [],
-      totalEpisodes: totalEpisodes
-    )
+    self.latestAiredEpisodeNumber = (anime365Series.episodes ?? [])
+      .compactMap { Int($0.episodeInt) }
+      .max()
     self.hasEpisodes = Self.calculateShowHasUploadedEpisodesToWatch(
       anime365Episodes: anime365Series.episodes ?? [],
-      totalEpisodes: totalEpisodes
     )
     self.genres = .init((anime365Series.genres ?? []).map { .init(fromAnime365Genre: $0) })
     self.studios = .init(
@@ -138,50 +136,13 @@ struct ShowDetails {
     }
   }
 
-  private static func getLatestAiredEpisodeNumber(
-    anime365Episodes: [Anime365Kit.Episode],
-    totalEpisodes: Int?
-  ) -> Int? {
-    var largestEpisodeNumber: Int? = nil
-
-    for anime365Episode in anime365Episodes {
-      let episodeInfo = EpisodeInfo.createValid(
-        anime365EpisodePreview: anime365Episode,
-        jikanEpisode: nil,
-        totalEpisodes: totalEpisodes
-      )
-
-      guard let episodeInfo else {
-        continue
-      }
-
-      guard let episodeNumber = episodeInfo.episodeNumber else {
-        continue
-      }
-
-      if largestEpisodeNumber == nil {
-        largestEpisodeNumber = episodeNumber
-
-        continue
-      }
-
-      if episodeNumber > largestEpisodeNumber! {
-        largestEpisodeNumber = episodeNumber
-      }
-    }
-
-    return largestEpisodeNumber
-  }
-
   private static func calculateShowHasUploadedEpisodesToWatch(
     anime365Episodes: [Anime365Kit.Episode],
-    totalEpisodes: Int?
   ) -> Bool {
     for anime365Episode in anime365Episodes {
       let episodeInfo = EpisodeInfo.createValid(
         anime365EpisodePreview: anime365Episode,
         jikanEpisode: nil,
-        totalEpisodes: totalEpisodes
       )
 
       if episodeInfo != nil {

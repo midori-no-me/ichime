@@ -1,3 +1,4 @@
+import OrderedCollections
 import SwiftData
 import SwiftUI
 
@@ -8,95 +9,52 @@ private final class EpisodeListViewModel {
     case loading
     case loadingFailed(Error)
     case loadedButEmpty
-    case loaded([EpisodeInfo])
+    case loaded(episodes: OrderedSet<EpisodeInfo>)
   }
 
-  private var _state: State = .idle
-  private var episodes: [EpisodeInfo] = []
-  private var page: Int = 1
-  private var stopLazyLoading: Bool = false
+  private(set) var state: State = .idle
 
   private let episodeService: EpisodeService
 
-  private(set) var state: State {
-    get {
-      self._state
-    }
-    set {
-      withAnimation {
-        self._state = newValue
-      }
-    }
-  }
-
   init(
-    episodeService: EpisodeService = ApplicationDependency.container.resolve()
+    episodeService: EpisodeService = ApplicationDependency.container.resolve(),
   ) {
     self.episodeService = episodeService
   }
 
-  func performInitialLoading(
-    showId: Int,
-    myAnimeListId: Int,
-    totalEpisodes: Int?
-  ) async {
-    self.state = .loading
+  func performInitialLoading(showId: Int) async {
+    self.updateState(.loading)
 
     do {
-      let (episodes, hasMore) = try await self.episodeService.getEpisodeList(
+      let episodes = try await self.episodeService.getEpisodeList(
         showId: showId,
-        myAnimeListId: myAnimeListId,
-        page: self.page,
-        totalEpisodes: totalEpisodes
       )
 
       if episodes.isEmpty {
-        self.state = .loadedButEmpty
+        self.updateState(.loadedButEmpty)
       }
       else {
-        self.stopLazyLoading = !hasMore
-        self.page += 1
-        self.episodes += episodes
-        self.state = .loaded(self.episodes)
+        self.updateState(
+          .loaded(
+            episodes: episodes,
+          )
+        )
       }
     }
     catch {
-      self.state = .loadingFailed(error)
+      self.updateState(.loadingFailed(error))
     }
   }
 
-  func performLazyLoading(
-    showId: Int,
-    myAnimeListId: Int,
-    totalEpisodes: Int?
-  ) async {
-    if self.stopLazyLoading {
-      return
-    }
-
-    do {
-      let (episodes, hasMore) = try await self.episodeService.getEpisodeList(
-        showId: showId,
-        myAnimeListId: myAnimeListId,
-        page: self.page,
-        totalEpisodes: totalEpisodes
-      )
-
-      self.stopLazyLoading = !hasMore
-      self.page += 1
-      self.episodes += episodes
-      self.state = .loaded(self.episodes)
-    }
-    catch {
-      self.stopLazyLoading = true
+  private func updateState(_ state: State) {
+    withAnimation(.easeInOut(duration: 0.5)) {
+      self.state = state
     }
   }
 }
 
 struct EpisodeListView: View {
   let showId: Int
-  let myAnimeListId: Int
-  let totalEpisodes: Int?
   let nextEpisodeReleasesAt: Date?
 
   @State private var viewModel: EpisodeListViewModel = .init()
@@ -108,8 +66,6 @@ struct EpisodeListView: View {
         Task {
           await self.viewModel.performInitialLoading(
             showId: self.showId,
-            myAnimeListId: self.myAnimeListId,
-            totalEpisodes: self.totalEpisodes
           )
         }
       }
@@ -129,8 +85,6 @@ struct EpisodeListView: View {
           Task {
             await self.viewModel.performInitialLoading(
               showId: self.showId,
-              myAnimeListId: self.myAnimeListId,
-              totalEpisodes: self.totalEpisodes
             )
           }
         }) {
@@ -149,8 +103,6 @@ struct EpisodeListView: View {
           Task {
             await self.viewModel.performInitialLoading(
               showId: self.showId,
-              myAnimeListId: self.myAnimeListId,
-              totalEpisodes: self.totalEpisodes
             )
           }
         }) {
@@ -164,15 +116,6 @@ struct EpisodeListView: View {
         Section {
           ForEach(episodeInfos) { episodeInfo in
             EpisodePreviewRow(episodeInfo: episodeInfo)
-              .task {
-                if episodeInfo.anime365Id == episodeInfos.last?.anime365Id {
-                  await self.viewModel.performLazyLoading(
-                    showId: self.showId,
-                    myAnimeListId: self.myAnimeListId,
-                    totalEpisodes: self.totalEpisodes
-                  )
-                }
-              }
           }
         } header: {
           Text("Серии")
