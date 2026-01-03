@@ -32,7 +32,8 @@ private final class EpisodeTranslationListViewModel {
   }
 
   func performInitialLoad(
-    episodeId: Int
+    episodeId: Int,
+    isAdultDomain: Bool,
   ) async {
     self.state = .loading
 
@@ -42,7 +43,8 @@ private final class EpisodeTranslationListViewModel {
       )
 
       let episodeTranslationGroups = self.episodeService.filterAndGroupEpisodeTranslations(
-        episodeTranslationInfos: episodeTranslationInfos
+        episodeTranslationInfos: episodeTranslationInfos,
+        skipFiltering: isAdultDomain,
       )
 
       if episodeTranslationGroups.isEmpty {
@@ -63,6 +65,9 @@ struct EpisodeTranslationListView: View {
 
   @State private var viewModel: EpisodeTranslationListViewModel = .init()
 
+  @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
+    var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+
   var body: some View {
     Group {
       switch self.viewModel.state {
@@ -70,7 +75,8 @@ struct EpisodeTranslationListView: View {
         Color.clear.onAppear {
           Task {
             await self.viewModel.performInitialLoad(
-              episodeId: self.episodeId
+              episodeId: self.episodeId,
+              isAdultDomain: Anime365BaseURL.isAdultDomain(self.anime365BaseURL),
             )
           }
         }
@@ -89,7 +95,8 @@ struct EpisodeTranslationListView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                episodeId: self.episodeId
+                episodeId: self.episodeId,
+                isAdultDomain: Anime365BaseURL.isAdultDomain(self.anime365BaseURL),
               )
             }
           }) {
@@ -107,7 +114,8 @@ struct EpisodeTranslationListView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                episodeId: self.episodeId
+                episodeId: self.episodeId,
+                isAdultDomain: Anime365BaseURL.isAdultDomain(self.anime365BaseURL),
               )
             }
           }) {
