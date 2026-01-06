@@ -45,6 +45,7 @@ private final class ShowByMyAnimeListIdViewModel {
 
 struct ShowByMyAnimeListIdView: View {
   let myAnimeListId: Int
+  let onOpened: (() -> Void)?
 
   @State private var viewModel: ShowByMyAnimeListIdViewModel = .init()
 
@@ -105,7 +106,7 @@ struct ShowByMyAnimeListIdView: View {
       }
 
     case let .loaded(showId):
-      ShowView(showId: showId)
+      ShowView(showId: showId, onOpened: self.onOpened)
     }
   }
 }

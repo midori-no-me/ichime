@@ -1,3 +1,4 @@
+import OSLog
 import OrderedCollections
 import SwiftUI
 
@@ -8,91 +9,92 @@ private final class SearchShowsViewModel {
     case loading
     case loadingFailed(Error)
     case loadedButEmpty
-    case loaded(OrderedSet<ShowPreview>)
+    case loaded(shows: OrderedSet<ShowPreviewShikimori>, page: Int, hasMore: Bool)
   }
+
+  private static let SHOWS_PER_PAGE = 10
+
+  private(set) var state: State = .idle
 
   var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "recentSearches") ?? []
 
   var currentlyTypedSearchQuery = ""
   var isSearchPresented: Bool = false
 
-  private var _state: State = .idle
   private let showService: ShowService
+  private let logger: Logger
 
   private var lastPerformedSearchQuery = ""
-  private var currentOffset: Int = 0
-  private var shows: OrderedSet<ShowPreview> = []
-  private var stopLazyLoading: Bool = false
 
-  private let SHOWS_PER_PAGE = 20
-
-  private(set) var state: State {
-    get {
-      self._state
-    }
-    set {
-      withAnimation {
-        self._state = newValue
-      }
-    }
-  }
-
-  init(showService: ShowService = ApplicationDependency.container.resolve()) {
+  init(
+    showService: ShowService = ApplicationDependency.container.resolve(),
+    logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "SearchShowsViewModel")
+  ) {
     self.showService = showService
+    self.logger = logger
   }
 
-  func performSearch() async {
+  func performInitialLoading(adultOnly: Bool) async {
     if self.currentlyTypedSearchQuery.isEmpty {
       return
     }
 
-    self.state = .loading
+    self.updateState(.loading)
     self.lastPerformedSearchQuery = self.currentlyTypedSearchQuery
 
     do {
       let shows = try await showService.searchShows(
         searchQuery: self.lastPerformedSearchQuery,
-        offset: self.currentOffset,
-        limit: self.SHOWS_PER_PAGE
+        page: 1,
+        limit: Self.SHOWS_PER_PAGE,
+        adultOnly: adultOnly,
       )
 
       if shows.isEmpty {
-        self.state = .loadedButEmpty
+        self.updateState(.loadedButEmpty)
       }
       else {
-        self.stopLazyLoading = false
-        self.currentOffset = self.SHOWS_PER_PAGE
-        self.shows = shows
-        self.state = .loaded(self.shows)
+        self.updateState(
+          .loaded(
+            shows: shows,
+            page: 1,
+            hasMore: shows.count == Self.SHOWS_PER_PAGE
+          )
+        )
       }
     }
     catch {
-      self.state = .loadingFailed(error)
+      self.updateState(.loadingFailed(error))
     }
   }
 
-  func performLazyLoading() async {
-    if self.stopLazyLoading {
+  func performLazyLoading(adultOnly: Bool) async {
+    guard case let .loaded(alreadyLoadedShows, page, hasMore) = state else {
+      return
+    }
+
+    if !hasMore {
       return
     }
 
     do {
       let shows = try await showService.searchShows(
         searchQuery: self.lastPerformedSearchQuery,
-        offset: self.currentOffset,
-        limit: self.SHOWS_PER_PAGE
+        page: page + 1,
+        limit: Self.SHOWS_PER_PAGE,
+        adultOnly: adultOnly,
       )
 
-      if shows.count < self.SHOWS_PER_PAGE {
-        self.stopLazyLoading = true
-      }
-
-      self.currentOffset = self.currentOffset + self.SHOWS_PER_PAGE
-      self.shows = .init(self.shows.elements + shows)
-      self.state = .loaded(self.shows)
+      self.updateState(
+        .loaded(
+          shows: .init(alreadyLoadedShows.elements + shows),
+          page: page + 1,
+          hasMore: shows.count == Self.SHOWS_PER_PAGE
+        )
+      )
     }
     catch {
-      self.stopLazyLoading = true
+      self.logger.debug("Stop lazy loading due to exception: \(error)")
     }
   }
 
@@ -117,10 +119,19 @@ private final class SearchShowsViewModel {
 
     UserDefaults.standard.set(uniqueRecentSearches, forKey: "recentSearches")
   }
+
+  private func updateState(_ state: State) {
+    withAnimation(.easeInOut(duration: 0.5)) {
+      self.state = state
+    }
+  }
 }
 
 struct SearchShowsView: View {
   @State private var viewModel: SearchShowsViewModel = .init()
+
+  @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
+    var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
 
   var body: some View {
     Group {
@@ -142,7 +153,7 @@ struct SearchShowsView: View {
         } actions: {
           Button(action: {
             Task {
-              await self.viewModel.performSearch()
+              await self.viewModel.performInitialLoading(adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL))
             }
           }) {
             Text("Обновить")
@@ -154,21 +165,23 @@ struct SearchShowsView: View {
         ContentUnavailableView.search
           .centeredContentFix()
 
-      case let .loaded(shows):
+      case let .loaded(shows, _, _):
         ScrollView(.vertical) {
           LazyVGrid(
             columns: Array(repeating: GridItem(.flexible(), spacing: ShowCard.RECOMMENDED_SPACING), count: 3),
             spacing: ShowCard.RECOMMENDED_SPACING
           ) {
             ForEach(shows) { show in
-              ShowCardAnime365(
+              ShowCardMyAnimeList(
                 show: show,
                 displaySeason: true,
                 onOpened: self.viewModel.addRecentSearch
               )
               .task {
                 if show == shows.last {
-                  await self.viewModel.performLazyLoading()
+                  await self.viewModel.performLazyLoading(
+                    adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL)
+                  )
                 }
               }
             }
@@ -188,12 +201,12 @@ struct SearchShowsView: View {
     }
     .onSubmit(of: .search) {
       Task {
-        await self.viewModel.performSearch()
+        await self.viewModel.performInitialLoading(adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL))
       }
     }
     .onChange(of: self.viewModel.currentlyTypedSearchQuery) {
       Task {
-        await self.viewModel.performSearch()
+        await self.viewModel.performInitialLoading(adultOnly: Anime365BaseURL.isAdultDomain(self.anime365BaseURL))
       }
     }
   }

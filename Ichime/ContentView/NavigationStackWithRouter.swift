@@ -29,7 +29,7 @@ import SwiftUI
         .navigationDestination(for: Route.self) { route in
           switch route {
           case let .showByMyAnimeListId(id):
-            ShowByMyAnimeListIdView(myAnimeListId: id)
+            ShowByMyAnimeListIdView(myAnimeListId: id, onOpened: nil)
 
           case let .episode(id):
             EpisodeTranslationListView(episodeId: id)

@@ -7,12 +7,15 @@ struct ShowCardMyAnimeList: View {
   private let cover: URL?
   private let primaryTitle: String
   private let secondaryTitle: String?
+  private let onOpened: (() -> Void)?
 
   init(
     show: ShowPreviewShikimori,
     displaySeason: Bool,
     hiddenKindChips: Set<ShowKind> = .init(),
+    onOpened: (() -> Void)? = nil
   ) {
+    self.onOpened = onOpened
     self.myAnimeListId = show.id
 
     var topChips: [String] = []
@@ -60,11 +63,12 @@ struct ShowCardMyAnimeList: View {
     self.cover = show.posterUrl
     self.primaryTitle = show.title.getRomajiOrFullName()
     self.secondaryTitle = show.title.getRussian()
+    self.onOpened = nil
   }
 
   var body: some View {
     NavigationLink(
-      destination: ShowByMyAnimeListIdView(myAnimeListId: self.myAnimeListId)
+      destination: ShowByMyAnimeListIdView(myAnimeListId: self.myAnimeListId, onOpened: self.onOpened)
     ) {
       ShowCard(
         topChips: self.topChips,
@@ -76,7 +80,7 @@ struct ShowCardMyAnimeList: View {
     }
     .buttonStyle(.borderless)
     .contextMenu {
-      NavigationLink(destination: ShowByMyAnimeListIdView(myAnimeListId: self.myAnimeListId)) {
+      NavigationLink(destination: ShowByMyAnimeListIdView(myAnimeListId: self.myAnimeListId, onOpened: nil)) {
         Label(self.primaryTitle, systemImage: "info.circle")
 
         if let russian = self.secondaryTitle {

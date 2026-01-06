@@ -343,16 +343,19 @@ struct ShowService {
 
   func searchShows(
     searchQuery: String,
-    offset: Int,
-    limit: Int
-  ) async throws -> OrderedSet<ShowPreview> {
-    let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
-      query: searchQuery,
+    page: Int,
+    limit: Int,
+    adultOnly: Bool
+  ) async throws -> OrderedSet<ShowPreviewShikimori> {
+    let apiResponse = try await shikimoriGraphQLClient.getPreviews(
+      page: page,
       limit: limit,
-      offset: offset
+      censored: !adultOnly,
+      rating: adultOnly ? "rx" : nil,
+      search: searchQuery,
     )
 
-    return .init(apiResponse.map { .init(anime365Series: $0) })
+    return .init(apiResponse.animes.compactMap { ShowPreviewShikimori(graphqlAnimePreview: $0) })
   }
 
   private func convertShikimoriRelationsToGroupedRelatedShows(
