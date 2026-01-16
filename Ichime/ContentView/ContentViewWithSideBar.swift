@@ -4,22 +4,12 @@ import SwiftUI
 struct ContentViewWithSideBar: View {
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
   @Environment(\.currentUserStore) private var currentUserStore
-  @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
-    var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
 
   var body: some View {
     TabView(selection: self.$selectedTab) {
       Tab("Главная", systemImage: "play.house", value: .home) {
         NavigationStackWithRouter {
           HomeView()
-        }
-      }
-
-      if !Anime365BaseURL.isAdultDomain(self.anime365BaseURL) {
-        Tab("К просмотру", systemImage: "play.square.stack", value: .currentlyWatching) {
-          NavigationStackWithRouter {
-            CurrentlyWatchingView()
-          }
         }
       }
 

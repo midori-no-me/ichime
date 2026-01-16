@@ -11,6 +11,8 @@ struct HomeView: View {
           RecentlyUploadedEpisodesSection()
         }
         else {
+          CurrentlyWatchingSection()
+
           OngoingsSection()
         }
 
