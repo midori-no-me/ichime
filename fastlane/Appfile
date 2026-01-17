@@ -1,0 +1,5 @@
+# App Store Connect configuration for tvOS
+
+app_identifier("dev.midorinome.ichime")
+apple_id(ENV["APPLE_ID"]) # Optional: Add APPLE_ID to secrets if needed
+team_id("YBBAN7R28K")
