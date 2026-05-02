@@ -78,11 +78,11 @@ private final class FilteredShowsViewModel {
 }
 
 struct FilteredShowsView: View {
+  @State private var viewModel: FilteredShowsViewModel = .init()
+
   let title: String
   let displaySeason: Bool
   let fetchShows: (_ offset: Int, _ limit: Int) async throws -> [ShowPreview]
-
-  @State private var viewModel: FilteredShowsViewModel = .init()
 
   var body: some View {
     switch self.viewModel.state {

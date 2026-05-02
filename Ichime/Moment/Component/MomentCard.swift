@@ -99,15 +99,15 @@ struct MomentCardRaw: View {
 }
 
 struct MomentCard: View {
-  let moment: Moment
-  let displayShowTitle: Bool
-
-  private let momentService: MomentService = ApplicationDependency.container.resolve()
-
   @AppStorage("defaultPlayer") private var selectedPlayer: ThirdPartyVideoPlayerType = .infuse
 
   @State private var showErrorAlert: Bool = false
   @State private var error: Error? = nil
+
+  let moment: Moment
+  let displayShowTitle: Bool
+
+  private let momentService: MomentService = ApplicationDependency.container.resolve()
 
   var body: some View {
     Button(action: {
