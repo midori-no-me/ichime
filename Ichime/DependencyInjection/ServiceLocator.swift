@@ -45,7 +45,7 @@ enum ServiceLocator {
   }
 
   static var shikimoriBaseUrl: URL {
-    URL(string: "https://shikimori.one")!
+    URL(string: "https://shikimori.io")!
   }
 
   static var jikanBaseUrl: URL {
