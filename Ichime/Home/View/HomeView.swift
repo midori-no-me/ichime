@@ -12,8 +12,6 @@ struct HomeView: View {
         }
         else {
           CurrentlyWatchingSection()
-
-          OngoingsSection()
         }
 
         MomentsSection.withRandomSorting()
@@ -25,6 +23,8 @@ struct HomeView: View {
           YearSection(year: Self.shiftedYear(shift: -1))
         }
         else {
+          OngoingsSection()
+          
           NextSeasonSection()
         }
 
