@@ -50,9 +50,9 @@ private final class CoverGallerySheetViewModel {
 }
 
 struct CoverGallerySheet: View {
-  let myAnimeListId: Int
-
   @State private var viewModel: CoverGallerySheetViewModel = .init()
+
+  let myAnimeListId: Int
 
   var body: some View {
     NavigationStack {

@@ -5,11 +5,13 @@ struct ContentViewWithTabBar: View {
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
   @Environment(\.currentUserStore) private var currentUserStore
 
+  @State private var focusProfileTrigger = 0
+
   var body: some View {
     TabView(selection: self.$selectedTab) {
       Tab(value: .home) {
         NavigationStackWithRouter {
-          HomeView()
+          HomeView(focusProfileTrigger: self.focusProfileTrigger)
         }
       } label: {
         Text("Главная")
@@ -42,6 +44,11 @@ struct ContentViewWithTabBar: View {
         }
       } label: {
         Image(systemName: "magnifyingglass")
+      }
+    }
+    .onMoveCommand { direction in
+      if direction == .left && self.selectedTab == .home {
+        self.focusProfileTrigger += 1
       }
     }
   }

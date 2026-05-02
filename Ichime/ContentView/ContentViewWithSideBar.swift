@@ -9,7 +9,7 @@ struct ContentViewWithSideBar: View {
     TabView(selection: self.$selectedTab) {
       Tab("Главная", systemImage: "play.house", value: .home) {
         NavigationStackWithRouter {
-          HomeView()
+          //          HomeView()
         }
       }
 

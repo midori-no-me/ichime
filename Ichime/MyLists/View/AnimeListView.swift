@@ -89,11 +89,11 @@ private final class AnimeListViewModel {
 }
 
 struct AnimeListView: View {
-  let userId: Int
-  let animeListCategory: AnimeListCategory
-
   @State private var viewModel: AnimeListViewModel = .init()
   @Environment(\.currentUserStore) private var currentUserStore
+
+  let userId: Int
+  let animeListCategory: AnimeListCategory
 
   var body: some View {
     Group {
@@ -192,10 +192,10 @@ struct AnimeListView: View {
 }
 
 private struct AnimeListEntryRowView: View {
+  @State private var showSheet: Bool = false
+
   let animeListEntry: AnimeListEntry
   let onUpdate: () async -> Void
-
-  @State private var showSheet: Bool = false
 
   var body: some View {
     Button(action: {

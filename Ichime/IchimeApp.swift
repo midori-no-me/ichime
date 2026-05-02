@@ -8,6 +8,9 @@ struct IchimeApp: App {
     WindowGroup {
       AuthenticatedUserWrapperView {
         ContentView()
+          .onMoveCommand { direction in
+            print("Move:", direction)
+          }
       }
     }
   }

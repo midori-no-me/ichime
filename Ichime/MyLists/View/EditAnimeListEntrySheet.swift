@@ -56,14 +56,14 @@ private final class EditAnimeListEntrySheetViewModel {
 }
 
 struct EditAnimeListEntrySheet: View {
+  @State private var viewModel: EditAnimeListEntrySheetViewModel = .init()
+
+  @Environment(\.dismiss) private var dismissSheet
+
   let showId: Int
   let showName: ShowName
   let episodesTotal: Int?
   let onUpdate: () async -> Void
-
-  @State private var viewModel: EditAnimeListEntrySheetViewModel = .init()
-
-  @Environment(\.dismiss) private var dismissSheet
 
   var body: some View {
     Group {
