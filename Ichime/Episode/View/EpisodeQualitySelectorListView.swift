@@ -57,9 +57,9 @@ private final class EpisodeQualitySelectorListViewModel {
 }
 
 struct EpisodeQualitySelectorListView: View {
-  let translationId: Int
-
   @State private var viewModel: EpisodeQualitySelectorListViewModel = .init()
+
+  let translationId: Int
 
   var body: some View {
     switch self.viewModel.state {
@@ -135,11 +135,6 @@ struct EpisodeQualitySelectorListView: View {
 }
 
 private struct EpisodeTranslationsStreamingQualities: View {
-  let translationId: Int
-  let episodeTranslationStreamingInfo: EpisodeTranslationStreamingInfo
-
-  private let subtitlesProxyUrlGenerator: SubtitlesProxyUrlGenerator = ApplicationDependency.container.resolve()
-
   @AppStorage("defaultPlayer") private var selectedPlayer: ThirdPartyVideoPlayerType = .infuse
   @AppStorage("preferSubtitlesProxy") private var preferSubtitlesProxy: Bool = false
 
@@ -147,6 +142,11 @@ private struct EpisodeTranslationsStreamingQualities: View {
   @AppStorage("last_watched_translation_id") private var lastWatchedTranslationId: Int = 0
 
   @Environment(\.openURL) private var openURL
+
+  let translationId: Int
+  let episodeTranslationStreamingInfo: EpisodeTranslationStreamingInfo
+
+  private let subtitlesProxyUrlGenerator: SubtitlesProxyUrlGenerator = ApplicationDependency.container.resolve()
 
   var body: some View {
     List {

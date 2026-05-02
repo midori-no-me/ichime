@@ -61,12 +61,12 @@ private final class EpisodeTranslationListViewModel {
 }
 
 struct EpisodeTranslationListView: View {
-  let episodeId: Int
-
   @State private var viewModel: EpisodeTranslationListViewModel = .init()
 
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+
+  let episodeId: Int
 
   var body: some View {
     Group {

@@ -44,10 +44,10 @@ private final class ShowByMyAnimeListIdViewModel {
 }
 
 struct ShowByMyAnimeListIdView: View {
+  @State private var viewModel: ShowByMyAnimeListIdViewModel = .init()
+
   let myAnimeListId: Int
   let onOpened: (() -> Void)?
-
-  @State private var viewModel: ShowByMyAnimeListIdViewModel = .init()
 
   var body: some View {
     switch self.viewModel.state {

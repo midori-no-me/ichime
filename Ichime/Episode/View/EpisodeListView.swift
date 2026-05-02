@@ -54,10 +54,10 @@ private final class EpisodeListViewModel {
 }
 
 struct EpisodeListView: View {
+  @State private var viewModel: EpisodeListViewModel = .init()
+
   let showId: Int
   let nextEpisodeReleasesAt: Date?
-
-  @State private var viewModel: EpisodeListViewModel = .init()
 
   var body: some View {
     switch self.viewModel.state {

@@ -24,7 +24,7 @@ struct HomeView: View {
         }
         else {
           OngoingsSection()
-          
+
           NextSeasonSection()
         }
 

@@ -400,11 +400,11 @@ private struct ShowStudiosAndDescriptionsSection: View {
 }
 
 private struct ShowDescriptionCard: View {
+  @State private var isSheetPresented = false
+
   let title: String
   let text: String
   let textPreview: String
-
-  @State private var isSheetPresented = false
 
   var body: some View {
     Button {
