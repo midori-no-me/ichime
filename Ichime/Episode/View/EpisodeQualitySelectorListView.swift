@@ -60,6 +60,8 @@ struct EpisodeQualitySelectorListView: View {
   @State private var viewModel: EpisodeQualitySelectorListViewModel = .init()
 
   let translationId: Int
+  let showTitle: ShowName?
+  let episodeNumber: Int?
 
   var body: some View {
     switch self.viewModel.state {
@@ -128,7 +130,9 @@ struct EpisodeQualitySelectorListView: View {
     case let .loaded(episodeTranslationStreamingInfo):
       EpisodeTranslationsStreamingQualities(
         translationId: self.translationId,
-        episodeTranslationStreamingInfo: episodeTranslationStreamingInfo
+        episodeTranslationStreamingInfo: episodeTranslationStreamingInfo,
+        showTitle: self.showTitle,
+        episodeNumber: self.episodeNumber,
       )
     }
   }
@@ -145,6 +149,8 @@ private struct EpisodeTranslationsStreamingQualities: View {
 
   let translationId: Int
   let episodeTranslationStreamingInfo: EpisodeTranslationStreamingInfo
+  let showTitle: ShowName?
+  let episodeNumber: Int?
 
   private let subtitlesProxyUrlGenerator: SubtitlesProxyUrlGenerator = ApplicationDependency.container.resolve()
 
@@ -159,10 +165,21 @@ private struct EpisodeTranslationsStreamingQualities: View {
               subtitlesUrl = self.subtitlesProxyUrlGenerator.generate(translationId: self.translationId)
             }
 
+            var showProperties: ShowProperties? = nil
+
+            if let showTitle {
+              showProperties = ShowProperties(
+                name: showTitle.getRomajiOrFullName(),
+                seasonNumber: nil,
+                episodeNumber: self.episodeNumber
+              )
+            }
+
             let externalPlayerUniversalLink = DeepLinkFactory.buildUniversalLinkUrl(
               externalPlayerType: self.selectedPlayer,
               videoUrl: streamingQuality.videoUrl,
-              subtitlesUrl: subtitlesUrl
+              subtitlesUrl: subtitlesUrl,
+              show: showProperties,
             )
 
             if !UIApplication.shared.canOpenURL(externalPlayerUniversalLink) {

@@ -58,6 +58,7 @@ struct EpisodeListView: View {
 
   let showId: Int
   let nextEpisodeReleasesAt: Date?
+  let showTitle: ShowName?
 
   var body: some View {
     switch self.viewModel.state {
@@ -115,7 +116,7 @@ struct EpisodeListView: View {
       List {
         Section {
           ForEach(episodeInfos) { episodeInfo in
-            EpisodePreviewRow(episodeInfo: episodeInfo)
+            EpisodePreviewRow(episodeInfo: episodeInfo, showTitle: self.showTitle)
           }
         } header: {
           Text("Серии")
@@ -136,11 +137,13 @@ private struct EpisodePreviewRow: View {
   @FocusState private var isLinkFocused: Bool
 
   let episodeInfo: EpisodeInfo
+  let showTitle: ShowName?
 
   var body: some View {
     NavigationLink(
       destination: EpisodeTranslationListView(
-        episodeId: self.episodeInfo.anime365Id
+        episodeId: self.episodeInfo.anime365Id,
+        showTitle: self.showTitle,
       )
     ) {
       HStack(spacing: 32) {

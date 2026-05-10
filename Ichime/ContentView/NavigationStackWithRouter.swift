@@ -32,7 +32,7 @@ import SwiftUI
             ShowByMyAnimeListIdView(myAnimeListId: id, onOpened: nil)
 
           case let .episode(id):
-            EpisodeTranslationListView(episodeId: id)
+            EpisodeTranslationListView(episodeId: id, showTitle: nil)
           }
         }
         .onOpenURL { url in

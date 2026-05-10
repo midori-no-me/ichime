@@ -171,7 +171,8 @@ struct ShowView: View {
                     NavigationLink(
                       destination: EpisodeListView(
                         showId: show.id,
-                        nextEpisodeReleasesAt: show.nextEpisodeReleasesAt
+                        nextEpisodeReleasesAt: show.nextEpisodeReleasesAt,
+                        showTitle: show.title,
                       )
                     ) {
                       Label("Смотреть", systemImage: "play.fill")

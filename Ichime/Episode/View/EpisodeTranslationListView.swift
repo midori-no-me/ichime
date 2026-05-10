@@ -67,6 +67,7 @@ struct EpisodeTranslationListView: View {
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
 
   let episodeId: Int
+  let showTitle: ShowName?
 
   var body: some View {
     Group {
@@ -129,7 +130,11 @@ struct EpisodeTranslationListView: View {
           ForEach(episodeTranslationGroups) { episodeTranslationGroup in
             Section(header: Text(episodeTranslationGroup.groupType.title)) {
               ForEach(episodeTranslationGroup.episodeTranslationInfos) { episodeTranslationInfo in
-                EpisodeTranslationRow(episodeTranslationInfo: episodeTranslationInfo)
+                EpisodeTranslationRow(
+                  episodeTranslationInfo: episodeTranslationInfo,
+                  showTitle: self.showTitle,
+                  episodeNumber: episode?.episodeNumber
+                )
               }
             }
           }
@@ -195,11 +200,15 @@ private struct EpisodeDetails: View {
 
 private struct EpisodeTranslationRow: View {
   let episodeTranslationInfo: EpisodeTranslationInfo
+  let showTitle: ShowName?
+  let episodeNumber: Int?
 
   var body: some View {
     NavigationLink(
       destination: EpisodeQualitySelectorListView(
-        translationId: self.episodeTranslationInfo.id
+        translationId: self.episodeTranslationInfo.id,
+        showTitle: self.showTitle,
+        episodeNumber: self.episodeNumber,
       )
     ) {
       HStack {

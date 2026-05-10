@@ -4,7 +4,9 @@ struct EpisodeFromCurrentlyWatchingListCard: View {
   let episode: EpisodeFromCurrentlyWatchingList
 
   var body: some View {
-    NavigationLink(destination: EpisodeTranslationListView(episodeId: self.episode.episodeId)) {
+    NavigationLink(
+      destination: EpisodeTranslationListView(episodeId: self.episode.episodeId, showTitle: self.episode.showName)
+    ) {
       ShowCard(
         topChips: [self.episode.episodeTitle],
         bottomChips: [],

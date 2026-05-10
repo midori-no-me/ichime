@@ -118,7 +118,8 @@ struct MomentCard: View {
           let externalPlayerUniversalLink = DeepLinkFactory.buildUniversalLinkUrl(
             externalPlayerType: self.selectedPlayer,
             videoUrl: videoURL,
-            subtitlesUrl: nil
+            subtitlesUrl: nil,
+            show: nil,
           )
 
           if !UIApplication.shared.canOpenURL(externalPlayerUniversalLink) {
