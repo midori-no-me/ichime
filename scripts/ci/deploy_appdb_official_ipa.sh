@@ -209,7 +209,14 @@ poll_analyze_job() {
     echo "appdb analyze job $job_id: ${status:-unknown} (attempt $attempt/$POLL_ATTEMPTS)"
 
     if [[ "$is_finished" == "1" ]]; then
-      [[ -z "$issue" ]] || warn "appdb analyze job issue: $issue"
+      if [[ -n "$issue" ]]; then
+        fail "appdb analyze job failed: $issue"
+      fi
+      case "$status" in
+        validation_failed|error|failed)
+          fail "appdb analyze job ended in '$status' status"
+          ;;
+      esac
       return
     fi
 

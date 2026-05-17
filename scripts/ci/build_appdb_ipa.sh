@@ -9,6 +9,7 @@ SCHEME="${SCHEME:-Ichime_tvOS}"
 CONFIGURATION="${CONFIGURATION:-Release}"
 SDK="${SDK:-appletvos}"
 DESTINATION="${DESTINATION:-generic/platform=tvOS}"
+APPDB_ICON_SOURCE="${APPDB_ICON_SOURCE:-$ROOT_DIR/scripts/ci/appdb_icon.png}"
 
 fail() {
   echo "::error::$*" >&2
@@ -29,6 +30,7 @@ extract_marketing_version() {
 
 command -v xcodegen >/dev/null || fail "xcodegen is required"
 command -v xcodebuild >/dev/null || fail "xcodebuild is required"
+command -v /usr/libexec/PlistBuddy >/dev/null || fail "PlistBuddy is required"
 
 VERSION="${VERSION:-$(extract_marketing_version)}"
 [[ -n "$VERSION" ]] || fail "Could not read MARKETING_VERSION from project.yml"
@@ -77,6 +79,21 @@ echo "Packaging IPA"
 rm -rf "$STAGING_DIR" "$IPA_PATH"
 mkdir -p "$PAYLOAD_DIR"
 ditto "$APP_PATH" "$PAYLOAD_DIR/$(basename "$APP_PATH")"
+
+STAGED_APP_PATH="$PAYLOAD_DIR/$(basename "$APP_PATH")"
+INFO_PLIST="$STAGED_APP_PATH/Info.plist"
+APPDB_ICON_NAME="AppIcon"
+APPDB_ICON_FILE="$APPDB_ICON_NAME.png"
+
+[[ -f "$APPDB_ICON_SOURCE" ]] || fail "App icon source does not exist: $APPDB_ICON_SOURCE"
+ditto "$APPDB_ICON_SOURCE" "$STAGED_APP_PATH/$APPDB_ICON_FILE"
+
+/usr/libexec/PlistBuddy -c "Delete :CFBundleIcons:CFBundlePrimaryIcon" "$INFO_PLIST" >/dev/null 2>&1 || true
+/usr/libexec/PlistBuddy -c "Add :CFBundleIcons:CFBundlePrimaryIcon dict" "$INFO_PLIST"
+/usr/libexec/PlistBuddy -c "Add :CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles array" "$INFO_PLIST"
+/usr/libexec/PlistBuddy -c "Add :CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles:0 string $APPDB_ICON_NAME" "$INFO_PLIST"
+/usr/libexec/PlistBuddy -c "Delete :CFBundleIconFile" "$INFO_PLIST" >/dev/null 2>&1 || true
+/usr/libexec/PlistBuddy -c "Add :CFBundleIconFile string $APPDB_ICON_NAME" "$INFO_PLIST"
 
 (
   cd "$STAGING_DIR"
