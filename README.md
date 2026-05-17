@@ -1,5 +1,13 @@
 # Ichime
 
+<a href="https://appdb.to/details/6268d688903a7f61de5fe6baacb33fa880fe2d36">
+  <img
+    title="Get from appdb"
+    src="https://s3cdn.dbservices.to/official_buttons/get_black.png"
+    width="100"
+  />
+</a>
+
 Нативное приложение для сайта Anime 365, созданное специально для Apple TV.
 
 https://github.com/user-attachments/assets/15d83e16-49f2-4087-8c8d-1540761595de
