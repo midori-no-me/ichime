@@ -1,0 +1,55 @@
+name: appdb Deploy
+
+on:
+  push:
+    tags:
+      - "[0-9]*.[0-9]*.[0-9]*"
+  workflow_dispatch:
+    inputs:
+      allow_non_tag_deploy:
+        description: "Allow deploy from a branch using MARKETING_VERSION"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: appdb-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy to appdb
+    runs-on: macos-26
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Build unsigned tvOS IPA
+        id: build
+        run: scripts/ci/build_appdb_ipa.sh
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ichime-appdb-ipa
+          path: ${{ steps.build.outputs.ipa_path }}
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Deploy to appdb Publisher Area
+        id: appdb
+        env:
+          APPDB_ST: ${{ secrets.APPDB_ST }}
+          APPDB_APP_IDENTIFIER: ${{ vars.APPDB_APP_IDENTIFIER }}
+          APPDB_DESCRIPTION: ${{ vars.APPDB_DESCRIPTION }}
+          APPDB_ALLOW_NON_TAG_DEPLOY: ${{ github.event.inputs.allow_non_tag_deploy || 'false' }}
+        run: scripts/ci/deploy_appdb_official_ipa.sh "${{ steps.build.outputs.ipa_path }}"

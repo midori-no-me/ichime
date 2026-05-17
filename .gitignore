@@ -1,6 +1,7 @@
 /.github/secrets
 /.idea/
 /.vscode/
+/build/
 /Ichime.xcodeproj/
 .DS_Store
 *.app

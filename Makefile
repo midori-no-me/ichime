@@ -1,3 +1,15 @@
+.PHONY: help format lint release hooks
+
+help:
+	@echo "Available commands:"
+	@echo "  make format"
+	@echo "  make lint"
+	@echo "  make hooks"
+	@echo "  make release VERSION=x.y.z"
+	@echo ""
+	@echo "Example:"
+	@echo "  make release VERSION=1.12.1"
+
 format:
 	swiftformat .
 	swift format . --recursive --in-place
@@ -8,6 +20,14 @@ lint:
 	swift format lint . --recursive --strict
 	swiftlint --strict
 	periphery scan
+
+release:
+	@if [ -z "$(VERSION)" ]; then \
+		echo "Usage: make release VERSION=x.y.z"; \
+		echo "Example: make release VERSION=1.12.1"; \
+		exit 2; \
+	fi
+	./scripts/release.sh "$(VERSION)"
 
 hooks:
 	echo "#!/bin/sh" > $$(git rev-parse --show-toplevel)/.git/hooks/pre-commit
