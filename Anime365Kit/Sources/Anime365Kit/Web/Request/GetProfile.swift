@@ -48,8 +48,37 @@ extension WebClient {
       throw .couldNotParseHtml
     }
 
+    guard
+      let activeStreamingChannel = try? htmlDocument.select("#Users_useOtherServers option[selected]").first()
+    else {
+      self.logNormalizationError(of: Profile.self, message: "Could not find active streaming channel")
+
+      throw .couldNotParseHtml
+    }
+    
+    guard let activeStreamingChannelIdString = try? activeStreamingChannel.attr("value") else {
+      self.logNormalizationError(of: Profile.self, message: "Active streaming channel missing value attribute")
+
+      throw .couldNotParseHtml
+    }
+    
+    guard let activeStreamingChannelId = Int(activeStreamingChannelIdString) else {
+      self.logNormalizationError(of: Profile.self, message: "Active streaming channel ID is not valid integer")
+
+      throw .couldNotParseHtml
+    }
+    
+    guard let activeStreamingChannelLabel = try? activeStreamingChannel.text() else {
+      self.logNormalizationError(of: Profile.self, message: "Active streaming channel missing label")
+
+      throw .couldNotParseHtml
+    }
+
     let avatarURL = self.baseURL.appendingPathComponent(avatarSrc)
 
-    return .init(id: profileId, name: name, avatarURL: avatarURL)
+    return .init(id: profileId, name: name, avatarURL: avatarURL, channel: .init(
+      id: activeStreamingChannelId,
+      label: activeStreamingChannelLabel,
+    ))
   }
 }
