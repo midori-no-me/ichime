@@ -2,7 +2,7 @@
 
 Нативное приложение для сайта Anime 365, созданное специально для Apple TV.
 
-https://github.com/user-attachments/assets/a6094175-ae72-4806-8bfa-e4e6fe83c0f5
+https://github.com/user-attachments/assets/4ebd5642-5f47-49c3-98b9-d97c939fd33d
 
 Больше скриншотов можно найти на странице [Wiki → Скриншоты](https://github.com/midori-no-me/ichime/wiki/Скриншоты).
 
