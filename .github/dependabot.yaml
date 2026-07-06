@@ -1,7 +1,9 @@
 version: 2
 updates:
   - package-ecosystem: swift
-    directory: /
+    directories:
+      - /Tuist
+      - /Packages/*
     open-pull-requests-limit: 100
     schedule:
       interval: monthly
