@@ -3,19 +3,22 @@ name: Code Quality
 on: pull_request
 
 jobs:
-  xcodegen:
-    name: XcodeGen
+  tuist:
+    name: Tuist
     runs-on: macos-26
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install XcodeGen
-        run: brew install xcodegen
+      - name: Install Tuist
+        run: brew install tuist
+
+      - name: Install Dependencies
+        run: tuist install
 
       - name: Generate Xcode Configs
-        run: xcodegen generate
+        run: tuist generate --no-open
 
       - name: Upload Ichime.xcodeproj Artifact
         uses: actions/upload-artifact@v4
@@ -64,7 +67,7 @@ jobs:
   periphery:
     name: Periphery
     runs-on: macos-26
-    needs: [xcodegen]
+    needs: [tuist]
 
     steps:
       - name: Download Repository w/ Xcode Configs Artifact

@@ -30,8 +30,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install XcodeGen
-        run: brew install xcodegen
+      - name: Install Tuist
+        run: brew install tuist
 
       - name: Build unsigned tvOS IPA
         id: build

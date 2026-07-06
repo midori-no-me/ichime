@@ -3,7 +3,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PROJECT_YML="$ROOT_DIR/project.yml"
+PROJECT_SWIFT="$ROOT_DIR/Project.swift"
 REMOTE="${REMOTE:-origin}"
 BRANCH="${BRANCH:-main}"
 VERSION="${1:-${VERSION:-}}"
@@ -18,7 +18,7 @@ usage() {
 Usage:
   make release VERSION=x.y.z
 
-The release command must run from a clean main branch. It bumps project.yml,
+The release command must run from a clean main branch. It bumps Project.swift,
 commits the version change, creates a matching tag, then pushes main and tag.
 EOF
 }
@@ -49,37 +49,37 @@ fi
 IFS=. read -r major minor patch <<< "$VERSION"
 build_version=$((major * 100000 + minor * 100 + patch))
 
-PROJECT_YML="$PROJECT_YML" VERSION="$VERSION" BUILD_VERSION="$build_version" python3 <<'PY'
+PROJECT_SWIFT="$PROJECT_SWIFT" VERSION="$VERSION" BUILD_VERSION="$build_version" python3 <<'PY'
 import os
 import re
 from pathlib import Path
 
-path = Path(os.environ["PROJECT_YML"])
+path = Path(os.environ["PROJECT_SWIFT"])
 version = os.environ["VERSION"]
 build_version = os.environ["BUILD_VERSION"]
 
 text = path.read_text(encoding="utf-8")
 updated = re.sub(
-    r"(^\s*CURRENT_PROJECT_VERSION:\s*)\d+",
-    rf"\g<1>{build_version}",
+    r'(^let buildVersion = ")\d+(")',
+    rf"\g<1>{build_version}\2",
     text,
     flags=re.MULTILINE,
 )
 updated = re.sub(
-    r'(^\s*MARKETING_VERSION:\s*)"[^"]+"',
-    rf'\g<1>"{version}"',
+    r'(^let appVersion = ")[^"]+(")',
+    rf"\g<1>{version}\2",
     updated,
     flags=re.MULTILINE,
 )
 
 if updated == text:
-    raise SystemExit("project.yml was not changed")
+    raise SystemExit("Project.swift was not changed")
 
 path.write_text(updated, encoding="utf-8")
 PY
 
-git -C "$ROOT_DIR" diff -- project.yml
-git -C "$ROOT_DIR" add project.yml
+git -C "$ROOT_DIR" diff -- Project.swift
+git -C "$ROOT_DIR" add Project.swift
 git -C "$ROOT_DIR" commit -m "chore: bump version to $VERSION"
 git -C "$ROOT_DIR" tag "$VERSION"
 git -C "$ROOT_DIR" push "$REMOTE" "$BRANCH"

@@ -3,9 +3,8 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-PROJECT_YML="$ROOT_DIR/project.yml"
 PROJECT_FILE="${PROJECT_FILE:-Ichime.xcodeproj}"
-SCHEME="${SCHEME:-Ichime_tvOS}"
+SCHEME="${SCHEME:-Ichime}"
 CONFIGURATION="${CONFIGURATION:-Release}"
 SDK="${SDK:-appletvos}"
 DESTINATION="${DESTINATION:-generic/platform=tvOS}"
@@ -17,31 +16,24 @@ fail() {
 }
 
 extract_marketing_version() {
-  awk '
-    /^[[:space:]]*MARKETING_VERSION[[:space:]]*:/ {
-      sub(/^[^:]*:/, "")
-      sub(/[[:space:]]+#.*/, "")
-      gsub(/^[[:space:]"]+|[[:space:]"]+$/, "")
-      print
-      exit
-    }
-  ' "$PROJECT_YML"
+  sed -n 's/^let appVersion = "\(.*\)"/\1/p' "$ROOT_DIR/Project.swift"
 }
 
-command -v xcodegen >/dev/null || fail "xcodegen is required"
+command -v tuist >/dev/null || fail "tuist is required"
 command -v xcodebuild >/dev/null || fail "xcodebuild is required"
 command -v /usr/libexec/PlistBuddy >/dev/null || fail "PlistBuddy is required"
 
 VERSION="${VERSION:-$(extract_marketing_version)}"
-[[ -n "$VERSION" ]] || fail "Could not read MARKETING_VERSION from project.yml"
+[[ -n "$VERSION" ]] || fail "Could not read appVersion from Project.swift"
 
 PROJECT_PATH="$ROOT_DIR/$PROJECT_FILE"
 [[ -d "$PROJECT_PATH" || -f "$PROJECT_PATH" ]] || {
-  echo "Generating $PROJECT_FILE with XcodeGen"
-  xcodegen generate --spec "$PROJECT_YML"
+  echo "Generating $PROJECT_FILE with Tuist"
+  tuist install --path "$ROOT_DIR"
+  tuist generate --path "$ROOT_DIR" --no-open
 }
 
-BUILD_ROOT="$ROOT_DIR/build"
+BUILD_ROOT="$ROOT_DIR/Derived"
 APPDB_BUILD_DIR="$BUILD_ROOT/appdb"
 DERIVED_DATA_PATH="$APPDB_BUILD_DIR/DerivedData"
 PRODUCTS_DIR="$DERIVED_DATA_PATH/Build/Products/$CONFIGURATION-$SDK"
@@ -53,7 +45,8 @@ rm -rf "$APPDB_BUILD_DIR"
 mkdir -p "$BUILD_ROOT"
 
 echo "Generating Xcode project"
-xcodegen generate --spec "$PROJECT_YML"
+tuist install --path "$ROOT_DIR"
+tuist generate --path "$ROOT_DIR" --no-open
 
 echo "Building unsigned $SCHEME for $DESTINATION"
 xcodebuild \
