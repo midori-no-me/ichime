@@ -3,7 +3,6 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-PROJECT_YML="$ROOT_DIR/project.yml"
 API_BASE_URL="${APPDB_API_BASE_URL:-https://api.dbservices.to/v1.7}"
 MIN_TVOS_VERSION="${APPDB_MIN_TVOS_VERSION:-26.0}"
 POLL_ATTEMPTS="${APPDB_POLL_ATTEMPTS:-60}"
@@ -27,15 +26,7 @@ require_env() {
 }
 
 extract_marketing_version() {
-  awk '
-    /^[[:space:]]*MARKETING_VERSION[[:space:]]*:/ {
-      sub(/^[^:]*:/, "")
-      sub(/[[:space:]]+#.*/, "")
-      gsub(/^[[:space:]"]+|[[:space:]"]+$/, "")
-      print
-      exit
-    }
-  ' "$PROJECT_YML"
+  sed -n 's/^let appVersion = "\(.*\)"/\1/p' "$ROOT_DIR/Project.swift"
 }
 
 json_value() {
@@ -451,7 +442,7 @@ IPA_PATH="${1:-}"
 [[ -f "$IPA_PATH" ]] || fail "IPA does not exist: $IPA_PATH"
 
 PROJECT_VERSION="$(extract_marketing_version)"
-[[ -n "$PROJECT_VERSION" ]] || fail "Could not read MARKETING_VERSION from project.yml"
+[[ -n "$PROJECT_VERSION" ]] || fail "Could not read appVersion from Project.swift"
 validate_ref_version
 
 IPA_SHA1="$(shasum "$IPA_PATH" | awk '{print $1}')"

@@ -1,4 +1,10 @@
-project: Ichime.xcodeproj
-retain_public: true
+project: Ichime.xcworkspace
 schemes:
-- Ichime_tvOS
+  - Ichime
+
+index_exclude:
+  - Derived/
+  - Tuist/.build/
+
+retain_swift_ui_previews: true
+clean_build: true # rule out a stale index store after the destination change
