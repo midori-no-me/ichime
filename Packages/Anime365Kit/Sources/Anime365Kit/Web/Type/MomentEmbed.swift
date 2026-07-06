@@ -1,9 +1,9 @@
 import Foundation
 import SwiftSoup
 
-public struct VideoSource: Sendable, Decodable {
-  public let height: Int
-  public let urls: [URL]
+private struct VideoSource: Sendable, Decodable {
+  let height: Int
+  let urls: [URL]
 }
 
 public struct MomentEmbed: Sendable {

@@ -173,7 +173,7 @@ struct MomentsSection: View {
     }
   }
 
-  public static func withRandomSorting() -> Self {
+  static func withRandomSorting() -> Self {
     let momentSorting: MomentSorting =
       Int.random(in: 1...100) <= 10
       ? .popular

@@ -32,7 +32,6 @@ public struct SeriesFull: Sendable, Decodable {
   public let posterUrl: URL?
   public let myAnimeListScore: String
   public let myAnimeListId: Int
-  public let isAiring: Int
   public let numberOfEpisodes: Int
   public let season: String
   public let type: SeriesType?

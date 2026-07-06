@@ -1,13 +1,7 @@
 import Foundation
 
-public struct ApiDateDecoder {
-  public static func getDateWithoutTimeFormatter() -> DateFormatter {
-    let dateFormatter = DateFormatter()
-
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-
-    return dateFormatter
-  }
+struct ApiDateDecoder {
+  private init() {}
 
   static func getDateDecodingStrategy() -> JSONDecoder.DateDecodingStrategy {
     .custom { decoder in

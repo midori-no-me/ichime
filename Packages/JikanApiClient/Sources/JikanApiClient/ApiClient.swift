@@ -25,15 +25,6 @@ public struct ApiClient: Sendable {
       .data
   }
 
-  func sendRequestWithPagination<T: Decodable>(
-    endpoint: String,
-    queryItems: [URLQueryItem]
-  ) async throws -> (data: T, hasMore: Bool) {
-    let apiResponse: ApiResponse<T> = try await self.sendRequestInternal(endpoint: endpoint, queryItems: queryItems)
-
-    return (data: apiResponse.data, hasMore: apiResponse.pagination?.has_next_page ?? false)
-  }
-
   private func sendRequestInternal<T: Decodable>(
     endpoint: String,
     queryItems: [URLQueryItem]

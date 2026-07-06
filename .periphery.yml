@@ -6,5 +6,8 @@ index_exclude:
   - Derived/
   - Tuist/.build/
 
+report_exclude:
+  - Derived/Sources/TuistAssets+Ichime.swift
+
 retain_swift_ui_previews: true
 clean_build: true # rule out a stale index store after the destination change

@@ -4,7 +4,6 @@ import SwiftSoup
 public struct MomentDetails: Sendable {
   public let seriesID: Int
   public let seriesTitle: String
-  public let episodeID: Int
 
   init(htmlElement: Element, anime365BaseURL: URL) throws(WebClientTypeNormalizationError) {
     guard let linkElements = try? htmlElement.select(".m-moment-player h3 a[href]") else {
@@ -33,14 +32,13 @@ public struct MomentDetails: Sendable {
       )
     }
 
-    guard let episodeID else {
+    if episodeID == nil {
       throw .failedCreatingDTOFromHTMLElement(
         "Episode ID is not valid"
       )
     }
 
     self.seriesID = seriesID
-    self.episodeID = episodeID
 
     guard let seriesTitle = try? linkElements[1].text().trimmingCharacters(in: .whitespacesAndNewlines) else {
       throw .failedCreatingDTOFromHTMLElement(

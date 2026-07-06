@@ -6,23 +6,6 @@ public enum AnimeListEntryStatus: Sendable {
   case planned
   case notInList
 
-  public var numericID: Int {
-    switch self {
-    case .planned:
-      0
-    case .watching:
-      1
-    case .completed:
-      2
-    case .onHold:
-      3
-    case .dropped:
-      4
-    case .notInList:
-      99
-    }
-  }
-
   public static func create(fromNumericID: Int) -> Self? {
     switch fromNumericID {
     case 0:

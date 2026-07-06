@@ -8,7 +8,6 @@ public struct NewPersonalEpisode: Sendable {
   public let seriesTitleRomaji: String
   public let episodeId: Int
   public let episodeNumberLabel: String
-  public let episodeUpdateType: String
 
   init(htmlElement: Element, anime365BaseURL: URL) throws(WebClientTypeNormalizationError) {
     guard let episodeURLPath = try? htmlElement.select("a[href]").first()?.attr("href") else {
@@ -86,13 +85,11 @@ public struct NewPersonalEpisode: Sendable {
       )
     }
 
-    if let episodeUpdateType = try? htmlElement.select("span.title")
-      .first()?
-      .text()
-      .firstMatch(of: /\((?<updateType>.+?)\)/)?.output.updateType
-    {
-      self.episodeUpdateType = String(episodeUpdateType).trim()
-    }
+    guard
+      (try? htmlElement.select("span.title")
+        .first()?
+        .text()
+        .firstMatch(of: /\((?<updateType>.+?)\)/)?.output.updateType) != nil
     else {
       throw .failedCreatingDTOFromHTMLElement(
         "Could not normalize episode number because there is no `span.title` element or it does not contain valid update type string"

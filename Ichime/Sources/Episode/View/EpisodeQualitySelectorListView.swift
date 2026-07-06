@@ -142,7 +142,6 @@ private struct EpisodeTranslationsStreamingQualities: View {
   @AppStorage("defaultPlayer") private var selectedPlayer: ThirdPartyVideoPlayerType = .infuse
   @AppStorage("preferSubtitlesProxy") private var preferSubtitlesProxy: Bool = false
 
-  // periphery:ignore
   @AppStorage("last_watched_translation_id") private var lastWatchedTranslationId: Int = 0
 
   @Environment(\.openURL) private var openURL

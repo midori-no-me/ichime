@@ -8,7 +8,6 @@ public struct NewRecentEpisode: Sendable {
   public let seriesTitleRomaji: String
   public let episodeId: Int
   public let episodeNumberLabel: String
-  public let episodeUploadedAt: Date
 
   init(htmlElement: Element, anime365BaseURL: URL, sectionTitle: String) throws(WebClientTypeNormalizationError) {
     guard let episodeURLPath = try? htmlElement.select("a[href]").first()?.attr("href") else {
@@ -99,10 +98,7 @@ public struct NewRecentEpisode: Sendable {
 
     let episodeUpdateDateString = sectionTitle.replacingOccurrences(of: "Новые серии ", with: "")
 
-    if let episodeUploadDate = Self.parseDateString("\(episodeUpdateDateString) \(episodeUploadTimeString)") {
-      self.episodeUploadedAt = episodeUploadDate
-    }
-    else {
+    if Self.parseDateString("\(episodeUpdateDateString) \(episodeUploadTimeString)") == nil {
       throw .failedCreatingDTOFromHTMLElement(
         "Could not parse episode upload date and time strings"
       )

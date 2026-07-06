@@ -5,7 +5,6 @@ public struct AnimeListEditableEntry: Sendable {
   public let episodesWatched: Int
   public let status: AnimeListEntryStatus
   public let score: Int?
-  public let commentary: String?
 
   init(htmlElement: Element) throws(WebClientTypeNormalizationError) {
     if let episodesWatchedString = try? htmlElement.select("input#UsersRates_episodes").first()?.attr("value"),
@@ -40,35 +39,23 @@ public struct AnimeListEditableEntry: Sendable {
         "Could not normalize score string because there is no `#UsersRates_score option[selected]` element"
       )
     }
-
-    if let commentary = try? htmlElement.select("#UsersRates_comment").first()?.text() {
-      self.commentary = commentary
-    }
-    else {
-      throw .failedCreatingDTOFromHTMLElement(
-        "Could not normalize commentary because there is no `#UsersRates_comment` element"
-      )
-    }
   }
 
   private init(
     episodesWatched: Int,
     status: AnimeListEntryStatus,
-    score: Int?,
-    commentary: String?
+    score: Int?
   ) {
     self.episodesWatched = episodesWatched
     self.status = status
     self.score = score
-    self.commentary = commentary
   }
 
   static func createNotInList() -> Self {
     Self(
       episodesWatched: 0,
       status: .notInList,
-      score: nil,
-      commentary: nil
+      score: nil
     )
   }
 }
