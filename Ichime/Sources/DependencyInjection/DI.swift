@@ -16,7 +16,7 @@ final class ApplicationDependency: DIFramework {
     container
       .register {
         let urlSessionConfig = URLSessionConfiguration.default
-        urlSessionConfig.httpCookieStorage = .sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
+        urlSessionConfig.httpCookieStorage = ServiceLocator.cookieStorage
         urlSessionConfig.httpAdditionalHeaders?["User-Agent"] = ServiceLocator.userAgent
 
         return URLSession(configuration: urlSessionConfig)

@@ -9,7 +9,7 @@ final class ContentProvider: TVTopShelfContentProvider {
 
   private static var urlSession: URLSession {
     let urlSessionConfig = URLSessionConfiguration.default
-    urlSessionConfig.httpCookieStorage = .sharedCookieStorage(forGroupContainerIdentifier: ServiceLocator.appGroup)
+    urlSessionConfig.httpCookieStorage = ServiceLocator.cookieStorage
     urlSessionConfig.httpAdditionalHeaders?["User-Agent"] = ServiceLocator.userAgent
 
     return .init(configuration: urlSessionConfig)
