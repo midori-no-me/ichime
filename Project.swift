@@ -1,7 +1,7 @@
 import ProjectDescription
 
-let appVersion = "1.12.3"
-let buildVersion = "101203"
+let appVersion = Environment.appVersion.getString(default: "1.0.0")
+let buildVersion = Environment.buildNumber.getString(default: "1")
 let tvOSDeploymentTarget = "26.0"
 
 let developmentTeam = Environment.developmentTeam.getString(default: "")
@@ -85,6 +85,7 @@ let project = Project(
         )
       ],
       resources: [
+        "Ichime/Resources/AppIcon.icon",
         "Ichime/Resources/Assets.xcassets",
         "Ichime/Resources/Settings.bundle",
       ],

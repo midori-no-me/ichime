@@ -1,4 +1,4 @@
-.PHONY: help format lint release hooks tuist-generate tuist-install
+.PHONY: help format lint hooks tuist-generate tuist-install
 
 help:
 	@echo "Available commands:"
@@ -7,10 +7,6 @@ help:
 	@echo "  make hooks"
 	@echo "  make tuist-install"
 	@echo "  make tuist-generate"
-	@echo "  make release VERSION=x.y.z"
-	@echo ""
-	@echo "Example:"
-	@echo "  make release VERSION=1.12.1"
 
 format:
 	swiftformat .
@@ -28,14 +24,6 @@ tuist-install:
 
 tuist-generate:
 	tuist generate --no-open
-
-release:
-	@if [ -z "$(VERSION)" ]; then \
-		echo "Usage: make release VERSION=x.y.z"; \
-		echo "Example: make release VERSION=1.12.1"; \
-		exit 2; \
-	fi
-	./scripts/release.sh "$(VERSION)"
 
 hooks:
 	echo "#!/bin/sh" > $$(git rev-parse --show-toplevel)/.git/hooks/pre-commit
