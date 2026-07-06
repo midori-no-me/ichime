@@ -65,8 +65,22 @@ struct ProfileView: View {
   #if DEBUG
     private let buildConfiguration = "Debug"
   #else
-    private let buildConfiguration = "Release"
+    private let buildConfiguration = ""
   #endif
+
+  private var appdbSDKStatus: String {
+    ServiceLocator.isInstalledViaAppdb ? "appdb SDK" : ""
+  }
+
+  private var buildFooter: String {
+    [
+      "\(self.appName) \(self.appVersion) (\(self.buildNumber))",
+      self.buildConfiguration,
+      self.appdbSDKStatus,
+    ]
+    .filter { !$0.isEmpty }
+    .joined(separator: " • ")
+  }
 
   var body: some View {
     List {
@@ -279,7 +293,7 @@ struct ProfileView: View {
 
       Section {
       } footer: {
-        Text("\(self.appName) \(self.appVersion) (\(self.buildNumber)) \(self.buildConfiguration)")
+        Text(self.buildFooter)
       }
     }
     .listStyle(.grouped)

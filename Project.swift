@@ -5,10 +5,12 @@ let buildVersion = "101203"
 let tvOSDeploymentTarget = "26.0"
 
 let developmentTeam = Environment.developmentTeam.getString(default: "")
+let forceAppGroups = Environment.forceAppGroups.getString(default: "").isEmpty ? "NO" : "YES"
 
 private func baseSettings() -> SettingsDictionary {
   var baseSettings: SettingsDictionary = [
     "CURRENT_PROJECT_VERSION": .string(buildVersion),
+    "ICHIME_FORCE_APP_GROUPS": .string(forceAppGroups),
     "INFOPLIST_KEY_CFBundleDisplayName": "Ichime",
     "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.entertainment",
     "MARKETING_VERSION": .string(appVersion),
@@ -23,6 +25,7 @@ private func baseSettings() -> SettingsDictionary {
 
 let packageDependencies: [TargetDependency] = [
   .external(name: "Anime365Kit"),
+  .external(name: "AppdbFramework"),
   .external(name: "Collections"),
   .external(name: "DITranquillity"),
   .external(name: "JikanApiClient"),
@@ -72,6 +75,7 @@ let project = Project(
           "infuse",
           "vlc-x-callback",
         ],
+        "ICHForceAppGroups": "$(ICHIME_FORCE_APP_GROUPS)",
         "UIRequiredDeviceCapabilities": ["arm64"],
       ]),
       sources: [
@@ -110,6 +114,7 @@ let project = Project(
         "CFBundleDisplayName": "$(PRODUCT_NAME) TopShelf",
         "CFBundleShortVersionString": "$(MARKETING_VERSION)",
         "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
+        "ICHForceAppGroups": "$(ICHIME_FORCE_APP_GROUPS)",
         "NSExtension": [
           "NSExtensionPointIdentifier": "com.apple.tv-top-shelf",
           "NSExtensionPrincipalClass": "$(PRODUCT_MODULE_NAME).ContentProvider",
@@ -119,6 +124,7 @@ let project = Project(
       sources: [
         "Ichime/Sources/Anime365/Anime365BaseURL.swift",
         "Ichime/Sources/Anime365/Anime365KitFactory.swift",
+        "Ichime/Sources/Appdb/AppdbSupport.swift",
         "Ichime/Sources/Calendar/Model/ShowFromCalendarWithExactReleaseDate.swift",
         "Ichime/Sources/Calendar/Model/ShowsFromCalendarGroupedByDate.swift",
         "Ichime/Sources/Calendar/ShowReleaseSchedule.swift",
@@ -132,6 +138,7 @@ let project = Project(
       entitlements: appGroupEntitlements,
       dependencies: [
         .external(name: "Anime365Kit"),
+        .external(name: "AppdbFramework"),
         .external(name: "Collections"),
         .external(name: "JikanApiClient"),
         .external(name: "ShikimoriApiClient"),

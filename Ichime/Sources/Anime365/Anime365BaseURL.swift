@@ -51,11 +51,7 @@ actor Anime365BaseURL {
   }
 
   static func getUserDefaults() -> UserDefaults {
-    guard let userDefaults = UserDefaults(suiteName: ServiceLocator.appGroup) else {
-      fatalError("Error creating UserDefaults for App Group: \(ServiceLocator.appGroup)")
-    }
-
-    return userDefaults
+    ServiceLocator.userDefaults
   }
 
   static func isAdultDomain(_ baseURL: URL) -> Bool {
