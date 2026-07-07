@@ -48,4 +48,4 @@ hooks:
 	chmod +x $$(git rev-parse --show-toplevel)/.git/hooks/post-rewrite
 
 gen:
-	source .env && tuist generate
+	source .env && tuist install && tuist generate
