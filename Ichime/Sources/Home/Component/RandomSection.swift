@@ -20,7 +20,7 @@ private final class RandomSectionViewModel {
   private let logger: Logger
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve(),
+    showService: ShowService = AppDependencies.live.showService,
     logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "RandomSectionViewModel")
   ) {
     self.showService = showService

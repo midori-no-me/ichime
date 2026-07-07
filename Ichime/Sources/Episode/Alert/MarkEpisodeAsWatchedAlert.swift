@@ -8,8 +8,7 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
 
   @AppStorage("last_watched_translation_id") private var lastWatchedTranslationId: Int = 0
 
-  private let episodeService: EpisodeService = ApplicationDependency.container.resolve()
-  private let anime365KitFactory: Anime365KitFactory = ApplicationDependency.container.resolve()
+  @Environment(\.dependencies) private var dependencies
 
   func body(content: Content) -> some View {
     content
@@ -18,7 +17,7 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
           Task {
             do {
               let (episodeTitle, showTitleRomaji, showTitleRussian) =
-                try await episodeService.getTranslationInfoForMarkingEpisodeAsWatchedAlert(
+                try await self.dependencies.episodeService.getTranslationInfoForMarkingEpisodeAsWatchedAlert(
                   translationId: self.lastWatchedTranslationId
                 )
 
@@ -41,7 +40,7 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
           Task {
             do {
               let (episodeTitle, showTitleRomaji, showTitleRussian) =
-                try await episodeService.getTranslationInfoForMarkingEpisodeAsWatchedAlert(
+                try await self.dependencies.episodeService.getTranslationInfoForMarkingEpisodeAsWatchedAlert(
                   translationId: self.lastWatchedTranslationId
                 )
 
@@ -66,7 +65,7 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
       ) { _ in
         Button {
           Task {
-            try? await self.anime365KitFactory.createWebClient().markEpisodeAsWatched(
+            try? await self.dependencies.anime365KitFactory.createWebClient().markEpisodeAsWatched(
               translationID: self.lastWatchedTranslationId
             )
 

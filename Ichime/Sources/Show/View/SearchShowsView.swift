@@ -27,7 +27,7 @@ private final class SearchShowsViewModel {
   private var lastPerformedSearchQuery = ""
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve(),
+    showService: ShowService = AppDependencies.live.showService,
     logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "SearchShowsViewModel")
   ) {
     self.showService = showService

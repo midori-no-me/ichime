@@ -17,7 +17,7 @@ private final class MomentCardContextMenuViewModel {
   private let momentId: Int
 
   init(
-    momentService: MomentService = ApplicationDependency.container.resolve(),
+    momentService: MomentService = AppDependencies.live.momentService,
     momentId: Int
   ) {
     self.momentService = momentService

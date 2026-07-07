@@ -11,7 +11,7 @@ struct StudioCard: View {
     id: Int,
     title: String,
     cover: URL?,
-    showService: ShowService = ApplicationDependency.container.resolve()
+    showService: ShowService = AppDependencies.live.showService
   ) {
     self.id = id
     self.title = title

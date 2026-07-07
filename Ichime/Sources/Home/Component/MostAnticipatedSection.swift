@@ -20,7 +20,7 @@ private final class MostAnticipatedSectionViewModel {
   private let logger: Logger
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve(),
+    showService: ShowService = AppDependencies.live.showService,
     logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "MostAnticipatedSectionViewModel")
   ) {
     self.showService = showService

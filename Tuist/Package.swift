@@ -10,7 +10,6 @@ import PackageDescription
       "Anime365Kit": .framework,
       "AppdbFramework": .framework,
       "Collections": .framework,
-      "DITranquillity": .framework,
       "JikanApiClient": .framework,
       "ShikimoriApiClient": .framework,
       "ThirdPartyVideoPlayer": .framework,
@@ -27,6 +26,5 @@ let package = Package(
     .package(path: "../Packages/ThirdPartyVideoPlayer"),
     .package(url: "https://github.com/appdb-official/AppdbSDK.git", .upToNextMinor(from: "1.6.2")),
     .package(url: "https://github.com/apple/swift-collections.git", .upToNextMinor(from: "1.6.0")),
-    .package(url: "https://github.com/ivlevAstef/DITranquillity.git", .upToNextMinor(from: "4.5.0")),
   ]
 )

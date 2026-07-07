@@ -19,7 +19,7 @@ private final class MomentsSectionViewModel {
   private let sorting: MomentSorting
 
   init(
-    momentService: MomentService = ApplicationDependency.container.resolve(),
+    momentService: MomentService = AppDependencies.live.momentService,
     logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "MomentsSectionViewModel"),
     sorting: MomentSorting
   ) {

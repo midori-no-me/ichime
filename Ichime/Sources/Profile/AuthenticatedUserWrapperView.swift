@@ -12,7 +12,7 @@ struct AuthenticatedUserWrapperView<Content: View>: View {
 
   init(
     @ViewBuilder content: @escaping () -> Content,
-    authenticationManager: AuthenticationManager = ApplicationDependency.container.resolve()
+    authenticationManager: AuthenticationManager = AppDependencies.live.authenticationManager
   ) {
     self.content = content
     self.authenticationManager = authenticationManager

@@ -104,16 +104,16 @@ struct MomentCard: View {
   @State private var showErrorAlert: Bool = false
   @State private var error: Error? = nil
 
+  @Environment(\.dependencies) private var dependencies
+
   let moment: Moment
   let displayShowTitle: Bool
-
-  private let momentService: MomentService = ApplicationDependency.container.resolve()
 
   var body: some View {
     Button(action: {
       Task {
         do {
-          let videoURL = try await momentService.getMomentVideoURL(momentId: self.moment.id)
+          let videoURL = try await self.dependencies.momentService.getMomentVideoURL(momentId: self.moment.id)
 
           let externalPlayerUniversalLink = DeepLinkFactory.buildUniversalLinkUrl(
             externalPlayerType: self.selectedPlayer,

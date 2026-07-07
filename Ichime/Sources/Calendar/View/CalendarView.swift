@@ -25,7 +25,7 @@ private final class CalendarViewModel {
   }
 
   init(
-    schedule: ShowReleaseSchedule = ApplicationDependency.container.resolve()
+    schedule: ShowReleaseSchedule = AppDependencies.live.showReleaseSchedule
   ) {
     self.schedule = schedule
   }

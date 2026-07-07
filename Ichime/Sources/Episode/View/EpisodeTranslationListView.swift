@@ -26,7 +26,7 @@ private final class EpisodeTranslationListViewModel {
   }
 
   init(
-    episodeService: EpisodeService = ApplicationDependency.container.resolve()
+    episodeService: EpisodeService = AppDependencies.live.episodeService
   ) {
     self.episodeService = episodeService
   }

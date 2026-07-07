@@ -25,7 +25,7 @@ private final class CoverGallerySheetViewModel {
   }
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve()
+    showService: ShowService = AppDependencies.live.showService
   ) {
     self.showService = showService
   }

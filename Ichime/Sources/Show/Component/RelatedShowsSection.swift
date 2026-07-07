@@ -18,7 +18,7 @@ private final class RelatedShowsSectionViewModel {
   private let myAnimeListId: Int
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve(),
+    showService: ShowService = AppDependencies.live.showService,
     myAnimeListId: Int
   ) {
     self.showService = showService

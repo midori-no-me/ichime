@@ -17,7 +17,7 @@ private final class EpisodeListViewModel {
   private let episodeService: EpisodeService
 
   init(
-    episodeService: EpisodeService = ApplicationDependency.container.resolve(),
+    episodeService: EpisodeService = AppDependencies.live.episodeService,
   ) {
     self.episodeService = episodeService
   }

@@ -19,7 +19,7 @@ private final class ShowMomentsSectionViewModel {
   private let showId: Int
 
   init(
-    momentService: MomentService = ApplicationDependency.container.resolve(),
+    momentService: MomentService = AppDependencies.live.momentService,
     logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "ShowMomentsSectionViewModel"),
     showId: Int
   ) {

@@ -24,7 +24,7 @@ private final class SearchSuggestionsViewModel {
   }
 
   init(
-    showSearchService: ShowSearchService = ApplicationDependency.container.resolve()
+    showSearchService: ShowSearchService = AppDependencies.live.showSearchService
   ) {
     self.showSearchService = showSearchService
   }

@@ -25,7 +25,7 @@ private final class ShowInMyListStatusButtonViewModel {
   }
 
   init(
-    animeListService: AnimeListService = ApplicationDependency.container.resolve()
+    animeListService: AnimeListService = AppDependencies.live.animeListService
   ) {
     self.animeListService = animeListService
   }

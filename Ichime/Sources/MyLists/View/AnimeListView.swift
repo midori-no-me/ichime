@@ -18,8 +18,8 @@ private final class AnimeListViewModel {
   private let animeListEntriesCount: AnimeListEntriesCount
 
   init(
-    animeListService: AnimeListService = ApplicationDependency.container.resolve(),
-    animeListEntriesCount: AnimeListEntriesCount = ApplicationDependency.container.resolve(),
+    animeListService: AnimeListService = AppDependencies.live.animeListService,
+    animeListEntriesCount: AnimeListEntriesCount = AppDependencies.live.animeListEntriesCount,
   ) {
     self.animeListService = animeListService
     self.animeListEntriesCount = animeListEntriesCount
