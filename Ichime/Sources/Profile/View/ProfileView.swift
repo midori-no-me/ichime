@@ -1,3 +1,8 @@
+import IchimeAnime365
+import IchimeCore
+import IchimeMyLists
+import IchimePreferences
+import IchimeProfile
 import SwiftUI
 
 @Observable @MainActor

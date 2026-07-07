@@ -1,4 +1,5 @@
 import Foundation
+import IchimeShow
 import SwiftUI
 
 struct SeasonCard: View {

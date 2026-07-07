@@ -1,3 +1,4 @@
+import IchimeShow
 import SwiftUI
 
 struct ShowCardAnime365: View {

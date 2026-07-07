@@ -14,6 +14,8 @@ private func baseSettings() -> SettingsDictionary {
     "INFOPLIST_KEY_CFBundleDisplayName": "Ichime",
     "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.entertainment",
     "MARKETING_VERSION": .string(appVersion),
+    "SWIFT_STRICT_CONCURRENCY": "complete",
+    "SWIFT_VERSION": "6.0",
   ]
 
   if !developmentTeam.isEmpty {
@@ -23,6 +25,14 @@ private func baseSettings() -> SettingsDictionary {
   return baseSettings
 }
 
+private func extensionSafeFrameworkSettings() -> Settings {
+  .settings(
+    base: [
+      "APPLICATION_EXTENSION_API_ONLY": "YES"
+    ]
+  )
+}
+
 let packageDependencies: [TargetDependency] = [
   .external(name: "Anime365Kit"),
   .external(name: "AppdbFramework"),
@@ -30,6 +40,20 @@ let packageDependencies: [TargetDependency] = [
   .external(name: "JikanApiClient"),
   .external(name: "ShikimoriApiClient"),
   .external(name: "ThirdPartyVideoPlayer"),
+]
+
+let domainDependencies: [TargetDependency] = [
+  .target(name: "IchimeCore"),
+  .target(name: "IchimePreferences"),
+  .target(name: "IchimeAnime365"),
+  .target(name: "IchimeShow"),
+  .target(name: "IchimeCalendar"),
+  .target(name: "IchimeCurrentlyWatching"),
+  .target(name: "IchimeEpisode"),
+  .target(name: "IchimeMoment"),
+  .target(name: "IchimeMyLists"),
+  .target(name: "IchimeProfile"),
+  .target(name: "IchimeVideoPlayer"),
 ]
 
 let appGroupEntitlements: Entitlements = .dictionary([
@@ -56,6 +80,156 @@ let project = Project(
     ]
   ),
   targets: [
+    .target(
+      name: "IchimeCore",
+      destinations: .tvOS,
+      product: .framework,
+      bundleId: "dev.midorinome.ichime.core",
+      deploymentTargets: .tvOS(tvOSDeploymentTarget),
+      sources: ["Ichime/Modules/IchimeCore/Sources/**"],
+      dependencies: [
+        .external(name: "AppdbFramework")
+      ],
+      settings: extensionSafeFrameworkSettings()
+    ),
+    .target(
+      name: "IchimePreferences",
+      destinations: .tvOS,
+      product: .framework,
+      bundleId: "dev.midorinome.ichime.preferences",
+      deploymentTargets: .tvOS(tvOSDeploymentTarget),
+      sources: ["Ichime/Modules/IchimePreferences/Sources/**"],
+      dependencies: [
+        .external(name: "Collections")
+      ],
+      settings: extensionSafeFrameworkSettings()
+    ),
+    .target(
+      name: "IchimeAnime365",
+      destinations: .tvOS,
+      product: .framework,
+      bundleId: "dev.midorinome.ichime.anime365",
+      deploymentTargets: .tvOS(tvOSDeploymentTarget),
+      sources: ["Ichime/Modules/IchimeAnime365/Sources/**"],
+      dependencies: [
+        .external(name: "Anime365Kit"),
+        .external(name: "Collections"),
+        .target(name: "IchimeCore"),
+      ],
+      settings: extensionSafeFrameworkSettings()
+    ),
+    .target(
+      name: "IchimeShow",
+      destinations: .tvOS,
+      product: .framework,
+      bundleId: "dev.midorinome.ichime.show",
+      deploymentTargets: .tvOS(tvOSDeploymentTarget),
+      sources: ["Ichime/Modules/IchimeShow/Sources/**"],
+      dependencies: [
+        .external(name: "Anime365Kit"),
+        .external(name: "Collections"),
+        .external(name: "JikanApiClient"),
+        .external(name: "ShikimoriApiClient"),
+        .target(name: "IchimeAnime365"),
+        .target(name: "IchimePreferences"),
+      ],
+      settings: extensionSafeFrameworkSettings()
+    ),
+    .target(
+      name: "IchimeCalendar",
+      destinations: .tvOS,
+      product: .framework,
+      bundleId: "dev.midorinome.ichime.calendar",
+      deploymentTargets: .tvOS(tvOSDeploymentTarget),
+      sources: ["Ichime/Modules/IchimeCalendar/Sources/**"],
+      dependencies: [
+        .external(name: "Collections"),
+        .external(name: "ShikimoriApiClient"),
+        .target(name: "IchimeAnime365"),
+        .target(name: "IchimeShow"),
+      ],
+      settings: extensionSafeFrameworkSettings()
+    ),
+    .target(
+      name: "IchimeCurrentlyWatching",
+      destinations: .tvOS,
+      product: .framework,
+      bundleId: "dev.midorinome.ichime.currentlywatching",
+      deploymentTargets: .tvOS(tvOSDeploymentTarget),
+      sources: ["Ichime/Modules/IchimeCurrentlyWatching/Sources/**"],
+      dependencies: [
+        .external(name: "Anime365Kit"),
+        .external(name: "Collections"),
+        .target(name: "IchimeAnime365"),
+        .target(name: "IchimeShow"),
+      ],
+      settings: extensionSafeFrameworkSettings()
+    ),
+    .target(
+      name: "IchimeEpisode",
+      destinations: .tvOS,
+      product: .staticFramework,
+      bundleId: "dev.midorinome.ichime.episode",
+      deploymentTargets: .tvOS(tvOSDeploymentTarget),
+      sources: ["Ichime/Modules/IchimeEpisode/Sources/**"],
+      dependencies: [
+        .external(name: "Anime365Kit"),
+        .external(name: "Collections"),
+        .external(name: "JikanApiClient"),
+        .target(name: "IchimeAnime365"),
+        .target(name: "IchimePreferences"),
+        .target(name: "IchimeShow"),
+      ]
+    ),
+    .target(
+      name: "IchimeMoment",
+      destinations: .tvOS,
+      product: .staticFramework,
+      bundleId: "dev.midorinome.ichime.moment",
+      deploymentTargets: .tvOS(tvOSDeploymentTarget),
+      sources: ["Ichime/Modules/IchimeMoment/Sources/**"],
+      dependencies: [
+        .external(name: "Anime365Kit"),
+        .external(name: "Collections"),
+        .target(name: "IchimeAnime365"),
+        .target(name: "IchimeShow"),
+      ]
+    ),
+    .target(
+      name: "IchimeMyLists",
+      destinations: .tvOS,
+      product: .staticFramework,
+      bundleId: "dev.midorinome.ichime.mylists",
+      deploymentTargets: .tvOS(tvOSDeploymentTarget),
+      sources: ["Ichime/Modules/IchimeMyLists/Sources/**"],
+      dependencies: [
+        .external(name: "Anime365Kit"),
+        .external(name: "Collections"),
+        .target(name: "IchimeAnime365"),
+        .target(name: "IchimeShow"),
+      ]
+    ),
+    .target(
+      name: "IchimeProfile",
+      destinations: .tvOS,
+      product: .staticFramework,
+      bundleId: "dev.midorinome.ichime.profile",
+      deploymentTargets: .tvOS(tvOSDeploymentTarget),
+      sources: ["Ichime/Modules/IchimeProfile/Sources/**"],
+      dependencies: [
+        .external(name: "Anime365Kit"),
+        .target(name: "IchimeAnime365"),
+        .target(name: "IchimeMyLists"),
+      ]
+    ),
+    .target(
+      name: "IchimeVideoPlayer",
+      destinations: .tvOS,
+      product: .staticFramework,
+      bundleId: "dev.midorinome.ichime.videoplayer",
+      deploymentTargets: .tvOS(tvOSDeploymentTarget),
+      sources: ["Ichime/Modules/IchimeVideoPlayer/Sources/**"]
+    ),
     .target(
       name: "Ichime",
       destinations: .tvOS,
@@ -89,7 +263,7 @@ let project = Project(
         "Ichime/Resources/Settings.bundle",
       ],
       entitlements: appGroupEntitlements,
-      dependencies: packageDependencies + [
+      dependencies: packageDependencies + domainDependencies + [
         .target(name: "TopShelf")
       ],
       settings: .settings(
@@ -122,34 +296,24 @@ let project = Project(
         "UIRequiredDeviceCapabilities": ["arm64"],
       ]),
       sources: [
-        "Ichime/Sources/Anime365/Anime365BaseURL.swift",
-        "Ichime/Sources/Anime365/Anime365KitFactory.swift",
-        "Ichime/Sources/Appdb/AppdbSupport.swift",
-        "Ichime/Sources/Calendar/Model/ShowFromCalendarWithExactReleaseDate.swift",
-        "Ichime/Sources/Calendar/Model/ShowsFromCalendarGroupedByDate.swift",
-        "Ichime/Sources/Calendar/ShowReleaseSchedule.swift",
-        "Ichime/Sources/CurrentlyWatching/CurrentlyWatchingService.swift",
-        "Ichime/Sources/CurrentlyWatching/Type/EpisodeFromCurrentlyWatchingList.swift",
-        "Ichime/Sources/DependencyInjection/ServiceLocator.swift",
-        "Ichime/Sources/Show/Type/ShowName.swift",
-        "Ichime/Sources/TopShelf/**",
-        "Ichime/Sources/Utils/DateUtils.swift",
+        "Ichime/Sources/TopShelf/**"
       ],
       entitlements: appGroupEntitlements,
       dependencies: [
-        .external(name: "Anime365Kit"),
-        .external(name: "AppdbFramework"),
-        .external(name: "Collections"),
-        .external(name: "JikanApiClient"),
         .external(name: "ShikimoriApiClient"),
+        .target(name: "IchimeAnime365"),
+        .target(name: "IchimeCalendar"),
+        .target(name: "IchimeCore"),
+        .target(name: "IchimeCurrentlyWatching"),
       ],
       settings: .settings(
         base: [
+          "APPLICATION_EXTENSION_API_ONLY": "YES",
           "LD_RUNPATH_SEARCH_PATHS": [
             "$(inherited)",
             "@executable_path/Frameworks",
             "@executable_path/../../Frameworks",
-          ]
+          ],
         ]
       )
     ),

@@ -1,3 +1,6 @@
+import IchimeEpisode
+import IchimeMyLists
+import IchimeShow
 import SwiftUI
 
 @Observable @MainActor

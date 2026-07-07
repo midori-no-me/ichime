@@ -1,3 +1,5 @@
+import IchimeEpisode
+import IchimeShow
 import SwiftUI
 
 struct RecentlyUploadedEpisodeCard: View {

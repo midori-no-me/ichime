@@ -1,3 +1,4 @@
+import IchimeProfile
 import SwiftUI
 
 struct CurrentUserStoreEnvironmentKey: @MainActor EnvironmentKey {

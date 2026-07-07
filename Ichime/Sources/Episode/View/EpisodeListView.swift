@@ -1,3 +1,6 @@
+import IchimeCore
+import IchimeEpisode
+import IchimeShow
 import OrderedCollections
 import SwiftData
 import SwiftUI

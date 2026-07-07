@@ -1,3 +1,5 @@
+import IchimeAnime365
+import IchimeEpisode
 import SwiftUI
 
 private struct MarkEpisodeAsWatchedAlert: ViewModifier {

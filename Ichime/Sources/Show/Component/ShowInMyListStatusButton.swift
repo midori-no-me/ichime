@@ -1,3 +1,6 @@
+import IchimeMyLists
+import IchimeProfile
+import IchimeShow
 import OrderedCollections
 import SwiftUI
 

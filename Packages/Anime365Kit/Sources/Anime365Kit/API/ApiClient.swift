@@ -4,7 +4,6 @@ import OSLog
 public struct ApiClient: Sendable {
   private let baseURL: URL
   private let urlSession: URLSession
-  private let jsonDecoder: JSONDecoder
   private let logger: Logger
 
   public init(
@@ -13,13 +12,14 @@ public struct ApiClient: Sendable {
     urlSession: URLSession
   ) {
     self.baseURL = baseURL
-
-    let jsonDecoder = JSONDecoder.init()
-    jsonDecoder.dateDecodingStrategy = ApiDateDecoder.getDateDecodingStrategy()
-
-    self.jsonDecoder = jsonDecoder
     self.logger = logger
     self.urlSession = urlSession
+  }
+
+  private static func makeJSONDecoder() -> JSONDecoder {
+    let jsonDecoder = JSONDecoder()
+    jsonDecoder.dateDecodingStrategy = ApiDateDecoder.getDateDecodingStrategy()
+    return jsonDecoder
   }
 
   func sendRequest<T: Decodable>(
@@ -55,7 +55,9 @@ public struct ApiClient: Sendable {
       self.logger.debug("API request: \(httpRequest.httpMethod!) \(httpRequest.url!) [\(httpResponse.statusCode)]")
     }
 
-    let apiErrorResponse = try? self.jsonDecoder.decode(ApiErrorResponse.self, from: data)
+    let jsonDecoder = Self.makeJSONDecoder()
+
+    let apiErrorResponse = try? jsonDecoder.decode(ApiErrorResponse.self, from: data)
 
     if let apiErrorResponse {
       let debugApiResponse = String(data: data, encoding: .utf8) ?? "Unable to convert response body to a string"
@@ -74,7 +76,7 @@ public struct ApiClient: Sendable {
     }
 
     do {
-      let apiResponse = try self.jsonDecoder.decode(ApiSuccessfulResponse<T>.self, from: data)
+      let apiResponse = try jsonDecoder.decode(ApiSuccessfulResponse<T>.self, from: data)
 
       return apiResponse.data
     }

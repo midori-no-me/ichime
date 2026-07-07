@@ -1,3 +1,4 @@
+import IchimeAnime365
 import SwiftUI
 
 struct HomeView: View {
