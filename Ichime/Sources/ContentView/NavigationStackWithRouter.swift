@@ -1,6 +1,6 @@
 import SwiftUI
 
-@MainActor @preconcurrency struct NavigationStackWithRouter<Root>: View where Root: View {
+@MainActor struct NavigationStackWithRouter<Root>: View where Root: View {
   @State private var path: [Route] = []
 
   /// Видит ли пользователь текущий NavigationStackWithRouter
@@ -13,7 +13,7 @@ import SwiftUI
 
   private let root: () -> Root
 
-  @MainActor @preconcurrency init(@ViewBuilder root: @escaping () -> Root) {
+  @MainActor init(@ViewBuilder root: @escaping () -> Root) {
     self.root = root
   }
 

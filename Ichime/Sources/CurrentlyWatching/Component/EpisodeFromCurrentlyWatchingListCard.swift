@@ -1,3 +1,5 @@
+import IchimeCurrentlyWatching
+import IchimeShow
 import SwiftUI
 
 struct EpisodeFromCurrentlyWatchingListCard: View {

@@ -1,3 +1,6 @@
+import IchimeCalendar
+import IchimeEpisode
+import IchimeShow
 import SwiftUI
 
 struct ShowCardMyAnimeList: View {

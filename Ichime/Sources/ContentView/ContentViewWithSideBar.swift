@@ -1,3 +1,4 @@
+import IchimeProfile
 import SwiftData
 import SwiftUI
 

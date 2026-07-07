@@ -1,4 +1,7 @@
 import Anime365Kit
+import IchimeEpisode
+import IchimeShow
+import IchimeVideoPlayer
 import SwiftData
 import SwiftUI
 import ThirdPartyVideoPlayer

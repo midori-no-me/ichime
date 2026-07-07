@@ -1,3 +1,4 @@
+import IchimeShow
 import SwiftUI
 
 struct StaffMemberCard: View {

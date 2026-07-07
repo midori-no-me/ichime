@@ -1,3 +1,5 @@
+import IchimeAnime365
+import IchimeProfile
 import SwiftUI
 
 struct AuthenticatedUserWrapperView<Content: View>: View {

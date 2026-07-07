@@ -1,10 +1,20 @@
 import Foundation
+import IchimeAnime365
+import IchimeCalendar
+import IchimeCore
+import IchimeCurrentlyWatching
+import IchimeEpisode
+import IchimeMoment
+import IchimeMyLists
+import IchimeProfile
+import IchimeShow
+import IchimeVideoPlayer
 import JikanApiClient
 import OSLog
 import ShikimoriApiClient
 import SwiftUI
 
-struct AppDependencies {
+struct AppDependencies: Sendable {
   static let live: Self = {
     let urlSessionConfig = URLSessionConfiguration.default
     urlSessionConfig.httpCookieStorage = ServiceLocator.cookieStorage

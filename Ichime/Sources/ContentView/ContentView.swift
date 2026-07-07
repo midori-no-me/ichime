@@ -1,3 +1,4 @@
+import IchimePreferences
 import SwiftUI
 
 struct ContentView: View {

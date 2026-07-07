@@ -1,4 +1,6 @@
 import Anime365Kit
+import IchimeCore
+import IchimeCurrentlyWatching
 import OSLog
 import OrderedCollections
 import SwiftUI
