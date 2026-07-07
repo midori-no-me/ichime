@@ -19,7 +19,7 @@ private final class CurrentlyWatchingSectionViewModel {
   private let logger: Logger
 
   init(
-    currentlyWatchingService: CurrentlyWatchingService = ApplicationDependency.container.resolve(),
+    currentlyWatchingService: CurrentlyWatchingService = AppDependencies.live.currentlyWatchingService,
     logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "CurrentlyWatchingSectionViewModel")
   ) {
     self.currentlyWatchingService = currentlyWatchingService

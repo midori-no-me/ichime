@@ -27,7 +27,6 @@ let packageDependencies: [TargetDependency] = [
   .external(name: "Anime365Kit"),
   .external(name: "AppdbFramework"),
   .external(name: "Collections"),
-  .external(name: "DITranquillity"),
   .external(name: "JikanApiClient"),
   .external(name: "ShikimoriApiClient"),
   .external(name: "ThirdPartyVideoPlayer"),

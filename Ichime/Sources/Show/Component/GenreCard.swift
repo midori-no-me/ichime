@@ -9,7 +9,7 @@ struct GenreCard: View {
   init(
     id: Int,
     title: String,
-    showService: ShowService = ApplicationDependency.container.resolve()
+    showService: ShowService = AppDependencies.live.showService
   ) {
     self.id = id
     self.title = title

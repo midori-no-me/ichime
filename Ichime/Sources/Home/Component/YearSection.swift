@@ -20,7 +20,7 @@ private final class YearSectionViewModel {
   private let logger: Logger
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve(),
+    showService: ShowService = AppDependencies.live.showService,
     logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "YearSectionViewModel")
   ) {
     self.showService = showService

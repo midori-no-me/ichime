@@ -14,7 +14,7 @@ private final class EditAnimeListEntrySheetViewModel {
   private let animeListService: AnimeListService
 
   init(
-    animeListService: AnimeListService = ApplicationDependency.container.resolve()
+    animeListService: AnimeListService = AppDependencies.live.animeListService
   ) {
     self.animeListService = animeListService
   }

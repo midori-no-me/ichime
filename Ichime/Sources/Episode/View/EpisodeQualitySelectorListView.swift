@@ -28,7 +28,7 @@ private final class EpisodeQualitySelectorListViewModel {
   }
 
   init(
-    episodeService: EpisodeService = ApplicationDependency.container.resolve()
+    episodeService: EpisodeService = AppDependencies.live.episodeService
   ) {
     self.episodeService = episodeService
   }
@@ -146,12 +146,12 @@ private struct EpisodeTranslationsStreamingQualities: View {
 
   @Environment(\.openURL) private var openURL
 
+  @Environment(\.dependencies) private var dependencies
+
   let translationId: Int
   let episodeTranslationStreamingInfo: EpisodeTranslationStreamingInfo
   let showTitle: ShowName?
   let episodeNumber: Int?
-
-  private let subtitlesProxyUrlGenerator: SubtitlesProxyUrlGenerator = ApplicationDependency.container.resolve()
 
   var body: some View {
     List {
@@ -161,7 +161,7 @@ private struct EpisodeTranslationsStreamingQualities: View {
             var subtitlesUrl = self.episodeTranslationStreamingInfo.subtitlesUrl
 
             if self.isForcedToUseExternalSubtitlesProxy() || self.preferSubtitlesProxy {
-              subtitlesUrl = self.subtitlesProxyUrlGenerator.generate(translationId: self.translationId)
+              subtitlesUrl = self.dependencies.subtitlesProxyUrlGenerator.generate(translationId: self.translationId)
             }
 
             var showProperties: ShowProperties? = nil

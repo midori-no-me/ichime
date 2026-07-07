@@ -17,7 +17,7 @@ private final class ShowViewModel {
   private let showId: Int
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve(),
+    showService: ShowService = AppDependencies.live.showService,
     showId: Int
   ) {
     self.showService = showService

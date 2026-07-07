@@ -24,7 +24,7 @@ private final class ShowByMyAnimeListIdViewModel {
   }
 
   init(
-    showService: ShowService = ApplicationDependency.container.resolve()
+    showService: ShowService = AppDependencies.live.showService
   ) {
     self.showService = showService
   }

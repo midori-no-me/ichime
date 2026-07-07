@@ -11,7 +11,7 @@ private final class AuthenticationSheetViewModel {
   private let authenticationManager: AuthenticationManager
 
   init(
-    authenticationManager: AuthenticationManager = ApplicationDependency.container.resolve()
+    authenticationManager: AuthenticationManager = AppDependencies.live.authenticationManager
   ) {
     self.authenticationManager = authenticationManager
   }

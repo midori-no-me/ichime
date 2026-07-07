@@ -18,7 +18,7 @@ private final class RecentlyUploadedEpisodesSectionViewModel {
   private let logger: Logger
 
   init(
-    episodeService: EpisodeService = ApplicationDependency.container.resolve(),
+    episodeService: EpisodeService = AppDependencies.live.episodeService,
     logger: Logger = .init(
       subsystem: ServiceLocator.applicationId,
       category: "RecentlyUploadedEpisodesSectionViewModel"

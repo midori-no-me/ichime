@@ -1,5 +1,5 @@
 {
-  "originHash" : "5c1adb4a894e3d713c79a68f48deb2f4143dfa55538a347623def521e03a2066",
+  "originHash" : "945b06119278ad9c4215750d0fe5abe4e3c1c1ffef700327d7a8bcaf37f6fa0b",
   "pins" : [
     {
       "identity" : "appdbsdk",
@@ -11,30 +11,12 @@
       }
     },
     {
-      "identity" : "ditranquillity",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ivlevAstef/DITranquillity.git",
-      "state" : {
-        "revision" : "2ea85e5c157bdda71fd71dfa295e1a33a0da9ea4",
-        "version" : "4.5.2"
-      }
-    },
-    {
       "identity" : "swift-collections",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
         "revision" : "a0cb0954ecb21e4e31b0070e6ed5674e8556685a",
         "version" : "1.6.0"
-      }
-    },
-    {
-      "identity" : "swiftlazy",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ivlevAstef/SwiftLazy.git",
-      "state" : {
-        "revision" : "ed594b3be371defd7a44ae1c078e91b39d78a523",
-        "version" : "1.7.0"
       }
     },
     {
