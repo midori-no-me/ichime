@@ -16,10 +16,7 @@ import SwiftUI
 
 struct AppDependencies: Sendable {
   static let live: Self = {
-    let urlSessionConfig = URLSessionConfiguration.default
-    urlSessionConfig.httpCookieStorage = ServiceLocator.cookieStorage
-    urlSessionConfig.httpAdditionalHeaders?["User-Agent"] = ServiceLocator.userAgent
-    let urlSession = URLSession(configuration: urlSessionConfig)
+    let urlSession = ServiceLocator.urlSession
 
     let anime365BaseURL = Anime365BaseURL()
     let animeListEntriesCount = AnimeListEntriesCount()

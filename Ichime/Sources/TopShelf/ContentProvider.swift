@@ -7,16 +7,10 @@ import ShikimoriApiClient
 import TVServices
 
 final class ContentProvider: TVTopShelfContentProvider {
+  private static let urlSession = ServiceLocator.urlSession
+
   private static var anime365BaseURL: Anime365BaseURL {
     .init()
-  }
-
-  private static var urlSession: URLSession {
-    let urlSessionConfig = URLSessionConfiguration.default
-    urlSessionConfig.httpCookieStorage = ServiceLocator.cookieStorage
-    urlSessionConfig.httpAdditionalHeaders?["User-Agent"] = ServiceLocator.userAgent
-
-    return .init(configuration: urlSessionConfig)
   }
 
   private static var anime365KitFactory: Anime365KitFactory {

@@ -1,6 +1,16 @@
 import Foundation
 
 public enum ServiceLocator {
+  public static let urlSession: URLSession = {
+    let configuration = URLSessionConfiguration.default
+    configuration.httpCookieStorage = cookieStorage
+    configuration.httpAdditionalHeaders = [
+      "User-Agent": userAgent
+    ]
+
+    return URLSession(configuration: configuration)
+  }()
+
   private static let fallbackAppGroup = "group.dev.midorinome.ichime.group"
 
   public static var isInstalledViaAppdb: Bool {
@@ -66,7 +76,7 @@ public enum ServiceLocator {
   }
 
   public static var userAgent: String {
-    "\(applicationName) (\(applicationVersion)) / Contact: petr@flaks.xyz"
+    "\(applicationName)/\(applicationVersion)"
   }
 
   public static var shikimoriBaseUrl: URL {
