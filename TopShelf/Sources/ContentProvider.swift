@@ -1,46 +1,9 @@
-import IchimeAnime365
-import IchimeCalendar
+import Foundation
 import IchimeCore
-import IchimeCurrentlyWatching
-import OSLog
-import ShikimoriApiClient
 import TVServices
 
 final class ContentProvider: TVTopShelfContentProvider {
-  private static let urlSession = ServiceLocator.urlSession
-
-  private static var anime365BaseURL: Anime365BaseURL {
-    .init()
-  }
-
-  private static var anime365KitFactory: Anime365KitFactory {
-    .init(
-      anime365BaseURL: self.anime365BaseURL,
-      logger: Logger(subsystem: ServiceLocator.applicationId, category: "Anime365Kit"),
-      urlSession: urlSession
-    )
-  }
-
-  private static var shikimoriApiClient: ShikimoriApiClient.ApiClient {
-    .init(
-      baseUrl: ServiceLocator.shikimoriBaseUrl,
-      urlSession: Self.urlSession,
-      logger: Logger(subsystem: ServiceLocator.applicationId, category: "ShikimoriApiClient")
-    )
-  }
-
-  private static var showReleaseSchedule: ShowReleaseSchedule {
-    .init(
-      shikimoriApiClient: self.shikimoriApiClient,
-      anime365BaseURL: self.anime365BaseURL,
-    )
-  }
-
-  private static var currentlyWatchingService: CurrentlyWatchingService {
-    .init(
-      anime365KitFactory: self.anime365KitFactory
-    )
-  }
+  private static let dependencies: TopShelfDependencies = .live
 
   override func loadTopShelfContent(completionHandler: @escaping @Sendable ((any TVTopShelfContent)?) -> Void) {
     Task { @MainActor in
@@ -67,7 +30,7 @@ final class ContentProvider: TVTopShelfContentProvider {
   }
 
   private static func getCurrentlyWatchingSection() async -> TVTopShelfItemCollection<TVTopShelfSectionedItem> {
-    let episodes = (try? await Self.currentlyWatchingService.getEpisodesToWatch(page: 1)) ?? []
+    let episodes = (try? await Self.dependencies.currentlyWatchingService.getEpisodesToWatch(page: 1)) ?? []
 
     let topShelfItems = episodes.map {
       let topShelfItem = TVTopShelfSectionedItem(identifier: String($0.episodeId))
@@ -101,7 +64,7 @@ final class ContentProvider: TVTopShelfContentProvider {
   }
 
   private static func getCalendarSection() async -> [TVTopShelfItemCollection<TVTopShelfSectionedItem>] {
-    let scheduleDays = await Self.showReleaseSchedule.getSchedule()
+    let scheduleDays = await Self.dependencies.showReleaseSchedule.getSchedule()
 
     let sections: [TVTopShelfItemCollection<TVTopShelfSectionedItem>] = scheduleDays.map { scheduleDay in
       let topShelfItems = scheduleDay.shows.map {

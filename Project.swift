@@ -252,10 +252,7 @@ let project = Project(
         "UIRequiredDeviceCapabilities": ["arm64"],
       ]),
       sources: [
-        .glob(
-          "Ichime/Sources/**",
-          excluding: ["Ichime/Sources/TopShelf/**"]
-        )
+        "Ichime/Sources/**"
       ],
       resources: [
         "Ichime/Resources/AppIcon.icon",
@@ -296,7 +293,7 @@ let project = Project(
         "UIRequiredDeviceCapabilities": ["arm64"],
       ]),
       sources: [
-        "Ichime/Sources/TopShelf/**"
+        "TopShelf/Sources/**"
       ],
       entitlements: appGroupEntitlements,
       dependencies: [
