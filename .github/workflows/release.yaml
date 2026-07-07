@@ -15,7 +15,6 @@ env:
   APP_VERSION: ${{ github.event.release.tag_name }}
   APPDB_API_BASE_URL: https://api.dbservices.to/v1.7
   APPDB_MIN_TVOS_VERSION: "26.0"
-  APPDB_DESCRIPTION: Нативное приложение для сайта Anime 365, созданное специально для Apple TV.
   TUIST_APP_VERSION: ${{ github.event.release.tag_name }}
   TUIST_BUILD_NUMBER: ${{ github.run_number }}
 
@@ -103,6 +102,9 @@ jobs:
     needs: [build_ipa]
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
       - name: Download IPA Artifact
         uses: actions/download-artifact@v8
         with:
@@ -169,7 +171,7 @@ jobs:
       - name: Update appdb IPA Metadata
         env:
           APPDB_ST: ${{ secrets.APPDB_ST }}
-        run: curl -sS --fail-with-body -X POST "$APPDB_API_BASE_URL/edit_official_ipa_metadata/" --form-string "id=${{ steps.appdb_ipa.outputs.id }}" --form-string "st=$APPDB_ST" --form-string "brand=appdb" --form-string "lang=en" --form-string "min_tvos_version=$APPDB_MIN_TVOS_VERSION" --form-string "description=$APPDB_DESCRIPTION" --form "whatsnew=<release-notes.md" -o appdb-metadata.json
+        run: curl -sS --fail-with-body -X POST "$APPDB_API_BASE_URL/edit_official_ipa_metadata/" --form-string "id=${{ steps.appdb_ipa.outputs.id }}" --form-string "st=$APPDB_ST" --form-string "brand=appdb" --form-string "lang=en" --form-string "min_tvos_version=$APPDB_MIN_TVOS_VERSION" --form "description=<.github/assets/appdb_description.md" --form "whatsnew=<release-notes.md" -o appdb-metadata.json
 
       - name: Check appdb Metadata Response
         run: jq -e '.success != false' appdb-metadata.json
