@@ -81,3 +81,18 @@ jobs:
 
       - name: Check For Unused Code
         run: periphery scan
+
+  build:
+    name: Build
+    runs-on: macos-26
+    needs: [tuist]
+
+    steps:
+      - name: Download Repository w/ Xcode Configs Artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: ichime
+          path: ./
+
+      - name: Build Unsigned App
+        uses: ./.github/actions/build-unsigned-app

@@ -58,7 +58,9 @@ jobs:
           path: ./
 
       - name: Build Unsigned App
-        run: xcodebuild -workspace Ichime.xcworkspace -scheme Ichime -configuration Release -sdk appletvos -destination 'generic/platform=tvOS' -derivedDataPath Derived/appdb/DerivedData CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY='' build
+        uses: ./.github/actions/build-unsigned-app
+        with:
+          derived-data-path: Derived/appdb/DerivedData
 
       - name: Create IPA Payload Directory
         run: mkdir -p Derived/appdb/staging/Payload

@@ -1,0 +1,41 @@
+name: Build Unsigned App
+description: Build the Ichime app without code signing.
+
+inputs:
+  workspace:
+    description: Xcode workspace to build.
+    default: Ichime.xcworkspace
+  scheme:
+    description: Xcode scheme to build.
+    default: Ichime
+  configuration:
+    description: Xcode build configuration.
+    default: Release
+  sdk:
+    description: SDK to build against.
+    default: appletvos
+  destination:
+    description: xcodebuild destination.
+    default: generic/platform=tvOS
+  derived-data-path:
+    description: DerivedData output path.
+    default: Derived/CI/DerivedData
+
+runs:
+  using: composite
+  steps:
+    - name: Build Unsigned App
+      shell: bash
+      run: >
+        xcodebuild
+        -quiet
+        -workspace "${{ inputs.workspace }}"
+        -scheme "${{ inputs.scheme }}"
+        -configuration "${{ inputs.configuration }}"
+        -sdk "${{ inputs.sdk }}"
+        -destination "${{ inputs.destination }}"
+        -derivedDataPath "${{ inputs.derived-data-path }}"
+        CODE_SIGNING_ALLOWED=NO
+        CODE_SIGNING_REQUIRED=NO
+        CODE_SIGN_IDENTITY=''
+        build
