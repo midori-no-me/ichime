@@ -26,8 +26,6 @@ struct ProfileView: View {
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
 
-  @AppStorage(NavigationStyle.UserDefaultsKey.STYLE) private var navigationStyle: NavigationStyle = .DEFAULT_STYLE
-
   @AppStorage(OngoingsVisibilityOna.UserDefaultsKey.VISIBILITY) private var ongoingsVisibilityOna:
     OngoingsVisibilityOna = .DEFAULT_VISIBILITY
   @AppStorage(OngoingsVisibilityOld.UserDefaultsKey.VISIBILITY) private var ongoingsVisibilityOld:
@@ -182,13 +180,6 @@ struct ProfileView: View {
       }
 
       Section {
-        Picker("Навигация", selection: self.$navigationStyle) {
-          ForEach(NavigationStyle.allCases, id: \.self) { navigationStyleType in
-            Text(navigationStyleType.name)
-          }
-        }
-        .pickerStyle(.navigationLink)
-
         if UIApplication.shared.supportsAlternateIcons {
           Picker("Иконка приложения", selection: self.$currentAppIcon) {
             ForEach(AppIcon.allCases.filter({ self.revealHiddenAnime365Domains ? true : $0 != .hentai365 }), id: \.self)
