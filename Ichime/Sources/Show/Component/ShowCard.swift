@@ -83,16 +83,9 @@ struct ShowCard: View {
           ImagePlaceholder.color
 
         case let .success(image):
-          if let uiImage = ImageRenderer(content: image).uiImage, uiImage.size.width >= uiImage.size.height {
-            image
-              .resizable()
-              .scaledToFit()
-          }
-          else {
-            image
-              .resizable()
-              .scaledToFill()
-          }
+          image
+            .resizable()
+            .scaledToFill()
 
         case .failure:
           Group {
