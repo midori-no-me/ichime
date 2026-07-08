@@ -1,5 +1,6 @@
 import Foundation
 import OSLog
+import SwiftSoup
 
 public struct WebClient: Sendable {
   private static let COOKIE_NAME_CSRF = "csrf"
@@ -148,5 +149,27 @@ public struct WebClient: Sendable {
 
   func logNormalizationError<T>(of dto: T.Type, message: String) -> Void {
     self.logger.error("Error while normalizing \(dto.self): \(message)")
+  }
+
+  func parseHTML<Result: Sendable>(
+    _ html: String,
+    _ operation: @Sendable (Document) throws -> Result
+  ) throws(WebClientError) -> Result {
+    do {
+      let htmlDocument = try? SwiftSoup.parse(html)
+
+      guard let htmlDocument else {
+        throw WebClientError.couldNotParseHtml
+      }
+
+      return try operation(htmlDocument)
+    }
+    catch let error as WebClientError {
+      throw error
+    }
+    catch {
+      self.logger.debug("Unknown error while parsing HTML: \(error)")
+      throw .unknownError(error)
+    }
   }
 }

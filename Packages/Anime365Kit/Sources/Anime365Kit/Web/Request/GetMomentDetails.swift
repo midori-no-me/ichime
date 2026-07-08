@@ -2,6 +2,7 @@ import Foundation
 import SwiftSoup
 
 extension WebClient {
+  @concurrent
   public func getMomentDetails(momentID: Int) async throws(WebClientError)
     -> MomentDetails
   {
@@ -10,25 +11,21 @@ extension WebClient {
       queryItems: [],
     )
 
-    let htmlDocument = try? SwiftSoup.parse(html)
-
-    guard let htmlDocument else {
-      throw .couldNotParseHtml
-    }
-
-    if html.contains("Вход или регистрация") || html.contains("Вход - Anime 365") {
-      throw .authenticationRequired
-    }
-
-    do {
-      return try .init(htmlElement: htmlDocument, anime365BaseURL: self.baseURL)
-    }
-    catch {
-      if case WebClientTypeNormalizationError.failedCreatingDTOFromHTMLElement(let errorMessage) = error {
-        self.logNormalizationError(of: AnimeListEntry.self, message: errorMessage)
+    return try self.parseHTML(html) { htmlDocument in
+      if html.contains("Вход или регистрация") || html.contains("Вход - Anime 365") {
+        throw WebClientError.authenticationRequired
       }
 
-      throw .couldNotParseHtml
+      do {
+        return try .init(htmlElement: htmlDocument, anime365BaseURL: self.baseURL)
+      }
+      catch {
+        if case WebClientTypeNormalizationError.failedCreatingDTOFromHTMLElement(let errorMessage) = error {
+          self.logNormalizationError(of: AnimeListEntry.self, message: errorMessage)
+        }
+
+        throw WebClientError.couldNotParseHtml
+      }
     }
   }
 }

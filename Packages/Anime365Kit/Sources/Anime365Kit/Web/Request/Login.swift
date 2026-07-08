@@ -6,6 +6,7 @@ public enum LoginError: Error, Sendable {
 }
 
 extension WebClient {
+  @concurrent
   public func login(
     username: String,
     password: String

@@ -1,6 +1,7 @@
 import Foundation
 
 extension WebClient {
+  @concurrent
   public func updateProfilePlayerChannel(_ playerChannel: PlayerChannel) async throws(WebClientError) -> Void {
     _ = try await self.sendRequest(
       "/users/profile",

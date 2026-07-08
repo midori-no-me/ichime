@@ -2,6 +2,7 @@ import Foundation
 import SwiftSoup
 
 extension WebClient {
+  @concurrent
   public func markEpisodeAsWatched(
     translationID: Int
   ) async throws(WebClientError) -> Void {

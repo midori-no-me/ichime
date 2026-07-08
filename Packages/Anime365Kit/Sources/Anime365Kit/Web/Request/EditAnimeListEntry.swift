@@ -2,6 +2,7 @@ import Foundation
 import SwiftSoup
 
 extension WebClient {
+  @concurrent
   public func editAnimeListEntry(
     seriesID: Int,
     score: Int,

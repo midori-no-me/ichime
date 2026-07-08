@@ -2,6 +2,7 @@ import Foundation
 import SwiftSoup
 
 extension WebClient {
+  @concurrent
   public func getProfilePage() async throws(WebClientError) -> ProfilePage {
     let html = try await self.sendRequest(
       "/users/profile",
@@ -10,20 +11,16 @@ extension WebClient {
       ],
     )
 
-    let htmlDocument = try? SwiftSoup.parse(html)
+    return try self.parseHTML(html) { htmlDocument in
+      if html.contains("Вход по паролю") {
+        throw WebClientError.authenticationRequired
+      }
 
-    guard let htmlDocument else {
-      throw .couldNotParseHtml
+      return .init(
+        profile: try self.getProfile(fromProfilePageHTML: html, htmlDocument: htmlDocument),
+        playerChannelSettings: try? self.getProfilePlayerChannelSettings(fromProfilePageHTMLDocument: htmlDocument)
+      )
     }
-
-    if html.contains("Вход по паролю") {
-      throw .authenticationRequired
-    }
-
-    return .init(
-      profile: try self.getProfile(fromProfilePageHTML: html, htmlDocument: htmlDocument),
-      playerChannelSettings: try? self.getProfilePlayerChannelSettings(fromProfilePageHTMLDocument: htmlDocument)
-    )
   }
 
   private func getProfile(

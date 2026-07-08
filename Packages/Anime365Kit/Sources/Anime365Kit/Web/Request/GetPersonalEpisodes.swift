@@ -2,6 +2,7 @@ import Foundation
 import SwiftSoup
 
 extension WebClient {
+  @concurrent
   public func getPersonalEpisodes(page: Int) async throws(WebClientError) -> [NewPersonalEpisode] {
     var queryItems: [URLQueryItem] = [
       .init(name: "ajax", value: "m-index-personal-episodes")
@@ -16,28 +17,24 @@ extension WebClient {
       queryItems: queryItems,
     )
 
-    let htmlDocument = try? SwiftSoup.parse(html)
+    return try self.parseHTML(html) { htmlDocument in
+      if html.contains("Вход или регистрация") || html.contains("Вход - Anime 365") {
+        throw WebClientError.authenticationRequired
+      }
 
-    guard let htmlDocument else {
-      throw .couldNotParseHtml
-    }
-
-    if html.contains("Вход или регистрация") || html.contains("Вход - Anime 365") {
-      throw .authenticationRequired
-    }
-
-    return
-      (try? htmlDocument.select("#m-index-personal-episodes div.m-new-episode").array().compactMap {
-        do {
-          return try .init(htmlElement: $0, anime365BaseURL: self.baseURL)
-        }
-        catch {
-          if case WebClientTypeNormalizationError.failedCreatingDTOFromHTMLElement(let errorMessage) = error {
-            self.logNormalizationError(of: NewPersonalEpisode.self, message: errorMessage)
+      return
+        (try? htmlDocument.select("#m-index-personal-episodes div.m-new-episode").array().compactMap {
+          do {
+            return try .init(htmlElement: $0, anime365BaseURL: self.baseURL)
           }
+          catch {
+            if case WebClientTypeNormalizationError.failedCreatingDTOFromHTMLElement(let errorMessage) = error {
+              self.logNormalizationError(of: NewPersonalEpisode.self, message: errorMessage)
+            }
 
-          return nil
-        }
-      }) ?? []
+            return nil
+          }
+        }) ?? []
+    }
   }
 }
