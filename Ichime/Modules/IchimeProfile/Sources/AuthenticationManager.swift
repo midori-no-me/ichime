@@ -11,16 +11,27 @@ public enum AuthenticationError: Error {
 public actor AuthenticationManager {
   private let anime365KitFactory: Anime365KitFactory
   private let animeListEntriesCount: AnimeListEntriesCount
+  private let profilePageService: ProfilePageService
   private let urlSession: URLSession
 
   public init(
     anime365KitFactory: Anime365KitFactory,
     animeListEntriesCount: AnimeListEntriesCount,
+    profilePageService: ProfilePageService,
     urlSession: URLSession
   ) {
     self.anime365KitFactory = anime365KitFactory
     self.animeListEntriesCount = animeListEntriesCount
+    self.profilePageService = profilePageService
     self.urlSession = urlSession
+  }
+
+  private static func createUser(from profile: Profile) -> User {
+    .init(
+      id: profile.id,
+      name: profile.name,
+      avatar: profile.avatarURL
+    )
   }
 
   @MainActor
@@ -28,13 +39,10 @@ public actor AuthenticationManager {
     currentUserStore: CurrentUserStore,
     baseURL: URL,
   ) async throws -> Void {
-    let anime365WebClient = await self.anime365KitFactory
-      .createWebClient(withBaseURL: baseURL)
-
     let profile: Profile
 
     do {
-      profile = try await anime365WebClient.getProfile()
+      profile = try await self.profilePageService.getProfile(baseURL: baseURL)
     }
     catch {
       if case Anime365Kit.WebClientError.authenticationRequired = error {
@@ -46,7 +54,7 @@ public actor AuthenticationManager {
       throw error
     }
 
-    currentUserStore.setUser(user: .init(id: profile.id, name: profile.name, avatar: profile.avatarURL))
+    currentUserStore.setUser(user: Self.createUser(from: profile))
   }
 
   @MainActor
@@ -71,18 +79,21 @@ public actor AuthenticationManager {
       }
     }
 
-    let profile = try? await anime365WebClient.getProfile()
+    await self.profilePageService.invalidate()
+
+    let profile = try? await self.profilePageService.getProfile(baseURL: baseURL)
 
     guard let profile else {
       throw .unknown
     }
 
-    currentUserStore.setUser(user: .init(id: profile.id, name: profile.name, avatar: profile.avatarURL))
+    currentUserStore.setUser(user: Self.createUser(from: profile))
   }
 
   @MainActor
   public func logout(currentUserStore: CurrentUserStore) async -> Void {
     await self.animeListEntriesCount.clear()
+    await self.profilePageService.invalidate()
 
     let cookieStorage = self.urlSession.configuration.httpCookieStorage
     for cookie in cookieStorage?.cookies ?? [] {

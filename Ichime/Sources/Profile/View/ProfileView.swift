@@ -160,6 +160,8 @@ struct ProfileView: View {
 
       Section("Настройки аккаунта") {
         if self.currentUserStore.user != nil {
+          StreamingChannelSettingPicker()
+
           Button("Выйти из аккаунта", role: .destructive) {
             Task {
               await self.viewModel.logout(currentUserStore: self.currentUserStore)

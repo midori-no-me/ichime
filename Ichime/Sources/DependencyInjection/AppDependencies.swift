@@ -78,9 +78,14 @@ struct AppDependencies: Sendable {
       shikimoriApiClient: shikimoriApiClient
     )
 
+    let profilePageService = ProfilePageService(
+      anime365KitFactory: anime365KitFactory
+    )
+
     let authenticationManager = AuthenticationManager(
       anime365KitFactory: anime365KitFactory,
       animeListEntriesCount: animeListEntriesCount,
+      profilePageService: profilePageService,
       urlSession: urlSession
     )
 
@@ -98,6 +103,7 @@ struct AppDependencies: Sendable {
       momentService: momentService,
       showSearchService: showSearchService,
       authenticationManager: authenticationManager,
+      profilePageService: profilePageService,
       animeListEntriesCount: animeListEntriesCount,
       animeListService: animeListService
     )
@@ -112,6 +118,7 @@ struct AppDependencies: Sendable {
   let momentService: MomentService
   let showSearchService: ShowSearchService
   let authenticationManager: AuthenticationManager
+  let profilePageService: ProfilePageService
   let animeListEntriesCount: AnimeListEntriesCount
   let animeListService: AnimeListService
 }
