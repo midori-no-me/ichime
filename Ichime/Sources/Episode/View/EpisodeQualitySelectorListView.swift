@@ -80,7 +80,6 @@ struct EpisodeQualitySelectorListView: View {
     case .loading:
       ProgressView()
         .focusable()
-        .centeredContentFix()
 
     case let .loadingFailed(error):
       if case let Anime365Kit.ApiClientError.apiError(apiError) = error, case .authenticationRequired = apiError {
@@ -91,7 +90,6 @@ struct EpisodeQualitySelectorListView: View {
             )
           }
         })
-        .centeredContentFix()
       }
       else {
         ContentUnavailableView {
@@ -109,7 +107,6 @@ struct EpisodeQualitySelectorListView: View {
             Text("Обновить")
           }
         }
-        .centeredContentFix()
       }
 
     case .loadedButEmpty:
@@ -128,7 +125,6 @@ struct EpisodeQualitySelectorListView: View {
           Text("Обновить")
         }
       }
-      .centeredContentFix()
 
     case let .loaded(episodeTranslationStreamingInfo):
       EpisodeTranslationsStreamingQualities(

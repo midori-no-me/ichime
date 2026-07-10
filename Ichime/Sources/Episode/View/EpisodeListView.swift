@@ -77,7 +77,6 @@ struct EpisodeListView: View {
     case .loading:
       ProgressView()
         .focusable()
-        .centeredContentFix()
 
     case let .loadingFailed(error):
       ContentUnavailableView {
@@ -95,7 +94,6 @@ struct EpisodeListView: View {
           Text("Обновить")
         }
       }
-      .centeredContentFix()
 
     case .loadedButEmpty:
       ContentUnavailableView {
@@ -113,7 +111,6 @@ struct EpisodeListView: View {
           Text("Обновить")
         }
       }
-      .centeredContentFix()
 
     case let .loaded(episodeInfos):
       List {

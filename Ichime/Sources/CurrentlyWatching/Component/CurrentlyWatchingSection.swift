@@ -109,7 +109,6 @@ struct CurrentlyWatchingSection: View {
                 await self.viewModel.performInitialLoading()
               }
             })
-            .centeredContentFix()
           }
           else {
             ShowCardHStackContentUnavailable {

@@ -61,7 +61,6 @@ struct CalendarView: View {
     case .loading:
       ProgressView()
         .focusable()
-        .centeredContentFix()
 
     case .loadedButEmpty:
       ContentUnavailableView {
@@ -77,7 +76,6 @@ struct CalendarView: View {
           Text("Обновить")
         }
       }
-      .centeredContentFix()
 
     case let .loaded(scheduleDays):
       ScrollView(.vertical) {

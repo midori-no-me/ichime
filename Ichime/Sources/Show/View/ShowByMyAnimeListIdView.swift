@@ -64,7 +64,6 @@ struct ShowByMyAnimeListIdView: View {
     case .loading:
       ProgressView()
         .focusable()
-        .centeredContentFix()
 
     case let .loadingFailed(error):
       if case GetShowByIdError.notFoundByMyAnimeListId = error {
@@ -85,7 +84,6 @@ struct ShowByMyAnimeListIdView: View {
             Text("Обновить")
           }
         }
-        .centeredContentFix()
       }
       else {
         ContentUnavailableView {
@@ -103,7 +101,6 @@ struct ShowByMyAnimeListIdView: View {
             Text("Обновить")
           }
         }
-        .centeredContentFix()
       }
 
     case let .loaded(showId):

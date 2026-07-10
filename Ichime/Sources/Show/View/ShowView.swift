@@ -67,7 +67,6 @@ struct ShowView: View {
     case .idle:
       ProgressView()
         .focusable()
-        .centeredContentFix()
         .onAppear {
           Task {
             await self.viewModel.performInitialLoading()
@@ -77,7 +76,6 @@ struct ShowView: View {
     case .loading:
       ProgressView()
         .focusable()
-        .centeredContentFix()
 
     case let .loadingFailed(error):
       if case GetShowByIdError.notFoundByMyAnimeListId = error {
@@ -94,7 +92,6 @@ struct ShowView: View {
             Text("Обновить")
           }
         }
-        .centeredContentFix()
       }
       else {
         ContentUnavailableView {
@@ -110,7 +107,6 @@ struct ShowView: View {
             Text("Обновить")
           }
         }
-        .centeredContentFix()
       }
 
     case let .loaded(show):

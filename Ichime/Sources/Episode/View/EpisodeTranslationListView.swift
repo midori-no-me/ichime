@@ -89,7 +89,6 @@ struct EpisodeTranslationListView: View {
       case .loading:
         ProgressView()
           .focusable()
-          .centeredContentFix()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -108,7 +107,6 @@ struct EpisodeTranslationListView: View {
             Text("Обновить")
           }
         }
-        .centeredContentFix()
 
       case .loadedButEmpty:
         ContentUnavailableView {
@@ -127,7 +125,6 @@ struct EpisodeTranslationListView: View {
             Text("Обновить")
           }
         }
-        .centeredContentFix()
 
       case let .loaded(episode, episodeTranslationGroups):
         List {

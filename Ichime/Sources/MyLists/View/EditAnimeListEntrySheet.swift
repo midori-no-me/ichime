@@ -81,7 +81,6 @@ struct EditAnimeListEntrySheet: View {
       case .loading:
         ProgressView()
           .focusable()
-          .centeredContentFix()
 
       case let .loadingFailed(error):
         ContentUnavailableView {
@@ -97,7 +96,6 @@ struct EditAnimeListEntrySheet: View {
             Text("Обновить")
           }
         }
-        .centeredContentFix()
 
       case let .loaded(animeListEditableEntry):
         EditAnimeListEntryForm(
