@@ -1,14 +1,22 @@
 import Foundation
 
 public struct GetRelatedResponse: Sendable, Decodable {
+  // MARK: Nested Types
+
   public struct AnimeFields: Sendable, Decodable {
+    // MARK: Nested Types
+
     public struct Relation: Sendable, Decodable {
       public let relationKind: RelationKind
       public let anime: AnimeFieldsForPreview?
     }
 
+    // MARK: Properties
+
     public let related: [Relation]
   }
+
+  // MARK: Properties
 
   public let animes: [AnimeFields]
 }

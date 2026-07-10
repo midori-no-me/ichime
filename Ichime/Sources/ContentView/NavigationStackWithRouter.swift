@@ -1,6 +1,8 @@
 import SwiftUI
 
 @MainActor struct NavigationStackWithRouter<Root>: View where Root: View {
+  // MARK: SwiftUI Properties
+
   @State private var path: [Route] = []
 
   /// Видит ли пользователь текущий NavigationStackWithRouter
@@ -11,11 +13,17 @@ import SwiftUI
   /// обрабатывать события только в нем.
   @State private var isNavigationStackVisible: Bool = false
 
+  // MARK: Properties
+
   private let root: () -> Root
+
+  // MARK: Lifecycle
 
   @MainActor init(@ViewBuilder root: @escaping () -> Root) {
     self.root = root
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     NavigationStack(path: self.$path) {

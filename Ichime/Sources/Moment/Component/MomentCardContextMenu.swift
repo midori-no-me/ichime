@@ -6,6 +6,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class MomentCardContextMenuViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -13,10 +15,14 @@ private final class MomentCardContextMenuViewModel {
     case loaded(MomentDetails)
   }
 
+  // MARK: Properties
+
   private(set) var state: State = .idle
 
   private let momentService: MomentService
   private let momentID: Int
+
+  // MARK: Lifecycle
 
   init(
     momentService: MomentService = AppDependencies.live.momentService,
@@ -25,6 +31,8 @@ private final class MomentCardContextMenuViewModel {
     self.momentService = momentService
     self.momentID = momentID
   }
+
+  // MARK: Functions
 
   func performInitialLoading() async {
     self.updateState(.loading)
@@ -47,13 +55,19 @@ private final class MomentCardContextMenuViewModel {
 }
 
 struct MomentCardContextMenu: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: MomentCardContextMenuViewModel
+
+  // MARK: Lifecycle
 
   init(
     momentID: Int
   ) {
     self.viewModel = .init(momentID: momentID)
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     switch self.viewModel.state {

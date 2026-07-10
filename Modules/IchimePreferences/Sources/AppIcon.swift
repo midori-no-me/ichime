@@ -5,6 +5,8 @@ public enum AppIcon: CaseIterable, Sendable {
   case hentai365
   case gawrGura
 
+  // MARK: Computed Properties
+
   public var systemIdentifier: String? {
     switch self {
     case .anime365:
@@ -26,6 +28,8 @@ public enum AppIcon: CaseIterable, Sendable {
       "Gawr Gura"
     }
   }
+
+  // MARK: Static Functions
 
   public static func create(fromSystemIdentifier systemIdentifier: String?) -> Self {
     for type in Self.allCases {

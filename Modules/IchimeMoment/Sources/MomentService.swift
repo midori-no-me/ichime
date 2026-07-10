@@ -3,13 +3,19 @@ import IchimeAnime365
 import OrderedCollections
 
 public struct MomentService: Sendable {
+  // MARK: Properties
+
   private let anime365KitFactory: Anime365KitFactory
+
+  // MARK: Lifecycle
 
   public init(
     anime365KitFactory: Anime365KitFactory
   ) {
     self.anime365KitFactory = anime365KitFactory
   }
+
+  // MARK: Functions
 
   public func getMomentVideoURL(momentID: Int) async throws -> URL {
     let momentEmbed = try await self.anime365KitFactory.createWebClient().getMomentEmbed(momentID: momentID)

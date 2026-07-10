@@ -11,6 +11,8 @@ public enum AnimeListScore: Int, CaseIterable, Sendable {
   case two = 2
   case one = 1
 
+  // MARK: Computed Properties
+
   public var label: String {
     switch self {
     case .none:

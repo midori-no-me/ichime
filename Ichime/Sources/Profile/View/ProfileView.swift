@@ -7,7 +7,11 @@ import SwiftUI
 
 @Observable @MainActor
 private final class ProfileViewModel {
+  // MARK: Properties
+
   private let authenticationManager: AuthenticationManager
+
+  // MARK: Lifecycle
 
   init(
     authenticationManager: AuthenticationManager = AppDependencies.live.authenticationManager
@@ -15,12 +19,16 @@ private final class ProfileViewModel {
     self.authenticationManager = authenticationManager
   }
 
+  // MARK: Functions
+
   func logout(currentUserStore: CurrentUserStore) async -> Void {
     await self.authenticationManager.logout(currentUserStore: currentUserStore)
   }
 }
 
 struct ProfileView: View {
+  // MARK: SwiftUI Properties
+
   @Environment(\.currentUserStore) private var currentUserStore
 
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
@@ -56,6 +64,8 @@ struct ProfileView: View {
   @State private var showAuthenticationSheet: Bool = false
   @State private var currentAppIcon: AppIcon = .create(fromSystemIdentifier: UIApplication.shared.alternateIconName)
 
+  // MARK: Properties
+
   private let appName =
     (Bundle.main.infoDictionary?["CFBundleDisplayName"]
     ?? Bundle.main
@@ -71,6 +81,8 @@ struct ProfileView: View {
     private let buildConfiguration = ""
   #endif
 
+  // MARK: Computed Properties
+
   private var appdbSDKStatus: String {
     AppEnvironment.isInstalledViaAppdb ? "appdb SDK" : ""
   }
@@ -84,6 +96,8 @@ struct ProfileView: View {
     .filter { !$0.isEmpty }
     .joined(separator: " • ")
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     List {

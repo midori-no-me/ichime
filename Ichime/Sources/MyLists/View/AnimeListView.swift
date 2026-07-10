@@ -8,6 +8,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class AnimeListViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -16,10 +18,14 @@ private final class AnimeListViewModel {
     case loaded([AnimeListEntriesGroup])
   }
 
+  // MARK: Properties
+
   private(set) var state: State = .idle
 
   private let animeListService: AnimeListService
   private let animeListEntriesCount: AnimeListEntriesCount
+
+  // MARK: Lifecycle
 
   init(
     animeListService: AnimeListService = AppDependencies.live.animeListService,
@@ -28,6 +34,8 @@ private final class AnimeListViewModel {
     self.animeListService = animeListService
     self.animeListEntriesCount = animeListEntriesCount
   }
+
+  // MARK: Functions
 
   func performInitialLoad(
     currentUserID: Int?,
@@ -93,11 +101,17 @@ private final class AnimeListViewModel {
 }
 
 struct AnimeListView: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: AnimeListViewModel = .init()
   @Environment(\.currentUserStore) private var currentUserStore
 
+  // MARK: Properties
+
   let userID: Int
   let animeListCategory: AnimeListCategory
+
+  // MARK: Content Properties
 
   var body: some View {
     Group {
@@ -193,10 +207,16 @@ struct AnimeListView: View {
 }
 
 private struct AnimeListEntryRowView: View {
+  // MARK: SwiftUI Properties
+
   @State private var showSheet: Bool = false
+
+  // MARK: Properties
 
   let animeListEntry: AnimeListEntry
   let onUpdate: () async -> Void
+
+  // MARK: Content Properties
 
   var body: some View {
     Button(action: {
@@ -242,6 +262,8 @@ private struct AnimeListEntryRowView: View {
       }
     }
   }
+
+  // MARK: Functions
 
   private func formatEpisodeProgressString() -> String {
     var stringComponents: [String] = [

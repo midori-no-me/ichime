@@ -1,9 +1,13 @@
 import SwiftUI
 
 struct HeadingSectionWithBackground<Content: View>: View {
+  // MARK: Properties
+
   let imageURL: URL?
 
   @ViewBuilder let content: Content
+
+  // MARK: Content Properties
 
   var body: some View {
     VStack {

@@ -1,13 +1,19 @@
 import Foundation
 
 public struct SubtitlesProxyURLGenerator: Sendable {
+  // MARK: Properties
+
   private let anime365BaseURL: URL
+
+  // MARK: Lifecycle
 
   public init(
     anime365BaseURL: URL
   ) {
     self.anime365BaseURL = anime365BaseURL
   }
+
+  // MARK: Functions
 
   public func generate(translationID: Int) -> URL {
     var components = URLComponents()

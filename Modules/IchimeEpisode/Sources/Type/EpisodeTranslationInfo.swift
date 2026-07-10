@@ -2,10 +2,14 @@ import Anime365Kit
 import Foundation
 
 public struct EpisodeTranslationInfo: Identifiable {
+  // MARK: Nested Types
+
   public enum SourceVideoQuality: Sendable {
     case tv
     case bd
     case other
+
+    // MARK: Static Functions
 
     public static func createFromAnime365ApiString(_ anime365ApiString: String) -> Self {
       switch anime365ApiString {
@@ -24,6 +28,8 @@ public struct EpisodeTranslationInfo: Identifiable {
     case english
     case japanese
     case other
+
+    // MARK: Static Functions
 
     public static func createFromAnime365ApiString(_ anime365ApiString: String) -> Self {
       switch anime365ApiString {
@@ -45,6 +51,8 @@ public struct EpisodeTranslationInfo: Identifiable {
     case raw
     case other
 
+    // MARK: Static Functions
+
     public static func createFromAnime365ApiString(_ anime365ApiString: String) -> Self {
       switch anime365ApiString {
       case "sub":
@@ -59,6 +67,8 @@ public struct EpisodeTranslationInfo: Identifiable {
     }
   }
 
+  // MARK: Properties
+
   public let id: Int
   public let translationTeam: String
   public let translatedToLanguage: TranslatedToLanguage
@@ -66,6 +76,8 @@ public struct EpisodeTranslationInfo: Identifiable {
   public let height: Int
   public let sourceVideoQuality: SourceVideoQuality
   public let isUnderProcessing: Bool
+
+  // MARK: Static Functions
 
   public static func createValid(
     anime365ApiTranslation: Anime365Kit.Translation

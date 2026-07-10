@@ -2,11 +2,17 @@ import Foundation
 
 // periphery:ignore
 public struct ShortLargeNumberFormatter: FormatStyle {
+  // MARK: Nested Types
+
   public typealias FormatInput = Int
 
   public typealias FormatOutput = String
 
+  // MARK: Lifecycle
+
   public init() {}
+
+  // MARK: Functions
 
   public func format(_ value: Int) -> String {
     if value < 1000 {

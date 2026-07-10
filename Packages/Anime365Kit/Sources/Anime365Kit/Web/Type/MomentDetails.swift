@@ -2,8 +2,12 @@ import Foundation
 import SwiftSoup
 
 public struct MomentDetails: Sendable {
+  // MARK: Properties
+
   public let seriesID: Int
   public let seriesTitle: String
+
+  // MARK: Lifecycle
 
   init(htmlElement: Element, anime365BaseURL: URL) throws(WebClientTypeNormalizationError) {
     guard let linkElements = try? htmlElement.select(".m-moment-player h3 a[href]") else {

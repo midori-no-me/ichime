@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct Chip {
+  // MARK: Static Properties
+
   static let RECOMMENDED_SPACING: CGFloat = 4
+
+  // MARK: Static Functions
 
   static func filled(label: String) -> some View {
     Text(label)

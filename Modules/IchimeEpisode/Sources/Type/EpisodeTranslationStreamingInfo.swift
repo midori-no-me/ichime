@@ -2,13 +2,21 @@ import Anime365Kit
 import Foundation
 
 public struct EpisodeTranslationStreamingInfo {
+  // MARK: Nested Types
+
   public struct EpisodeTranslationStreamingQuality: Identifiable {
+    // MARK: Properties
+
     public let videoURL: URL
     public let height: Int
+
+    // MARK: Computed Properties
 
     public var id: URL {
       self.videoURL
     }
+
+    // MARK: Static Functions
 
     public static func createValid(
       anime365ApiTranslationEmbedStream: Anime365Kit.TranslationEmbed.Stream
@@ -28,8 +36,12 @@ public struct EpisodeTranslationStreamingInfo {
     }
   }
 
+  // MARK: Properties
+
   public let subtitlesURL: URL?
   public let streamingQualities: [EpisodeTranslationStreamingQuality]
+
+  // MARK: Static Functions
 
   public static func createValid(
     anime365ApiTranslationEmbed: Anime365Kit.TranslationEmbed,

@@ -7,6 +7,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class MomentsSectionViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -15,11 +17,15 @@ private final class MomentsSectionViewModel {
     case loaded(moments: OrderedSet<Moment>, page: Int, hasMore: Bool)
   }
 
+  // MARK: Properties
+
   private(set) var state: State = .idle
 
   private let momentService: MomentService
   private let logger: Logger
   private let sorting: MomentSorting
+
+  // MARK: Lifecycle
 
   init(
     momentService: MomentService = AppDependencies.live.momentService,
@@ -33,6 +39,8 @@ private final class MomentsSectionViewModel {
     self.logger = logger
     self.sorting = sorting
   }
+
+  // MARK: Functions
 
   func performInitialLoading() async {
     self.updateState(.loading)
@@ -97,12 +105,18 @@ private final class MomentsSectionViewModel {
 }
 
 struct MomentsSection: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: MomentsSectionViewModel
 
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
 
+  // MARK: Properties
+
   private let sorting: MomentSorting
+
+  // MARK: Lifecycle
 
   private init(
     viewModel: MomentsSectionViewModel,
@@ -111,6 +125,8 @@ struct MomentsSection: View {
     self.viewModel = viewModel
     self.sorting = sorting
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     SectionWithCards(title: self.sorting == .popular ? "Популярные моменты" : "Моменты") {
@@ -178,6 +194,8 @@ struct MomentsSection: View {
       }
     }
   }
+
+  // MARK: Static Functions
 
   static func withRandomSorting() -> Self {
     let momentSorting: MomentSorting =

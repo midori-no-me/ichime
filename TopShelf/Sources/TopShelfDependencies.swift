@@ -6,6 +6,8 @@ import OSLog
 import ShikimoriApiClient
 
 struct TopShelfDependencies: Sendable {
+  // MARK: Static Properties
+
   static let live: Self = {
     let urlSession = AppEnvironment.urlSession
 
@@ -37,6 +39,8 @@ struct TopShelfDependencies: Sendable {
       currentlyWatchingService: currentlyWatchingService
     )
   }()
+
+  // MARK: Properties
 
   let showReleaseSchedule: ShowReleaseSchedule
   let currentlyWatchingService: CurrentlyWatchingService

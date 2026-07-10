@@ -7,6 +7,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class YearSectionViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -15,12 +17,18 @@ private final class YearSectionViewModel {
     case loaded(shows: OrderedSet<ShowPreview>, hasMore: Bool)
   }
 
+  // MARK: Static Properties
+
   private static let SHOWS_PER_PAGE = 10
+
+  // MARK: Properties
 
   private(set) var state: State = .idle
 
   private let showService: ShowService
   private let logger: Logger
+
+  // MARK: Lifecycle
 
   init(
     showService: ShowService = AppDependencies.live.showService,
@@ -32,6 +40,8 @@ private final class YearSectionViewModel {
     self.showService = showService
     self.logger = logger
   }
+
+  // MARK: Functions
 
   func performInitialLoading(year: Int) async {
     self.updateState(.loading)
@@ -96,16 +106,24 @@ private final class YearSectionViewModel {
 }
 
 struct YearSection: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: YearSectionViewModel = .init()
 
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
 
+  // MARK: Properties
+
   private let year: Int
+
+  // MARK: Lifecycle
 
   init(year: Int) {
     self.year = year
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     SectionWithCards(title: "\(self.year) год") {
@@ -186,6 +204,8 @@ struct YearSection: View {
       }
     }
   }
+
+  // MARK: Static Functions
 
   private static func isCurrentSeason(show: ShowPreview) -> Bool {
     let currentAiringSeason = ShowSeasonService().getRelativeSeason(shift: 0)

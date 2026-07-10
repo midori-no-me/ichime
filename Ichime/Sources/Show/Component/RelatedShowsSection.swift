@@ -5,6 +5,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class RelatedShowsSectionViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -13,10 +15,14 @@ private final class RelatedShowsSectionViewModel {
     case loaded(OrderedSet<GroupedRelatedShows>)
   }
 
+  // MARK: Properties
+
   private(set) var state: State = .idle
 
   private let showService: ShowService
   private let myAnimeListID: Int
+
+  // MARK: Lifecycle
 
   init(
     showService: ShowService = AppDependencies.live.showService,
@@ -25,6 +31,8 @@ private final class RelatedShowsSectionViewModel {
     self.showService = showService
     self.myAnimeListID = myAnimeListID
   }
+
+  // MARK: Functions
 
   func performInitialLoading() async {
     self.updateState(.loading)
@@ -54,11 +62,17 @@ private final class RelatedShowsSectionViewModel {
 }
 
 struct RelatedShowsSection: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: RelatedShowsSectionViewModel
+
+  // MARK: Lifecycle
 
   init(myAnimeListID: Int) {
     self.viewModel = .init(myAnimeListID: myAnimeListID)
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     ScrollView(.horizontal) {

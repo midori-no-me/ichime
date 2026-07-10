@@ -2,10 +2,14 @@ import Foundation
 import SwiftSoup
 
 public struct AnimeListEntry: Sendable {
+  // MARK: Properties
+
   public let seriesID: Int
   public let seriesTitleFull: String
   public let episodesWatched: Int
   public let episodesTotal: Int?
+
+  // MARK: Lifecycle
 
   init(htmlElement: Element) throws(WebClientTypeNormalizationError) {
     if let seriesIDString = try? htmlElement.attr("data-id"), let seriesID = Int(seriesIDString) {

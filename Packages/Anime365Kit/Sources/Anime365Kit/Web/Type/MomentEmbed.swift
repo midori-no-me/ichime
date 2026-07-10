@@ -7,7 +7,11 @@ private struct VideoSource: Sendable, Decodable {
 }
 
 public struct MomentEmbed: Sendable {
+  // MARK: Properties
+
   public let videoURL: URL
+
+  // MARK: Lifecycle
 
   init(htmlElement: Element) throws(WebClientTypeNormalizationError) {
     guard let dataSourcesJson = try? htmlElement.select("#main-video").first()?.attr("data-sources") else {

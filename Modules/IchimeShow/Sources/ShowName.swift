@@ -2,6 +2,8 @@ public enum ShowName: Sendable {
   case parsed(String, String?)
   case unparsed(String)
 
+  // MARK: Static Functions
+
   public static func fromFullName(_ fullName: String) -> Self {
     let components = fullName.components(separatedBy: " / ")
 
@@ -11,6 +13,8 @@ public enum ShowName: Sendable {
 
     return .parsed(components[1].trim(), components[0].trim())
   }
+
+  // MARK: Functions
 
   public func getFullName() -> String {
     switch self {

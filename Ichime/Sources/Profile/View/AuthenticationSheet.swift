@@ -4,6 +4,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class AuthenticationSheetViewModel {
+  // MARK: Properties
+
   var email: String = ""
   var password: String = ""
 
@@ -12,11 +14,15 @@ private final class AuthenticationSheetViewModel {
 
   private let authenticationManager: AuthenticationManager
 
+  // MARK: Lifecycle
+
   init(
     authenticationManager: AuthenticationManager = AppDependencies.live.authenticationManager
   ) {
     self.authenticationManager = authenticationManager
   }
+
+  // MARK: Functions
 
   func performAuthentication(currentUserStore: CurrentUserStore, baseURL: URL) async -> Bool {
     do {
@@ -43,10 +49,14 @@ private final class AuthenticationSheetViewModel {
 }
 
 struct AuthenticationSheet: View {
+  // MARK: Static Properties
+
   private static let LEFT_SIDEBAR_WIDTH: CGFloat = 900
   private static let LEFT_SIDEBAR_RIGHT_MARGIN: CGFloat = 64
   private static let LEFT_SIDEBAR_ICON_CONTAINER_WIDTH: CGFloat = 48
   private static let LEFT_SIDEBAR_LIST_ITEM_PADDING: CGFloat = 16
+
+  // MARK: SwiftUI Properties
 
   @State private var viewModel: AuthenticationSheetViewModel = .init()
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
@@ -54,7 +64,11 @@ struct AuthenticationSheet: View {
   @Environment(\.currentUserStore) private var currentUserStore
   @Environment(\.dismiss) private var dismissSheet
 
+  // MARK: Properties
+
   let onSuccessfulAuth: (() -> Void)?
+
+  // MARK: Content Properties
 
   var body: some View {
     Form {

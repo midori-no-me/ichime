@@ -2,10 +2,14 @@ import Foundation
 import OSLog
 
 public struct GraphQLClient: Sendable {
+  // MARK: Properties
+
   public let baseURL: URL
 
   private let urlSession: URLSession
   private let logger: Logger
+
+  // MARK: Lifecycle
 
   public init(
     baseURL: URL,
@@ -16,6 +20,8 @@ public struct GraphQLClient: Sendable {
     self.urlSession = urlSession
     self.logger = logger
   }
+
+  // MARK: Functions
 
   func sendRequest<T: Decodable>(
     operationName: String,

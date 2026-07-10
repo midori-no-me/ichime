@@ -2,9 +2,13 @@ import Foundation
 import ShikimoriApiClient
 
 public struct Studio: Identifiable, Hashable {
+  // MARK: Properties
+
   public let id: Int
   public let name: String
   public let image: URL?
+
+  // MARK: Lifecycle
 
   public init(
     fromShikimoriStudio: ShikimoriApiClient.Studio,

@@ -4,6 +4,8 @@ import IchimeShow
 import SwiftUI
 
 struct ShowCardMyAnimeList: View {
+  // MARK: Properties
+
   private let myAnimeListID: Int
   private let topChips: [String]
   private let bottomChips: [String]
@@ -11,6 +13,8 @@ struct ShowCardMyAnimeList: View {
   private let primaryTitle: String
   private let secondaryTitle: String?
   private let onOpened: (() -> Void)?
+
+  // MARK: Lifecycle
 
   init(
     show: ShowPreviewShikimori,
@@ -68,6 +72,8 @@ struct ShowCardMyAnimeList: View {
     self.secondaryTitle = show.title.getRussian()
     self.onOpened = nil
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     NavigationLink(

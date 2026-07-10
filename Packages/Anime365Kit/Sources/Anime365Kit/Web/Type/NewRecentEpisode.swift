@@ -2,12 +2,16 @@ import Foundation
 import SwiftSoup
 
 public struct NewRecentEpisode: Sendable {
+  // MARK: Properties
+
   public let seriesID: Int
   public let seriesPosterURL: URL
   public let seriesTitleRu: String
   public let seriesTitleRomaji: String
   public let episodeID: Int
   public let episodeNumberLabel: String
+
+  // MARK: Lifecycle
 
   init(htmlElement: Element, anime365BaseURL: URL, sectionTitle: String) throws(WebClientTypeNormalizationError) {
     guard let episodeURLPath = try? htmlElement.select("a[href]").first()?.attr("href") else {
@@ -104,6 +108,8 @@ public struct NewRecentEpisode: Sendable {
       )
     }
   }
+
+  // MARK: Static Functions
 
   private static func getDateFormatter() -> DateFormatter {
     let formatter = DateFormatter()

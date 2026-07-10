@@ -3,14 +3,20 @@ import IchimeProfile
 import SwiftUI
 
 struct AuthenticatedUserWrapperView<Content: View>: View {
+  // MARK: SwiftUI Properties
+
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
 
   @State private var currentUserStore: CurrentUserStore = .init()
 
+  // MARK: Properties
+
   private let content: () -> Content
 
   private let authenticationManager: AuthenticationManager
+
+  // MARK: Lifecycle
 
   init(
     @ViewBuilder content: @escaping () -> Content,
@@ -19,6 +25,8 @@ struct AuthenticatedUserWrapperView<Content: View>: View {
     self.content = content
     self.authenticationManager = authenticationManager
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     self.content()

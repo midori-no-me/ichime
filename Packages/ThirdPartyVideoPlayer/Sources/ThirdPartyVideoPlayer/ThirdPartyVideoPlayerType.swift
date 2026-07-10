@@ -4,6 +4,8 @@ public enum ThirdPartyVideoPlayerType: String, CaseIterable, Identifiable, Senda
   case infuse
   case vlc
 
+  // MARK: Computed Properties
+
   public var id: String {
     self.rawValue
   }

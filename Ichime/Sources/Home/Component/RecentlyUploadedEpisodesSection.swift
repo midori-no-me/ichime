@@ -7,6 +7,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class RecentlyUploadedEpisodesSectionViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -15,10 +17,14 @@ private final class RecentlyUploadedEpisodesSectionViewModel {
     case loaded(shows: OrderedSet<RecentlyUploadedEpisode>, page: Int, hasMore: Bool)
   }
 
+  // MARK: Properties
+
   private(set) var state: State = .idle
 
   private let episodeService: EpisodeService
   private let logger: Logger
+
+  // MARK: Lifecycle
 
   init(
     episodeService: EpisodeService = AppDependencies.live.episodeService,
@@ -30,6 +36,8 @@ private final class RecentlyUploadedEpisodesSectionViewModel {
     self.episodeService = episodeService
     self.logger = logger
   }
+
+  // MARK: Functions
 
   func performInitialLoading() async {
     self.updateState(.loading)
@@ -92,10 +100,14 @@ private final class RecentlyUploadedEpisodesSectionViewModel {
 }
 
 struct RecentlyUploadedEpisodesSection: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: RecentlyUploadedEpisodesSectionViewModel = .init()
 
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+
+  // MARK: Content Properties
 
   var body: some View {
     SectionWithCards(title: "Новые серии") {

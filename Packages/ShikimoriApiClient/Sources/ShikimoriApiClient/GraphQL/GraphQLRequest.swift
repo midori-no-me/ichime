@@ -1,7 +1,11 @@
 import Foundation
 
 struct AnyEncodable: Encodable, Sendable {
+  // MARK: Properties
+
   private let _encode: @Sendable (Encoder) throws -> Void
+
+  // MARK: Lifecycle
 
   init<T: Encodable & Sendable>(_ value: T) {
     self._encode = { encoder in
@@ -9,21 +13,29 @@ struct AnyEncodable: Encodable, Sendable {
     }
   }
 
+  // MARK: Functions
+
   func encode(to encoder: Encoder) throws {
     try self._encode(encoder)
   }
 }
 
 struct GraphQLRequest<Variables: Encodable & Sendable>: Sendable, Encodable {
+  // MARK: Nested Types
+
   enum CodingKeys: String, CodingKey {
     case operationName
     case variables
     case query
   }
 
+  // MARK: Properties
+
   let operationName: String
   let variables: Variables
   let query: String
+
+  // MARK: Functions
 
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)

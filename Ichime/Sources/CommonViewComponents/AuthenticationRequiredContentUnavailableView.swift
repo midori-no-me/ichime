@@ -1,9 +1,15 @@
 import SwiftUI
 
 struct AuthenticationRequiredContentUnavailableView: View {
+  // MARK: SwiftUI Properties
+
   @State private var showAuthenticationSheet: Bool = false
 
+  // MARK: Properties
+
   let onSuccessfulAuth: () -> Void
+
+  // MARK: Content Properties
 
   var body: some View {
     ContentUnavailableView {

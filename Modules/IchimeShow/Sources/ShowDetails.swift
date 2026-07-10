@@ -5,13 +5,21 @@ import OrderedCollections
 import ShikimoriApiClient
 
 public struct ShowDetails {
+  // MARK: Nested Types
+
   public struct Description: Hashable {
+    // MARK: Properties
+
     public let text: String
     public let source: String
+
+    // MARK: Computed Properties
 
     public var singleLineText: String {
       self.text.replacing("\n", with: " ").replacing(/\ +/, with: " ")
     }
+
+    // MARK: Static Functions
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
       lhs.text == rhs.text
@@ -32,10 +40,14 @@ public struct ShowDetails {
       )
     }
 
+    // MARK: Functions
+
     public func hash(into hasher: inout Hasher) {
       hasher.combine(self.text)
     }
   }
+
+  // MARK: Properties
 
   public let id: Int
   public let myAnimeListID: Int
@@ -53,6 +65,8 @@ public struct ShowDetails {
   public let studios: OrderedSet<Studio>
   public let nextEpisodeReleasesAt: Date?
   public let ageRating: AgeRating?
+
+  // MARK: Lifecycle
 
   public init(
     anime365Series: Anime365Kit.SeriesFull,
@@ -135,6 +149,8 @@ public struct ShowDetails {
       self.ageRating = nil
     }
   }
+
+  // MARK: Static Functions
 
   private static func calculateShowHasUploadedEpisodesToWatch(
     anime365Episodes: [Anime365Kit.Episode],

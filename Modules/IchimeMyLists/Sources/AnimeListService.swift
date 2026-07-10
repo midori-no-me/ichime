@@ -3,13 +3,19 @@ import IchimeShow
 import OrderedCollections
 
 public struct AnimeListService: Sendable {
+  // MARK: Properties
+
   private let anime365KitFactory: Anime365KitFactory
+
+  // MARK: Lifecycle
 
   public init(
     anime365KitFactory: Anime365KitFactory,
   ) {
     self.anime365KitFactory = anime365KitFactory
   }
+
+  // MARK: Functions
 
   public func getAnimeList(userID: Int, category: AnimeListCategory) async throws -> (
     count: Int, groups: [AnimeListEntriesGroup]

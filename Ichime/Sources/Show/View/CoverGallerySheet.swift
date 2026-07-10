@@ -3,6 +3,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class CoverGallerySheetViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -11,8 +13,12 @@ private final class CoverGallerySheetViewModel {
     case loaded([URL])
   }
 
+  // MARK: Properties
+
   private var _state: State = .idle
   private let showService: ShowService
+
+  // MARK: Computed Properties
 
   private(set) var state: State {
     get {
@@ -25,11 +31,15 @@ private final class CoverGallerySheetViewModel {
     }
   }
 
+  // MARK: Lifecycle
+
   init(
     showService: ShowService = AppDependencies.live.showService
   ) {
     self.showService = showService
   }
+
+  // MARK: Functions
 
   func performInitialLoad(myAnimeListID: Int) async {
     self.state = .loading
@@ -51,9 +61,15 @@ private final class CoverGallerySheetViewModel {
 }
 
 struct CoverGallerySheet: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: CoverGallerySheetViewModel = .init()
 
+  // MARK: Properties
+
   let myAnimeListID: Int
+
+  // MARK: Content Properties
 
   var body: some View {
     NavigationStack {

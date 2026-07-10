@@ -7,6 +7,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class NextSeasonSectionViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -15,12 +17,18 @@ private final class NextSeasonSectionViewModel {
     case loaded(shows: OrderedSet<ShowPreviewShikimori>, page: Int, hasMore: Bool)
   }
 
+  // MARK: Static Properties
+
   private static let SHOWS_PER_PAGE = 10
+
+  // MARK: Properties
 
   private(set) var state: State = .idle
 
   private let showService: ShowService
   private let logger: Logger
+
+  // MARK: Lifecycle
 
   init(
     showService: ShowService = AppDependencies.live.showService,
@@ -32,6 +40,8 @@ private final class NextSeasonSectionViewModel {
     self.showService = showService
     self.logger = logger
   }
+
+  // MARK: Functions
 
   func performInitialLoading(adultOnly: Bool) async {
     self.updateState(.loading)
@@ -98,10 +108,14 @@ private final class NextSeasonSectionViewModel {
 }
 
 struct NextSeasonSection: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: NextSeasonSectionViewModel = .init()
 
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+
+  // MARK: Content Properties
 
   var body: some View {
     SectionWithCards(title: "Следующий сезон") {

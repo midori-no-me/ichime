@@ -2,7 +2,11 @@ import IchimeShow
 import SwiftUI
 
 struct CharacterCard: View {
+  // MARK: Properties
+
   let character: CharacterInfo
+
+  // MARK: Content Properties
 
   var body: some View {
     CircularPortraitButton.button(

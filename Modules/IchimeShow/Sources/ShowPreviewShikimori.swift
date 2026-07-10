@@ -2,6 +2,8 @@ import Foundation
 import ShikimoriApiClient
 
 public struct ShowPreviewShikimori: Hashable, Identifiable {
+  // MARK: Properties
+
   public let id: Int
   public let title: ShowName
   public let posterURL: URL?
@@ -9,6 +11,8 @@ public struct ShowPreviewShikimori: Hashable, Identifiable {
   public let airingSeason: AiringSeason?
   public let kind: ShowKind?
   public let year: Int?
+
+  // MARK: Lifecycle
 
   public init?(
     graphqlAnimePreview: ShikimoriApiClient.AnimeFieldsForPreview
@@ -68,9 +72,13 @@ public struct ShowPreviewShikimori: Hashable, Identifiable {
     }
   }
 
+  // MARK: Static Functions
+
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }
+
+  // MARK: Functions
 
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.id)

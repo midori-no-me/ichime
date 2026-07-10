@@ -3,7 +3,11 @@ import IchimeCore
 import TVServices
 
 final class ContentProvider: TVTopShelfContentProvider {
+  // MARK: Static Properties
+
   private static let dependencies: TopShelfDependencies = .live
+
+  // MARK: Overridden Functions
 
   override func loadTopShelfContent(completionHandler: @escaping @Sendable ((any TVTopShelfContent)?) -> Void) {
     Task { @MainActor in
@@ -28,6 +32,8 @@ final class ContentProvider: TVTopShelfContentProvider {
       completionHandler(content)
     }
   }
+
+  // MARK: Static Functions
 
   private static func getCurrentlyWatchingSection() async -> TVTopShelfItemCollection<TVTopShelfSectionedItem> {
     let episodes = (try? await Self.dependencies.currentlyWatchingService.getEpisodesToWatch(page: 1)) ?? []

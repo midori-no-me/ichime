@@ -3,9 +3,13 @@ import IchimeCore
 import OrderedCollections
 
 public actor Anime365BaseURL {
+  // MARK: Nested Types
+
   public struct UserDefaultsKey {
     public static let BASE_URL = "anime365_base_url"
   }
+
+  // MARK: Static Properties
 
   public static let DEFAULT_BASE_URL: URL = .init(string: "https://smotret-anime.app")!
   public static let ALL_KNOWN_ANIME_365_BASE_URLS: OrderedSet<URL> = .init(
@@ -45,11 +49,17 @@ public actor Anime365BaseURL {
     ].sorted(by: { $0.absoluteString < $1.absoluteString })
   )
 
+  // MARK: Properties
+
   private let userDefaults: UserDefaults
+
+  // MARK: Lifecycle
 
   public init() {
     self.userDefaults = Self.getUserDefaults()
   }
+
+  // MARK: Static Functions
 
   public static func getUserDefaults() -> UserDefaults {
     AppEnvironment.userDefaults
@@ -58,6 +68,8 @@ public actor Anime365BaseURL {
   public static func isAdultDomain(_ baseURL: URL) -> Bool {
     Self.ALL_KNOWN_HENTAI_365_BASE_URLS.contains(baseURL)
   }
+
+  // MARK: Functions
 
   public func get() -> URL {
     self.userDefaults.url(forKey: Self.UserDefaultsKey.BASE_URL) ?? Self.DEFAULT_BASE_URL

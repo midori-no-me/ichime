@@ -12,6 +12,8 @@ public enum ShowKind: Sendable {
   case promotionalVideo
   case commercial
 
+  // MARK: Computed Properties
+
   public var title: String {
     switch self {
     case .tv:
@@ -34,6 +36,8 @@ public enum ShowKind: Sendable {
       "Реклама"
     }
   }
+
+  // MARK: Static Functions
 
   public static func create(_ fromShikimoriApiEnum: ShikimoriApiClient.AnimeKind) -> Self {
     switch fromShikimoriApiEnum {

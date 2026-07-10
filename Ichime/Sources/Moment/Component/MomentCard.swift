@@ -4,6 +4,8 @@ import SwiftUI
 import ThirdPartyVideoPlayer
 
 struct MomentCardRaw: View {
+  // MARK: Static Properties
+
   static let RECOMMENDED_SPACING: CGFloat = 64
   static let RECOMMENDED_IMAGE_ASPECT_RATIO: CGSize = .init(width: 16, height: 9)
   static let RECOMMENDED_COUNT_PER_ROW_EXPANDED: Int = 3
@@ -11,10 +13,14 @@ struct MomentCardRaw: View {
   static let RECOMMENDED_LABEL_LINE_LIMIT_COMPACT = 1
   static let RECOMMENDED_LABEL_LINE_LIMIT_EXPANDED = 3
 
+  // MARK: Properties
+
   private let coverURL: URL?
   private let isCompact: Bool
   private let bottomChips: [String]
   @ViewBuilder private let label: () -> Text
+
+  // MARK: Lifecycle
 
   init(
     coverURL: URL?,
@@ -27,6 +33,8 @@ struct MomentCardRaw: View {
     self.bottomChips = bottomChips
     self.label = label
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     ZStack {
@@ -87,6 +95,8 @@ struct MomentCardRaw: View {
       .multilineTextAlignment(.center)
   }
 
+  // MARK: Static Functions
+
   static func placeholder(isCompact: Bool) -> some View {
     Self.init(
       coverURL: nil,
@@ -101,6 +111,8 @@ struct MomentCardRaw: View {
 }
 
 struct MomentCard: View {
+  // MARK: SwiftUI Properties
+
   @AppStorage("defaultPlayer") private var selectedPlayer: ThirdPartyVideoPlayerType = .infuse
 
   @State private var showErrorAlert: Bool = false
@@ -108,8 +120,12 @@ struct MomentCard: View {
 
   @Environment(\.dependencies) private var dependencies
 
+  // MARK: Properties
+
   let moment: Moment
   let displayShowTitle: Bool
+
+  // MARK: Content Properties
 
   var body: some View {
     Button(action: {
@@ -165,6 +181,8 @@ struct MomentCard: View {
       Text(error.localizedDescription)
     }
   }
+
+  // MARK: Functions
 
   private func cardLabelView() -> Text {
     if self.displayShowTitle {

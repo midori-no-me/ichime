@@ -3,7 +3,11 @@ import IchimeShow
 import SwiftUI
 
 struct RecentlyUploadedEpisodeCard: View {
+  // MARK: Properties
+
   let episode: RecentlyUploadedEpisode
+
+  // MARK: Content Properties
 
   var body: some View {
     NavigationLink(

@@ -6,8 +6,12 @@ import JikanApiClient
 import OrderedCollections
 
 public struct EpisodeService: Sendable {
+  // MARK: Properties
+
   private let anime365KitFactory: Anime365KitFactory
   private let jikanApiClient: JikanApiClient.ApiClient
+
+  // MARK: Lifecycle
 
   public init(
     anime365KitFactory: Anime365KitFactory,
@@ -16,6 +20,8 @@ public struct EpisodeService: Sendable {
     self.anime365KitFactory = anime365KitFactory
     self.jikanApiClient = jikanApiClient
   }
+
+  // MARK: Static Functions
 
   /// Форматирует неизвестное количество эпизодов
   ///
@@ -71,6 +77,8 @@ public struct EpisodeService: Sendable {
 
     return episodeInfos
   }
+
+  // MARK: Functions
 
   public func getEpisodeList(
     showID: Int,

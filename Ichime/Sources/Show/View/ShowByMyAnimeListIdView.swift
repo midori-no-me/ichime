@@ -3,6 +3,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class ShowByMyAnimeListIDViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -10,8 +12,12 @@ private final class ShowByMyAnimeListIDViewModel {
     case loaded(Int)
   }
 
+  // MARK: Properties
+
   private var _state: State = .idle
   private let showService: ShowService
+
+  // MARK: Computed Properties
 
   private(set) var state: State {
     get {
@@ -24,11 +30,15 @@ private final class ShowByMyAnimeListIDViewModel {
     }
   }
 
+  // MARK: Lifecycle
+
   init(
     showService: ShowService = AppDependencies.live.showService
   ) {
     self.showService = showService
   }
+
+  // MARK: Functions
 
   func performInitialLoad(myAnimeListID: Int) async {
     self.state = .loading
@@ -45,10 +55,16 @@ private final class ShowByMyAnimeListIDViewModel {
 }
 
 struct ShowByMyAnimeListIDView: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: ShowByMyAnimeListIDViewModel = .init()
+
+  // MARK: Properties
 
   let myAnimeListID: Int
   let onOpened: (() -> Void)?
+
+  // MARK: Content Properties
 
   var body: some View {
     switch self.viewModel.state {

@@ -4,6 +4,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class StaffMemberCardsSectionViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -12,10 +14,14 @@ private final class StaffMemberCardsSectionViewModel {
     case loaded(OrderedSet<StaffMember>)
   }
 
+  // MARK: Properties
+
   private(set) var state: State = .idle
 
   private let showService: ShowService
   private let myAnimeListID: Int
+
+  // MARK: Lifecycle
 
   init(
     showService: ShowService = AppDependencies.live.showService,
@@ -24,6 +30,8 @@ private final class StaffMemberCardsSectionViewModel {
     self.showService = showService
     self.myAnimeListID = myAnimeListID
   }
+
+  // MARK: Functions
 
   func performInitialLoading() async {
     self.updateState(.loading)
@@ -53,11 +61,17 @@ private final class StaffMemberCardsSectionViewModel {
 }
 
 struct StaffMemberCardsSection: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: StaffMemberCardsSectionViewModel
+
+  // MARK: Lifecycle
 
   init(myAnimeListID: Int) {
     self.viewModel = .init(myAnimeListID: myAnimeListID)
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     SectionWithCards(title: "Создатели") {

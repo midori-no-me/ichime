@@ -2,10 +2,14 @@ import IchimeShow
 import SwiftUI
 
 struct ShowCardAnime365: View {
+  // MARK: Properties
+
   private let show: ShowPreview
   private let displaySeason: Bool
   private let hiddenKindChips: Set<ShowKind>
   private let onOpened: (() -> Void)?
+
+  // MARK: Lifecycle
 
   init(
     show: ShowPreview,
@@ -18,6 +22,8 @@ struct ShowCardAnime365: View {
     self.hiddenKindChips = hiddenKindChips
     self.onOpened = onOpened
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     NavigationLink(
@@ -42,6 +48,8 @@ struct ShowCardAnime365: View {
       }
     }
   }
+
+  // MARK: Functions
 
   private func formatTopChips() -> [String] {
     var metadataLineComponents: [String] = []

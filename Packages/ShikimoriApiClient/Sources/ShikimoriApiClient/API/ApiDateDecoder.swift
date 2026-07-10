@@ -1,7 +1,11 @@
 import Foundation
 
 struct ApiDateDecoder {
+  // MARK: Lifecycle
+
   private init() {}
+
+  // MARK: Static Functions
 
   static func getDateDecodingStrategy() -> JSONDecoder.DateDecodingStrategy {
     .custom { decoder in

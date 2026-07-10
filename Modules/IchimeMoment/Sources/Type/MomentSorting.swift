@@ -4,6 +4,8 @@ public enum MomentSorting: Sendable {
   case newest
   case popular
 
+  // MARK: Computed Properties
+
   public var anime365: Anime365Kit.MomentSorting {
     switch self {
     case .newest:

@@ -5,6 +5,8 @@ public enum AnimeListCategory: Sendable {
   case dropped
   case planned
 
+  // MARK: Computed Properties
+
   public var webPath: String {
     switch self {
     case .watching:

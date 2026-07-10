@@ -3,14 +3,20 @@ import Foundation
 import IchimeAnime365
 
 public actor ProfilePageService {
+  // MARK: Properties
+
   private let anime365KitFactory: Anime365KitFactory
 
   private var cachedProfilePage: (baseURL: URL, profilePage: ProfilePage)?
   private var profilePageTask: (baseURL: URL, task: Task<ProfilePage, Error>)?
 
+  // MARK: Lifecycle
+
   public init(anime365KitFactory: Anime365KitFactory) {
     self.anime365KitFactory = anime365KitFactory
   }
+
+  // MARK: Functions
 
   public func getProfile(baseURL: URL) async throws -> Profile {
     try await self.getProfilePage(baseURL: baseURL).profile

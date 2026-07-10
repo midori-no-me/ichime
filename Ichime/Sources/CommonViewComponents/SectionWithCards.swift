@@ -1,9 +1,13 @@
 import SwiftUI
 
 struct SectionWithCards<Content: View>: View {
+  // MARK: Properties
+
   let title: String
 
   @ViewBuilder let content: Content
+
+  // MARK: Content Properties
 
   var body: some View {
     VStack(alignment: .leading) {

@@ -2,9 +2,13 @@ import Foundation
 import OSLog
 
 public struct ApiClient: Sendable {
+  // MARK: Properties
+
   private let baseURL: URL
   private let urlSession: URLSession
   private let logger: Logger
+
+  // MARK: Lifecycle
 
   public init(
     baseURL: URL,
@@ -16,11 +20,15 @@ public struct ApiClient: Sendable {
     self.urlSession = urlSession
   }
 
+  // MARK: Static Functions
+
   private static func makeJSONDecoder() -> JSONDecoder {
     let jsonDecoder = JSONDecoder()
     jsonDecoder.dateDecodingStrategy = ApiDateDecoder.getDateDecodingStrategy()
     return jsonDecoder
   }
+
+  // MARK: Functions
 
   func sendRequest<T: Decodable>(
     endpoint: String,

@@ -15,6 +15,8 @@ import ShikimoriApiClient
 import SwiftUI
 
 struct AppDependencies: Sendable {
+  // MARK: Static Properties
+
   static let live: Self = {
     let urlSession = AppEnvironment.urlSession
 
@@ -108,6 +110,8 @@ struct AppDependencies: Sendable {
       animeListService: animeListService
     )
   }()
+
+  // MARK: Properties
 
   let anime365KitFactory: Anime365KitFactory
   let showService: ShowService

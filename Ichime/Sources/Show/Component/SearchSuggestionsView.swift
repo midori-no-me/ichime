@@ -4,14 +4,20 @@ import SwiftUI
 
 @Observable @MainActor
 private final class SearchSuggestionsViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
     case loaded((genres: OrderedSet<Genre>, studios: OrderedSet<Studio>))
   }
 
+  // MARK: Properties
+
   private var _state: State = .idle
   private let showSearchService: ShowSearchService
+
+  // MARK: Computed Properties
 
   private(set) var state: State {
     get {
@@ -24,11 +30,15 @@ private final class SearchSuggestionsViewModel {
     }
   }
 
+  // MARK: Lifecycle
+
   init(
     showSearchService: ShowSearchService = AppDependencies.live.showSearchService
   ) {
     self.showSearchService = showSearchService
   }
+
+  // MARK: Functions
 
   func performInitialLoading() async {
     self.state = .loading
@@ -40,7 +50,11 @@ private final class SearchSuggestionsViewModel {
 }
 
 struct SearchSuggestionsView: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: SearchSuggestionsViewModel = .init()
+
+  // MARK: Content Properties
 
   var body: some View {
     Group {

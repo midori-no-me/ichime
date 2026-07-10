@@ -3,14 +3,20 @@ import OSLog
 import SwiftSoup
 
 public struct WebClient: Sendable {
+  // MARK: Static Properties
+
   private static let COOKIE_NAME_CSRF = "csrf"
   private static let FORM_DATA_FIELD_CSRF = "csrf"
+
+  // MARK: Properties
 
   let baseURL: URL
 
   let logger: Logger
 
   private let urlSession: URLSession
+
+  // MARK: Lifecycle
 
   public init(
     baseURL: URL,
@@ -21,6 +27,8 @@ public struct WebClient: Sendable {
     self.urlSession = urlSession
     self.logger = logger
   }
+
+  // MARK: Functions
 
   func sendRequest(
     _ path: String,

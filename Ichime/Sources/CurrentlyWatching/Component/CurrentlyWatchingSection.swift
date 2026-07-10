@@ -7,6 +7,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class CurrentlyWatchingSectionViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -15,10 +17,14 @@ private final class CurrentlyWatchingSectionViewModel {
     case loaded(episodes: OrderedSet<EpisodeFromCurrentlyWatchingList>, page: Int, hasMore: Bool)
   }
 
+  // MARK: Properties
+
   private(set) var state: State = .idle
 
   private let currentlyWatchingService: CurrentlyWatchingService
   private let logger: Logger
+
+  // MARK: Lifecycle
 
   init(
     currentlyWatchingService: CurrentlyWatchingService = AppDependencies.live.currentlyWatchingService,
@@ -30,6 +36,8 @@ private final class CurrentlyWatchingSectionViewModel {
     self.currentlyWatchingService = currentlyWatchingService
     self.logger = logger
   }
+
+  // MARK: Functions
 
   func performInitialLoading() async {
     self.updateState(.loading)
@@ -88,7 +96,11 @@ private final class CurrentlyWatchingSectionViewModel {
 }
 
 struct CurrentlyWatchingSection: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: CurrentlyWatchingSectionViewModel = .init()
+
+  // MARK: Content Properties
 
   var body: some View {
     SectionWithCards(title: "Серии к просмотру") {

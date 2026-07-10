@@ -8,6 +8,8 @@ import ThirdPartyVideoPlayer
 
 @Observable @MainActor
 private final class EpisodeQualitySelectorListViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -16,8 +18,12 @@ private final class EpisodeQualitySelectorListViewModel {
     case loaded(EpisodeTranslationStreamingInfo)
   }
 
+  // MARK: Properties
+
   private var _state: State = .idle
   private let episodeService: EpisodeService
+
+  // MARK: Computed Properties
 
   private(set) var state: State {
     get {
@@ -30,11 +36,15 @@ private final class EpisodeQualitySelectorListViewModel {
     }
   }
 
+  // MARK: Lifecycle
+
   init(
     episodeService: EpisodeService = AppDependencies.live.episodeService
   ) {
     self.episodeService = episodeService
   }
+
+  // MARK: Functions
 
   func performInitialLoad(
     translationID: Int
@@ -60,11 +70,17 @@ private final class EpisodeQualitySelectorListViewModel {
 }
 
 struct EpisodeQualitySelectorListView: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: EpisodeQualitySelectorListViewModel = .init()
+
+  // MARK: Properties
 
   let translationID: Int
   let showTitle: ShowName?
   let episodeNumber: Int?
+
+  // MARK: Content Properties
 
   var body: some View {
     switch self.viewModel.state {
@@ -138,6 +154,8 @@ struct EpisodeQualitySelectorListView: View {
 }
 
 private struct EpisodeTranslationsStreamingQualities: View {
+  // MARK: SwiftUI Properties
+
   @AppStorage("defaultPlayer") private var selectedPlayer: ThirdPartyVideoPlayerType = .infuse
   @AppStorage("preferSubtitlesProxy") private var preferSubtitlesProxy: Bool = false
 
@@ -147,10 +165,14 @@ private struct EpisodeTranslationsStreamingQualities: View {
 
   @Environment(\.dependencies) private var dependencies
 
+  // MARK: Properties
+
   let translationID: Int
   let episodeTranslationStreamingInfo: EpisodeTranslationStreamingInfo
   let showTitle: ShowName?
   let episodeNumber: Int?
+
+  // MARK: Content Properties
 
   var body: some View {
     List {
@@ -236,6 +258,8 @@ private struct EpisodeTranslationsStreamingQualities: View {
     }
     .listStyle(.grouped)
   }
+
+  // MARK: Functions
 
   private func translationUsesExternalSubtitles() -> Bool {
     self.episodeTranslationStreamingInfo.subtitlesURL != nil

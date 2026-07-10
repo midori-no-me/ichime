@@ -2,10 +2,14 @@ import Foundation
 import ShikimoriApiClient
 
 public struct StaffMember: Identifiable, Hashable {
+  // MARK: Properties
+
   public let id: String
   public let image: URL?
   public let name: String
   public let roles: [String]
+
+  // MARK: Lifecycle
 
   public init(
     fromShikimoriPersonRole: ShikimoriApiClient.GetStaffResponse.AnimeFields.PersonRole

@@ -3,8 +3,12 @@ import SwiftData
 import SwiftUI
 
 struct ContentViewWithTabBar: View {
+  // MARK: SwiftUI Properties
+
   @AppStorage("ContentViewWithTabView.selectedTab") private var selectedTab: Tabs = .home
   @Environment(\.currentUserStore) private var currentUserStore
+
+  // MARK: Content Properties
 
   var body: some View {
     TabView(selection: self.$selectedTab) {

@@ -7,6 +7,8 @@ public enum AnimeListCategory: CaseIterable, Identifiable, Sendable {
   case dropped
   case planned
 
+  // MARK: Computed Properties
+
   public var id: Self { self }
 
   public var anime365KitType: Anime365Kit.AnimeListCategory {

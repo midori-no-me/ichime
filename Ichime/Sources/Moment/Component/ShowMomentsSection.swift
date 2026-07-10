@@ -6,6 +6,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class ShowMomentsSectionViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -14,11 +16,15 @@ private final class ShowMomentsSectionViewModel {
     case loaded(moments: OrderedSet<Moment>, page: Int, hasMore: Bool)
   }
 
+  // MARK: Properties
+
   private(set) var state: State = .idle
 
   private let momentService: MomentService
   private let logger: Logger
   private let showID: Int
+
+  // MARK: Lifecycle
 
   init(
     momentService: MomentService = AppDependencies.live.momentService,
@@ -32,6 +38,8 @@ private final class ShowMomentsSectionViewModel {
     self.logger = logger
     self.showID = showID
   }
+
+  // MARK: Functions
 
   func performInitialLoading() async {
     self.updateState(.loading)
@@ -96,11 +104,17 @@ private final class ShowMomentsSectionViewModel {
 }
 
 struct ShowMomentsSection: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: ShowMomentsSectionViewModel
+
+  // MARK: Lifecycle
 
   init(showID: Int) {
     self.viewModel = .init(showID: showID)
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     SectionWithCards(title: "Моменты") {

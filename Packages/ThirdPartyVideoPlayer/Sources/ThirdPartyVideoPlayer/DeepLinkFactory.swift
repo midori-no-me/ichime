@@ -1,9 +1,13 @@
 import Foundation
 
 public struct ShowProperties: Sendable {
+  // MARK: Properties
+
   public let name: String
   public let seasonNumber: Int?
   public let episodeNumber: Int?
+
+  // MARK: Lifecycle
 
   public init(name: String, seasonNumber: Int?, episodeNumber: Int?) {
     self.name = name
@@ -13,8 +17,12 @@ public struct ShowProperties: Sendable {
 }
 
 public struct DeepLinkFactory {
+  // MARK: Static Properties
+
   private static let allowedCharacterSet: CharacterSet =
     .init(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
+
+  // MARK: Static Functions
 
   public static func buildUniversalLinkURL(
     externalPlayerType: ThirdPartyVideoPlayerType,

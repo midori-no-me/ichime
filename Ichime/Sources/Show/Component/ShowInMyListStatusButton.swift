@@ -6,6 +6,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class ShowInMyListStatusButtonViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -13,8 +15,12 @@ private final class ShowInMyListStatusButtonViewModel {
     case loaded(AnimeListEditableEntry)
   }
 
+  // MARK: Properties
+
   private var _state: State = .idle
   private let animeListService: AnimeListService
+
+  // MARK: Computed Properties
 
   private(set) var state: State {
     get {
@@ -27,11 +33,15 @@ private final class ShowInMyListStatusButtonViewModel {
     }
   }
 
+  // MARK: Lifecycle
+
   init(
     animeListService: AnimeListService = AppDependencies.live.animeListService
   ) {
     self.animeListService = animeListService
   }
+
+  // MARK: Functions
 
   func performInitialLoad(
     showID: Int
@@ -76,14 +86,20 @@ private final class ShowInMyListStatusButtonViewModel {
 }
 
 struct ShowInMyListStatusButton: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: ShowInMyListStatusButtonViewModel = .init()
   @State private var showSheet: Bool = false
 
   @Environment(\.currentUserStore) private var currentUserStore
 
+  // MARK: Properties
+
   let showID: Int
   let showName: ShowName
   let episodesTotal: Int?
+
+  // MARK: Content Properties
 
   var body: some View {
     Button(action: {

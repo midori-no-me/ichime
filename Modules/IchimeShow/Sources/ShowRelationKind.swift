@@ -14,6 +14,8 @@ public enum ShowRelationKind: Sendable {
   case spinOff
   case summary
 
+  // MARK: Computed Properties
+
   public var title: String {
     switch self {
     case .adaptation:
@@ -71,6 +73,8 @@ public enum ShowRelationKind: Sendable {
       0
     }
   }
+
+  // MARK: Static Functions
 
   public static func create(_ fromShikimoriRelationKind: ShikimoriApiClient.RelationKind) -> Self {
     switch fromShikimoriRelationKind {

@@ -2,8 +2,12 @@ import Anime365Kit
 import ShikimoriApiClient
 
 public struct Genre: Identifiable, Hashable {
+  // MARK: Properties
+
   public let id: Int
   public let title: String
+
+  // MARK: Lifecycle
 
   public init?(
     fromShikimoriGenre: ShikimoriApiClient.Genre

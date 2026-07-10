@@ -3,6 +3,8 @@ import Foundation
 import JikanApiClient
 
 public struct EpisodeInfo: Identifiable, Hashable {
+  // MARK: Properties
+
   public let anime365ID: Int
   public let episodeNumber: Int?
   public let anime365Title: String
@@ -15,9 +17,13 @@ public struct EpisodeInfo: Identifiable, Hashable {
   public let synopsis: String?
   public let duration: Duration?
 
+  // MARK: Computed Properties
+
   public var id: Int {
     self.anime365ID
   }
+
+  // MARK: Static Functions
 
   public static func createValid(
     anime365EpisodePreview: Anime365Kit.EpisodeProtocol,

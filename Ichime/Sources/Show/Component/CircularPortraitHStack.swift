@@ -1,9 +1,13 @@
 import SwiftUI
 
 struct CircularPortraitHStack<InputData: Hashable & Equatable, Content: View>: View {
+  // MARK: Properties
+
   let cards: [InputData]
   let loadMore: (() async -> Void)?
   let renderCard: (InputData) -> Content
+
+  // MARK: Content Properties
 
   var body: some View {
     LazyHStack(alignment: .top, spacing: CircularPortraitButton.RECOMMENDED_SPACING) {
@@ -37,9 +41,13 @@ struct CircularPortraitHStackInteractiveSkeleton: View {
 }
 
 struct CircularPortraitHStackContentUnavailable<Label: View, Description: View, Actions: View>: View {
+  // MARK: Properties
+
   private let label: () -> Label
   private let description: () -> Description
   private let actions: () -> Actions
+
+  // MARK: Lifecycle
 
   init(
     @ViewBuilder label: @escaping () -> Label,
@@ -50,6 +58,8 @@ struct CircularPortraitHStackContentUnavailable<Label: View, Description: View, 
     self.description = description
     self.actions = actions
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     CircularPortraitHStack(

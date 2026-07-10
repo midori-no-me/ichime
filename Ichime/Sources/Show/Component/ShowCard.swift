@@ -1,18 +1,26 @@
 import SwiftUI
 
 struct ShowCard: View {
+  // MARK: Static Properties
+
   static let RECOMMENDED_ASPECT_RATIO: CGFloat = 0.7123
   static let RECOMMENDED_SPACING: CGFloat = 40
   static let RECOMMENDED_COUNT_PER_ROW: Int = 5
 
+  // MARK: SwiftUI Properties
+
   @Environment(\.isFocused) private var isFocused
   @State private var title: String
+
+  // MARK: Properties
 
   let topChips: [String]
   let bottomChips: [String]
   let cover: URL?
   let primaryTitle: String
   let secondaryTitle: String?
+
+  // MARK: Lifecycle
 
   init(
     topChips: [String],
@@ -28,6 +36,8 @@ struct ShowCard: View {
     self.secondaryTitle = secondaryTitle
     self.title = primaryTitle
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     ZStack {
@@ -118,6 +128,8 @@ struct ShowCard: View {
       }
     }
   }
+
+  // MARK: Static Functions
 
   static func placeholder() -> some View {
     Self.init(

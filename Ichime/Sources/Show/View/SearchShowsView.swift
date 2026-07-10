@@ -7,6 +7,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class SearchShowsViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -15,7 +17,11 @@ private final class SearchShowsViewModel {
     case loaded(shows: OrderedSet<ShowPreviewShikimori>, page: Int, hasMore: Bool)
   }
 
+  // MARK: Static Properties
+
   private static let SHOWS_PER_PAGE = 10
+
+  // MARK: Properties
 
   private(set) var state: State = .idle
 
@@ -29,6 +35,8 @@ private final class SearchShowsViewModel {
 
   private var lastPerformedSearchQuery = ""
 
+  // MARK: Lifecycle
+
   init(
     showService: ShowService = AppDependencies.live.showService,
     logger: Logger = .init(
@@ -39,6 +47,8 @@ private final class SearchShowsViewModel {
     self.showService = showService
     self.logger = logger
   }
+
+  // MARK: Functions
 
   func performInitialLoading(adultOnly: Bool) async {
     if self.currentlyTypedSearchQuery.isEmpty {
@@ -134,10 +144,14 @@ private final class SearchShowsViewModel {
 }
 
 struct SearchShowsView: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: SearchShowsViewModel = .init()
 
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+
+  // MARK: Content Properties
 
   var body: some View {
     Group {

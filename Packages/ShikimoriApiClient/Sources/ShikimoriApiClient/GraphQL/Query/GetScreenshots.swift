@@ -3,13 +3,21 @@ import Foundation
 // swiftformat:disable acronyms
 
 public struct GetScreenshotsResponse: Sendable, Decodable {
+  // MARK: Nested Types
+
   public struct AnimeFields: Sendable, Decodable {
+    // MARK: Nested Types
+
     public struct Screenshot: Sendable, Decodable {
       public let originalUrl: URL
     }
 
+    // MARK: Properties
+
     public let screenshots: [Screenshot]
   }
+
+  // MARK: Properties
 
   public let animes: [AnimeFields]
 }

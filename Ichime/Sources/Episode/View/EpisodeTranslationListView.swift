@@ -7,6 +7,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class EpisodeTranslationListViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -15,8 +17,12 @@ private final class EpisodeTranslationListViewModel {
     case loaded(EpisodeInfo?, [EpisodeTranslationGroup])
   }
 
+  // MARK: Properties
+
   private var _state: State = .idle
   private let episodeService: EpisodeService
+
+  // MARK: Computed Properties
 
   private(set) var state: State {
     get {
@@ -29,11 +35,15 @@ private final class EpisodeTranslationListViewModel {
     }
   }
 
+  // MARK: Lifecycle
+
   init(
     episodeService: EpisodeService = AppDependencies.live.episodeService
   ) {
     self.episodeService = episodeService
   }
+
+  // MARK: Functions
 
   func performInitialLoad(
     episodeID: Int,
@@ -65,13 +75,19 @@ private final class EpisodeTranslationListViewModel {
 }
 
 struct EpisodeTranslationListView: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: EpisodeTranslationListViewModel = .init()
 
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
 
+  // MARK: Properties
+
   let episodeID: Int
   let showTitle: ShowName?
+
+  // MARK: Content Properties
 
   var body: some View {
     Group {
@@ -154,7 +170,11 @@ struct EpisodeTranslationListView: View {
 }
 
 private struct EpisodeDetails: View {
+  // MARK: Properties
+
   let episode: EpisodeInfo
+
+  // MARK: Content Properties
 
   var body: some View {
     VStack(alignment: .leading, spacing: 32) {
@@ -200,9 +220,13 @@ private struct EpisodeDetails: View {
 }
 
 private struct EpisodeTranslationRow: View {
+  // MARK: Properties
+
   let episodeTranslationInfo: EpisodeTranslationInfo
   let showTitle: ShowName?
   let episodeNumber: Int?
+
+  // MARK: Content Properties
 
   var body: some View {
     NavigationLink(
@@ -222,6 +246,8 @@ private struct EpisodeTranslationRow: View {
       }
     }
   }
+
+  // MARK: Functions
 
   private func formatTranslationQuality() -> String {
     var stringComponents: [String] = []

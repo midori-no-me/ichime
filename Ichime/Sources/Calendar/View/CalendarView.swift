@@ -5,6 +5,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class CalendarViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -12,8 +14,12 @@ private final class CalendarViewModel {
     case loaded(OrderedSet<ShowsFromCalendarGroupedByDate>)
   }
 
+  // MARK: Properties
+
   private var _state: State = .idle
   private let schedule: ShowReleaseSchedule
+
+  // MARK: Computed Properties
 
   private(set) var state: State {
     get {
@@ -26,11 +32,15 @@ private final class CalendarViewModel {
     }
   }
 
+  // MARK: Lifecycle
+
   init(
     schedule: ShowReleaseSchedule = AppDependencies.live.showReleaseSchedule
   ) {
     self.schedule = schedule
   }
+
+  // MARK: Functions
 
   func performInitialLoad() async {
     self.state = .loading
@@ -47,7 +57,11 @@ private final class CalendarViewModel {
 }
 
 struct CalendarView: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: CalendarViewModel = .init()
+
+  // MARK: Content Properties
 
   var body: some View {
     switch self.viewModel.state {

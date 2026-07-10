@@ -8,6 +8,8 @@ public enum AnimeListEntryStatus: CaseIterable, Sendable {
   case planned
   case notInList
 
+  // MARK: Computed Properties
+
   public var category: AnimeListCategory? {
     switch self {
     case .watching:
@@ -24,6 +26,8 @@ public enum AnimeListEntryStatus: CaseIterable, Sendable {
       nil
     }
   }
+
+  // MARK: Lifecycle
 
   public init(fromAnime365KitType type: Anime365Kit.AnimeListEntryStatus) {
     switch type {

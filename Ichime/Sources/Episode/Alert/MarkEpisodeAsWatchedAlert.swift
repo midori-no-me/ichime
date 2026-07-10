@@ -3,6 +3,8 @@ import IchimeEpisode
 import SwiftUI
 
 private struct MarkEpisodeAsWatchedAlert: ViewModifier {
+  // MARK: SwiftUI Properties
+
   @State private var showAlert: Bool = false
   @State private var showTitleRomaji: String? = nil
   @State private var showTitleRussian: String? = nil
@@ -11,6 +13,8 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
   @AppStorage("last_watched_translation_id") private var lastWatchedTranslationID: Int = 0
 
   @Environment(\.dependencies) private var dependencies
+
+  // MARK: Content Methods
 
   func body(content: Content) -> some View {
     content
@@ -88,6 +92,8 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
         }
       }
   }
+
+  // MARK: Functions
 
   private func getShowTitleForAlert() -> String? {
     var titles: [String] = []

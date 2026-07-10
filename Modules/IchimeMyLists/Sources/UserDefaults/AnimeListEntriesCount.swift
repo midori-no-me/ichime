@@ -1,6 +1,8 @@
 import Foundation
 
 public actor AnimeListEntriesCount {
+  // MARK: Nested Types
+
   public struct UserDefaultsKey {
     public static let WATCHING = "anime_list_entries_count:watching"
     public static let COMPLETED = "anime_list_entries_count:completed"
@@ -9,11 +11,17 @@ public actor AnimeListEntriesCount {
     public static let PLANNED = "anime_list_entries_count:planned"
   }
 
+  // MARK: Properties
+
   private let userDefaults: UserDefaults
+
+  // MARK: Lifecycle
 
   public init() {
     self.userDefaults = .init()
   }
+
+  // MARK: Functions
 
   public func save(
     count: Int,

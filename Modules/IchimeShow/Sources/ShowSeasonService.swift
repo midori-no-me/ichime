@@ -7,6 +7,8 @@ public enum CalendarSeason: String, Comparable, Sendable {
   case summer
   case autumn
 
+  // MARK: Computed Properties
+
   public var orderedValue: Int {
     switch self {
     case .winter:
@@ -20,9 +22,13 @@ public enum CalendarSeason: String, Comparable, Sendable {
     }
   }
 
+  // MARK: Static Functions
+
   public static func < (lhs: Self, rhs: Self) -> Bool {
     lhs.orderedValue < rhs.orderedValue
   }
+
+  // MARK: Functions
 
   public func getLocalizedTranslation() -> String {
     switch self {
@@ -65,8 +71,12 @@ public enum CalendarSeason: String, Comparable, Sendable {
 }
 
 public struct AiringSeason: Comparable, Equatable {
+  // MARK: Properties
+
   public let calendarSeason: CalendarSeason
   public let year: Int
+
+  // MARK: Lifecycle
 
   public init(
     calendarSeason: CalendarSeason,
@@ -217,6 +227,8 @@ public struct AiringSeason: Comparable, Equatable {
     self.year = year
   }
 
+  // MARK: Static Functions
+
   public static func < (lhs: Self, rhs: Self) -> Bool {
     if lhs.year < rhs.year {
       return true
@@ -229,20 +241,30 @@ public struct AiringSeason: Comparable, Equatable {
     lhs.year == rhs.year && lhs.calendarSeason == rhs.calendarSeason
   }
 
+  // MARK: Functions
+
   public func getLocalizedTranslation() -> String {
     "\(self.calendarSeason.getLocalizedTranslation()) \(self.year)"
   }
 }
 
 public struct ShowSeasonService {
+  // MARK: Static Properties
+
   public static let CURRENT_SEASON = 0
   public static let NEXT_SEASON = 1
 
+  // MARK: Properties
+
   private let currentDate: Date
+
+  // MARK: Lifecycle
 
   public init() {
     self.currentDate = Date()
   }
+
+  // MARK: Functions
 
   /// 1 = next season
   /// 0 = current season

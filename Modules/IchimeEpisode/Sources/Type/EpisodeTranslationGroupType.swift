@@ -6,6 +6,8 @@ public enum EpisodeTranslationGroupType: Sendable {
   case japanese
   case other
 
+  // MARK: Computed Properties
+
   public var priority: Int {
     switch self {
     case .russianSubtitles:

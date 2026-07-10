@@ -6,6 +6,8 @@ public enum AnimeListEntryStatus: Sendable {
   case planned
   case notInList
 
+  // MARK: Static Functions
+
   public static func create(fromNumericID: Int) -> Self? {
     switch fromNumericID {
     case 0:

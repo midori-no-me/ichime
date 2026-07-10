@@ -5,12 +5,18 @@ import SwiftUI
 ///
 /// Подходит для портретов людей или персонажей.
 struct CircularPortraitButton: View {
+  // MARK: Static Properties
+
   static let RECOMMENDED_SPACING: CGFloat = 64
   static let RECOMMENDED_COUNT_PER_ROW: Int = 6
+
+  // MARK: Properties
 
   private let imageURL: URL?
   private let label: String
   private let secondaryLabel: String?
+
+  // MARK: Lifecycle
 
   private init(
     imageURL: URL?,
@@ -21,6 +27,8 @@ struct CircularPortraitButton: View {
     self.label = label
     self.secondaryLabel = secondaryLabel
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     Circle()
@@ -64,6 +72,8 @@ struct CircularPortraitButton: View {
         .foregroundStyle(.secondary)
     }
   }
+
+  // MARK: Static Functions
 
   static func placeholder() -> some View {
     Button(action: {}) {

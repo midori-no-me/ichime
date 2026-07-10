@@ -7,6 +7,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class RandomSectionViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -15,12 +17,18 @@ private final class RandomSectionViewModel {
     case loaded(shows: OrderedSet<ShowPreviewShikimori>, page: Int, hasMore: Bool)
   }
 
+  // MARK: Static Properties
+
   private static let SHOWS_PER_PAGE = 10
+
+  // MARK: Properties
 
   private(set) var state: State = .idle
 
   private let showService: ShowService
   private let logger: Logger
+
+  // MARK: Lifecycle
 
   init(
     showService: ShowService = AppDependencies.live.showService,
@@ -32,6 +40,8 @@ private final class RandomSectionViewModel {
     self.showService = showService
     self.logger = logger
   }
+
+  // MARK: Functions
 
   func performInitialLoading(adultOnly: Bool) async {
     self.updateState(.loading)
@@ -98,10 +108,14 @@ private final class RandomSectionViewModel {
 }
 
 struct RandomSection: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: RandomSectionViewModel = .init()
 
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+
+  // MARK: Content Properties
 
   var body: some View {
     SectionWithCards(title: "Случайные") {

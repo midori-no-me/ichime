@@ -2,11 +2,15 @@ import Foundation
 import SwiftSoup
 
 public struct MomentPreview: Sendable {
+  // MARK: Properties
+
   public let momentID: Int
   public let coverURL: URL
   public let momentTitle: String
   public let sourceDescription: String
   public let duration: Duration
+
+  // MARK: Lifecycle
 
   init(htmlElement: Element, anime365BaseURL: URL) throws(WebClientTypeNormalizationError) {
     if let momentTitle = try? htmlElement.select(".m-moment__title a").first()?.text() {
@@ -64,6 +68,8 @@ public struct MomentPreview: Sendable {
       )
     }
   }
+
+  // MARK: Static Functions
 
   private static func convertStringToDuration(durationString: String) -> Duration? {
     let parts = durationString.split(separator: ":").compactMap { Int($0) }

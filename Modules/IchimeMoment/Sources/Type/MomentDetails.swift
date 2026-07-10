@@ -3,8 +3,12 @@ import Foundation
 import IchimeShow
 
 public struct MomentDetails {
+  // MARK: Properties
+
   public let showID: Int
   public let showTitle: ShowName
+
+  // MARK: Lifecycle
 
   public init(
     fromAnime365MomentDetails anime365MomentDetails: Anime365Kit.MomentDetails

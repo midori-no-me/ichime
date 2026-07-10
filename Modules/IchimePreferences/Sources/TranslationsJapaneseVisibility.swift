@@ -4,11 +4,17 @@ public enum TranslationsJapaneseVisibility: String, CaseIterable, Identifiable, 
   case show
   case hide
 
+  // MARK: Nested Types
+
   public struct UserDefaultsKey {
     public static let VISIBILITY = "translations_japanese_visibility"
   }
 
+  // MARK: Static Properties
+
   public static let DEFAULT_VISIBILITY: Self = .show
+
+  // MARK: Computed Properties
 
   public var id: String {
     self.rawValue
@@ -22,6 +28,8 @@ public enum TranslationsJapaneseVisibility: String, CaseIterable, Identifiable, 
       "Скрыть"
     }
   }
+
+  // MARK: Static Functions
 
   public static func get() -> Self {
     let value = UserDefaults.standard.string(forKey: Self.UserDefaultsKey.VISIBILITY)

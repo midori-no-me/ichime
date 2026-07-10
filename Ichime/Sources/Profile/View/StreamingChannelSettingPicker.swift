@@ -4,13 +4,19 @@ import SwiftUI
 
 @Observable @MainActor
 private final class StreamingChannelSettingPickerViewModel {
+  // MARK: Static Properties
+
   static let placeholderChannelID = "__loading"
+
+  // MARK: Properties
 
   private(set) var playerChannel: PlayerChannel?
   private(set) var playerChannels: [PlayerChannel] = []
   private(set) var isLoading: Bool = false
 
   private let profilePageService: ProfilePageService
+
+  // MARK: Computed Properties
 
   var selection: String {
     self.playerChannel?.id ?? Self.placeholderChannelID
@@ -20,11 +26,15 @@ private final class StreamingChannelSettingPickerViewModel {
     !self.playerChannels.isEmpty
   }
 
+  // MARK: Lifecycle
+
   init(
     profilePageService: ProfilePageService = AppDependencies.live.profilePageService
   ) {
     self.profilePageService = profilePageService
   }
+
+  // MARK: Functions
 
   func load() async -> Void {
     guard !self.isLoading, !self.hasLoadedChannels else {
@@ -70,7 +80,11 @@ private final class StreamingChannelSettingPickerViewModel {
 }
 
 struct StreamingChannelSettingPicker: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: StreamingChannelSettingPickerViewModel = .init()
+
+  // MARK: Content Properties
 
   var body: some View {
     Picker(

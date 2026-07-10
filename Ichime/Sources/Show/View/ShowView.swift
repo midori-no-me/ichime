@@ -6,6 +6,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class ShowViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -13,10 +15,14 @@ private final class ShowViewModel {
     case loaded(ShowDetails)
   }
 
+  // MARK: Properties
+
   private(set) var state: State = .idle
 
   private let showService: ShowService
   private let showID: Int
+
+  // MARK: Lifecycle
 
   init(
     showService: ShowService = AppDependencies.live.showService,
@@ -25,6 +31,8 @@ private final class ShowViewModel {
     self.showService = showService
     self.showID = showID
   }
+
+  // MARK: Functions
 
   func performInitialLoading() async {
     self.updateState(.loading)
@@ -49,10 +57,16 @@ private final class ShowViewModel {
 }
 
 struct ShowView: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: ShowViewModel
   @State private var displayShowCoversSheet: Bool = false
 
+  // MARK: Properties
+
   private let onOpened: (() -> Void)?
+
+  // MARK: Lifecycle
 
   init(
     showID: Int,
@@ -61,6 +75,8 @@ struct ShowView: View {
     self.onOpened = onOpened
     self.viewModel = .init(showID: showID)
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     switch self.viewModel.state {
@@ -292,6 +308,8 @@ struct ShowView: View {
     }
   }
 
+  // MARK: Static Functions
+
   private static func prepareChips(show: ShowDetails) -> [String] {
     var items: [String] = []
 
@@ -356,8 +374,12 @@ struct ShowView: View {
 }
 
 private struct ShowStudiosAndDescriptionsSection: View {
+  // MARK: Properties
+
   let studios: OrderedSet<Studio>
   let descriptions: [ShowDetails.Description]
+
+  // MARK: Content Properties
 
   var body: some View {
     ScrollView(.horizontal) {
@@ -399,11 +421,17 @@ private struct ShowStudiosAndDescriptionsSection: View {
 }
 
 private struct ShowDescriptionCard: View {
+  // MARK: SwiftUI Properties
+
   @State private var isSheetPresented = false
+
+  // MARK: Properties
 
   let title: String
   let text: String
   let textPreview: String
+
+  // MARK: Content Properties
 
   var body: some View {
     Button {
@@ -441,7 +469,11 @@ private struct ShowDescriptionCard: View {
 }
 
 private struct ShowDescriptionCardSheet: View {
+  // MARK: Properties
+
   let text: String
+
+  // MARK: Content Properties
 
   var body: some View {
     NavigationStack {

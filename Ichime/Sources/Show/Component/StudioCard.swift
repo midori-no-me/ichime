@@ -2,11 +2,15 @@ import IchimeShow
 import SwiftUI
 
 struct StudioCard: View {
+  // MARK: Properties
+
   let id: Int
   let title: String
   let cover: URL?
 
   private let showService: ShowService
+
+  // MARK: Lifecycle
 
   init(
     id: Int,
@@ -19,6 +23,8 @@ struct StudioCard: View {
     self.cover = cover
     self.showService = showService
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     NavigationLink(
@@ -73,6 +79,8 @@ struct StudioCard: View {
     }
     .buttonStyle(.card)
   }
+
+  // MARK: Functions
 
   private func getShowsByStudio(_ studioID: Int) -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
     func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {

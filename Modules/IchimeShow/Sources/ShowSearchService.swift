@@ -3,13 +3,19 @@ import OrderedCollections
 import ShikimoriApiClient
 
 public struct ShowSearchService: Sendable {
+  // MARK: Properties
+
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
+
+  // MARK: Lifecycle
 
   public init(
     shikimoriApiClient: ShikimoriApiClient.ApiClient
   ) {
     self.shikimoriApiClient = shikimoriApiClient
   }
+
+  // MARK: Functions
 
   public func getAllGenresAndStudios() async -> (genres: OrderedSet<Genre>, studios: OrderedSet<Studio>) {
     let allGenres = (try? await self.getAllGenres()) ?? []

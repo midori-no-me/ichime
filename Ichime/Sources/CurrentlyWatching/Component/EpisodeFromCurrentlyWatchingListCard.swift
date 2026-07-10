@@ -3,7 +3,11 @@ import IchimeShow
 import SwiftUI
 
 struct EpisodeFromCurrentlyWatchingListCard: View {
+  // MARK: Properties
+
   let episode: EpisodeFromCurrentlyWatchingList
+
+  // MARK: Content Properties
 
   var body: some View {
     NavigationLink(

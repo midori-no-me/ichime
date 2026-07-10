@@ -1,6 +1,8 @@
 import Foundation
 
 public enum AppEnvironment {
+  // MARK: Static Properties
+
   public static let urlSession: URLSession = {
     let configuration = URLSessionConfiguration.default
     configuration.httpCookieStorage = cookieStorage
@@ -12,6 +14,8 @@ public enum AppEnvironment {
   }()
 
   private static let fallbackAppGroup = "group.dev.midorinome.ichime.group"
+
+  // MARK: Static Computed Properties
 
   public static var isInstalledViaAppdb: Bool {
     AppdbSupport.isInstalledViaAppdb

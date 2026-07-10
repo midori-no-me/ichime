@@ -3,6 +3,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class FilteredShowsViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -11,12 +13,18 @@ private final class FilteredShowsViewModel {
     case loaded([ShowPreview])
   }
 
+  // MARK: Static Properties
+
   private static let SHOWS_PER_PAGE = 20
+
+  // MARK: Properties
 
   private var _state: State = .idle
   private var shows: [ShowPreview] = []
   private var offset: Int = 0
   private var stopLazyLoading: Bool = false
+
+  // MARK: Computed Properties
 
   private(set) var state: State {
     get {
@@ -28,6 +36,8 @@ private final class FilteredShowsViewModel {
       }
     }
   }
+
+  // MARK: Functions
 
   func performInitialLoading(
     fetchShows: (_ offset: Int, _ limit: Int) async throws -> [ShowPreview]
@@ -79,11 +89,17 @@ private final class FilteredShowsViewModel {
 }
 
 struct FilteredShowsView: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: FilteredShowsViewModel = .init()
+
+  // MARK: Properties
 
   let title: String
   let displaySeason: Bool
   let fetchShows: (_ offset: Int, _ limit: Int) async throws -> [ShowPreview]
+
+  // MARK: Content Properties
 
   var body: some View {
     switch self.viewModel.state {

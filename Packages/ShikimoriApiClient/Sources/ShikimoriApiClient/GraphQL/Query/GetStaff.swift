@@ -3,24 +3,40 @@ import Foundation
 // swiftformat:disable acronyms
 
 public struct GetStaffResponse: Sendable, Decodable {
+  // MARK: Nested Types
+
   public struct AnimeFields: Sendable, Decodable {
+    // MARK: Nested Types
+
     public struct PersonRole: Sendable, Decodable {
+      // MARK: Nested Types
+
       public struct Person: Sendable, Decodable {
+        // MARK: Nested Types
+
         public struct Poster: Sendable, Decodable {
           public let mainAlt2xUrl: URL
         }
 
+        // MARK: Properties
+
         public let name: String
         public let poster: Poster?
       }
+
+      // MARK: Properties
 
       public let id: String
       public let rolesRu: [String]
       public let person: Person
     }
 
+    // MARK: Properties
+
     public let personRoles: [PersonRole]
   }
+
+  // MARK: Properties
 
   public let animes: [AnimeFields]
 }

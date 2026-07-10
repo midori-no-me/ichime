@@ -1,24 +1,40 @@
 import Foundation
 
 public struct GetCharactersResponse: Sendable, Decodable {
+  // MARK: Nested Types
+
   public struct AnimeFields: Sendable, Decodable {
+    // MARK: Nested Types
+
     public struct CharacterRole: Sendable, Decodable {
+      // MARK: Nested Types
+
       public struct Character: Sendable, Decodable {
+        // MARK: Nested Types
+
         public struct Poster: Sendable, Decodable {
           public let mainAlt2xUrl: URL
         }
 
+        // MARK: Properties
+
         public let name: String
         public let poster: Poster?
       }
+
+      // MARK: Properties
 
       public let id: String
       public let rolesRu: [String]
       public let character: Character
     }
 
+    // MARK: Properties
+
     public let characterRoles: [CharacterRole]
   }
+
+  // MARK: Properties
 
   public let animes: [AnimeFields]
 }

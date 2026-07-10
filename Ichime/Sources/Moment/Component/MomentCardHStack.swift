@@ -1,10 +1,14 @@
 import SwiftUI
 
 struct MomentCardHStack<InputData: Hashable & Equatable, Content: View>: View {
+  // MARK: Properties
+
   let cards: [InputData]
   let isCompact: Bool
   let loadMore: (() async -> Void)?
   let renderCard: (_ data: InputData, _ isCompact: Bool) -> Content
+
+  // MARK: Content Properties
 
   var body: some View {
     LazyHStack(alignment: .top, spacing: MomentCardRaw.RECOMMENDED_SPACING) {
@@ -28,7 +32,11 @@ struct MomentCardHStack<InputData: Hashable & Equatable, Content: View>: View {
 }
 
 struct MomentCardHStackInteractiveSkeleton: View {
+  // MARK: Properties
+
   let isCompact: Bool
+
+  // MARK: Content Properties
 
   var body: some View {
     MomentCardHStack(
@@ -48,10 +56,14 @@ struct MomentCardHStackInteractiveSkeleton: View {
 }
 
 struct MomentCardHStackContentUnavailable<Label: View, Description: View, Actions: View>: View {
+  // MARK: Properties
+
   private let isCompact: Bool
   private let label: () -> Label
   private let description: () -> Description
   private let actions: () -> Actions
+
+  // MARK: Lifecycle
 
   init(
     isCompact: Bool,
@@ -64,6 +76,8 @@ struct MomentCardHStackContentUnavailable<Label: View, Description: View, Action
     self.description = description
     self.actions = actions
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     MomentCardHStack(

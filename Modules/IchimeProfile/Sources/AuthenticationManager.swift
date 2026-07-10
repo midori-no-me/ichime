@@ -9,10 +9,14 @@ public enum AuthenticationError: Error {
 }
 
 public actor AuthenticationManager {
+  // MARK: Properties
+
   private let anime365KitFactory: Anime365KitFactory
   private let animeListEntriesCount: AnimeListEntriesCount
   private let profilePageService: ProfilePageService
   private let urlSession: URLSession
+
+  // MARK: Lifecycle
 
   public init(
     anime365KitFactory: Anime365KitFactory,
@@ -26,6 +30,8 @@ public actor AuthenticationManager {
     self.urlSession = urlSession
   }
 
+  // MARK: Static Functions
+
   private static func createUser(from profile: Profile) -> User {
     .init(
       id: profile.id,
@@ -33,6 +39,8 @@ public actor AuthenticationManager {
       avatar: profile.avatarURL
     )
   }
+
+  // MARK: Functions
 
   @MainActor
   public func fetchCurrentUser(

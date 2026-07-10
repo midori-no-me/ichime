@@ -7,6 +7,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class EpisodeListViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -15,15 +17,21 @@ private final class EpisodeListViewModel {
     case loaded(episodes: OrderedSet<EpisodeInfo>)
   }
 
+  // MARK: Properties
+
   private(set) var state: State = .idle
 
   private let episodeService: EpisodeService
+
+  // MARK: Lifecycle
 
   init(
     episodeService: EpisodeService = AppDependencies.live.episodeService,
   ) {
     self.episodeService = episodeService
   }
+
+  // MARK: Functions
 
   func performInitialLoading(showID: Int) async {
     self.updateState(.loading)
@@ -57,11 +65,17 @@ private final class EpisodeListViewModel {
 }
 
 struct EpisodeListView: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: EpisodeListViewModel = .init()
+
+  // MARK: Properties
 
   let showID: Int
   let nextEpisodeReleasesAt: Date?
   let showTitle: ShowName?
+
+  // MARK: Content Properties
 
   var body: some View {
     switch self.viewModel.state {
@@ -134,10 +148,16 @@ struct EpisodeListView: View {
 }
 
 private struct EpisodePreviewRow: View {
+  // MARK: SwiftUI Properties
+
   @FocusState private var isLinkFocused: Bool
+
+  // MARK: Properties
 
   let episodeInfo: EpisodeInfo
   let showTitle: ShowName?
+
+  // MARK: Content Properties
 
   var body: some View {
     NavigationLink(
@@ -176,6 +196,8 @@ private struct EpisodePreviewRow: View {
     }
     .focused(self.$isLinkFocused)
   }
+
+  // MARK: Functions
 
   private func formatTitleLine() -> String {
     var titleLineComponents: [String] = [

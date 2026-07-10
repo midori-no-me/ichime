@@ -1,7 +1,11 @@
 import Foundation
 
 public struct DurationShortFormatStyle: FormatStyle {
+  // MARK: Lifecycle
+
   public init() {}
+
+  // MARK: Functions
 
   public func format(_ value: Duration) -> String {
     let totalSeconds = value.components.seconds

@@ -17,6 +17,8 @@ public struct Series: Sendable, Decodable {
 }
 
 public struct SeriesFull: Sendable, Decodable {
+  // MARK: Nested Types
+
   public struct Genre: Sendable, Decodable {
     public let id: Int
     public let title: String
@@ -26,6 +28,8 @@ public struct SeriesFull: Sendable, Decodable {
     public let source: String
     public let value: String
   }
+
+  // MARK: Properties
 
   public let id: Int
   public let title: String

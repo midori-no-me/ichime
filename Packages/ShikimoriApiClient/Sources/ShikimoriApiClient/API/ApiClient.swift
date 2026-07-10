@@ -10,10 +10,14 @@ enum HttpMethod: String {
 }
 
 public struct ApiClient: Sendable {
+  // MARK: Properties
+
   public let baseURL: URL
 
   private let urlSession: URLSession
   private let logger: Logger
+
+  // MARK: Lifecycle
 
   public init(
     baseURL: URL,
@@ -24,6 +28,8 @@ public struct ApiClient: Sendable {
     self.urlSession = urlSession
     self.logger = logger
   }
+
+  // MARK: Functions
 
   func sendRequest<T: Decodable>(
     httpMethod: HttpMethod,

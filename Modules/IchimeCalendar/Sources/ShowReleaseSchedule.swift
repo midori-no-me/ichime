@@ -4,8 +4,12 @@ import OrderedCollections
 import ShikimoriApiClient
 
 public struct ShowReleaseSchedule: Sendable {
+  // MARK: Properties
+
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
   private let anime365BaseURL: Anime365BaseURL
+
+  // MARK: Lifecycle
 
   public init(
     shikimoriApiClient: ShikimoriApiClient.ApiClient,
@@ -14,6 +18,8 @@ public struct ShowReleaseSchedule: Sendable {
     self.shikimoriApiClient = shikimoriApiClient
     self.anime365BaseURL = anime365BaseURL
   }
+
+  // MARK: Functions
 
   public func getSchedule() async -> OrderedSet<ShowsFromCalendarGroupedByDate> {
     let showsWithDates = (try? await self.getScheduleFromShikimori()) ?? []

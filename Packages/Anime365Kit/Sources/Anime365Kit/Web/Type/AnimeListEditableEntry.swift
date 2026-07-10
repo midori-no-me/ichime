@@ -2,9 +2,13 @@ import Foundation
 import SwiftSoup
 
 public struct AnimeListEditableEntry: Sendable {
+  // MARK: Properties
+
   public let episodesWatched: Int
   public let status: AnimeListEntryStatus
   public let score: Int?
+
+  // MARK: Lifecycle
 
   init(htmlElement: Element) throws(WebClientTypeNormalizationError) {
     if let episodesWatchedString = try? htmlElement.select("input#UsersRates_episodes").first()?.attr("value"),
@@ -50,6 +54,8 @@ public struct AnimeListEditableEntry: Sendable {
     self.status = status
     self.score = score
   }
+
+  // MARK: Static Functions
 
   static func createNotInList() -> Self {
     Self(

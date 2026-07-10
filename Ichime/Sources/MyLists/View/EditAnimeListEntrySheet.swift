@@ -5,6 +5,8 @@ import SwiftUI
 
 @Observable @MainActor
 private final class EditAnimeListEntrySheetViewModel {
+  // MARK: Nested Types
+
   enum State {
     case idle
     case loading
@@ -12,15 +14,21 @@ private final class EditAnimeListEntrySheetViewModel {
     case loaded(AnimeListEditableEntry)
   }
 
+  // MARK: Properties
+
   private(set) var state: State = .idle
 
   private let animeListService: AnimeListService
+
+  // MARK: Lifecycle
 
   init(
     animeListService: AnimeListService = AppDependencies.live.animeListService
   ) {
     self.animeListService = animeListService
   }
+
+  // MARK: Functions
 
   func performInitialLoad(
     showID: Int
@@ -59,14 +67,20 @@ private final class EditAnimeListEntrySheetViewModel {
 }
 
 struct EditAnimeListEntrySheet: View {
+  // MARK: SwiftUI Properties
+
   @State private var viewModel: EditAnimeListEntrySheetViewModel = .init()
 
   @Environment(\.dismiss) private var dismissSheet
+
+  // MARK: Properties
 
   let showID: Int
   let showName: ShowName
   let episodesTotal: Int?
   let onUpdate: () async -> Void
+
+  // MARK: Content Properties
 
   var body: some View {
     Group {
@@ -132,11 +146,15 @@ struct EditAnimeListEntrySheet: View {
 }
 
 struct EditAnimeListEntryForm: View {
+  // MARK: SwiftUI Properties
+
   @State private var showDeleteFromListConfirmationDialog = false
 
   @State private var status: AnimeListCategory
   @State private var score: AnimeListScore
   @State private var episodesWatched: Int
+
+  // MARK: Properties
 
   private let showID: Int
   private let showName: ShowName
@@ -155,6 +173,8 @@ struct EditAnimeListEntryForm: View {
     (
       _ showID: Int
     ) async -> Void
+
+  // MARK: Lifecycle
 
   init(
     showID: Int,
@@ -184,6 +204,8 @@ struct EditAnimeListEntryForm: View {
     self.save = save
     self.delete = delete
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     Form {

@@ -2,15 +2,23 @@ import Foundation
 import SwiftUI
 
 private struct RefreshOnAppear: ViewModifier {
+  // MARK: SwiftUI Properties
+
   @State private var appearedOnce = false
 
+  // MARK: Properties
+
   private let action: () -> Void
+
+  // MARK: Lifecycle
 
   init(
     action: @escaping () -> Void
   ) {
     self.action = action
   }
+
+  // MARK: Content Methods
 
   func body(content: Content) -> some View {
     content

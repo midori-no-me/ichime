@@ -2,10 +2,14 @@ import IchimeShow
 import SwiftUI
 
 struct GenreCard: View {
+  // MARK: Properties
+
   let id: Int
   let title: String
 
   private let showService: ShowService
+
+  // MARK: Lifecycle
 
   init(
     id: Int,
@@ -16,6 +20,8 @@ struct GenreCard: View {
     self.title = title
     self.showService = showService
   }
+
+  // MARK: Content Properties
 
   var body: some View {
     NavigationLink(
@@ -30,6 +36,8 @@ struct GenreCard: View {
     }
     .buttonStyle(.card)
   }
+
+  // MARK: Functions
 
   private func getShowsByGenre(_ genreID: Int) -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
     func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {

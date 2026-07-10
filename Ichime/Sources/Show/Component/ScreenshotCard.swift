@@ -2,11 +2,17 @@ import OrderedCollections
 import SwiftUI
 
 struct ScreenshotCardRaw: View {
+  // MARK: Static Properties
+
   static let RECOMMENDED_SPACING: CGFloat = 64
   static let RECOMMENDED_ASPECT_RATIO: CGSize = .init(width: 16, height: 9)
   static let RECOMMENDED_COUNT_PER_ROW: Int = 3
 
+  // MARK: Properties
+
   let imageURL: URL?
+
+  // MARK: Content Properties
 
   var body: some View {
     AsyncImage(
@@ -38,6 +44,8 @@ struct ScreenshotCardRaw: View {
     .hoverEffect(.highlight)
   }
 
+  // MARK: Static Functions
+
   static func placeholder() -> some View {
     Self.init(
       imageURL: nil
@@ -47,8 +55,12 @@ struct ScreenshotCardRaw: View {
 }
 
 struct ScreenshotCard: View {
+  // MARK: Properties
+
   let imageURL: URL?
   let onOpen: () -> Void
+
+  // MARK: Content Properties
 
   var body: some View {
     Button(action: {

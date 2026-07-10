@@ -6,6 +6,8 @@ public enum AgeRating: Sendable {
   case r_plus
   case rx
 
+  // MARK: Computed Properties
+
   public var shortLabel: String {
     switch self {
     case .g:
@@ -22,6 +24,8 @@ public enum AgeRating: Sendable {
       "Rx"
     }
   }
+
+  // MARK: Static Functions
 
   public static func create(fromShikimoriString shikimoriString: String) -> Self? {
     switch shikimoriString {

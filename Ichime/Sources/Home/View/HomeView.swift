@@ -2,8 +2,12 @@ import IchimeAnime365
 import SwiftUI
 
 struct HomeView: View {
+  // MARK: SwiftUI Properties
+
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
+
+  // MARK: Content Properties
 
   var body: some View {
     ScrollView(.vertical) {
@@ -37,6 +41,8 @@ struct HomeView: View {
       }
     }
   }
+
+  // MARK: Static Functions
 
   private static func currentYear() -> Int {
     let now = Date.now

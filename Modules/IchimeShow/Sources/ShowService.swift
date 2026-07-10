@@ -11,10 +11,14 @@ public enum GetShowByIDError: Error, Sendable {
 }
 
 public struct ShowService: Sendable {
+  // MARK: Properties
+
   private let anime365KitFactory: Anime365KitFactory
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
   private let shikimoriGraphQLClient: ShikimoriApiClient.GraphQLClient
   private let jikanApiClient: JikanApiClient.ApiClient
+
+  // MARK: Lifecycle
 
   public init(
     anime365KitFactory: Anime365KitFactory,
@@ -27,6 +31,8 @@ public struct ShowService: Sendable {
     self.shikimoriGraphQLClient = shikimoriGraphQLClient
     self.jikanApiClient = jikanApiClient
   }
+
+  // MARK: Functions
 
   public func getShowIDByMyAnimeListID(_ myAnimeListID: Int) async throws -> Int {
     let seriesItems = try await anime365KitFactory.createApiClient().listSeries(myAnimeListID: myAnimeListID)
