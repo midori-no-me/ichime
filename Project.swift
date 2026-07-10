@@ -70,12 +70,7 @@ let project = Project(
   settings: .settings(
     base: baseSettings(),
     configurations: [
-      .debug(
-        name: .debug,
-        settings: [
-          "INFOPLIST_KEY_CFBundleDisplayName": "Ichime (dev)"
-        ]
-      ),
+      .debug(name: .debug),
       .release(name: .release),
     ]
   ),
@@ -269,9 +264,6 @@ let project = Project(
           "App Icon - Gawr Gura"
           "App Icon - Hentai 365"
           """
-        ],
-        debug: [
-          "ASSETCATALOG_COMPILER_APPICON_NAME": "App Icon & Top Shelf Image (Debug)"
         ]
       )
     ),
