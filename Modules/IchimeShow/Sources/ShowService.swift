@@ -246,23 +246,6 @@ public struct ShowService: Sendable {
     )
   }
 
-  // periphery:ignore
-  public func getSeason(
-    offset: Int,
-    limit: Int,
-    airingSeason: AiringSeason
-  ) async throws -> [ShowPreview] {
-    let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
-      limit: limit,
-      offset: offset,
-      chips: [
-        "yearseason": "\(airingSeason.calendarSeason.getAnime365ApiName())_\(airingSeason.year)"
-      ]
-    )
-
-    return apiResponse.map { .init(anime365Series: $0) }
-  }
-
   public func getRelatedShows(
     myAnimeListID: Int
   ) async throws -> OrderedSet<GroupedRelatedShows> {
