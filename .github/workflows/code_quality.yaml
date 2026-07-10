@@ -20,12 +20,11 @@ jobs:
       - name: Generate Xcode Configs
         run: tuist generate --no-open
 
-      - name: Upload Ichime.xcodeproj Artifact
+      - name: Upload Repository w/ Xcode Configs Artifact
         uses: actions/upload-artifact@v7
         with:
           name: ichime
           path: ./
-          retention-days: 7
           include-hidden-files: true
 
   swift_format:

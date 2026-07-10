@@ -41,7 +41,6 @@ jobs:
         with:
           name: ichime-tuist
           path: ./
-          retention-days: 7
           include-hidden-files: true
 
   build_ipa:
