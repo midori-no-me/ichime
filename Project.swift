@@ -86,7 +86,7 @@ let project = Project(
       product: .framework,
       bundleId: "dev.midorinome.ichime.core",
       deploymentTargets: .tvOS(tvOSDeploymentTarget),
-      sources: ["Ichime/Modules/IchimeCore/Sources/**"],
+      sources: ["Modules/IchimeCore/Sources/**"],
       dependencies: [
         .external(name: "AppdbFramework")
       ],
@@ -98,7 +98,7 @@ let project = Project(
       product: .framework,
       bundleId: "dev.midorinome.ichime.preferences",
       deploymentTargets: .tvOS(tvOSDeploymentTarget),
-      sources: ["Ichime/Modules/IchimePreferences/Sources/**"],
+      sources: ["Modules/IchimePreferences/Sources/**"],
       dependencies: [
         .external(name: "Collections")
       ],
@@ -110,7 +110,7 @@ let project = Project(
       product: .framework,
       bundleId: "dev.midorinome.ichime.anime365",
       deploymentTargets: .tvOS(tvOSDeploymentTarget),
-      sources: ["Ichime/Modules/IchimeAnime365/Sources/**"],
+      sources: ["Modules/IchimeAnime365/Sources/**"],
       dependencies: [
         .external(name: "Anime365Kit"),
         .external(name: "Collections"),
@@ -124,7 +124,7 @@ let project = Project(
       product: .framework,
       bundleId: "dev.midorinome.ichime.show",
       deploymentTargets: .tvOS(tvOSDeploymentTarget),
-      sources: ["Ichime/Modules/IchimeShow/Sources/**"],
+      sources: ["Modules/IchimeShow/Sources/**"],
       dependencies: [
         .external(name: "Anime365Kit"),
         .external(name: "Collections"),
@@ -141,7 +141,7 @@ let project = Project(
       product: .framework,
       bundleId: "dev.midorinome.ichime.calendar",
       deploymentTargets: .tvOS(tvOSDeploymentTarget),
-      sources: ["Ichime/Modules/IchimeCalendar/Sources/**"],
+      sources: ["Modules/IchimeCalendar/Sources/**"],
       dependencies: [
         .external(name: "Collections"),
         .external(name: "ShikimoriApiClient"),
@@ -156,7 +156,7 @@ let project = Project(
       product: .framework,
       bundleId: "dev.midorinome.ichime.currentlywatching",
       deploymentTargets: .tvOS(tvOSDeploymentTarget),
-      sources: ["Ichime/Modules/IchimeCurrentlyWatching/Sources/**"],
+      sources: ["Modules/IchimeCurrentlyWatching/Sources/**"],
       dependencies: [
         .external(name: "Anime365Kit"),
         .external(name: "Collections"),
@@ -171,7 +171,7 @@ let project = Project(
       product: .staticFramework,
       bundleId: "dev.midorinome.ichime.episode",
       deploymentTargets: .tvOS(tvOSDeploymentTarget),
-      sources: ["Ichime/Modules/IchimeEpisode/Sources/**"],
+      sources: ["Modules/IchimeEpisode/Sources/**"],
       dependencies: [
         .external(name: "Anime365Kit"),
         .external(name: "Collections"),
@@ -187,7 +187,7 @@ let project = Project(
       product: .staticFramework,
       bundleId: "dev.midorinome.ichime.moment",
       deploymentTargets: .tvOS(tvOSDeploymentTarget),
-      sources: ["Ichime/Modules/IchimeMoment/Sources/**"],
+      sources: ["Modules/IchimeMoment/Sources/**"],
       dependencies: [
         .external(name: "Anime365Kit"),
         .external(name: "Collections"),
@@ -201,7 +201,7 @@ let project = Project(
       product: .staticFramework,
       bundleId: "dev.midorinome.ichime.mylists",
       deploymentTargets: .tvOS(tvOSDeploymentTarget),
-      sources: ["Ichime/Modules/IchimeMyLists/Sources/**"],
+      sources: ["Modules/IchimeMyLists/Sources/**"],
       dependencies: [
         .external(name: "Anime365Kit"),
         .external(name: "Collections"),
@@ -215,7 +215,7 @@ let project = Project(
       product: .staticFramework,
       bundleId: "dev.midorinome.ichime.profile",
       deploymentTargets: .tvOS(tvOSDeploymentTarget),
-      sources: ["Ichime/Modules/IchimeProfile/Sources/**"],
+      sources: ["Modules/IchimeProfile/Sources/**"],
       dependencies: [
         .external(name: "Anime365Kit"),
         .target(name: "IchimeAnime365"),
@@ -228,7 +228,7 @@ let project = Project(
       product: .staticFramework,
       bundleId: "dev.midorinome.ichime.videoplayer",
       deploymentTargets: .tvOS(tvOSDeploymentTarget),
-      sources: ["Ichime/Modules/IchimeVideoPlayer/Sources/**"]
+      sources: ["Modules/IchimeVideoPlayer/Sources/**"]
     ),
     .target(
       name: "Ichime",
