@@ -24,7 +24,7 @@ private final class OngoingsSectionViewModel {
 
   init(
     showService: ShowService = AppDependencies.live.showService,
-    logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "OngoingsSectionViewModel")
+    logger: Logger = .init(subsystem: AppEnvironment.applicationId, category: "OngoingsSectionViewModel")
   ) {
     self.showService = showService
     self.logger = logger

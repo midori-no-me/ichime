@@ -24,7 +24,7 @@ private final class YearSectionViewModel {
 
   init(
     showService: ShowService = AppDependencies.live.showService,
-    logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "YearSectionViewModel")
+    logger: Logger = .init(subsystem: AppEnvironment.applicationId, category: "YearSectionViewModel")
   ) {
     self.showService = showService
     self.logger = logger

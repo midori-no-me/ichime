@@ -22,7 +22,7 @@ private final class CurrentlyWatchingSectionViewModel {
 
   init(
     currentlyWatchingService: CurrentlyWatchingService = AppDependencies.live.currentlyWatchingService,
-    logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "CurrentlyWatchingSectionViewModel")
+    logger: Logger = .init(subsystem: AppEnvironment.applicationId, category: "CurrentlyWatchingSectionViewModel")
   ) {
     self.currentlyWatchingService = currentlyWatchingService
     self.logger = logger

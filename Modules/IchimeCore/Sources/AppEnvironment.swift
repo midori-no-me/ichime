@@ -1,6 +1,6 @@
 import Foundation
 
-public enum ServiceLocator {
+public enum AppEnvironment {
   public static let urlSession: URLSession = {
     let configuration = URLSessionConfiguration.default
     configuration.httpCookieStorage = cookieStorage

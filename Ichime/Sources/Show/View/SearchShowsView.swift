@@ -31,7 +31,7 @@ private final class SearchShowsViewModel {
 
   init(
     showService: ShowService = AppDependencies.live.showService,
-    logger: Logger = .init(subsystem: ServiceLocator.applicationId, category: "SearchShowsViewModel")
+    logger: Logger = .init(subsystem: AppEnvironment.applicationId, category: "SearchShowsViewModel")
   ) {
     self.showService = showService
     self.logger = logger

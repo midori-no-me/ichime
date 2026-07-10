@@ -52,7 +52,7 @@ public actor Anime365BaseURL {
   }
 
   public static func getUserDefaults() -> UserDefaults {
-    ServiceLocator.userDefaults
+    AppEnvironment.userDefaults
   }
 
   public static func isAdultDomain(_ baseURL: URL) -> Bool {

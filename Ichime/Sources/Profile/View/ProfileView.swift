@@ -72,7 +72,7 @@ struct ProfileView: View {
   #endif
 
   private var appdbSDKStatus: String {
-    ServiceLocator.isInstalledViaAppdb ? "appdb SDK" : ""
+    AppEnvironment.isInstalledViaAppdb ? "appdb SDK" : ""
   }
 
   private var buildFooter: String {

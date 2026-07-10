@@ -23,7 +23,7 @@ private final class RecentlyUploadedEpisodesSectionViewModel {
   init(
     episodeService: EpisodeService = AppDependencies.live.episodeService,
     logger: Logger = .init(
-      subsystem: ServiceLocator.applicationId,
+      subsystem: AppEnvironment.applicationId,
       category: "RecentlyUploadedEpisodesSectionViewModel"
     )
   ) {

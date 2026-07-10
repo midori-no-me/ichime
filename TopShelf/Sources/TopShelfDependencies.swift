@@ -7,20 +7,20 @@ import ShikimoriApiClient
 
 struct TopShelfDependencies: Sendable {
   static let live: Self = {
-    let urlSession = ServiceLocator.urlSession
+    let urlSession = AppEnvironment.urlSession
 
     let anime365BaseURL = Anime365BaseURL()
 
     let anime365KitFactory = Anime365KitFactory(
       anime365BaseURL: anime365BaseURL,
-      logger: Logger(subsystem: ServiceLocator.applicationId, category: "Anime365Kit"),
+      logger: Logger(subsystem: AppEnvironment.applicationId, category: "Anime365Kit"),
       urlSession: urlSession
     )
 
     let shikimoriApiClient = ShikimoriApiClient.ApiClient(
-      baseUrl: ServiceLocator.shikimoriBaseUrl,
+      baseUrl: AppEnvironment.shikimoriBaseUrl,
       urlSession: urlSession,
-      logger: Logger(subsystem: ServiceLocator.applicationId, category: "ShikimoriApiClient")
+      logger: Logger(subsystem: AppEnvironment.applicationId, category: "ShikimoriApiClient")
     )
 
     let showReleaseSchedule = ShowReleaseSchedule(

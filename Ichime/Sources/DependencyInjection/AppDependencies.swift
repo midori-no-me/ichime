@@ -16,33 +16,33 @@ import SwiftUI
 
 struct AppDependencies: Sendable {
   static let live: Self = {
-    let urlSession = ServiceLocator.urlSession
+    let urlSession = AppEnvironment.urlSession
 
     let anime365BaseURL = Anime365BaseURL()
     let animeListEntriesCount = AnimeListEntriesCount()
 
     let anime365KitFactory = Anime365KitFactory(
       anime365BaseURL: anime365BaseURL,
-      logger: Logger(subsystem: ServiceLocator.applicationId, category: "Anime365Kit"),
+      logger: Logger(subsystem: AppEnvironment.applicationId, category: "Anime365Kit"),
       urlSession: urlSession
     )
 
     let shikimoriApiClient = ShikimoriApiClient.ApiClient(
-      baseUrl: ServiceLocator.shikimoriBaseUrl,
+      baseUrl: AppEnvironment.shikimoriBaseUrl,
       urlSession: urlSession,
-      logger: Logger(subsystem: ServiceLocator.applicationId, category: "ShikimoriApiClient")
+      logger: Logger(subsystem: AppEnvironment.applicationId, category: "ShikimoriApiClient")
     )
 
     let shikimoriGraphQLClient = ShikimoriApiClient.GraphQLClient(
-      baseUrl: ServiceLocator.shikimoriBaseUrl,
+      baseUrl: AppEnvironment.shikimoriBaseUrl,
       urlSession: urlSession,
-      logger: Logger(subsystem: ServiceLocator.applicationId, category: "ShikimoriGraphQLClient")
+      logger: Logger(subsystem: AppEnvironment.applicationId, category: "ShikimoriGraphQLClient")
     )
 
     let jikanApiClient = JikanApiClient.ApiClient(
-      baseUrl: ServiceLocator.jikanBaseUrl,
+      baseUrl: AppEnvironment.jikanBaseUrl,
       urlSession: urlSession,
-      logger: Logger(subsystem: ServiceLocator.applicationId, category: "JikanApiClient")
+      logger: Logger(subsystem: AppEnvironment.applicationId, category: "JikanApiClient")
     )
 
     let showService = ShowService(
@@ -62,7 +62,7 @@ struct AppDependencies: Sendable {
     )
 
     let subtitlesProxyUrlGenerator = SubtitlesProxyUrlGenerator(
-      anime365BaseUrl: ServiceLocator.websiteBaseUrl
+      anime365BaseUrl: AppEnvironment.websiteBaseUrl
     )
 
     let showReleaseSchedule = ShowReleaseSchedule(
