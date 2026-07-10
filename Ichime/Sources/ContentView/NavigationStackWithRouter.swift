@@ -28,11 +28,11 @@ import SwiftUI
         }
         .navigationDestination(for: Route.self) { route in
           switch route {
-          case let .showByMyAnimeListId(id):
-            ShowByMyAnimeListIdView(myAnimeListId: id, onOpened: nil)
+          case let .showByMyAnimeListID(id):
+            ShowByMyAnimeListIDView(myAnimeListID: id, onOpened: nil)
 
           case let .episode(id):
-            EpisodeTranslationListView(episodeId: id, showTitle: nil)
+            EpisodeTranslationListView(episodeID: id, showTitle: nil)
           }
         }
         .onOpenURL { url in
@@ -54,11 +54,11 @@ import SwiftUI
               return
             }
 
-            guard let myAnimeListId = Int(idParam) else {
+            guard let myAnimeListID = Int(idParam) else {
               return
             }
 
-            self.path.append(.showByMyAnimeListId(myAnimeListId))
+            self.path.append(.showByMyAnimeListID(myAnimeListID))
 
           case "episode":
             let idParam = components.queryItems?.first { $0.name == "id" }?.value
@@ -67,11 +67,11 @@ import SwiftUI
               return
             }
 
-            guard let episodeId = Int(idParam) else {
+            guard let episodeID = Int(idParam) else {
               return
             }
 
-            self.path.append(.episode(episodeId))
+            self.path.append(.episode(episodeID))
 
           default:
             return

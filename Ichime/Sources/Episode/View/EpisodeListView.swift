@@ -25,12 +25,12 @@ private final class EpisodeListViewModel {
     self.episodeService = episodeService
   }
 
-  func performInitialLoading(showId: Int) async {
+  func performInitialLoading(showID: Int) async {
     self.updateState(.loading)
 
     do {
       let episodes = try await self.episodeService.getEpisodeList(
-        showId: showId,
+        showID: showID,
       )
 
       if episodes.isEmpty {
@@ -59,7 +59,7 @@ private final class EpisodeListViewModel {
 struct EpisodeListView: View {
   @State private var viewModel: EpisodeListViewModel = .init()
 
-  let showId: Int
+  let showID: Int
   let nextEpisodeReleasesAt: Date?
   let showTitle: ShowName?
 
@@ -69,7 +69,7 @@ struct EpisodeListView: View {
       Color.clear.onAppear {
         Task {
           await self.viewModel.performInitialLoading(
-            showId: self.showId,
+            showID: self.showID,
           )
         }
       }
@@ -87,7 +87,7 @@ struct EpisodeListView: View {
         Button(action: {
           Task {
             await self.viewModel.performInitialLoading(
-              showId: self.showId,
+              showID: self.showID,
             )
           }
         }) {
@@ -104,7 +104,7 @@ struct EpisodeListView: View {
         Button(action: {
           Task {
             await self.viewModel.performInitialLoading(
-              showId: self.showId,
+              showID: self.showID,
             )
           }
         }) {
@@ -142,7 +142,7 @@ private struct EpisodePreviewRow: View {
   var body: some View {
     NavigationLink(
       destination: EpisodeTranslationListView(
-        episodeId: self.episodeInfo.anime365Id,
+        episodeID: self.episodeInfo.anime365ID,
         showTitle: self.showTitle,
       )
     ) {

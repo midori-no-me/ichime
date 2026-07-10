@@ -10,17 +10,17 @@ enum HttpMethod: String {
 }
 
 public struct ApiClient: Sendable {
-  public let baseUrl: URL
+  public let baseURL: URL
 
   private let urlSession: URLSession
   private let logger: Logger
 
   public init(
-    baseUrl: URL,
+    baseURL: URL,
     urlSession: URLSession,
     logger: Logger
   ) {
-    self.baseUrl = baseUrl
+    self.baseURL = baseURL
     self.urlSession = urlSession
     self.logger = logger
   }
@@ -31,7 +31,7 @@ public struct ApiClient: Sendable {
     queryItems: [URLQueryItem],
     requestBody: Encodable?
   ) async throws -> T {
-    var fullURL = self.baseUrl.appendingPathComponent(endpoint)
+    var fullURL = self.baseURL.appendingPathComponent(endpoint)
 
     if !queryItems.isEmpty {
       fullURL.append(queryItems: queryItems.sorted(by: { $0.name < $1.name }))
@@ -59,10 +59,10 @@ public struct ApiClient: Sendable {
 
     let (data, httpResponse) = try await self.urlSession.data(for: httpRequest)
 
-    if let requestUrl = httpRequest.url?.absoluteString,
+    if let requestURL = httpRequest.url?.absoluteString,
       let httpResponse = httpResponse as? HTTPURLResponse
     {
-      self.logger.info("API request: \(httpMethod.rawValue) \(requestUrl) [\(httpResponse.statusCode)]")
+      self.logger.info("API request: \(httpMethod.rawValue) \(requestURL) [\(httpResponse.statusCode)]")
     }
 
     do {

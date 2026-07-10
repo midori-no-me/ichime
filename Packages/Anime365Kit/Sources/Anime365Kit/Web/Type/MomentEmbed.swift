@@ -31,7 +31,7 @@ public struct MomentEmbed: Sendable {
     }
 
     guard
-      let videoSourceUrl = videoSources.filter({ !$0.urls.isEmpty }).sorted(by: { $1.height > $0.height }).first?.urls
+      let videoSourceURL = videoSources.filter({ !$0.urls.isEmpty }).sorted(by: { $1.height > $0.height }).first?.urls
         .first
     else {
       throw .failedCreatingDTOFromHTMLElement(
@@ -39,6 +39,6 @@ public struct MomentEmbed: Sendable {
       )
     }
 
-    self.videoURL = videoSourceUrl
+    self.videoURL = videoSourceURL
   }
 }

@@ -4,7 +4,7 @@ import ShikimoriApiClient
 public struct ShowPreviewShikimori: Hashable, Identifiable {
   public let id: Int
   public let title: ShowName
-  public let posterUrl: URL?
+  public let posterURL: URL?
   public let score: Float?
   public let airingSeason: AiringSeason?
   public let kind: ShowKind?
@@ -54,10 +54,10 @@ public struct ShowPreviewShikimori: Hashable, Identifiable {
     }
 
     if let poster = graphqlAnimePreview.poster {
-      self.posterUrl = poster.previewAlt2xUrl
+      self.posterURL = poster.previewAlt2xUrl
     }
     else {
-      self.posterUrl = nil
+      self.posterURL = nil
     }
 
     if let airedOnYear = graphqlAnimePreview.airedOn.year {

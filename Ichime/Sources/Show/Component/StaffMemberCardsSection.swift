@@ -15,14 +15,14 @@ private final class StaffMemberCardsSectionViewModel {
   private(set) var state: State = .idle
 
   private let showService: ShowService
-  private let myAnimeListId: Int
+  private let myAnimeListID: Int
 
   init(
     showService: ShowService = AppDependencies.live.showService,
-    myAnimeListId: Int
+    myAnimeListID: Int
   ) {
     self.showService = showService
-    self.myAnimeListId = myAnimeListId
+    self.myAnimeListID = myAnimeListID
   }
 
   func performInitialLoading() async {
@@ -30,7 +30,7 @@ private final class StaffMemberCardsSectionViewModel {
 
     do {
       let staffMembers = try await showService.getStaffMembers(
-        myAnimeListId: self.myAnimeListId
+        myAnimeListID: self.myAnimeListID
       )
 
       if staffMembers.isEmpty {
@@ -55,8 +55,8 @@ private final class StaffMemberCardsSectionViewModel {
 struct StaffMemberCardsSection: View {
   @State private var viewModel: StaffMemberCardsSectionViewModel
 
-  init(myAnimeListId: Int) {
-    self.viewModel = .init(myAnimeListId: myAnimeListId)
+  init(myAnimeListID: Int) {
+    self.viewModel = .init(myAnimeListID: myAnimeListID)
   }
 
   var body: some View {

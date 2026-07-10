@@ -3,13 +3,13 @@ import Foundation
 import IchimeShow
 
 public struct MomentDetails {
-  public let showId: Int
+  public let showID: Int
   public let showTitle: ShowName
 
   public init(
     fromAnime365MomentDetails anime365MomentDetails: Anime365Kit.MomentDetails
   ) {
-    self.showId = anime365MomentDetails.seriesID
+    self.showID = anime365MomentDetails.seriesID
     self.showTitle = .fromFullName(anime365MomentDetails.seriesTitle)
   }
 }

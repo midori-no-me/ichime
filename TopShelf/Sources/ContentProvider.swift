@@ -33,11 +33,11 @@ final class ContentProvider: TVTopShelfContentProvider {
     let episodes = (try? await Self.dependencies.currentlyWatchingService.getEpisodesToWatch(page: 1)) ?? []
 
     let topShelfItems = episodes.map {
-      let topShelfItem = TVTopShelfSectionedItem(identifier: String($0.episodeId))
+      let topShelfItem = TVTopShelfSectionedItem(identifier: String($0.episodeID))
 
       topShelfItem.title = "\($0.episodeTitle) — \($0.showName.getRomajiOrFullName())"
-      topShelfItem.setImageURL($0.coverUrl, for: .screenScale1x)
-      topShelfItem.setImageURL($0.coverUrl, for: .screenScale2x)
+      topShelfItem.setImageURL($0.coverURL, for: .screenScale1x)
+      topShelfItem.setImageURL($0.coverURL, for: .screenScale2x)
       topShelfItem.imageShape = .poster
 
       var components = URLComponents()
@@ -47,7 +47,7 @@ final class ContentProvider: TVTopShelfContentProvider {
       components.queryItems = [
         URLQueryItem(
           name: "id",
-          value: String($0.episodeId)
+          value: String($0.episodeID)
         )
       ]
 
@@ -71,8 +71,8 @@ final class ContentProvider: TVTopShelfContentProvider {
         let topShelfItem = TVTopShelfSectionedItem(identifier: String($0.id))
 
         topShelfItem.title = "\(formatTime($0.nextEpisodeReleaseDate)) — \($0.title.getRomajiOrFullName())"
-        topShelfItem.setImageURL($0.posterUrl, for: .screenScale1x)
-        topShelfItem.setImageURL($0.posterUrl, for: .screenScale2x)
+        topShelfItem.setImageURL($0.posterURL, for: .screenScale1x)
+        topShelfItem.setImageURL($0.posterURL, for: .screenScale2x)
         topShelfItem.imageShape = .poster
 
         var components = URLComponents()

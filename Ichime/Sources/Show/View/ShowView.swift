@@ -16,14 +16,14 @@ private final class ShowViewModel {
   private(set) var state: State = .idle
 
   private let showService: ShowService
-  private let showId: Int
+  private let showID: Int
 
   init(
     showService: ShowService = AppDependencies.live.showService,
-    showId: Int
+    showID: Int
   ) {
     self.showService = showService
-    self.showId = showId
+    self.showID = showID
   }
 
   func performInitialLoading() async {
@@ -31,7 +31,7 @@ private final class ShowViewModel {
 
     do {
       let show = try await showService.getShowDetails(
-        showId: self.showId
+        showID: self.showID
       )
 
       self.updateState(.loaded(show))
@@ -55,11 +55,11 @@ struct ShowView: View {
   private let onOpened: (() -> Void)?
 
   init(
-    showId: Int,
+    showID: Int,
     onOpened: (() -> Void)? = nil
   ) {
     self.onOpened = onOpened
-    self.viewModel = .init(showId: showId)
+    self.viewModel = .init(showID: showID)
   }
 
   var body: some View {
@@ -78,7 +78,7 @@ struct ShowView: View {
         .focusable()
 
     case let .loadingFailed(error):
-      if case GetShowByIdError.notFoundByMyAnimeListId = error {
+      if case GetShowByIDError.notFoundByMyAnimeListID = error {
         ContentUnavailableView {
           Label("Ничего не нашлось", systemImage: "exclamationmark.triangle")
         } description: {
@@ -118,7 +118,7 @@ struct ShowView: View {
             ZStack {
               // MARK: Top full screen section - Background image
               AsyncImage(
-                url: show.posterUrl,
+                url: show.posterURL,
                 transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION)),
                 content: { phase in
                   switch phase {
@@ -168,7 +168,7 @@ struct ShowView: View {
                   HStack(spacing: 32) {
                     NavigationLink(
                       destination: EpisodeListView(
-                        showId: show.id,
+                        showID: show.id,
                         nextEpisodeReleasesAt: show.nextEpisodeReleasesAt,
                         showTitle: show.title,
                       )
@@ -182,7 +182,7 @@ struct ShowView: View {
                     .controlSize(.extraLarge)
 
                     ShowInMyListStatusButton(
-                      showId: show.id,
+                      showID: show.id,
                       showName: show.title,
                       episodesTotal: show.numberOfEpisodes
                     )
@@ -227,7 +227,7 @@ struct ShowView: View {
                   self.displayShowCoversSheet = true
                 }) {
                   AsyncImage(
-                    url: show.posterUrl,
+                    url: show.posterURL,
                     transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION)),
                     content: { phase in
                       switch phase {
@@ -252,7 +252,7 @@ struct ShowView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .aspectRatio(ShowCard.RECOMMENDED_ASPECT_RATIO, contentMode: .fit)
                 .fullScreenCover(isPresented: self.$displayShowCoversSheet) {
-                  CoverGallerySheet(myAnimeListId: show.myAnimeListId)
+                  CoverGallerySheet(myAnimeListID: show.myAnimeListID)
                     .background(.thickMaterial)
                 }
               }
@@ -268,11 +268,11 @@ struct ShowView: View {
             )
 
             // MARK: Lazy-loadable sections
-            ScreenshotCardsSection(myAnimeListId: show.myAnimeListId)
-            ShowMomentsSection(showId: show.id)
-            CharacterCardsSection(myAnimeListId: show.myAnimeListId)
-            StaffMemberCardsSection(myAnimeListId: show.myAnimeListId)
-            RelatedShowsSection(myAnimeListId: show.myAnimeListId)
+            ScreenshotCardsSection(myAnimeListID: show.myAnimeListID)
+            ShowMomentsSection(showID: show.id)
+            CharacterCardsSection(myAnimeListID: show.myAnimeListID)
+            StaffMemberCardsSection(myAnimeListID: show.myAnimeListID)
+            RelatedShowsSection(myAnimeListID: show.myAnimeListID)
 
             if !show.studios.isEmpty || !show.descriptions.isEmpty {
               ShowStudiosAndDescriptionsSection(studios: show.studios, descriptions: show.descriptions)

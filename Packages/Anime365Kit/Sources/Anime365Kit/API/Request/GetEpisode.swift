@@ -2,10 +2,10 @@ import Foundation
 
 extension ApiClient {
   public func getEpisode(
-    episodeId: Int
+    episodeID: Int
   ) async throws(ApiClientError) -> EpisodeFull {
     try await sendRequest(
-      endpoint: "/episodes/\(episodeId)",
+      endpoint: "/episodes/\(episodeID)",
       queryItems: []
     )
   }

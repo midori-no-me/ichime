@@ -11,11 +11,11 @@ public struct AnimeListService: Sendable {
     self.anime365KitFactory = anime365KitFactory
   }
 
-  public func getAnimeList(userId: Int, category: AnimeListCategory) async throws -> (
+  public func getAnimeList(userID: Int, category: AnimeListCategory) async throws -> (
     count: Int, groups: [AnimeListEntriesGroup]
   ) {
     let anime365AnimeListEntries = try await self.anime365KitFactory.createWebClient()
-      .getAnimeList(userId: userId, category: category.anime365KitType)
+      .getAnimeList(userID: userID, category: category.anime365KitType)
 
     let entries: [AnimeListEntry] = anime365AnimeListEntries.map { .init(fromAnime365KitAnimeListEntry: $0) }
 
@@ -48,22 +48,22 @@ public struct AnimeListService: Sendable {
     return (count: entries.count, groups: groups)
   }
 
-  public func getAnimeListEditableEntry(showId: Int) async throws -> AnimeListEditableEntry {
+  public func getAnimeListEditableEntry(showID: Int) async throws -> AnimeListEditableEntry {
     let animeListEditableEntry = try await self.anime365KitFactory.createWebClient()
-      .getAnimeListEditableEntry(seriesID: showId)
+      .getAnimeListEditableEntry(seriesID: showID)
 
     return .init(fromAnime365KitAnimeListEditableEntry: animeListEditableEntry)
   }
 
   public func editAnimeListEntry(
-    showId: Int,
+    showID: Int,
     status: AnimeListCategory,
     score: AnimeListScore,
     episodesWatched: Int
   ) async throws -> Void {
     try await self.anime365KitFactory.createWebClient()
       .editAnimeListEntry(
-        seriesID: showId,
+        seriesID: showID,
         score: score.rawValue,
         episodes: episodesWatched,
         status: status.anime365KitType.numericID,
@@ -72,11 +72,11 @@ public struct AnimeListService: Sendable {
   }
 
   public func deleteAnimeListEntry(
-    showId: Int
+    showID: Int
   ) async throws -> Void {
     try await self.anime365KitFactory.createWebClient()
       .editAnimeListEntry(
-        seriesID: showId,
+        seriesID: showID,
         score: 0,
         episodes: 0,
         status: 99,

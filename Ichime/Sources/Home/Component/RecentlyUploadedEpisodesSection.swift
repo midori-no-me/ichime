@@ -23,7 +23,7 @@ private final class RecentlyUploadedEpisodesSectionViewModel {
   init(
     episodeService: EpisodeService = AppDependencies.live.episodeService,
     logger: Logger = .init(
-      subsystem: AppEnvironment.applicationId,
+      subsystem: AppEnvironment.applicationID,
       category: "RecentlyUploadedEpisodesSectionViewModel"
     )
   ) {
@@ -75,7 +75,7 @@ private final class RecentlyUploadedEpisodesSectionViewModel {
         .loaded(
           shows: .init(alreadyLoadedEpisodes.elements + episodes),
           page: page + 1,
-          hasMore: episodes.last?.episodeId == alreadyLoadedEpisodes.last?.episodeId
+          hasMore: episodes.last?.episodeID == alreadyLoadedEpisodes.last?.episodeID
         )
       )
     }

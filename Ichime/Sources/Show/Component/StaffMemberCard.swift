@@ -6,7 +6,7 @@ struct StaffMemberCard: View {
 
   var body: some View {
     CircularPortraitButton.button(
-      imageUrl: self.staffMember.image,
+      imageURL: self.staffMember.image,
       label: self.staffMember.name,
       secondaryLabel: self.staffMember.roles.first,
       action: {},

@@ -1,5 +1,7 @@
 import Foundation
 
+// swiftformat:disable acronyms
+
 public struct GetStaffResponse: Sendable, Decodable {
   public struct AnimeFields: Sendable, Decodable {
     public struct PersonRole: Sendable, Decodable {

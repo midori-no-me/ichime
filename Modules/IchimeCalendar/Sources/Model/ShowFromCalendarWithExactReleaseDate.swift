@@ -5,19 +5,19 @@ import ShikimoriApiClient
 public struct ShowFromCalendarWithExactReleaseDate: Hashable, Identifiable {
   public let id: Int
   public let title: ShowName
-  public let posterUrl: URL?
+  public let posterURL: URL?
   public let nextEpisodeNumber: Int?
   public let nextEpisodeReleaseDate: Date
 
   public init(
     fromShikimoriCalendarEntry: ShikimoriApiClient.CalendarEntry,
-    shikimoriBaseUrl: URL
+    shikimoriBaseURL: URL
   ) {
     let anime = fromShikimoriCalendarEntry.anime
 
     self.id = anime.id
     self.title = .parsed(anime.name, anime.russian.isEmpty ? nil : anime.russian)
-    self.posterUrl = URL(string: shikimoriBaseUrl.absoluteString + anime.image.original)
+    self.posterURL = URL(string: shikimoriBaseURL.absoluteString + anime.image.original)
     self.nextEpisodeNumber = fromShikimoriCalendarEntry.next_episode
     self.nextEpisodeReleaseDate = fromShikimoriCalendarEntry.next_episode_at
   }

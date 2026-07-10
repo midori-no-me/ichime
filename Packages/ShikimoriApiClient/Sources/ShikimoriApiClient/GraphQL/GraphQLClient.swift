@@ -2,17 +2,17 @@ import Foundation
 import OSLog
 
 public struct GraphQLClient: Sendable {
-  public let baseUrl: URL
+  public let baseURL: URL
 
   private let urlSession: URLSession
   private let logger: Logger
 
   public init(
-    baseUrl: URL,
+    baseURL: URL,
     urlSession: URLSession,
     logger: Logger
   ) {
-    self.baseUrl = baseUrl
+    self.baseURL = baseURL
     self.urlSession = urlSession
     self.logger = logger
   }
@@ -22,7 +22,7 @@ public struct GraphQLClient: Sendable {
     variables: [String: some Encodable & Sendable],
     query: String
   ) async throws -> T {
-    let fullURL = self.baseUrl.appendingPathComponent("/api/graphql")
+    let fullURL = self.baseURL.appendingPathComponent("/api/graphql")
 
     var httpRequest = URLRequest(url: fullURL)
 

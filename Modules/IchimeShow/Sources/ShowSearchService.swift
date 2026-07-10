@@ -46,7 +46,7 @@ public struct ShowSearchService: Sendable {
 
     return
       apiResponse
-      .map { .init(fromShikimoriStudio: $0, shikimoriBaseUrl: self.shikimoriApiClient.baseUrl) }
+      .map { .init(fromShikimoriStudio: $0, shikimoriBaseURL: self.shikimoriApiClient.baseURL) }
       .sorted(by: { $0.name < $1.name })
   }
 }

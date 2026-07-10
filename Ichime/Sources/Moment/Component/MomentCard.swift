@@ -115,19 +115,19 @@ struct MomentCard: View {
     Button(action: {
       Task {
         do {
-          let videoURL = try await self.dependencies.momentService.getMomentVideoURL(momentId: self.moment.id)
+          let videoURL = try await self.dependencies.momentService.getMomentVideoURL(momentID: self.moment.id)
 
-          let externalPlayerUniversalLink = DeepLinkFactory.buildUniversalLinkUrl(
+          let externalPlayerUniversalLink = DeepLinkFactory.buildUniversalLinkURL(
             externalPlayerType: self.selectedPlayer,
-            videoUrl: videoURL,
-            subtitlesUrl: nil,
+            videoURL: videoURL,
+            subtitlesURL: nil,
             show: nil,
           )
 
           if !UIApplication.shared.canOpenURL(externalPlayerUniversalLink) {
-            print("Opening App Store: \(self.selectedPlayer.appStoreUrl)")
+            print("Opening App Store: \(self.selectedPlayer.appStoreURL)")
 
-            await UIApplication.shared.open(self.selectedPlayer.appStoreUrl)
+            await UIApplication.shared.open(self.selectedPlayer.appStoreURL)
 
             return
           }
@@ -143,7 +143,7 @@ struct MomentCard: View {
       }
     }) {
       MomentCardRaw(
-        coverURL: self.moment.thumbnailUrl,
+        coverURL: self.moment.thumbnailURL,
         isCompact: !self.displayShowTitle,
         bottomChips: [self.moment.duration.formatted(DurationShortFormatStyle())],
         label: {
@@ -153,7 +153,7 @@ struct MomentCard: View {
     }
     .buttonStyle(.borderless)
     .contextMenu {
-      MomentCardContextMenu(momentId: self.moment.id)
+      MomentCardContextMenu(momentID: self.moment.id)
     }
     .alert("Ошибка при открытии момента", isPresented: self.$showErrorAlert, presenting: self.error) { _ in
       Button(action: {

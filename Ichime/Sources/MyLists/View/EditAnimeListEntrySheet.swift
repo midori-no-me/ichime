@@ -23,12 +23,12 @@ private final class EditAnimeListEntrySheetViewModel {
   }
 
   func performInitialLoad(
-    showId: Int
+    showID: Int
   ) async {
     self.state = .loading
 
     do {
-      let animeListEditableEntry = try await animeListService.getAnimeListEditableEntry(showId: showId)
+      let animeListEditableEntry = try await animeListService.getAnimeListEditableEntry(showID: showID)
 
       self.state = .loaded(animeListEditableEntry)
     }
@@ -38,13 +38,13 @@ private final class EditAnimeListEntrySheetViewModel {
   }
 
   func save(
-    showId: Int,
+    showID: Int,
     status: AnimeListCategory,
     score: AnimeListScore,
     episodesWatched: Int
   ) async {
     try? await self.animeListService.editAnimeListEntry(
-      showId: showId,
+      showID: showID,
       status: status,
       score: score,
       episodesWatched: episodesWatched
@@ -52,9 +52,9 @@ private final class EditAnimeListEntrySheetViewModel {
   }
 
   func delete(
-    showId: Int
+    showID: Int
   ) async {
-    try? await self.animeListService.deleteAnimeListEntry(showId: showId)
+    try? await self.animeListService.deleteAnimeListEntry(showID: showID)
   }
 }
 
@@ -63,7 +63,7 @@ struct EditAnimeListEntrySheet: View {
 
   @Environment(\.dismiss) private var dismissSheet
 
-  let showId: Int
+  let showID: Int
   let showName: ShowName
   let episodesTotal: Int?
   let onUpdate: () async -> Void
@@ -74,7 +74,7 @@ struct EditAnimeListEntrySheet: View {
       case .idle:
         Color.clear.onAppear {
           Task {
-            await self.viewModel.performInitialLoad(showId: self.showId)
+            await self.viewModel.performInitialLoad(showID: self.showID)
           }
         }
 
@@ -90,7 +90,7 @@ struct EditAnimeListEntrySheet: View {
         } actions: {
           Button(action: {
             Task {
-              await self.viewModel.performInitialLoad(showId: self.showId)
+              await self.viewModel.performInitialLoad(showID: self.showID)
             }
           }) {
             Text("Обновить")
@@ -99,15 +99,15 @@ struct EditAnimeListEntrySheet: View {
 
       case let .loaded(animeListEditableEntry):
         EditAnimeListEntryForm(
-          showId: self.showId,
+          showID: self.showID,
           showName: self.showName,
           status: animeListEditableEntry.status.category ?? .planned,
           score: animeListEditableEntry.score,
           episodesWatched: animeListEditableEntry.episodesWatched,
           episodesTotal: self.episodesTotal,
-          save: { showId, status, score, episodesWatched in
+          save: { showID, status, score, episodesWatched in
             await self.viewModel.save(
-              showId: showId,
+              showID: showID,
               status: status,
               score: score,
               episodesWatched: episodesWatched
@@ -117,8 +117,8 @@ struct EditAnimeListEntrySheet: View {
 
             self.dismissSheet()
           },
-          delete: { showId in
-            await self.viewModel.delete(showId: showId)
+          delete: { showID in
+            await self.viewModel.delete(showID: showID)
 
             await self.onUpdate()
 
@@ -138,14 +138,14 @@ struct EditAnimeListEntryForm: View {
   @State private var score: AnimeListScore
   @State private var episodesWatched: Int
 
-  private let showId: Int
+  private let showID: Int
   private let showName: ShowName
 
   private let episodesTotal: Int?
 
   private let save:
     (
-      _ showId: Int,
+      _ showID: Int,
       _ status: AnimeListCategory,
       _ score: AnimeListScore,
       _ episodesWatched: Int
@@ -153,11 +153,11 @@ struct EditAnimeListEntryForm: View {
 
   private let delete:
     (
-      _ showId: Int
+      _ showID: Int
     ) async -> Void
 
   init(
-    showId: Int,
+    showID: Int,
     showName: ShowName,
     status: AnimeListCategory,
     score: AnimeListScore,
@@ -165,17 +165,17 @@ struct EditAnimeListEntryForm: View {
     episodesTotal: Int?,
     save:
       @escaping (
-        _ showId: Int,
+        _ showID: Int,
         _ status: AnimeListCategory,
         _ score: AnimeListScore,
         _ episodesWatched: Int
       ) async -> Void,
     delete:
       @escaping (
-        _ showId: Int
+        _ showID: Int
       ) async -> Void
   ) {
-    self.showId = showId
+    self.showID = showID
     self.showName = showName
     self.status = status
     self.score = score
@@ -230,7 +230,7 @@ struct EditAnimeListEntryForm: View {
         Button("Сохранить", role: .confirm) {
           Task {
             await self.save(
-              self.showId,
+              self.showID,
               self.status,
               self.score,
               self.episodesWatched
@@ -250,7 +250,7 @@ struct EditAnimeListEntryForm: View {
         ) {
           Button("Да, удалить", role: .destructive) {
             Task {
-              await self.delete(self.showId)
+              await self.delete(self.showID)
             }
           }
           Button("Отмена", role: .cancel) {

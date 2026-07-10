@@ -4,7 +4,7 @@ import IchimeShow
 import SwiftUI
 
 struct ShowCardMyAnimeList: View {
-  private let myAnimeListId: Int
+  private let myAnimeListID: Int
   private let topChips: [String]
   private let bottomChips: [String]
   private let cover: URL?
@@ -19,7 +19,7 @@ struct ShowCardMyAnimeList: View {
     onOpened: (() -> Void)? = nil
   ) {
     self.onOpened = onOpened
-    self.myAnimeListId = show.id
+    self.myAnimeListID = show.id
 
     var topChips: [String] = []
 
@@ -45,7 +45,7 @@ struct ShowCardMyAnimeList: View {
     }
 
     self.bottomChips = bottomChips
-    self.cover = show.posterUrl
+    self.cover = show.posterURL
     self.primaryTitle = show.title.getRomajiOrFullName()
     self.secondaryTitle = show.title.getRussian()
   }
@@ -53,7 +53,7 @@ struct ShowCardMyAnimeList: View {
   init(
     show: ShowFromCalendarWithExactReleaseDate
   ) {
-    self.myAnimeListId = show.id
+    self.myAnimeListID = show.id
 
     var topChips: [String] = []
 
@@ -63,7 +63,7 @@ struct ShowCardMyAnimeList: View {
 
     self.topChips = topChips
     self.bottomChips = []
-    self.cover = show.posterUrl
+    self.cover = show.posterURL
     self.primaryTitle = show.title.getRomajiOrFullName()
     self.secondaryTitle = show.title.getRussian()
     self.onOpened = nil
@@ -71,7 +71,7 @@ struct ShowCardMyAnimeList: View {
 
   var body: some View {
     NavigationLink(
-      destination: ShowByMyAnimeListIdView(myAnimeListId: self.myAnimeListId, onOpened: self.onOpened)
+      destination: ShowByMyAnimeListIDView(myAnimeListID: self.myAnimeListID, onOpened: self.onOpened)
     ) {
       ShowCard(
         topChips: self.topChips,
@@ -83,7 +83,7 @@ struct ShowCardMyAnimeList: View {
     }
     .buttonStyle(.borderless)
     .contextMenu {
-      NavigationLink(destination: ShowByMyAnimeListIdView(myAnimeListId: self.myAnimeListId, onOpened: nil)) {
+      NavigationLink(destination: ShowByMyAnimeListIDView(myAnimeListID: self.myAnimeListID, onOpened: nil)) {
         Label(self.primaryTitle, systemImage: "info.circle")
 
         if let russian = self.secondaryTitle {

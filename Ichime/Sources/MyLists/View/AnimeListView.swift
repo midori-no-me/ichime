@@ -30,15 +30,15 @@ private final class AnimeListViewModel {
   }
 
   func performInitialLoad(
-    currentUserId: Int?,
-    userId: Int,
+    currentUserID: Int?,
+    userID: Int,
     category: AnimeListCategory
   ) async {
     self.state = .loading
 
     do {
       let (count, animeListEntriesGroups) = try await animeListService.getAnimeList(
-        userId: userId,
+        userID: userID,
         category: category
       )
 
@@ -48,7 +48,7 @@ private final class AnimeListViewModel {
       else {
         self.state = .loaded(animeListEntriesGroups)
 
-        if currentUserId == userId {
+        if currentUserID == userID {
           await self.animeListEntriesCount.save(
             count: count,
             category: category
@@ -62,13 +62,13 @@ private final class AnimeListViewModel {
   }
 
   func performRefresh(
-    currentUserId: Int?,
-    userId: Int,
+    currentUserID: Int?,
+    userID: Int,
     category: AnimeListCategory
   ) async {
     do {
       let (count, animeListEntriesGroups) = try await animeListService.getAnimeList(
-        userId: userId,
+        userID: userID,
         category: category
       )
 
@@ -78,7 +78,7 @@ private final class AnimeListViewModel {
       else {
         self.state = .loaded(animeListEntriesGroups)
 
-        if currentUserId == userId {
+        if currentUserID == userID {
           await self.animeListEntriesCount.save(
             count: count,
             category: category
@@ -96,7 +96,7 @@ struct AnimeListView: View {
   @State private var viewModel: AnimeListViewModel = .init()
   @Environment(\.currentUserStore) private var currentUserStore
 
-  let userId: Int
+  let userID: Int
   let animeListCategory: AnimeListCategory
 
   var body: some View {
@@ -106,8 +106,8 @@ struct AnimeListView: View {
         Color.clear.onAppear {
           Task {
             await self.viewModel.performInitialLoad(
-              currentUserId: self.currentUserStore.user?.id,
-              userId: self.userId,
+              currentUserID: self.currentUserStore.user?.id,
+              userID: self.userID,
               category: self.animeListCategory
             )
           }
@@ -126,8 +126,8 @@ struct AnimeListView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                currentUserId: self.currentUserStore.user?.id,
-                userId: self.userId,
+                currentUserID: self.currentUserStore.user?.id,
+                userID: self.userID,
                 category: self.animeListCategory
               )
             }
@@ -145,8 +145,8 @@ struct AnimeListView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                currentUserId: self.currentUserStore.user?.id,
-                userId: self.userId,
+                currentUserID: self.currentUserStore.user?.id,
+                userID: self.userID,
                 category: self.animeListCategory
               )
             }
@@ -164,8 +164,8 @@ struct AnimeListView: View {
                   animeListEntry: animeListEntry,
                   onUpdate: {
                     await self.viewModel.performRefresh(
-                      currentUserId: self.currentUserStore.user?.id,
-                      userId: self.userId,
+                      currentUserID: self.currentUserStore.user?.id,
+                      userID: self.userID,
                       category: self.animeListCategory
                     )
                   }
@@ -181,8 +181,8 @@ struct AnimeListView: View {
         .refreshOnAppear {
           Task {
             await self.viewModel.performRefresh(
-              currentUserId: self.currentUserStore.user?.id,
-              userId: self.userId,
+              currentUserID: self.currentUserStore.user?.id,
+              userID: self.userID,
               category: self.animeListCategory
             )
           }
@@ -224,7 +224,7 @@ private struct AnimeListEntryRowView: View {
     .fullScreenCover(isPresented: self.$showSheet) {
       NavigationStack {
         EditAnimeListEntrySheet(
-          showId: self.animeListEntry.id,
+          showID: self.animeListEntry.id,
           showName: self.animeListEntry.name,
           episodesTotal: self.animeListEntry.episodesTotal,
           onUpdate: self.onUpdate
@@ -233,7 +233,7 @@ private struct AnimeListEntryRowView: View {
       .background(.thickMaterial)
     }
     .contextMenu {
-      NavigationLink(destination: ShowView(showId: self.animeListEntry.id)) {
+      NavigationLink(destination: ShowView(showID: self.animeListEntry.id)) {
         Label(self.animeListEntry.name.getRomajiOrFullName(), systemImage: "info.circle")
 
         if let russian = self.animeListEntry.name.getRussian() {

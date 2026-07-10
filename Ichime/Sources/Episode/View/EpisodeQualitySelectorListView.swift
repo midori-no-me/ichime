@@ -37,13 +37,13 @@ private final class EpisodeQualitySelectorListViewModel {
   }
 
   func performInitialLoad(
-    translationId: Int
+    translationID: Int
   ) async {
     self.state = .loading
 
     do {
       let episodeTranslationStreamingInfo = try await episodeService.getTranslationStreamingData(
-        translationId: translationId
+        translationID: translationID
       )
 
       if episodeTranslationStreamingInfo.streamingQualities.isEmpty {
@@ -62,7 +62,7 @@ private final class EpisodeQualitySelectorListViewModel {
 struct EpisodeQualitySelectorListView: View {
   @State private var viewModel: EpisodeQualitySelectorListViewModel = .init()
 
-  let translationId: Int
+  let translationID: Int
   let showTitle: ShowName?
   let episodeNumber: Int?
 
@@ -72,7 +72,7 @@ struct EpisodeQualitySelectorListView: View {
       Color.clear.onAppear {
         Task {
           await self.viewModel.performInitialLoad(
-            translationId: self.translationId
+            translationID: self.translationID
           )
         }
       }
@@ -86,7 +86,7 @@ struct EpisodeQualitySelectorListView: View {
         AuthenticationRequiredContentUnavailableView(onSuccessfulAuth: {
           Task {
             await self.viewModel.performInitialLoad(
-              translationId: self.translationId
+              translationID: self.translationID
             )
           }
         })
@@ -100,7 +100,7 @@ struct EpisodeQualitySelectorListView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                translationId: self.translationId
+                translationID: self.translationID
               )
             }
           }) {
@@ -118,7 +118,7 @@ struct EpisodeQualitySelectorListView: View {
         Button(action: {
           Task {
             await self.viewModel.performInitialLoad(
-              translationId: self.translationId
+              translationID: self.translationID
             )
           }
         }) {
@@ -128,7 +128,7 @@ struct EpisodeQualitySelectorListView: View {
 
     case let .loaded(episodeTranslationStreamingInfo):
       EpisodeTranslationsStreamingQualities(
-        translationId: self.translationId,
+        translationID: self.translationID,
         episodeTranslationStreamingInfo: episodeTranslationStreamingInfo,
         showTitle: self.showTitle,
         episodeNumber: self.episodeNumber,
@@ -141,13 +141,13 @@ private struct EpisodeTranslationsStreamingQualities: View {
   @AppStorage("defaultPlayer") private var selectedPlayer: ThirdPartyVideoPlayerType = .infuse
   @AppStorage("preferSubtitlesProxy") private var preferSubtitlesProxy: Bool = false
 
-  @AppStorage("last_watched_translation_id") private var lastWatchedTranslationId: Int = 0
+  @AppStorage("last_watched_translation_id") private var lastWatchedTranslationID: Int = 0
 
   @Environment(\.openURL) private var openURL
 
   @Environment(\.dependencies) private var dependencies
 
-  let translationId: Int
+  let translationID: Int
   let episodeTranslationStreamingInfo: EpisodeTranslationStreamingInfo
   let showTitle: ShowName?
   let episodeNumber: Int?
@@ -157,10 +157,10 @@ private struct EpisodeTranslationsStreamingQualities: View {
       Section {
         ForEach(self.episodeTranslationStreamingInfo.streamingQualities) { streamingQuality in
           Button(action: {
-            var subtitlesUrl = self.episodeTranslationStreamingInfo.subtitlesUrl
+            var subtitlesURL = self.episodeTranslationStreamingInfo.subtitlesURL
 
             if self.isForcedToUseExternalSubtitlesProxy() || self.preferSubtitlesProxy {
-              subtitlesUrl = self.dependencies.subtitlesProxyUrlGenerator.generate(translationId: self.translationId)
+              subtitlesURL = self.dependencies.subtitlesProxyURLGenerator.generate(translationID: self.translationID)
             }
 
             var showProperties: ShowProperties? = nil
@@ -173,22 +173,22 @@ private struct EpisodeTranslationsStreamingQualities: View {
               )
             }
 
-            let externalPlayerUniversalLink = DeepLinkFactory.buildUniversalLinkUrl(
+            let externalPlayerUniversalLink = DeepLinkFactory.buildUniversalLinkURL(
               externalPlayerType: self.selectedPlayer,
-              videoUrl: streamingQuality.videoUrl,
-              subtitlesUrl: subtitlesUrl,
+              videoURL: streamingQuality.videoURL,
+              subtitlesURL: subtitlesURL,
               show: showProperties,
             )
 
             if !UIApplication.shared.canOpenURL(externalPlayerUniversalLink) {
-              print("Opening App Store: \(self.selectedPlayer.appStoreUrl)")
+              print("Opening App Store: \(self.selectedPlayer.appStoreURL)")
 
-              self.openURL(self.selectedPlayer.appStoreUrl)
+              self.openURL(self.selectedPlayer.appStoreURL)
 
               return
             }
 
-            self.lastWatchedTranslationId = self.translationId
+            self.lastWatchedTranslationID = self.translationID
 
             print("Opening external player: \(externalPlayerUniversalLink.absoluteString)")
 
@@ -238,7 +238,7 @@ private struct EpisodeTranslationsStreamingQualities: View {
   }
 
   private func translationUsesExternalSubtitles() -> Bool {
-    self.episodeTranslationStreamingInfo.subtitlesUrl != nil
+    self.episodeTranslationStreamingInfo.subtitlesURL != nil
   }
 
   private func isForcedToUseExternalSubtitlesProxy() -> Bool {
@@ -247,8 +247,8 @@ private struct EpisodeTranslationsStreamingQualities: View {
     }
 
     // Используем прокси-сервер только если у ссылки на файл с субтитрами нет расширения
-    if let originalSubtitlesUrl = episodeTranslationStreamingInfo.subtitlesUrl,
-      originalSubtitlesUrl.pathExtension.isEmpty
+    if let originalSubtitlesURL = episodeTranslationStreamingInfo.subtitlesURL,
+      originalSubtitlesURL.pathExtension.isEmpty
     {
       return true
     }

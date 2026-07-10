@@ -4,7 +4,7 @@ import SwiftUI
 
 @Observable @MainActor
 private final class StreamingChannelSettingPickerViewModel {
-  static let placeholderChannelId = "__loading"
+  static let placeholderChannelID = "__loading"
 
   private(set) var playerChannel: PlayerChannel?
   private(set) var playerChannels: [PlayerChannel] = []
@@ -13,7 +13,7 @@ private final class StreamingChannelSettingPickerViewModel {
   private let profilePageService: ProfilePageService
 
   var selection: String {
-    self.playerChannel?.id ?? Self.placeholderChannelId
+    self.playerChannel?.id ?? Self.placeholderChannelID
   }
 
   var hasLoadedChannels: Bool {
@@ -48,7 +48,7 @@ private final class StreamingChannelSettingPickerViewModel {
 
   func selectChannel(id: String) async -> Void {
     guard
-      id != Self.placeholderChannelId,
+      id != Self.placeholderChannelID,
       let playerChannel = self.playerChannels.first(where: { $0.id == id })
     else {
       return
@@ -79,16 +79,16 @@ struct StreamingChannelSettingPicker: View {
         get: {
           self.viewModel.selection
         },
-        set: { channelId in
+        set: { channelID in
           Task {
-            await self.viewModel.selectChannel(id: channelId)
+            await self.viewModel.selectChannel(id: channelID)
           }
         }
       )
     ) {
       if !self.viewModel.hasLoadedChannels {
         Text("Загрузка...")
-          .tag(StreamingChannelSettingPickerViewModel.placeholderChannelId)
+          .tag(StreamingChannelSettingPickerViewModel.placeholderChannelID)
       }
 
       ForEach(self.viewModel.playerChannels) { playerChannel in

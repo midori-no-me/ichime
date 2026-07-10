@@ -31,17 +31,17 @@ private final class CoverGallerySheetViewModel {
     self.showService = showService
   }
 
-  func performInitialLoad(myAnimeListId: Int) async {
+  func performInitialLoad(myAnimeListID: Int) async {
     self.state = .loading
 
     do {
-      let coverUrls = try await showService.getAllShowCovers(myAnimeListId)
+      let coverURLs = try await showService.getAllShowCovers(myAnimeListID)
 
-      if coverUrls.isEmpty {
+      if coverURLs.isEmpty {
         self.state = .loadedButEmpty
       }
       else {
-        self.state = .loaded(coverUrls)
+        self.state = .loaded(coverURLs)
       }
     }
     catch {
@@ -53,7 +53,7 @@ private final class CoverGallerySheetViewModel {
 struct CoverGallerySheet: View {
   @State private var viewModel: CoverGallerySheetViewModel = .init()
 
-  let myAnimeListId: Int
+  let myAnimeListID: Int
 
   var body: some View {
     NavigationStack {
@@ -62,7 +62,7 @@ struct CoverGallerySheet: View {
         Color.clear.onAppear {
           Task {
             await self.viewModel.performInitialLoad(
-              myAnimeListId: self.myAnimeListId
+              myAnimeListID: self.myAnimeListID
             )
           }
         }
@@ -80,7 +80,7 @@ struct CoverGallerySheet: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                myAnimeListId: self.myAnimeListId
+                myAnimeListID: self.myAnimeListID
               )
             }
           }) {
@@ -97,7 +97,7 @@ struct CoverGallerySheet: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                myAnimeListId: self.myAnimeListId
+                myAnimeListID: self.myAnimeListID
               )
             }
           }) {
@@ -105,11 +105,11 @@ struct CoverGallerySheet: View {
           }
         }
 
-      case let .loaded(coverUrls):
+      case let .loaded(coverURLs):
         TabView {
-          ForEach(coverUrls, id: \.self) { coverUrl in
+          ForEach(coverURLs, id: \.self) { coverURL in
             AsyncImage(
-              url: coverUrl,
+              url: coverURL,
               transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
             ) { phase in
               switch phase {

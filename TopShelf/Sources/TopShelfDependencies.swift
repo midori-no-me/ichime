@@ -13,14 +13,14 @@ struct TopShelfDependencies: Sendable {
 
     let anime365KitFactory = Anime365KitFactory(
       anime365BaseURL: anime365BaseURL,
-      logger: Logger(subsystem: AppEnvironment.applicationId, category: "Anime365Kit"),
+      logger: Logger(subsystem: AppEnvironment.applicationID, category: "Anime365Kit"),
       urlSession: urlSession
     )
 
     let shikimoriApiClient = ShikimoriApiClient.ApiClient(
-      baseUrl: AppEnvironment.shikimoriBaseUrl,
+      baseURL: AppEnvironment.shikimoriBaseURL,
       urlSession: urlSession,
-      logger: Logger(subsystem: AppEnvironment.applicationId, category: "ShikimoriApiClient")
+      logger: Logger(subsystem: AppEnvironment.applicationID, category: "ShikimoriApiClient")
     )
 
     let showReleaseSchedule = ShowReleaseSchedule(

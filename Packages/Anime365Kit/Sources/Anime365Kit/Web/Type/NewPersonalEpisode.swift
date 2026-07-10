@@ -2,11 +2,11 @@ import Foundation
 import SwiftSoup
 
 public struct NewPersonalEpisode: Sendable {
-  public let seriesId: Int
+  public let seriesID: Int
   public let seriesPosterURL: URL
   public let seriesTitleRu: String
   public let seriesTitleRomaji: String
-  public let episodeId: Int
+  public let episodeID: Int
   public let episodeNumberLabel: String
 
   init(htmlElement: Element, anime365BaseURL: URL) throws(WebClientTypeNormalizationError) {
@@ -27,7 +27,7 @@ public struct NewPersonalEpisode: Sendable {
     let (seriesID, episodeID) = extractIdentifiersFromURL(episodeURL)
 
     if let seriesID {
-      self.seriesId = seriesID
+      self.seriesID = seriesID
     }
     else {
       throw .failedCreatingDTOFromHTMLElement(
@@ -36,7 +36,7 @@ public struct NewPersonalEpisode: Sendable {
     }
 
     if let episodeID {
-      self.episodeId = episodeID
+      self.episodeID = episodeID
     }
     else {
       throw .failedCreatingDTOFromHTMLElement(

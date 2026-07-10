@@ -41,7 +41,7 @@ public enum AppEnvironment {
     return .sharedCookieStorage(forGroupContainerIdentifier: appGroup)
   }
 
-  public static var websiteBaseUrl: URL {
+  public static var websiteBaseURL: URL {
     if let url = userDefaults.string(forKey: "anime365-base-url") {
       return URL(string: url)!
     }
@@ -51,11 +51,11 @@ public enum AppEnvironment {
     return URL(string: "https://smotret-anime.org")!
   }
 
-  public static var applicationId: String {
-    guard let appId = Bundle.main.bundleIdentifier else {
+  public static var applicationID: String {
+    guard let appID = Bundle.main.bundleIdentifier else {
       fatalError("Cannot get App Id")
     }
-    return appId
+    return appID
   }
 
   public static var applicationName: String {
@@ -79,11 +79,11 @@ public enum AppEnvironment {
     "\(applicationName)/\(applicationVersion)"
   }
 
-  public static var shikimoriBaseUrl: URL {
+  public static var shikimoriBaseURL: URL {
     URL(string: "https://shikimori.io")!
   }
 
-  public static var jikanBaseUrl: URL {
+  public static var jikanBaseURL: URL {
     URL(string: "https://api.jikan.moe/v4")!
   }
 

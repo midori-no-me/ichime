@@ -3,13 +3,13 @@ import SwiftSoup
 
 extension WebClient {
   @concurrent
-  public func getAnimeList(userId: Int, category: AnimeListCategory) async throws(WebClientError) -> [AnimeListEntry] {
+  public func getAnimeList(userID: Int, category: AnimeListCategory) async throws(WebClientError) -> [AnimeListEntry] {
     let queryItems: [URLQueryItem] = [
       .init(name: "dynpage", value: "1")
     ]
 
     let html = try await self.sendRequest(
-      "/users/\(userId)/list/\(category.webPath)",
+      "/users/\(userID)/list/\(category.webPath)",
       queryItems: queryItems,
     )
 

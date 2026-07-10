@@ -3,17 +3,17 @@ import Foundation
 
 public struct EpisodeTranslationStreamingInfo {
   public struct EpisodeTranslationStreamingQuality: Identifiable {
-    public let videoUrl: URL
+    public let videoURL: URL
     public let height: Int
 
     public var id: URL {
-      self.videoUrl
+      self.videoURL
     }
 
     public static func createValid(
       anime365ApiTranslationEmbedStream: Anime365Kit.TranslationEmbed.Stream
     ) -> Self? {
-      guard let streamingUrl = anime365ApiTranslationEmbedStream.urls.first else {
+      guard let streamingURL = anime365ApiTranslationEmbedStream.urls.first else {
         return nil
       }
 
@@ -22,31 +22,31 @@ public struct EpisodeTranslationStreamingInfo {
       }
 
       return Self(
-        videoUrl: streamingUrl,
+        videoURL: streamingURL,
         height: anime365ApiTranslationEmbedStream.height
       )
     }
   }
 
-  public let subtitlesUrl: URL?
+  public let subtitlesURL: URL?
   public let streamingQualities: [EpisodeTranslationStreamingQuality]
 
   public static func createValid(
     anime365ApiTranslationEmbed: Anime365Kit.TranslationEmbed,
-    anime365ApiBaseUrl: URL
+    anime365ApiBaseURL: URL
   ) -> Self? {
-    var subtitlesUrl: URL? = nil
+    var subtitlesURL: URL? = nil
 
-    if let subtitlesUrlString = anime365ApiTranslationEmbed.subtitlesUrl {
-      guard let subtitlesUrlRelativeToBaseUrl = URL(string: subtitlesUrlString, relativeTo: anime365ApiBaseUrl) else {
+    if let subtitlesURLString = anime365ApiTranslationEmbed.subtitlesUrl {
+      guard let subtitlesURLRelativeToBaseURL = URL(string: subtitlesURLString, relativeTo: anime365ApiBaseURL) else {
         return nil
       }
 
-      subtitlesUrl = subtitlesUrlRelativeToBaseUrl
+      subtitlesURL = subtitlesURLRelativeToBaseURL
     }
 
-    if subtitlesUrl == nil {
-      subtitlesUrl = anime365ApiTranslationEmbed.subtitlesVttUrl
+    if subtitlesURL == nil {
+      subtitlesURL = anime365ApiTranslationEmbed.subtitlesVttUrl
     }
 
     var items: [EpisodeTranslationStreamingQuality] = []
@@ -64,7 +64,7 @@ public struct EpisodeTranslationStreamingInfo {
     }
 
     return Self(
-      subtitlesUrl: subtitlesUrl,
+      subtitlesURL: subtitlesURL,
       streamingQualities: items
     )
   }

@@ -16,23 +16,23 @@ public struct DeepLinkFactory {
   private static let allowedCharacterSet: CharacterSet =
     .init(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
 
-  public static func buildUniversalLinkUrl(
+  public static func buildUniversalLinkURL(
     externalPlayerType: ThirdPartyVideoPlayerType,
-    videoUrl: URL,
-    subtitlesUrl: URL?,
+    videoURL: URL,
+    subtitlesURL: URL?,
     show: ShowProperties?,
   ) -> URL {
     switch externalPlayerType {
     case .infuse:
-      return Self.getInfuseLink(videoUrl: videoUrl, subtitlesUrl: subtitlesUrl, show: show)
+      return Self.getInfuseLink(videoURL: videoURL, subtitlesURL: subtitlesURL, show: show)
     case .vlc:
-      return Self.getVlcLink(videoUrl: videoUrl)
+      return Self.getVlcLink(videoURL: videoURL)
     }
   }
 
   private static func getInfuseLink(
-    videoUrl: URL,
-    subtitlesUrl: URL?,
+    videoURL: URL,
+    subtitlesURL: URL?,
     show: ShowProperties?,
   ) -> URL {
     var components = URLComponents()
@@ -43,17 +43,17 @@ public struct DeepLinkFactory {
     components.percentEncodedQueryItems = [
       URLQueryItem(
         name: "url",
-        value: videoUrl.absoluteString.addingPercentEncoding(
+        value: videoURL.absoluteString.addingPercentEncoding(
           withAllowedCharacters: Self.allowedCharacterSet
         )
       )
     ]
 
-    if let subtitlesUrl {
+    if let subtitlesURL {
       components.percentEncodedQueryItems?.append(
         URLQueryItem(
           name: "sub",
-          value: subtitlesUrl.absoluteString.addingPercentEncoding(
+          value: subtitlesURL.absoluteString.addingPercentEncoding(
             withAllowedCharacters: Self.allowedCharacterSet
           )
         )
@@ -90,7 +90,7 @@ public struct DeepLinkFactory {
   }
 
   private static func getVlcLink(
-    videoUrl: URL
+    videoURL: URL
   ) -> URL {
     var components = URLComponents()
 
@@ -100,7 +100,7 @@ public struct DeepLinkFactory {
     components.percentEncodedQueryItems = [
       URLQueryItem(
         name: "url",
-        value: videoUrl.absoluteString.addingPercentEncoding(
+        value: videoURL.absoluteString.addingPercentEncoding(
           withAllowedCharacters: Self.allowedCharacterSet
         )
       )

@@ -25,7 +25,7 @@ private final class RandomSectionViewModel {
   init(
     showService: ShowService = AppDependencies.live.showService,
     logger: Logger = .init(
-      subsystem: AppEnvironment.applicationId,
+      subsystem: AppEnvironment.applicationID,
       category: String(describing: RandomSectionViewModel.self)
     )
   ) {

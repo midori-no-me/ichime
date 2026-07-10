@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HeadingSectionWithBackground<Content: View>: View {
-  let imageUrl: URL?
+  let imageURL: URL?
 
   @ViewBuilder let content: Content
 
@@ -23,7 +23,7 @@ struct HeadingSectionWithBackground<Content: View>: View {
         let backgroundImageHeight = contentHeight + max(distanceToScreenTop, navigationBarHeight)
 
         AsyncImage(
-          url: self.imageUrl,
+          url: self.imageURL,
           transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION)),
           content: { phase in
             switch phase {
@@ -65,7 +65,7 @@ struct HeadingSectionWithBackground<Content: View>: View {
   NavigationStack {
     ScrollView {
       HeadingSectionWithBackground(
-        imageUrl: URL(string: "https://anime365.ru/posters/35064.21633814144.jpg")!
+        imageURL: URL(string: "https://anime365.ru/posters/35064.21633814144.jpg")!
       ) {
         Text("Test")
         Text("Test")

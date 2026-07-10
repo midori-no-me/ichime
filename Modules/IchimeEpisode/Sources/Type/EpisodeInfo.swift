@@ -3,7 +3,7 @@ import Foundation
 import JikanApiClient
 
 public struct EpisodeInfo: Identifiable, Hashable {
-  public let anime365Id: Int
+  public let anime365ID: Int
   public let episodeNumber: Int?
   public let anime365Title: String
   public let officialTitle: String?
@@ -16,7 +16,7 @@ public struct EpisodeInfo: Identifiable, Hashable {
   public let duration: Duration?
 
   public var id: Int {
-    self.anime365Id
+    self.anime365ID
   }
 
   public static func createValid(
@@ -76,7 +76,7 @@ public struct EpisodeInfo: Identifiable, Hashable {
     }
 
     return Self(
-      anime365Id: anime365EpisodePreview.id,
+      anime365ID: anime365EpisodePreview.id,
       episodeNumber: isNonStandardEpisodeUploadedToAnime365 ? nil : anime365EpisodeNumber,
       anime365Title: anime365EpisodePreview.episodeFull,
       officialTitle: title,

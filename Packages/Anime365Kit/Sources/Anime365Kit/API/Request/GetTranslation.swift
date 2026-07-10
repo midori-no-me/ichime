@@ -2,10 +2,10 @@ import Foundation
 
 extension ApiClient {
   public func getTranslation(
-    translationId: Int
+    translationID: Int
   ) async throws(ApiClientError) -> TranslationFull {
     try await sendRequest(
-      endpoint: "/translations/\(translationId)",
+      endpoint: "/translations/\(translationID)",
       queryItems: []
     )
   }

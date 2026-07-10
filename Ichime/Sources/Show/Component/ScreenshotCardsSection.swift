@@ -15,14 +15,14 @@ private final class ScreenshotCardsSectionViewModel {
   private(set) var state: State = .idle
 
   private let showService: ShowService
-  private let myAnimeListId: Int
+  private let myAnimeListID: Int
 
   init(
     showService: ShowService = AppDependencies.live.showService,
-    myAnimeListId: Int
+    myAnimeListID: Int
   ) {
     self.showService = showService
-    self.myAnimeListId = myAnimeListId
+    self.myAnimeListID = myAnimeListID
   }
 
   func performInitialLoading() async {
@@ -30,7 +30,7 @@ private final class ScreenshotCardsSectionViewModel {
 
     do {
       let screenshots = try await showService.getScreenshots(
-        myAnimeListId: self.myAnimeListId
+        myAnimeListID: self.myAnimeListID
       )
 
       if screenshots.isEmpty {
@@ -58,8 +58,8 @@ struct ScreenshotCardsSection: View {
   @State private var selectedScreenshot: URL? = nil
   @State private var showSheet: Bool = false
 
-  init(myAnimeListId: Int) {
-    self.viewModel = .init(myAnimeListId: myAnimeListId)
+  init(myAnimeListID: Int) {
+    self.viewModel = .init(myAnimeListID: myAnimeListID)
   }
 
   var body: some View {

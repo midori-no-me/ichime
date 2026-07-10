@@ -8,19 +8,19 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
   @State private var showTitleRussian: String? = nil
   @State private var episodeTitle: String? = nil
 
-  @AppStorage("last_watched_translation_id") private var lastWatchedTranslationId: Int = 0
+  @AppStorage("last_watched_translation_id") private var lastWatchedTranslationID: Int = 0
 
   @Environment(\.dependencies) private var dependencies
 
   func body(content: Content) -> some View {
     content
       .onAppear {
-        if self.lastWatchedTranslationId != 0 {
+        if self.lastWatchedTranslationID != 0 {
           Task {
             do {
               let (episodeTitle, showTitleRomaji, showTitleRussian) =
                 try await self.dependencies.episodeService.getTranslationInfoForMarkingEpisodeAsWatchedAlert(
-                  translationId: self.lastWatchedTranslationId
+                  translationID: self.lastWatchedTranslationID
                 )
 
               self.showTitleRomaji = showTitleRomaji
@@ -37,13 +37,13 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
           }
         }
       }
-      .onChange(of: self.lastWatchedTranslationId) {
-        if self.lastWatchedTranslationId != 0 {
+      .onChange(of: self.lastWatchedTranslationID) {
+        if self.lastWatchedTranslationID != 0 {
           Task {
             do {
               let (episodeTitle, showTitleRomaji, showTitleRussian) =
                 try await self.dependencies.episodeService.getTranslationInfoForMarkingEpisodeAsWatchedAlert(
-                  translationId: self.lastWatchedTranslationId
+                  translationID: self.lastWatchedTranslationID
                 )
 
               self.showTitleRomaji = showTitleRomaji
@@ -63,22 +63,22 @@ private struct MarkEpisodeAsWatchedAlert: ViewModifier {
       .alert(
         self.episodeTitle ?? "Последняя просмотренная серия",
         isPresented: self.$showAlert,
-        presenting: self.lastWatchedTranslationId
+        presenting: self.lastWatchedTranslationID
       ) { _ in
         Button {
           Task {
             try? await self.dependencies.anime365KitFactory.createWebClient().markEpisodeAsWatched(
-              translationID: self.lastWatchedTranslationId
+              translationID: self.lastWatchedTranslationID
             )
 
-            self.lastWatchedTranslationId = 0
+            self.lastWatchedTranslationID = 0
           }
         } label: {
           Text("Отметить просмотренной")
         }
 
         Button(role: .cancel) {
-          self.lastWatchedTranslationId = 0
+          self.lastWatchedTranslationID = 0
         } label: {
           Text("Закрыть")
         }

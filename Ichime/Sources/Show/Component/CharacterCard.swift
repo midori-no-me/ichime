@@ -6,7 +6,7 @@ struct CharacterCard: View {
 
   var body: some View {
     CircularPortraitButton.button(
-      imageUrl: self.character.image,
+      imageURL: self.character.image,
       label: self.character.name,
       secondaryLabel: self.character.role,
       action: {},

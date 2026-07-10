@@ -23,7 +23,7 @@ private final class CurrentlyWatchingSectionViewModel {
   init(
     currentlyWatchingService: CurrentlyWatchingService = AppDependencies.live.currentlyWatchingService,
     logger: Logger = .init(
-      subsystem: AppEnvironment.applicationId,
+      subsystem: AppEnvironment.applicationID,
       category: String(describing: CurrentlyWatchingSectionViewModel.self)
     )
   ) {
@@ -71,7 +71,7 @@ private final class CurrentlyWatchingSectionViewModel {
         .loaded(
           episodes: .init(alreadyLoadedEpisodes.elements + episodes),
           page: page + 1,
-          hasMore: episodes.last?.episodeId == alreadyLoadedEpisodes.last?.episodeId,
+          hasMore: episodes.last?.episodeID == alreadyLoadedEpisodes.last?.episodeID,
         )
       )
     }

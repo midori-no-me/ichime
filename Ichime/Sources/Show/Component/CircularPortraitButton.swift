@@ -8,16 +8,16 @@ struct CircularPortraitButton: View {
   static let RECOMMENDED_SPACING: CGFloat = 64
   static let RECOMMENDED_COUNT_PER_ROW: Int = 6
 
-  private let imageUrl: URL?
+  private let imageURL: URL?
   private let label: String
   private let secondaryLabel: String?
 
   private init(
-    imageUrl: URL?,
+    imageURL: URL?,
     label: String,
     secondaryLabel: String?
   ) {
-    self.imageUrl = imageUrl
+    self.imageURL = imageURL
     self.label = label
     self.secondaryLabel = secondaryLabel
   }
@@ -27,7 +27,7 @@ struct CircularPortraitButton: View {
       .foregroundStyle(ImagePlaceholder.color)
       .overlay(
         AsyncImage(
-          url: self.imageUrl,
+          url: self.imageURL,
           transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION))
         ) { phase in
           switch phase {
@@ -68,7 +68,7 @@ struct CircularPortraitButton: View {
   static func placeholder() -> some View {
     Button(action: {}) {
       Self.init(
-        imageUrl: nil,
+        imageURL: nil,
         label: String(repeating: " ", count: 10),
         secondaryLabel: String(repeating: " ", count: 5),
       )
@@ -82,7 +82,7 @@ struct CircularPortraitButton: View {
   static func interactivePlaceholder() -> some View {
     Button(action: {}) {
       Self.init(
-        imageUrl: nil,
+        imageURL: nil,
         label: String(repeating: " ", count: 10),
         secondaryLabel: String(repeating: " ", count: 5),
       )
@@ -93,14 +93,14 @@ struct CircularPortraitButton: View {
   }
 
   static func button(
-    imageUrl: URL?,
+    imageURL: URL?,
     label: String,
     secondaryLabel: String?,
     action: @escaping () -> Void
   ) -> some View {
     Button(action: action) {
       Self.init(
-        imageUrl: imageUrl,
+        imageURL: imageURL,
         label: label,
         secondaryLabel: secondaryLabel,
       )

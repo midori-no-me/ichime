@@ -74,12 +74,12 @@ struct StudioCard: View {
     .buttonStyle(.card)
   }
 
-  private func getShowsByStudio(_ studioId: Int) -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
+  private func getShowsByStudio(_ studioID: Int) -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
     func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
       try await self.showService.getStudio(
         offset: offset,
         limit: limit,
-        studioId: studioId
+        studioID: studioID
       )
     }
 

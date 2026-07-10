@@ -1,12 +1,12 @@
 import Foundation
 
 extension ApiClient {
-  public func getAnimeById(
-    animeId: Int
+  public func getAnimeByID(
+    animeID: Int
   ) async throws -> Anime {
     try await sendRequest(
       httpMethod: .GET,
-      endpoint: "/api/animes/\(animeId)",
+      endpoint: "/api/animes/\(animeID)",
       queryItems: [],
       requestBody: nil
     )

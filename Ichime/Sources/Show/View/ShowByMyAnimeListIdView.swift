@@ -2,7 +2,7 @@ import IchimeShow
 import SwiftUI
 
 @Observable @MainActor
-private final class ShowByMyAnimeListIdViewModel {
+private final class ShowByMyAnimeListIDViewModel {
   enum State {
     case idle
     case loading
@@ -30,13 +30,13 @@ private final class ShowByMyAnimeListIdViewModel {
     self.showService = showService
   }
 
-  func performInitialLoad(myAnimeListId: Int) async {
+  func performInitialLoad(myAnimeListID: Int) async {
     self.state = .loading
 
     do {
-      let showId = try await showService.getShowIdByMyAnimeListId(myAnimeListId)
+      let showID = try await showService.getShowIDByMyAnimeListID(myAnimeListID)
 
-      self.state = .loaded(showId)
+      self.state = .loaded(showID)
     }
     catch {
       self.state = .loadingFailed(error)
@@ -44,10 +44,10 @@ private final class ShowByMyAnimeListIdViewModel {
   }
 }
 
-struct ShowByMyAnimeListIdView: View {
-  @State private var viewModel: ShowByMyAnimeListIdViewModel = .init()
+struct ShowByMyAnimeListIDView: View {
+  @State private var viewModel: ShowByMyAnimeListIDViewModel = .init()
 
-  let myAnimeListId: Int
+  let myAnimeListID: Int
   let onOpened: (() -> Void)?
 
   var body: some View {
@@ -56,7 +56,7 @@ struct ShowByMyAnimeListIdView: View {
       Color.clear.onAppear {
         Task {
           await self.viewModel.performInitialLoad(
-            myAnimeListId: self.myAnimeListId
+            myAnimeListID: self.myAnimeListID
           )
         }
       }
@@ -66,7 +66,7 @@ struct ShowByMyAnimeListIdView: View {
         .focusable()
 
     case let .loadingFailed(error):
-      if case GetShowByIdError.notFoundByMyAnimeListId = error {
+      if case GetShowByIDError.notFoundByMyAnimeListID = error {
         ContentUnavailableView {
           Label("Ничего не нашлось", systemImage: "exclamationmark.triangle")
         } description: {
@@ -77,7 +77,7 @@ struct ShowByMyAnimeListIdView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                myAnimeListId: self.myAnimeListId
+                myAnimeListID: self.myAnimeListID
               )
             }
           }) {
@@ -94,7 +94,7 @@ struct ShowByMyAnimeListIdView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                myAnimeListId: self.myAnimeListId
+                myAnimeListID: self.myAnimeListID
               )
             }
           }) {
@@ -103,8 +103,8 @@ struct ShowByMyAnimeListIdView: View {
         }
       }
 
-    case let .loaded(showId):
-      ShowView(showId: showId, onOpened: self.onOpened)
+    case let .loaded(showID):
+      ShowView(showID: showID, onOpened: self.onOpened)
     }
   }
 }

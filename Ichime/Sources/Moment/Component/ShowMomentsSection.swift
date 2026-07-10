@@ -18,19 +18,19 @@ private final class ShowMomentsSectionViewModel {
 
   private let momentService: MomentService
   private let logger: Logger
-  private let showId: Int
+  private let showID: Int
 
   init(
     momentService: MomentService = AppDependencies.live.momentService,
     logger: Logger = .init(
-      subsystem: AppEnvironment.applicationId,
+      subsystem: AppEnvironment.applicationID,
       category: String(describing: ShowMomentsSectionViewModel.self)
     ),
-    showId: Int
+    showID: Int
   ) {
     self.momentService = momentService
     self.logger = logger
-    self.showId = showId
+    self.showID = showID
   }
 
   func performInitialLoading() async {
@@ -38,7 +38,7 @@ private final class ShowMomentsSectionViewModel {
 
     do {
       let moments = try await momentService.getShowMoments(
-        showId: self.showId,
+        showID: self.showID,
         page: 1
       )
 
@@ -71,7 +71,7 @@ private final class ShowMomentsSectionViewModel {
 
     do {
       let moments = try await momentService.getShowMoments(
-        showId: self.showId,
+        showID: self.showID,
         page: page + 1
       )
 
@@ -98,8 +98,8 @@ private final class ShowMomentsSectionViewModel {
 struct ShowMomentsSection: View {
   @State private var viewModel: ShowMomentsSectionViewModel
 
-  init(showId: Int) {
-    self.viewModel = .init(showId: showId)
+  init(showID: Int) {
+    self.viewModel = .init(showID: showID)
   }
 
   var body: some View {

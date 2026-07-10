@@ -36,14 +36,14 @@ private final class EpisodeTranslationListViewModel {
   }
 
   func performInitialLoad(
-    episodeId: Int,
+    episodeID: Int,
     isAdultDomain: Bool,
   ) async {
     self.state = .loading
 
     do {
       let (episode, episodeTranslationInfos) = try await episodeService.getEpisodeTranslations(
-        episodeId: episodeId
+        episodeID: episodeID
       )
 
       let episodeTranslationGroups = self.episodeService.filterAndGroupEpisodeTranslations(
@@ -70,7 +70,7 @@ struct EpisodeTranslationListView: View {
   @AppStorage(Anime365BaseURL.UserDefaultsKey.BASE_URL, store: Anime365BaseURL.getUserDefaults()) private
     var anime365BaseURL: URL = Anime365BaseURL.DEFAULT_BASE_URL
 
-  let episodeId: Int
+  let episodeID: Int
   let showTitle: ShowName?
 
   var body: some View {
@@ -80,7 +80,7 @@ struct EpisodeTranslationListView: View {
         Color.clear.onAppear {
           Task {
             await self.viewModel.performInitialLoad(
-              episodeId: self.episodeId,
+              episodeID: self.episodeID,
               isAdultDomain: Anime365BaseURL.isAdultDomain(self.anime365BaseURL),
             )
           }
@@ -99,7 +99,7 @@ struct EpisodeTranslationListView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                episodeId: self.episodeId,
+                episodeID: self.episodeID,
                 isAdultDomain: Anime365BaseURL.isAdultDomain(self.anime365BaseURL),
               )
             }
@@ -117,7 +117,7 @@ struct EpisodeTranslationListView: View {
           Button(action: {
             Task {
               await self.viewModel.performInitialLoad(
-                episodeId: self.episodeId,
+                episodeID: self.episodeID,
                 isAdultDomain: Anime365BaseURL.isAdultDomain(self.anime365BaseURL),
               )
             }
@@ -207,7 +207,7 @@ private struct EpisodeTranslationRow: View {
   var body: some View {
     NavigationLink(
       destination: EpisodeQualitySelectorListView(
-        translationId: self.episodeTranslationInfo.id,
+        translationID: self.episodeTranslationInfo.id,
         showTitle: self.showTitle,
         episodeNumber: self.episodeNumber,
       )

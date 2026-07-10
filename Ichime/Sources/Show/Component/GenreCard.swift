@@ -31,12 +31,12 @@ struct GenreCard: View {
     .buttonStyle(.card)
   }
 
-  private func getShowsByGenre(_ genreId: Int) -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
+  private func getShowsByGenre(_ genreID: Int) -> (_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
     func fetchFunction(_ offset: Int, _ limit: Int) async throws -> [ShowPreview] {
       try await self.showService.getByGenre(
         offset: offset,
         limit: limit,
-        genreIds: [genreId]
+        genreIDs: [genreID]
       )
     }
 

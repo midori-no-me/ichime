@@ -2,14 +2,14 @@ import Foundation
 import SwiftSoup
 
 public struct AnimeListEntry: Sendable {
-  public let seriesId: Int
+  public let seriesID: Int
   public let seriesTitleFull: String
   public let episodesWatched: Int
   public let episodesTotal: Int?
 
   init(htmlElement: Element) throws(WebClientTypeNormalizationError) {
     if let seriesIDString = try? htmlElement.attr("data-id"), let seriesID = Int(seriesIDString) {
-      self.seriesId = seriesID
+      self.seriesID = seriesID
     }
     else {
       throw .failedCreatingDTOFromHTMLElement("Could not normalize series ID because there is no `[data-id]` attribute")

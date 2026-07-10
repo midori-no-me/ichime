@@ -4,7 +4,7 @@ import Foundation
 public struct ShowPreview: Hashable, Identifiable {
   public let id: Int
   public let title: ShowName
-  public let posterUrl: URL?
+  public let posterURL: URL?
   public let score: Float?
   public let airingSeason: AiringSeason?
   public let kind: ShowKind?
@@ -22,7 +22,7 @@ public struct ShowPreview: Hashable, Identifiable {
       self.title = .unparsed(anime365Series.title)
     }
 
-    self.posterUrl = anime365Series.posterUrl
+    self.posterURL = anime365Series.posterUrl
 
     if let score = Float(anime365Series.myAnimeListScore), score > 0 {
       self.score = score

@@ -1,6 +1,6 @@
 import Foundation
 
 enum Route: Hashable {
-  case showByMyAnimeListId(Int)
+  case showByMyAnimeListID(Int)
   case episode(Int)
 }

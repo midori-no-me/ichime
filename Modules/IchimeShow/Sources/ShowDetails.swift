@@ -38,10 +38,10 @@ public struct ShowDetails {
   }
 
   public let id: Int
-  public let myAnimeListId: Int
+  public let myAnimeListID: Int
   public let title: ShowName
   public let descriptions: [Description]
-  public let posterUrl: URL?
+  public let posterURL: URL?
   public let score: Float?
   public let airingYear: Int?
   public let airingSeason: AiringSeason?
@@ -57,7 +57,7 @@ public struct ShowDetails {
   public init(
     anime365Series: Anime365Kit.SeriesFull,
     shikimoriAnime: ShikimoriApiClient.Anime?,
-    shikimoriBaseUrl: URL,
+    shikimoriBaseURL: URL,
     jikanAnime: JikanApiClient.Anime?
   ) {
     let totalEpisodes = anime365Series.numberOfEpisodes <= 0 ? nil : anime365Series.numberOfEpisodes
@@ -84,14 +84,14 @@ public struct ShowDetails {
     }
 
     self.id = anime365Series.id
-    self.myAnimeListId = anime365Series.myAnimeListId
+    self.myAnimeListID = anime365Series.myAnimeListId
     self.descriptions = (anime365Series.descriptions ?? []).map { description in
       Self.Description.createFiltered(
         text: description.value,
         source: description.source
       )
     }
-    self.posterUrl = anime365Series.posterUrl
+    self.posterURL = anime365Series.posterUrl
 
     /// Anime 365 выдумывает сезон, если сезон не известен или известен только год, поэтому если нам пришло аниме из Jikan, то берем информацию о сезоне оттуда
     if let jikanAnime {
@@ -123,7 +123,7 @@ public struct ShowDetails {
     self.genres = .init((anime365Series.genres ?? []).map { .init(fromAnime365Genre: $0) })
     self.studios = .init(
       (shikimoriAnime?.studios ?? []).map {
-        .init(fromShikimoriStudio: $0, shikimoriBaseUrl: shikimoriBaseUrl)
+        .init(fromShikimoriStudio: $0, shikimoriBaseURL: shikimoriBaseURL)
       }
     )
     self.nextEpisodeReleasesAt = shikimoriAnime?.next_episode_at

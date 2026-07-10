@@ -60,7 +60,7 @@ public struct ShowReleaseSchedule: Sendable {
     for shikimoriCalendarEntry in shikimoriCalendarEntries {
       let item = ShowFromCalendarWithExactReleaseDate(
         fromShikimoriCalendarEntry: shikimoriCalendarEntry,
-        shikimoriBaseUrl: self.shikimoriApiClient.baseUrl
+        shikimoriBaseURL: self.shikimoriApiClient.baseURL
       )
 
       // Не показываем серии, которые должны были выйти более 5 часов назад

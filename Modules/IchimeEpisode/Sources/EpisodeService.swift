@@ -41,9 +41,9 @@ public struct EpisodeService: Sendable {
     var jikanEpisodeNumberToEpisode: [Int: JikanApiClient.Episode] = [:]
 
     for jikanEpisode in jikanEpisodes {
-      let malId = jikanEpisode.mal_id
+      let malID = jikanEpisode.mal_id
 
-      jikanEpisodeNumberToEpisode[malId] = jikanEpisode
+      jikanEpisodeNumberToEpisode[malID] = jikanEpisode
     }
 
     var episodeInfos: [EpisodeInfo] = []
@@ -73,10 +73,10 @@ public struct EpisodeService: Sendable {
   }
 
   public func getEpisodeList(
-    showId: Int,
+    showID: Int,
   ) async throws -> OrderedSet<EpisodeInfo> {
     let anime365Series = try await self.anime365KitFactory.createApiClient()
-      .getSeries(seriesId: showId)
+      .getSeries(seriesID: showID)
 
     var jikanEpisodes: [JikanApiClient.Episode] = []
 
@@ -97,10 +97,10 @@ public struct EpisodeService: Sendable {
   }
 
   public func getEpisodeTranslations(
-    episodeId: Int
+    episodeID: Int
   ) async throws -> (episode: EpisodeInfo?, translations: [EpisodeTranslationInfo]) {
-    let anime365Episode = try await anime365KitFactory.createApiClient().getEpisode(episodeId: episodeId)
-    let anime365Series = try? await anime365KitFactory.createApiClient().getSeries(seriesId: anime365Episode.seriesId)
+    let anime365Episode = try await anime365KitFactory.createApiClient().getEpisode(episodeID: episodeID)
+    let anime365Series = try? await anime365KitFactory.createApiClient().getSeries(seriesID: anime365Episode.seriesId)
 
     var episode: EpisodeInfo?
 
@@ -108,9 +108,9 @@ public struct EpisodeService: Sendable {
       var jikanEpisode: JikanApiClient.Episode?
 
       if let anime365EpisodeNumber = Int(anime365Episode.episodeInt) {
-        jikanEpisode = try? await self.jikanApiClient.getAnimeEpisodeById(
-          animeId: anime365Series.myAnimeListId,
-          episodeId: anime365EpisodeNumber
+        jikanEpisode = try? await self.jikanApiClient.getAnimeEpisodeByID(
+          animeID: anime365Series.myAnimeListId,
+          episodeID: anime365EpisodeNumber
         )
       }
 
@@ -209,25 +209,25 @@ public struct EpisodeService: Sendable {
   }
 
   public func getTranslationStreamingData(
-    translationId: Int
+    translationID: Int
   ) async throws -> EpisodeTranslationStreamingInfo {
     let anime365TranslationEmbed = try await anime365KitFactory.createApiClient().getTranslationEmbed(
-      translationId: translationId
+      translationID: translationID
     )
 
     let episodeTranslationStreamingInfo = EpisodeTranslationStreamingInfo.createValid(
       anime365ApiTranslationEmbed: anime365TranslationEmbed,
-      anime365ApiBaseUrl: await self.anime365KitFactory.baseURL()
+      anime365ApiBaseURL: await self.anime365KitFactory.baseURL()
     )
 
     return episodeTranslationStreamingInfo!
   }
 
   public func getTranslationInfoForMarkingEpisodeAsWatchedAlert(
-    translationId: Int
+    translationID: Int
   ) async throws -> (String, String?, String?) {
     let anime365Translation = try await anime365KitFactory.createApiClient().getTranslation(
-      translationId: translationId
+      translationID: translationID
     )
 
     return (

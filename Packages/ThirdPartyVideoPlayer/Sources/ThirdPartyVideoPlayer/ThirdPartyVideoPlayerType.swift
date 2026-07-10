@@ -8,7 +8,7 @@ public enum ThirdPartyVideoPlayerType: String, CaseIterable, Identifiable, Senda
     self.rawValue
   }
 
-  public var appStoreUrl: URL {
+  public var appStoreURL: URL {
     switch self {
     case .infuse:
       URL(string: "https://apps.apple.com/app/id1136220934")!

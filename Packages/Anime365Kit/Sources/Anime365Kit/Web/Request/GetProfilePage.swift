@@ -27,15 +27,15 @@ extension WebClient {
     fromProfilePageHTML html: String,
     htmlDocument: Document
   ) throws(WebClientError) -> Profile {
-    let profileIdString = html.firstMatch(of: #/ID аккаунта: (?<accountId>\d+)/#)?.output.accountId
+    let profileIDString = html.firstMatch(of: #/ID аккаунта: (?<accountID>\d+)/#)?.output.accountID
 
-    guard let profileIdString else {
+    guard let profileIDString else {
       self.logNormalizationError(of: Profile.self, message: "Could not find account ID on page")
 
       throw .couldNotParseHtml
     }
 
-    guard let profileId = Int(profileIdString) else {
+    guard let profileID = Int(profileIDString) else {
       self.logNormalizationError(of: Profile.self, message: "Could not convert account ID to Int")
 
       throw .couldNotParseHtml
@@ -57,7 +57,7 @@ extension WebClient {
 
     let avatarURL = self.baseURL.appendingPathComponent(avatarSrc)
 
-    return .init(id: profileId, name: name, avatarURL: avatarURL)
+    return .init(id: profileID, name: name, avatarURL: avatarURL)
   }
 
   private func getProfilePlayerChannelSettings(
@@ -87,11 +87,11 @@ extension WebClient {
     }
 
     guard
-      let selectedPlayerChannelId = try? htmlDocument
+      let selectedPlayerChannelID = try? htmlDocument
         .select("#Users_useOtherServers option[selected]")
         .first()?
         .attr("value"),
-      let playerChannel = playerChannels.first(where: { $0.id == selectedPlayerChannelId })
+      let playerChannel = playerChannels.first(where: { $0.id == selectedPlayerChannelID })
     else {
       self.logNormalizationError(
         of: ProfilePlayerChannelSettings.self,

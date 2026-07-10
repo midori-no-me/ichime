@@ -16,21 +16,21 @@ private final class MomentCardContextMenuViewModel {
   private(set) var state: State = .idle
 
   private let momentService: MomentService
-  private let momentId: Int
+  private let momentID: Int
 
   init(
     momentService: MomentService = AppDependencies.live.momentService,
-    momentId: Int
+    momentID: Int
   ) {
     self.momentService = momentService
-    self.momentId = momentId
+    self.momentID = momentID
   }
 
   func performInitialLoading() async {
     self.updateState(.loading)
 
     do {
-      let momentDetails = try await momentService.getMomentDetails(momentId: self.momentId)
+      let momentDetails = try await momentService.getMomentDetails(momentID: self.momentID)
 
       self.updateState(.loaded(momentDetails))
     }
@@ -50,9 +50,9 @@ struct MomentCardContextMenu: View {
   @State private var viewModel: MomentCardContextMenuViewModel
 
   init(
-    momentId: Int
+    momentID: Int
   ) {
-    self.viewModel = .init(momentId: momentId)
+    self.viewModel = .init(momentID: momentID)
   }
 
   var body: some View {
@@ -72,7 +72,7 @@ struct MomentCardContextMenu: View {
       Text(error.localizedDescription)
 
     case .loaded(let momentDetails):
-      NavigationLink(destination: ShowView(showId: momentDetails.showId)) {
+      NavigationLink(destination: ShowView(showID: momentDetails.showID)) {
         Label(momentDetails.showTitle.getRomajiOrFullName(), systemImage: "info.circle")
 
         if let russian = momentDetails.showTitle.getRussian() {

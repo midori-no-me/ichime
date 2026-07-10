@@ -6,7 +6,7 @@ extension ApiClient {
     limit: Int? = nil,
     offset: Int? = nil,
     chips: [String: String]? = nil,
-    myAnimeListId: Int? = nil
+    myAnimeListID: Int? = nil
   ) async throws(ApiClientError) -> [Series] {
     var queryItems: [URLQueryItem] = []
 
@@ -50,11 +50,11 @@ extension ApiClient {
       )
     }
 
-    if let myAnimeListId {
+    if let myAnimeListID {
       queryItems.append(
         URLQueryItem(
           name: "myAnimeListId",
-          value: String(myAnimeListId)
+          value: String(myAnimeListID)
         )
       )
     }

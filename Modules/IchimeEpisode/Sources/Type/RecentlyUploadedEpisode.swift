@@ -5,12 +5,12 @@ import IchimeShow
 public struct RecentlyUploadedEpisode: Hashable, Identifiable {
   public let showName: ShowName
   public let episodeTitle: String
-  public let showId: Int
-  public let episodeId: Int
-  public let coverUrl: URL?
+  public let showID: Int
+  public let episodeID: Int
+  public let coverURL: URL?
 
   public var id: Int {
-    self.episodeId
+    self.episodeID
   }
 
   public init(fromAnime365KitNewEpisode: Anime365Kit.NewRecentEpisode) {
@@ -20,16 +20,16 @@ public struct RecentlyUploadedEpisode: Hashable, Identifiable {
     )
 
     self.episodeTitle = fromAnime365KitNewEpisode.episodeNumberLabel
-    self.showId = fromAnime365KitNewEpisode.seriesId
-    self.episodeId = fromAnime365KitNewEpisode.episodeId
-    self.coverUrl = fromAnime365KitNewEpisode.seriesPosterURL
+    self.showID = fromAnime365KitNewEpisode.seriesID
+    self.episodeID = fromAnime365KitNewEpisode.episodeID
+    self.coverURL = fromAnime365KitNewEpisode.seriesPosterURL
   }
 
   public static func == (lhs: Self, rhs: Self) -> Bool {
-    lhs.episodeId == rhs.episodeId
+    lhs.episodeID == rhs.episodeID
   }
 
   public func hash(into hasher: inout Hasher) {
-    hasher.combine(self.episodeId)
+    hasher.combine(self.episodeID)
   }
 }

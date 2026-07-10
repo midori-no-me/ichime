@@ -4,7 +4,7 @@ import SwiftSoup
 extension WebClient {
   @concurrent
   public func getMomentsBySeries(
-    seriesId: Int,
+    seriesID: Int,
     page: Int,
   ) async throws(WebClientError) -> [MomentPreview] {
     var queryItems: [URLQueryItem] = []
@@ -19,7 +19,7 @@ extension WebClient {
     }
 
     let html = try await self.sendRequest(
-      "/moments/listBySeries/\(seriesId)",
+      "/moments/listBySeries/\(seriesID)",
       queryItems: queryItems,
     )
 

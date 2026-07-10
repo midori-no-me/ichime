@@ -2,10 +2,10 @@ import Foundation
 
 extension ApiClient {
   public func getSeries(
-    seriesId: Int
+    seriesID: Int
   ) async throws(ApiClientError) -> SeriesFull {
     try await sendRequest(
-      endpoint: "/series/\(seriesId)",
+      endpoint: "/series/\(seriesID)",
       queryItems: []
     )
   }

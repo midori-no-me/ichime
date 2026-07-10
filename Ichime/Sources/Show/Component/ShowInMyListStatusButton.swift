@@ -34,13 +34,13 @@ private final class ShowInMyListStatusButtonViewModel {
   }
 
   func performInitialLoad(
-    showId: Int
+    showID: Int
   ) async {
     self.state = .loading
 
     do {
       let animeListEditableEntry = try await animeListService.getAnimeListEditableEntry(
-        showId: showId
+        showID: showID
       )
 
       self.state = .loaded(animeListEditableEntry)
@@ -51,11 +51,11 @@ private final class ShowInMyListStatusButtonViewModel {
   }
 
   func performRefresh(
-    showId: Int
+    showID: Int
   ) async {
     do {
       let animeListEditableEntry = try await animeListService.getAnimeListEditableEntry(
-        showId: showId
+        showID: showID
       )
 
       self.state = .loaded(animeListEditableEntry)
@@ -65,9 +65,9 @@ private final class ShowInMyListStatusButtonViewModel {
     }
   }
 
-  func addToList(showId: Int) async {
+  func addToList(showID: Int) async {
     try? await self.animeListService.editAnimeListEntry(
-      showId: showId,
+      showID: showID,
       status: .planned,
       score: .none,
       episodesWatched: 0
@@ -81,7 +81,7 @@ struct ShowInMyListStatusButton: View {
 
   @Environment(\.currentUserStore) private var currentUserStore
 
-  let showId: Int
+  let showID: Int
   let showName: ShowName
   let episodesTotal: Int?
 
@@ -89,8 +89,8 @@ struct ShowInMyListStatusButton: View {
     Button(action: {
       if case let .loaded(animeListEditableEntry) = self.viewModel.state, animeListEditableEntry.status == .notInList {
         Task {
-          await self.viewModel.addToList(showId: self.showId)
-          await self.viewModel.performRefresh(showId: self.showId)
+          await self.viewModel.addToList(showID: self.showID)
+          await self.viewModel.performRefresh(showID: self.showID)
         }
 
         return
@@ -105,7 +105,7 @@ struct ShowInMyListStatusButton: View {
             .labelStyle(.iconOnly)
             .onAppear {
               Task {
-                await self.viewModel.performInitialLoad(showId: self.showId)
+                await self.viewModel.performInitialLoad(showID: self.showID)
               }
             }
         case .loading:
@@ -140,11 +140,11 @@ struct ShowInMyListStatusButton: View {
     .fullScreenCover(isPresented: self.$showSheet) {
       NavigationStack {
         EditAnimeListEntrySheet(
-          showId: self.showId,
+          showID: self.showID,
           showName: self.showName,
           episodesTotal: self.episodesTotal,
           onUpdate: {
-            await self.viewModel.performRefresh(showId: self.showId)
+            await self.viewModel.performRefresh(showID: self.showID)
           }
         )
       }

@@ -6,8 +6,8 @@ import JikanApiClient
 import OrderedCollections
 import ShikimoriApiClient
 
-public enum GetShowByIdError: Error, Sendable {
-  case notFoundByMyAnimeListId
+public enum GetShowByIDError: Error, Sendable {
+  case notFoundByMyAnimeListID
 }
 
 public struct ShowService: Sendable {
@@ -28,42 +28,42 @@ public struct ShowService: Sendable {
     self.jikanApiClient = jikanApiClient
   }
 
-  public func getShowIdByMyAnimeListId(_ myAnimeListId: Int) async throws -> Int {
-    let seriesItems = try await anime365KitFactory.createApiClient().listSeries(myAnimeListId: myAnimeListId)
+  public func getShowIDByMyAnimeListID(_ myAnimeListID: Int) async throws -> Int {
+    let seriesItems = try await anime365KitFactory.createApiClient().listSeries(myAnimeListID: myAnimeListID)
 
     guard let series = seriesItems.first else {
-      throw GetShowByIdError.notFoundByMyAnimeListId
+      throw GetShowByIDError.notFoundByMyAnimeListID
     }
 
     return series.id
   }
 
-  public func getAllShowCovers(_ myAnimeListId: Int) async throws -> [URL] {
-    let pictures = try await jikanApiClient.getAnimePictures(id: myAnimeListId)
+  public func getAllShowCovers(_ myAnimeListID: Int) async throws -> [URL] {
+    let pictures = try await jikanApiClient.getAnimePictures(id: myAnimeListID)
 
-    var coverUrls: [URL] = []
+    var coverURLs: [URL] = []
 
     for picture in pictures {
-      guard let coverUrl = picture.jpg.image_url else {
+      guard let coverURL = picture.jpg.image_url else {
         continue
       }
 
-      coverUrls.append(coverUrl)
+      coverURLs.append(coverURL)
     }
 
-    return coverUrls
+    return coverURLs
   }
 
-  public func getShowDetails(showId: Int) async throws -> (ShowDetails) {
+  public func getShowDetails(showID: Int) async throws -> (ShowDetails) {
     let anime365Series = try await anime365KitFactory.createApiClient().getSeries(
-      seriesId: showId
+      seriesID: showID
     )
 
-    let shikimoriAnime = try? await self.shikimoriApiClient.getAnimeById(
-      animeId: anime365Series.myAnimeListId
+    let shikimoriAnime = try? await self.shikimoriApiClient.getAnimeByID(
+      animeID: anime365Series.myAnimeListId
     )
 
-    let jikanAnime = try? await self.jikanApiClient.getAnimeFullById(
+    let jikanAnime = try? await self.jikanApiClient.getAnimeFullByID(
       id: anime365Series.myAnimeListId
     )
 
@@ -71,7 +71,7 @@ public struct ShowService: Sendable {
       (.init(
         anime365Series: anime365Series,
         shikimoriAnime: shikimoriAnime,
-        shikimoriBaseUrl: self.shikimoriApiClient.baseUrl,
+        shikimoriBaseURL: self.shikimoriApiClient.baseURL,
         jikanAnime: jikanAnime
       ))
   }
@@ -258,9 +258,9 @@ public struct ShowService: Sendable {
   }
 
   public func getRelatedShows(
-    myAnimeListId: Int
+    myAnimeListID: Int
   ) async throws -> OrderedSet<GroupedRelatedShows> {
-    let response = try await self.shikimoriGraphQLClient.getRelated(id: myAnimeListId)
+    let response = try await self.shikimoriGraphQLClient.getRelated(id: myAnimeListID)
 
     if response.animes.isEmpty {
       return .init()
@@ -270,9 +270,9 @@ public struct ShowService: Sendable {
   }
 
   public func getScreenshots(
-    myAnimeListId: Int
+    myAnimeListID: Int
   ) async throws -> OrderedSet<URL> {
-    let response = try await self.shikimoriGraphQLClient.getScreenshots(id: myAnimeListId)
+    let response = try await self.shikimoriGraphQLClient.getScreenshots(id: myAnimeListID)
 
     if response.animes.isEmpty {
       return .init()
@@ -285,8 +285,8 @@ public struct ShowService: Sendable {
     )
   }
 
-  public func getCharacters(myAnimeListId: Int) async throws -> OrderedSet<CharacterInfo> {
-    let response = try await self.shikimoriGraphQLClient.getCharacters(id: myAnimeListId)
+  public func getCharacters(myAnimeListID: Int) async throws -> OrderedSet<CharacterInfo> {
+    let response = try await self.shikimoriGraphQLClient.getCharacters(id: myAnimeListID)
 
     if response.animes.isEmpty {
       return .init()
@@ -295,8 +295,8 @@ public struct ShowService: Sendable {
     return .init(response.animes[0].characterRoles.map { .init(fromShikimoriCharacterRole: $0) })
   }
 
-  public func getStaffMembers(myAnimeListId: Int) async throws -> OrderedSet<StaffMember> {
-    let response = try await self.shikimoriGraphQLClient.getStaff(id: myAnimeListId)
+  public func getStaffMembers(myAnimeListID: Int) async throws -> OrderedSet<StaffMember> {
+    let response = try await self.shikimoriGraphQLClient.getStaff(id: myAnimeListID)
 
     if response.animes.isEmpty {
       return .init()
@@ -308,13 +308,13 @@ public struct ShowService: Sendable {
   public func getStudio(
     offset: Int,
     limit: Int,
-    studioId: Int
+    studioID: Int
   ) async throws -> [ShowPreview] {
     let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
       limit: limit,
       offset: offset,
       chips: [
-        "studio": String(studioId)
+        "studio": String(studioID)
       ]
     )
 
@@ -324,15 +324,15 @@ public struct ShowService: Sendable {
   public func getByGenre(
     offset: Int,
     limit: Int,
-    genreIds: [Int]
+    genreIDs: [Int]
   ) async throws -> [ShowPreview] {
     let apiResponse = try await anime365KitFactory.createApiClient().listSeries(
       limit: limit,
       offset: offset,
       chips: [
         "genre@":
-          genreIds
-          .map { genreId in String(genreId) }
+          genreIDs
+          .map { genreID in String(genreID) }
           .joined(separator: ",")
       ]
     )

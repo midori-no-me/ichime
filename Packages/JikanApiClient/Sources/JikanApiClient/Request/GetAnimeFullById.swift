@@ -1,5 +1,5 @@
 extension ApiClient {
-  public func getAnimeFullById(
+  public func getAnimeFullByID(
     id: Int
   ) async throws -> Anime {
     try await sendRequest(

@@ -11,7 +11,7 @@ public struct AnimeListEntry: Identifiable, Hashable {
   public init(
     fromAnime365KitAnimeListEntry: Anime365Kit.AnimeListEntry
   ) {
-    self.id = fromAnime365KitAnimeListEntry.seriesId
+    self.id = fromAnime365KitAnimeListEntry.seriesID
     self.name = .fromFullName(fromAnime365KitAnimeListEntry.seriesTitleFull)
     self.episodesWatched = fromAnime365KitAnimeListEntry.episodesWatched
     self.episodesTotal = fromAnime365KitAnimeListEntry.episodesTotal

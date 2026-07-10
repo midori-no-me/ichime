@@ -23,26 +23,26 @@ struct AppDependencies: Sendable {
 
     let anime365KitFactory = Anime365KitFactory(
       anime365BaseURL: anime365BaseURL,
-      logger: Logger(subsystem: AppEnvironment.applicationId, category: "Anime365Kit"),
+      logger: Logger(subsystem: AppEnvironment.applicationID, category: "Anime365Kit"),
       urlSession: urlSession
     )
 
     let shikimoriApiClient = ShikimoriApiClient.ApiClient(
-      baseUrl: AppEnvironment.shikimoriBaseUrl,
+      baseURL: AppEnvironment.shikimoriBaseURL,
       urlSession: urlSession,
-      logger: Logger(subsystem: AppEnvironment.applicationId, category: "ShikimoriApiClient")
+      logger: Logger(subsystem: AppEnvironment.applicationID, category: "ShikimoriApiClient")
     )
 
     let shikimoriGraphQLClient = ShikimoriApiClient.GraphQLClient(
-      baseUrl: AppEnvironment.shikimoriBaseUrl,
+      baseURL: AppEnvironment.shikimoriBaseURL,
       urlSession: urlSession,
-      logger: Logger(subsystem: AppEnvironment.applicationId, category: "ShikimoriGraphQLClient")
+      logger: Logger(subsystem: AppEnvironment.applicationID, category: "ShikimoriGraphQLClient")
     )
 
     let jikanApiClient = JikanApiClient.ApiClient(
-      baseUrl: AppEnvironment.jikanBaseUrl,
+      baseURL: AppEnvironment.jikanBaseURL,
       urlSession: urlSession,
-      logger: Logger(subsystem: AppEnvironment.applicationId, category: "JikanApiClient")
+      logger: Logger(subsystem: AppEnvironment.applicationID, category: "JikanApiClient")
     )
 
     let showService = ShowService(
@@ -61,8 +61,8 @@ struct AppDependencies: Sendable {
       anime365KitFactory: anime365KitFactory
     )
 
-    let subtitlesProxyUrlGenerator = SubtitlesProxyUrlGenerator(
-      anime365BaseUrl: AppEnvironment.websiteBaseUrl
+    let subtitlesProxyURLGenerator = SubtitlesProxyURLGenerator(
+      anime365BaseURL: AppEnvironment.websiteBaseURL
     )
 
     let showReleaseSchedule = ShowReleaseSchedule(
@@ -98,7 +98,7 @@ struct AppDependencies: Sendable {
       showService: showService,
       episodeService: episodeService,
       currentlyWatchingService: currentlyWatchingService,
-      subtitlesProxyUrlGenerator: subtitlesProxyUrlGenerator,
+      subtitlesProxyURLGenerator: subtitlesProxyURLGenerator,
       showReleaseSchedule: showReleaseSchedule,
       momentService: momentService,
       showSearchService: showSearchService,
@@ -113,7 +113,7 @@ struct AppDependencies: Sendable {
   let showService: ShowService
   let episodeService: EpisodeService
   let currentlyWatchingService: CurrentlyWatchingService
-  let subtitlesProxyUrlGenerator: SubtitlesProxyUrlGenerator
+  let subtitlesProxyURLGenerator: SubtitlesProxyURLGenerator
   let showReleaseSchedule: ShowReleaseSchedule
   let momentService: MomentService
   let showSearchService: ShowSearchService

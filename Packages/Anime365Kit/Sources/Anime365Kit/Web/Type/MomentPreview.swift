@@ -2,7 +2,7 @@ import Foundation
 import SwiftSoup
 
 public struct MomentPreview: Sendable {
-  public let momentId: Int
+  public let momentID: Int
   public let coverURL: URL
   public let momentTitle: String
   public let sourceDescription: String
@@ -42,10 +42,10 @@ public struct MomentPreview: Sendable {
 
     self.coverURL = anime365BaseURL.appending(path: previewURLString)
 
-    if let momentIdString = try? htmlElement.select(".m-moment__title a[href]").first()?.attr("href").firstMatch(
+    if let momentIDString = try? htmlElement.select(".m-moment__title a[href]").first()?.attr("href").firstMatch(
       of: /\/moments\/(?<id>[0-9]+)/
-    )?.output.id.trimmingCharacters(in: .whitespaces), let momentId = Int(momentIdString) {
-      self.momentId = momentId
+    )?.output.id.trimmingCharacters(in: .whitespaces), let momentID = Int(momentIDString) {
+      self.momentID = momentID
     }
     else {
       throw .failedCreatingDTOFromHTMLElement(

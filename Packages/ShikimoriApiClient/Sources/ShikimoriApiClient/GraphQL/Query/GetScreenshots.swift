@@ -1,5 +1,7 @@
 import Foundation
 
+// swiftformat:disable acronyms
+
 public struct GetScreenshotsResponse: Sendable, Decodable {
   public struct AnimeFields: Sendable, Decodable {
     public struct Screenshot: Sendable, Decodable {

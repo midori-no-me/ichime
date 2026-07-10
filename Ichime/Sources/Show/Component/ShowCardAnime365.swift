@@ -21,19 +21,19 @@ struct ShowCardAnime365: View {
 
   var body: some View {
     NavigationLink(
-      destination: ShowView(showId: self.show.id, onOpened: self.onOpened)
+      destination: ShowView(showID: self.show.id, onOpened: self.onOpened)
     ) {
       ShowCard(
         topChips: self.formatTopChips(),
         bottomChips: self.formatBottomChips(),
-        cover: self.show.posterUrl,
+        cover: self.show.posterURL,
         primaryTitle: self.show.title.getRomajiOrFullName(),
         secondaryTitle: self.show.title.getRussian()
       )
     }
     .buttonStyle(.borderless)
     .contextMenu {
-      NavigationLink(destination: ShowView(showId: self.show.id, onOpened: self.onOpened)) {
+      NavigationLink(destination: ShowView(showID: self.show.id, onOpened: self.onOpened)) {
         Label(self.show.title.getRomajiOrFullName(), systemImage: "info.circle")
 
         if let russian = self.show.title.getRussian() {

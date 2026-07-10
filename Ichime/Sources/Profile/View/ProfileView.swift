@@ -89,7 +89,7 @@ struct ProfileView: View {
     List {
       if let currentUser = self.currentUserStore.user {
         Section("Мой список") {
-          NavigationLink(destination: AnimeListView(userId: currentUser.id, animeListCategory: .watching)) {
+          NavigationLink(destination: AnimeListView(userID: currentUser.id, animeListCategory: .watching)) {
             HStack {
               Text(AnimeListCategory.watching.label)
 
@@ -102,7 +102,7 @@ struct ProfileView: View {
             }
           }
 
-          NavigationLink(destination: AnimeListView(userId: currentUser.id, animeListCategory: .completed)) {
+          NavigationLink(destination: AnimeListView(userID: currentUser.id, animeListCategory: .completed)) {
             HStack {
               Text(AnimeListCategory.completed.label)
 
@@ -115,7 +115,7 @@ struct ProfileView: View {
             }
           }
 
-          NavigationLink(destination: AnimeListView(userId: currentUser.id, animeListCategory: .onHold)) {
+          NavigationLink(destination: AnimeListView(userID: currentUser.id, animeListCategory: .onHold)) {
             HStack {
               Text(AnimeListCategory.onHold.label)
 
@@ -128,7 +128,7 @@ struct ProfileView: View {
             }
           }
 
-          NavigationLink(destination: AnimeListView(userId: currentUser.id, animeListCategory: .dropped)) {
+          NavigationLink(destination: AnimeListView(userID: currentUser.id, animeListCategory: .dropped)) {
             HStack {
               Text(AnimeListCategory.dropped.label)
 
@@ -141,7 +141,7 @@ struct ProfileView: View {
             }
           }
 
-          NavigationLink(destination: AnimeListView(userId: currentUser.id, animeListCategory: .planned)) {
+          NavigationLink(destination: AnimeListView(userID: currentUser.id, animeListCategory: .planned)) {
             HStack {
               Text(AnimeListCategory.planned.label)
 
