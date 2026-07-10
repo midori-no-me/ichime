@@ -24,7 +24,10 @@ private final class MostPopularSectionViewModel {
 
   init(
     showService: ShowService = AppDependencies.live.showService,
-    logger: Logger = .init(subsystem: AppEnvironment.applicationId, category: "MostPopularSectionViewModel")
+    logger: Logger = .init(
+      subsystem: AppEnvironment.applicationId,
+      category: String(describing: MostPopularSectionViewModel.self)
+    )
   ) {
     self.showService = showService
     self.logger = logger

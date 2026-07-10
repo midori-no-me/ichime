@@ -24,7 +24,10 @@ private final class MostAnticipatedSectionViewModel {
 
   init(
     showService: ShowService = AppDependencies.live.showService,
-    logger: Logger = .init(subsystem: AppEnvironment.applicationId, category: "MostAnticipatedSectionViewModel")
+    logger: Logger = .init(
+      subsystem: AppEnvironment.applicationId,
+      category: String(describing: MostAnticipatedSectionViewModel.self)
+    )
   ) {
     self.showService = showService
     self.logger = logger

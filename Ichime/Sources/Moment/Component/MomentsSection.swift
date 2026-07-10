@@ -23,7 +23,10 @@ private final class MomentsSectionViewModel {
 
   init(
     momentService: MomentService = AppDependencies.live.momentService,
-    logger: Logger = .init(subsystem: AppEnvironment.applicationId, category: "MomentsSectionViewModel"),
+    logger: Logger = .init(
+      subsystem: AppEnvironment.applicationId,
+      category: String(describing: MomentsSectionViewModel.self)
+    ),
     sorting: MomentSorting
   ) {
     self.momentService = momentService

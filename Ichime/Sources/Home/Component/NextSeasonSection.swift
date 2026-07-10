@@ -24,7 +24,10 @@ private final class NextSeasonSectionViewModel {
 
   init(
     showService: ShowService = AppDependencies.live.showService,
-    logger: Logger = .init(subsystem: AppEnvironment.applicationId, category: "NextSeasonSectionViewModel")
+    logger: Logger = .init(
+      subsystem: AppEnvironment.applicationId,
+      category: String(describing: NextSeasonSectionViewModel.self)
+    )
   ) {
     self.showService = showService
     self.logger = logger

@@ -24,7 +24,10 @@ private final class TopScoredSectionViewModel {
 
   init(
     showService: ShowService = AppDependencies.live.showService,
-    logger: Logger = .init(subsystem: AppEnvironment.applicationId, category: "TopScoredSectionViewModel")
+    logger: Logger = .init(
+      subsystem: AppEnvironment.applicationId,
+      category: String(describing: TopScoredSectionViewModel.self)
+    )
   ) {
     self.showService = showService
     self.logger = logger
