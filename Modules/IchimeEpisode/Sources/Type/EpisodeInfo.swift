@@ -37,8 +37,6 @@ public struct EpisodeInfo: Identifiable, Hashable {
       return nil
     }
 
-    let anime365EpisodeNumber = Int(anime365EpisodePreview.episodeInt)
-
     let isTrailer = anime365EpisodePreview.episodeType == "preview"
 
     var title: String? = nil
@@ -51,7 +49,7 @@ public struct EpisodeInfo: Identifiable, Hashable {
 
     // Если эпизод по каким-то признакам кажется не частью тайтла, а, допустим, трейлером или спешлом (с дробной серией),
     // то информацию из Jikan об этом эпизоде мы игнорируем
-    let isNonStandardEpisodeUploadedToAnime365 = anime365EpisodeNumber == nil || isTrailer
+    let isNonStandardEpisodeUploadedToAnime365 = isTrailer
 
     if !isNonStandardEpisodeUploadedToAnime365 {
       if let officialTitle = jikanEpisode?.title, !officialTitle.isEmpty {
@@ -83,7 +81,7 @@ public struct EpisodeInfo: Identifiable, Hashable {
 
     return Self(
       anime365ID: anime365EpisodePreview.id,
-      episodeNumber: isNonStandardEpisodeUploadedToAnime365 ? nil : anime365EpisodeNumber,
+      episodeNumber: isNonStandardEpisodeUploadedToAnime365 ? nil : anime365EpisodePreview.episodeInt,
       anime365Title: anime365EpisodePreview.episodeFull,
       officialTitle: title,
       officiallyAiredAt: officiallyAiredAt,

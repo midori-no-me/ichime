@@ -10,7 +10,7 @@ public struct Series: Sendable, Decodable {
   public let title: String
   public let titles: Titles
   public let posterUrl: URL?
-  public let myAnimeListScore: String
+  public let myAnimeListScore: Float
   public let season: String
   public let type: SeriesType?
   public let year: Int?
@@ -34,7 +34,7 @@ public struct SeriesFull: Sendable, Decodable {
   public let id: Int
   public let title: String
   public let posterUrl: URL?
-  public let myAnimeListScore: String
+  public let myAnimeListScore: Float
   public let myAnimeListId: Int
   public let numberOfEpisodes: Int
   public let season: String

@@ -28,8 +28,8 @@ public struct ShowPreview: Hashable, Identifiable {
 
     self.posterURL = anime365Series.posterUrl
 
-    if let score = Float(anime365Series.myAnimeListScore), score > 0 {
-      self.score = score
+    if anime365Series.myAnimeListScore > 0 {
+      self.score = anime365Series.myAnimeListScore
     }
     else {
       self.score = nil

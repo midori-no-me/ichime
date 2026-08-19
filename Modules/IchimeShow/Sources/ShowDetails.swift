@@ -90,8 +90,8 @@ public struct ShowDetails {
       self.title = .unparsed(anime365Series.title)
     }
 
-    if let score = Float(anime365Series.myAnimeListScore), score > 0 {
-      self.score = score
+    if anime365Series.myAnimeListScore > 0 {
+      self.score = anime365Series.myAnimeListScore
     }
     else {
       self.score = nil
@@ -129,7 +129,7 @@ public struct ShowDetails {
 
     self.numberOfEpisodes = totalEpisodes
     self.latestAiredEpisodeNumber = (anime365Series.episodes ?? [])
-      .compactMap { Int($0.episodeInt) }
+      .map { $0.episodeInt }
       .max()
     self.hasEpisodes = Self.calculateShowHasUploadedEpisodesToWatch(
       anime365Episodes: anime365Series.episodes ?? [],

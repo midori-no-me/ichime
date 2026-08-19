@@ -55,13 +55,7 @@ public struct EpisodeService: Sendable {
     var episodeInfos: [EpisodeInfo] = []
 
     for anime365EpisodePreview in anime365EpisodePreviews {
-      let anime365EpisodeNumber = Int(anime365EpisodePreview.episodeInt)
-
-      var jikanEpisode: JikanApiClient.Episode? = nil
-
-      if let anime365EpisodeNumber {
-        jikanEpisode = jikanEpisodeNumberToEpisode[anime365EpisodeNumber]
-      }
+      let jikanEpisode = jikanEpisodeNumberToEpisode[anime365EpisodePreview.episodeInt]
 
       let episodeInfo = EpisodeInfo.createValid(
         anime365EpisodePreview: anime365EpisodePreview,
@@ -113,14 +107,10 @@ public struct EpisodeService: Sendable {
     var episode: EpisodeInfo?
 
     if let anime365Series {
-      var jikanEpisode: JikanApiClient.Episode?
-
-      if let anime365EpisodeNumber = Int(anime365Episode.episodeInt) {
-        jikanEpisode = try? await self.jikanApiClient.getAnimeEpisodeByID(
-          animeID: anime365Series.myAnimeListId,
-          episodeID: anime365EpisodeNumber
-        )
-      }
+      let jikanEpisode = try? await self.jikanApiClient.getAnimeEpisodeByID(
+        animeID: anime365Series.myAnimeListId,
+        episodeID: anime365Episode.episodeInt
+      )
 
       episode = EpisodeInfo.createValid(
         anime365EpisodePreview: anime365Episode,
