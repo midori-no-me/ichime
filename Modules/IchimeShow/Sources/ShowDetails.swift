@@ -129,7 +129,7 @@ public struct ShowDetails {
 
     self.numberOfEpisodes = totalEpisodes
     self.latestAiredEpisodeNumber = (anime365Series.episodes ?? [])
-      .map { $0.episodeInt }
+      .compactMap { Int(exactly: $0.episodeInt) }
       .max()
     self.hasEpisodes = Self.calculateShowHasUploadedEpisodesToWatch(
       anime365Episodes: anime365Series.episodes ?? [],

@@ -3,7 +3,7 @@ import Foundation
 public protocol EpisodeProtocol {
   var id: Int { get }
   var episodeFull: String { get }
-  var episodeInt: Int { get }
+  var episodeInt: Float { get }
   var episodeType: String { get }
   var firstUploadedDateTime: Date { get }
   var isActive: Int { get }
@@ -13,7 +13,7 @@ public protocol EpisodeProtocol {
 public struct Episode: Sendable, Decodable, EpisodeProtocol {
   public let id: Int
   public let episodeFull: String
-  public let episodeInt: Int
+  public let episodeInt: Float
   public let episodeType: String
   public let firstUploadedDateTime: Date
   public let isActive: Int
@@ -23,7 +23,7 @@ public struct Episode: Sendable, Decodable, EpisodeProtocol {
 public struct EpisodeFull: Sendable, Decodable, EpisodeProtocol {
   public let id: Int
   public let episodeFull: String
-  public let episodeInt: Int
+  public let episodeInt: Float
   public let episodeType: String
   public let firstUploadedDateTime: Date
   public let isActive: Int
