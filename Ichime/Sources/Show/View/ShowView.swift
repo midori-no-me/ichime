@@ -317,6 +317,10 @@ struct ShowView: View {
     if let season = show.airingSeason?.getLocalizedTranslation() {
       items.append(season)
     }
+    else if let year = show.airingYear {
+      items.append("\(year) г.")
+    }
+
     if let kind = show.kind {
       items.append(kind.title)
     }

@@ -42,7 +42,6 @@ struct AppDependencies: Sendable {
 
     let showService = ShowService(
       anime365KitFactory: anime365KitFactory,
-      shikimoriApiClient: shikimoriApiClient,
       shikimoriGraphQLClient: shikimoriGraphQLClient
     )
 

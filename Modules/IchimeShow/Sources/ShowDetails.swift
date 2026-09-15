@@ -54,6 +54,7 @@ public struct ShowDetails {
   public let descriptions: [Description]
   public let posterURL: URL?
   public let score: Float?
+  public let airingYear: Int?
   public let airingSeason: AiringSeason?
   public let numberOfEpisodes: Int?
   public let latestAiredEpisodeNumber: Int?
@@ -68,8 +69,7 @@ public struct ShowDetails {
 
   public init(
     anime365Series: Anime365Kit.SeriesFull,
-    shikimoriAnime: ShikimoriApiClient.Anime?,
-    shikimoriBaseURL: URL
+    shikimoriAnime: ShikimoriApiClient.GetAnimeResponse.Anime?
   ) {
     let totalEpisodes = anime365Series.numberOfEpisodes <= 0 ? nil : anime365Series.numberOfEpisodes
 
@@ -104,6 +104,7 @@ public struct ShowDetails {
     }
     self.posterURL = anime365Series.posterUrl
 
+    self.airingYear = shikimoriAnime?.airedOn.year
     self.airingSeason = .init(fromTranslatedString: anime365Series.season)
 
     self.numberOfEpisodes = totalEpisodes
@@ -115,11 +116,9 @@ public struct ShowDetails {
     )
     self.genres = .init((anime365Series.genres ?? []).map { .init(fromAnime365Genre: $0) })
     self.studios = .init(
-      (shikimoriAnime?.studios ?? []).map {
-        .init(fromShikimoriStudio: $0, shikimoriBaseURL: shikimoriBaseURL)
-      }
+      (shikimoriAnime?.studios ?? []).compactMap(Studio.init(fromShikimoriGraphQLStudio:))
     )
-    self.nextEpisodeReleasesAt = shikimoriAnime?.next_episode_at
+    self.nextEpisodeReleasesAt = shikimoriAnime?.nextEpisodeAt
 
     if let shikimoriRating = shikimoriAnime?.rating {
       self.ageRating = .create(fromShikimoriString: shikimoriRating)

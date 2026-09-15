@@ -13,18 +13,15 @@ public struct ShowService: Sendable {
   // MARK: Properties
 
   private let anime365KitFactory: Anime365KitFactory
-  private let shikimoriApiClient: ShikimoriApiClient.ApiClient
   private let shikimoriGraphQLClient: ShikimoriApiClient.GraphQLClient
 
   // MARK: Lifecycle
 
   public init(
     anime365KitFactory: Anime365KitFactory,
-    shikimoriApiClient: ShikimoriApiClient.ApiClient,
     shikimoriGraphQLClient: ShikimoriApiClient.GraphQLClient
   ) {
     self.anime365KitFactory = anime365KitFactory
-    self.shikimoriApiClient = shikimoriApiClient
     self.shikimoriGraphQLClient = shikimoriGraphQLClient
   }
 
@@ -45,15 +42,14 @@ public struct ShowService: Sendable {
       seriesID: showID
     )
 
-    let shikimoriAnime = try? await self.shikimoriApiClient.getAnimeByID(
-      animeID: anime365Series.myAnimeListId
+    let shikimoriAnime = try? await self.shikimoriGraphQLClient.getAnime(
+      id: anime365Series.myAnimeListId
     )
 
     return
       (.init(
         anime365Series: anime365Series,
-        shikimoriAnime: shikimoriAnime,
-        shikimoriBaseURL: self.shikimoriApiClient.baseURL
+        shikimoriAnime: shikimoriAnime
       ))
   }
 

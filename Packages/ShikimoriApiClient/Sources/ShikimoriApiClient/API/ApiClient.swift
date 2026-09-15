@@ -74,7 +74,7 @@ public struct ApiClient: Sendable {
     do {
       let jsonDecoder = JSONDecoder()
 
-      jsonDecoder.dateDecodingStrategy = ApiDateDecoder.getDateDecodingStrategy()
+      jsonDecoder.dateDecodingStrategy = RestApiDateDecoder.getDateDecodingStrategy()
 
       let apiResponse = try jsonDecoder.decode(T.self, from: data)
 

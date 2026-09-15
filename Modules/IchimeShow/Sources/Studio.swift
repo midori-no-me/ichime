@@ -24,4 +24,14 @@ public struct Studio: Identifiable, Hashable {
       self.image = nil
     }
   }
+
+  public init?(fromShikimoriGraphQLStudio: ShikimoriApiClient.GetAnimeResponse.Anime.Studio) {
+    guard let id = Int(fromShikimoriGraphQLStudio.id) else {
+      return nil
+    }
+
+    self.id = id
+    self.name = fromShikimoriGraphQLStudio.name.trimmingCharacters(in: .whitespacesAndNewlines)
+    self.image = fromShikimoriGraphQLStudio.imageUrl
+  }
 }

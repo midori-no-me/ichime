@@ -1,6 +1,6 @@
 import Foundation
 
-struct ApiDateDecoder {
+struct GraphQLDateDecoder {
   // MARK: Lifecycle
 
   private init() {}
@@ -9,7 +9,8 @@ struct ApiDateDecoder {
 
   static func getDateDecodingStrategy() -> JSONDecoder.DateDecodingStrategy {
     .custom { decoder in
-      let dateFormatter = Self.getDateFormatter()
+      let dateFormatter = ISO8601DateFormatter()
+      dateFormatter.formatOptions = [.withInternetDateTime]
 
       let dateString = try decoder.singleValueContainer().decode(String.self)
 
@@ -24,13 +25,5 @@ struct ApiDateDecoder {
         )
       )
     }
-  }
-
-  private static func getDateFormatter() -> ISO8601DateFormatter {
-    let dateFormatter = ISO8601DateFormatter()
-
-    dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-
-    return dateFormatter
   }
 }

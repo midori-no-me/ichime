@@ -77,7 +77,7 @@ public struct GraphQLClient: Sendable {
     do {
       let jsonDecoder = JSONDecoder()
 
-      jsonDecoder.dateDecodingStrategy = ApiDateDecoder.getDateDecodingStrategy()
+      jsonDecoder.dateDecodingStrategy = GraphQLDateDecoder.getDateDecodingStrategy()
 
       let apiResponse = try jsonDecoder.decode(GraphQLResponse<T>.self, from: data)
 
