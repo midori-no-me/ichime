@@ -9,7 +9,6 @@ import IchimeMyLists
 import IchimeProfile
 import IchimeShow
 import IchimeVideoPlayer
-import JikanApiClient
 import OSLog
 import ShikimoriApiClient
 import SwiftUI
@@ -41,22 +40,14 @@ struct AppDependencies: Sendable {
       logger: Logger(subsystem: AppEnvironment.applicationID, category: "ShikimoriGraphQLClient")
     )
 
-    let jikanApiClient = JikanApiClient.ApiClient(
-      baseURL: AppEnvironment.jikanBaseURL,
-      urlSession: urlSession,
-      logger: Logger(subsystem: AppEnvironment.applicationID, category: "JikanApiClient")
-    )
-
     let showService = ShowService(
       anime365KitFactory: anime365KitFactory,
       shikimoriApiClient: shikimoriApiClient,
-      shikimoriGraphQLClient: shikimoriGraphQLClient,
-      jikanApiClient: jikanApiClient
+      shikimoriGraphQLClient: shikimoriGraphQLClient
     )
 
     let episodeService = EpisodeService(
-      anime365KitFactory: anime365KitFactory,
-      jikanApiClient: jikanApiClient
+      anime365KitFactory: anime365KitFactory
     )
 
     let currentlyWatchingService = CurrentlyWatchingService(

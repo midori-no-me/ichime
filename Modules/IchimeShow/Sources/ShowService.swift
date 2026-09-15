@@ -2,7 +2,6 @@ import Anime365Kit
 import Foundation
 import IchimeAnime365
 import IchimePreferences
-import JikanApiClient
 import OrderedCollections
 import ShikimoriApiClient
 
@@ -16,20 +15,17 @@ public struct ShowService: Sendable {
   private let anime365KitFactory: Anime365KitFactory
   private let shikimoriApiClient: ShikimoriApiClient.ApiClient
   private let shikimoriGraphQLClient: ShikimoriApiClient.GraphQLClient
-  private let jikanApiClient: JikanApiClient.ApiClient
 
   // MARK: Lifecycle
 
   public init(
     anime365KitFactory: Anime365KitFactory,
     shikimoriApiClient: ShikimoriApiClient.ApiClient,
-    shikimoriGraphQLClient: ShikimoriApiClient.GraphQLClient,
-    jikanApiClient: JikanApiClient.ApiClient
+    shikimoriGraphQLClient: ShikimoriApiClient.GraphQLClient
   ) {
     self.anime365KitFactory = anime365KitFactory
     self.shikimoriApiClient = shikimoriApiClient
     self.shikimoriGraphQLClient = shikimoriGraphQLClient
-    self.jikanApiClient = jikanApiClient
   }
 
   // MARK: Functions
@@ -44,22 +40,6 @@ public struct ShowService: Sendable {
     return series.id
   }
 
-  public func getAllShowCovers(_ myAnimeListID: Int) async throws -> [URL] {
-    let pictures = try await jikanApiClient.getAnimePictures(id: myAnimeListID)
-
-    var coverURLs: [URL] = []
-
-    for picture in pictures {
-      guard let coverURL = picture.jpg.image_url else {
-        continue
-      }
-
-      coverURLs.append(coverURL)
-    }
-
-    return coverURLs
-  }
-
   public func getShowDetails(showID: Int) async throws -> (ShowDetails) {
     let anime365Series = try await anime365KitFactory.createApiClient().getSeries(
       seriesID: showID
@@ -69,16 +49,11 @@ public struct ShowService: Sendable {
       animeID: anime365Series.myAnimeListId
     )
 
-    let jikanAnime = try? await self.jikanApiClient.getAnimeFullByID(
-      id: anime365Series.myAnimeListId
-    )
-
     return
       (.init(
         anime365Series: anime365Series,
         shikimoriAnime: shikimoriAnime,
-        shikimoriBaseURL: self.shikimoriApiClient.baseURL,
-        jikanAnime: jikanAnime
+        shikimoriBaseURL: self.shikimoriApiClient.baseURL
       ))
   }
 

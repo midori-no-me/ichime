@@ -60,7 +60,6 @@ struct ShowView: View {
   // MARK: SwiftUI Properties
 
   @State private var viewModel: ShowViewModel
-  @State private var displayShowCoversSheet: Bool = false
 
   // MARK: Properties
 
@@ -239,9 +238,7 @@ struct ShowView: View {
                   .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                 }
 
-                Button(action: {
-                  self.displayShowCoversSheet = true
-                }) {
+                Button(action: {}) {
                   AsyncImage(
                     url: show.posterURL,
                     transaction: .init(animation: .easeInOut(duration: IMAGE_FADE_IN_DURATION)),
@@ -267,10 +264,6 @@ struct ShowView: View {
                 .buttonStyle(.borderless)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .aspectRatio(ShowCard.RECOMMENDED_ASPECT_RATIO, contentMode: .fit)
-                .fullScreenCover(isPresented: self.$displayShowCoversSheet) {
-                  CoverGallerySheet(myAnimeListID: show.myAnimeListID)
-                    .background(.thickMaterial)
-                }
               }
               .focusSection()
               .padding(.top, proxy.safeAreaInsets.top)
@@ -324,10 +317,6 @@ struct ShowView: View {
     if let season = show.airingSeason?.getLocalizedTranslation() {
       items.append(season)
     }
-    else if let year = show.airingYear {
-      items.append("\(year) г.")
-    }
-
     if let kind = show.kind {
       items.append(kind.title)
     }

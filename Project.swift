@@ -37,7 +37,6 @@ let packageDependencies: [TargetDependency] = [
   .external(name: "Anime365Kit"),
   .external(name: "AppdbFramework"),
   .external(name: "Collections"),
-  .external(name: "JikanApiClient"),
   .external(name: "ShikimoriApiClient"),
   .external(name: "ThirdPartyVideoPlayer"),
 ]
@@ -123,7 +122,6 @@ let project = Project(
       dependencies: [
         .external(name: "Anime365Kit"),
         .external(name: "Collections"),
-        .external(name: "JikanApiClient"),
         .external(name: "ShikimoriApiClient"),
         .target(name: "IchimeAnime365"),
         .target(name: "IchimePreferences"),
@@ -170,7 +168,6 @@ let project = Project(
       dependencies: [
         .external(name: "Anime365Kit"),
         .external(name: "Collections"),
-        .external(name: "JikanApiClient"),
         .target(name: "IchimeAnime365"),
         .target(name: "IchimePreferences"),
         .target(name: "IchimeShow"),

@@ -148,10 +148,6 @@ struct EpisodeListView: View {
 }
 
 private struct EpisodePreviewRow: View {
-  // MARK: SwiftUI Properties
-
-  @FocusState private var isLinkFocused: Bool
-
   // MARK: Properties
 
   let episodeInfo: EpisodeInfo
@@ -178,46 +174,14 @@ private struct EpisodePreviewRow: View {
         .foregroundStyle(.secondary)
         .frame(minWidth: 64, alignment: .leading)
 
-        Text(self.formatTitleLine())
+        Text(self.episodeInfo.anime365Title)
 
         Spacer()
 
-        Group {
-          if self.isLinkFocused, let myAnimeListScore = episodeInfo.myAnimeListScore {
-            Text("★ \(myAnimeListScore.formatted(.number.precision(.fractionLength(2))))")
-          }
-          else {
-            Text(formatRelativeDate(self.episodeInfo.officiallyAiredAt ?? self.episodeInfo.uploadedAt))
-          }
-        }
-        .frame(minWidth: 300, alignment: .trailing)
-        .foregroundStyle(.secondary)
+        Text(formatRelativeDate(self.episodeInfo.uploadedAt))
+          .frame(minWidth: 300, alignment: .trailing)
+          .foregroundStyle(.secondary)
       }
     }
-    .focused(self.$isLinkFocused)
-  }
-
-  // MARK: Functions
-
-  private func formatTitleLine() -> String {
-    var titleLineComponents: [String] = [
-      episodeInfo.officialTitle ?? self.episodeInfo.anime365Title
-    ]
-
-    var episodeProperties: [String] = []
-
-    if self.episodeInfo.isFiller {
-      episodeProperties.append("Филлер")
-    }
-
-    if self.episodeInfo.isRecap {
-      episodeProperties.append("Рекап")
-    }
-
-    if !episodeProperties.isEmpty {
-      titleLineComponents.append(episodeProperties.formatted(.list(type: .and, width: .narrow)))
-    }
-
-    return titleLineComponents.joined(separator: " — ")
   }
 }

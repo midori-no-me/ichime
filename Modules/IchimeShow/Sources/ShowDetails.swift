@@ -1,6 +1,5 @@
 import Anime365Kit
 import Foundation
-import JikanApiClient
 import OrderedCollections
 import ShikimoriApiClient
 
@@ -55,7 +54,6 @@ public struct ShowDetails {
   public let descriptions: [Description]
   public let posterURL: URL?
   public let score: Float?
-  public let airingYear: Int?
   public let airingSeason: AiringSeason?
   public let numberOfEpisodes: Int?
   public let latestAiredEpisodeNumber: Int?
@@ -71,8 +69,7 @@ public struct ShowDetails {
   public init(
     anime365Series: Anime365Kit.SeriesFull,
     shikimoriAnime: ShikimoriApiClient.Anime?,
-    shikimoriBaseURL: URL,
-    jikanAnime: JikanApiClient.Anime?
+    shikimoriBaseURL: URL
   ) {
     let totalEpisodes = anime365Series.numberOfEpisodes <= 0 ? nil : anime365Series.numberOfEpisodes
 
@@ -107,25 +104,7 @@ public struct ShowDetails {
     }
     self.posterURL = anime365Series.posterUrl
 
-    /// Anime 365 выдумывает сезон, если сезон не известен или известен только год, поэтому если нам пришло аниме из Jikan, то берем информацию о сезоне оттуда
-    if let jikanAnime {
-      if let jikanSeason = jikanAnime.season, let jikanYear = jikanAnime.year {
-        self.airingSeason = .init(fromJikanSeason: jikanSeason, year: jikanYear)
-      }
-      else {
-        self.airingSeason = nil
-      }
-    }
-    else {
-      self.airingSeason = .init(fromTranslatedString: anime365Series.season)
-    }
-
-    if let jikanAnime, let jikanYear = jikanAnime.aired.prop.from.year {
-      self.airingYear = jikanYear
-    }
-    else {
-      self.airingYear = nil
-    }
+    self.airingSeason = .init(fromTranslatedString: anime365Series.season)
 
     self.numberOfEpisodes = totalEpisodes
     self.latestAiredEpisodeNumber = (anime365Series.episodes ?? [])

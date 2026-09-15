@@ -87,10 +87,6 @@ public enum AppEnvironment {
     URL(string: "https://shikimori.io")!
   }
 
-  public static var jikanBaseURL: URL {
-    URL(string: "https://api.jikan.moe/v4")!
-  }
-
   private static var forceAppGroups: Bool {
     guard let value = Bundle.main.object(forInfoDictionaryKey: "ICHForceAppGroups") as? String else {
       return false

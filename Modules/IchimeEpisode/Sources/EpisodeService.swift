@@ -2,23 +2,17 @@ import Anime365Kit
 import Foundation
 import IchimeAnime365
 import IchimePreferences
-import JikanApiClient
 import OrderedCollections
 
 public struct EpisodeService: Sendable {
   // MARK: Properties
 
   private let anime365KitFactory: Anime365KitFactory
-  private let jikanApiClient: JikanApiClient.ApiClient
 
   // MARK: Lifecycle
 
-  public init(
-    anime365KitFactory: Anime365KitFactory,
-    jikanApiClient: JikanApiClient.ApiClient
-  ) {
+  public init(anime365KitFactory: Anime365KitFactory) {
     self.anime365KitFactory = anime365KitFactory
-    self.jikanApiClient = jikanApiClient
   }
 
   // MARK: Static Functions
@@ -40,42 +34,6 @@ public struct EpisodeService: Sendable {
     return String(repeating: "?", count: max(2, charactersLength))
   }
 
-  private static func mapAnime365EpisodesToJikanEpisodes(
-    anime365EpisodePreviews: [Anime365Kit.Episode],
-    jikanEpisodes: [JikanApiClient.Episode],
-  ) -> [EpisodeInfo] {
-    var jikanEpisodeNumberToEpisode: [Int: JikanApiClient.Episode] = [:]
-
-    for jikanEpisode in jikanEpisodes {
-      let malID = jikanEpisode.mal_id
-
-      jikanEpisodeNumberToEpisode[malID] = jikanEpisode
-    }
-
-    var episodeInfos: [EpisodeInfo] = []
-
-    for anime365EpisodePreview in anime365EpisodePreviews {
-      var jikanEpisode: JikanApiClient.Episode?
-
-      if let anime365EpisodeNumber = Int(exactly: anime365EpisodePreview.episodeInt) {
-        jikanEpisode = jikanEpisodeNumberToEpisode[anime365EpisodeNumber]
-      }
-
-      let episodeInfo = EpisodeInfo.createValid(
-        anime365EpisodePreview: anime365EpisodePreview,
-        jikanEpisode: jikanEpisode,
-      )
-
-      guard let episodeInfo else {
-        continue
-      }
-
-      episodeInfos.append(episodeInfo)
-    }
-
-    return episodeInfos
-  }
-
   // MARK: Functions
 
   public func getEpisodeList(
@@ -84,20 +42,7 @@ public struct EpisodeService: Sendable {
     let anime365Series = try await self.anime365KitFactory.createApiClient()
       .getSeries(seriesID: showID)
 
-    var jikanEpisodes: [JikanApiClient.Episode] = []
-
-    if anime365Series.numberOfEpisodes <= 100 {
-      jikanEpisodes =
-        (try? await self.jikanApiClient.getAnimeEpisodes(
-          id: anime365Series.myAnimeListId,
-          page: 1
-        )) ?? []
-    }
-
-    let episodes = Self.mapAnime365EpisodesToJikanEpisodes(
-      anime365EpisodePreviews: anime365Series.episodes ?? [],
-      jikanEpisodes: jikanEpisodes,
-    )
+    let episodes = (anime365Series.episodes ?? []).compactMap(EpisodeInfo.createValid)
 
     return .init(episodes)
   }
@@ -106,25 +51,7 @@ public struct EpisodeService: Sendable {
     episodeID: Int
   ) async throws -> (episode: EpisodeInfo?, translations: [EpisodeTranslationInfo]) {
     let anime365Episode = try await anime365KitFactory.createApiClient().getEpisode(episodeID: episodeID)
-    let anime365Series = try? await anime365KitFactory.createApiClient().getSeries(seriesID: anime365Episode.seriesId)
-
-    var episode: EpisodeInfo?
-
-    if let anime365Series {
-      var jikanEpisode: JikanApiClient.Episode?
-
-      if let anime365EpisodeNumber = Int(exactly: anime365Episode.episodeInt) {
-        jikanEpisode = try? await self.jikanApiClient.getAnimeEpisodeByID(
-          animeID: anime365Series.myAnimeListId,
-          episodeID: anime365EpisodeNumber
-        )
-      }
-
-      episode = EpisodeInfo.createValid(
-        anime365EpisodePreview: anime365Episode,
-        jikanEpisode: jikanEpisode,
-      )
-    }
+    let episode = EpisodeInfo.createValid(anime365EpisodePreview: anime365Episode)
 
     var items: [EpisodeTranslationInfo] = []
 

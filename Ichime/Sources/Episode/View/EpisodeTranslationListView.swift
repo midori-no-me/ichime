@@ -178,43 +178,9 @@ private struct EpisodeDetails: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 32) {
-      Group {
-        VStack {
-          Group {
-            Text(self.episode.anime365Title)
-              .font(.title2)
-
-            if let officialTitle = episode.officialTitle {
-              Text(officialTitle)
-                .font(.title3)
-                .foregroundStyle(.secondary)
-            }
-          }
-          .frame(maxWidth: .infinity, alignment: .leading)
-        }
+      Text(self.episode.anime365Title)
+        .font(.title2)
         .frame(maxWidth: .infinity, alignment: .leading)
-
-        if let duration = self.episode.duration {
-          Label(duration.formatted(.units(width: .narrow)), systemImage: "clock")
-        }
-
-        if self.episode.isFiller {
-          Label("Филлер", systemImage: "circle.lefthalf.filled")
-        }
-
-        if self.episode.isRecap {
-          Label("Рекап", systemImage: "repeat.circle")
-        }
-
-        if let synopsis = episode.synopsis {
-          Text(synopsis)
-        }
-
-        if let officiallyAiredAt = episode.officiallyAiredAt {
-          Label(formatRelativeDate(officiallyAiredAt), systemImage: "calendar")
-        }
-      }
-      .frame(maxWidth: .infinity, alignment: .leading)
     }
   }
 }

@@ -1,5 +1,4 @@
 import Foundation
-import JikanApiClient
 
 public enum CalendarSeason: String, Comparable, Sendable {
   case winter
@@ -129,22 +128,6 @@ public struct AiringSeason: Comparable, Equatable {
     }
 
     self.calendarSeason = calendarSeason
-    self.year = year
-  }
-
-  public init(fromJikanSeason: JikanApiClient.Season, year: Int) {
-    self.calendarSeason =
-      switch fromJikanSeason {
-      case .fall:
-        .autumn
-      case .spring:
-        .spring
-      case .summer:
-        .summer
-      case .winter:
-        .winter
-      }
-
     self.year = year
   }
 
