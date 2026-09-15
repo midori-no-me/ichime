@@ -1,5 +1,4 @@
 import IchimeAnime365
-import IchimeCore
 import IchimeEpisode
 import IchimeShow
 import SwiftData

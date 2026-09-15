@@ -28,6 +28,5 @@ public struct EpisodeFull: Sendable, Decodable, EpisodeProtocol {
   public let firstUploadedDateTime: Date
   public let isActive: Int
   public let isFirstUploaded: Int
-  public let seriesId: Int
   public let translations: [Translation]
 }
