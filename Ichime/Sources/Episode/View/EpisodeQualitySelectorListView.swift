@@ -161,6 +161,8 @@ private struct EpisodeTranslationsStreamingQualities: View {
 
   @AppStorage("last_watched_translation_id") private var lastWatchedTranslationID: Int = 0
 
+  @FocusState private var focusedStreamingQualityURL: URL?
+
   @Environment(\.openURL) private var openURL
 
   @Environment(\.dependencies) private var dependencies
@@ -216,8 +218,17 @@ private struct EpisodeTranslationsStreamingQualities: View {
 
             self.openURL(externalPlayerUniversalLink)
           }) {
-            Text(streamingQuality.height.formatted(VideoQualityNumberFormatter()))
+            HStack {
+              Text(streamingQuality.height.formatted(VideoQualityNumberFormatter()))
+
+              Spacer()
+
+              Text(streamingQuality.videoURL.host()!)
+                .foregroundStyle(.secondary)
+                .opacity(self.focusedStreamingQualityURL == streamingQuality.id ? 1 : 0)
+            }
           }
+          .focused(self.$focusedStreamingQualityURL, equals: streamingQuality.id)
         }
       } header: {
         Text("Качество видео")
