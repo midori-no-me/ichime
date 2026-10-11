@@ -50,9 +50,9 @@ public enum AppEnvironment {
       return URL(string: url)!
     }
 
-    userDefaults.set("https://smotret-anime.org", forKey: "anime365-base-url")
+    userDefaults.set("https://smotret-anime.app", forKey: "anime365-base-url")
 
-    return URL(string: "https://smotret-anime.org")!
+    return URL(string: "https://smotret-anime.app")!
   }
 
   public static var applicationID: String {

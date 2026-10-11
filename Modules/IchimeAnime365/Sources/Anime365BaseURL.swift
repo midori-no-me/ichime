@@ -14,15 +14,12 @@ public actor Anime365BaseURL {
   public static let DEFAULT_BASE_URL: URL = .init(string: "https://smotret-anime.app")!
   public static let ALL_KNOWN_ANIME_365_BASE_URLS: OrderedSet<URL> = .init(
     [
-      URL(string: "https://anime365.ru")!,
-      URL(string: "https://anime-365.ru")!,
       URL(string: "https://smotret-anime.app")!,
       URL(string: "https://smotret-anime.org")!,
+      URL(string: "https://smotret-anime.co")!,
       URL(string: "https://smotret-anime.com")!,
       URL(string: "https://smotret-anime.online")!,
       URL(string: "https://smotret-anime.net")!,
-      URL(string: "https://smotret-anime.ru")!,
-      URL(string: "https://smotretanime.ru")!,
     ].sorted(by: { $0.absoluteString < $1.absoluteString })
   )
 
@@ -35,16 +32,12 @@ public actor Anime365BaseURL {
 
   public static let ALL_KNOWN_ANIME_365_AND_HENTAI_365_BASE_URLS: OrderedSet<URL> = .init(
     [
-      URL(string: "https://anime365.ru")!,
-      URL(string: "https://anime-365.ru")!,
       URL(string: "https://smotret-anime.app")!,
       URL(string: "https://smotret-anime.org")!,
+      URL(string: "https://smotret-anime.co")!,
       URL(string: "https://smotret-anime.com")!,
       URL(string: "https://smotret-anime.online")!,
       URL(string: "https://smotret-anime.net")!,
-      URL(string: "https://smotret-anime.ru")!,
-      URL(string: "https://smotretanime.ru")!,
-      URL(string: "https://hentai365.ru")!,
       URL(string: "https://h365-art.org")!,
     ].sorted(by: { $0.absoluteString < $1.absoluteString })
   )
