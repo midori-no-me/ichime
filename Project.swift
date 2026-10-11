@@ -2,7 +2,7 @@ import ProjectDescription
 
 let appVersion = Environment.appVersion.getString(default: "1.0.0")
 let buildVersion = Environment.buildNumber.getString(default: "1")
-let tvOSDeploymentTarget = "26.0"
+let tvOSDeploymentTarget = "27.0"
 
 let developmentTeam = Environment.developmentTeam.getString(default: "")
 let forceAppGroups = Environment.forceAppGroups.getString(default: "").isEmpty ? "NO" : "YES"
