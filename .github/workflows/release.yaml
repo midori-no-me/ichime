@@ -21,7 +21,7 @@ env:
 jobs:
   tuist:
     name: Tuist
-    runs-on: macos-26
+    runs-on: xcode-27
 
     steps:
       - name: Checkout Repository
@@ -45,7 +45,7 @@ jobs:
 
   build_ipa:
     name: Build IPA
-    runs-on: macos-26
+    runs-on: xcode-27
     needs: [tuist]
 
     steps:
@@ -97,7 +97,7 @@ jobs:
 
   publish_appdb:
     name: Publish IPA to appdb
-    runs-on: macos-26
+    runs-on: xcode-27
     needs: [build_ipa]
 
     steps:
@@ -204,7 +204,7 @@ jobs:
 
   upload_github_release:
     name: Upload IPA to GitHub Release
-    runs-on: macos-26
+    runs-on: xcode-27
     needs: [build_ipa]
 
     steps:
