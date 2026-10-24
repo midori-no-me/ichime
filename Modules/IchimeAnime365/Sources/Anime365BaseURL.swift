@@ -25,8 +25,8 @@ public actor Anime365BaseURL {
 
   public static let ALL_KNOWN_HENTAI_365_BASE_URLS: OrderedSet<URL> = .init(
     [
-      URL(string: "https://hentai365.ru")!,
       URL(string: "https://h365-art.org")!,
+      URL(string: "https://hentai365.org")!,
     ].sorted(by: { $0.absoluteString < $1.absoluteString })
   )
 
@@ -39,6 +39,7 @@ public actor Anime365BaseURL {
       URL(string: "https://smotret-anime.online")!,
       URL(string: "https://smotret-anime.net")!,
       URL(string: "https://h365-art.org")!,
+      URL(string: "https://hentai365.org")!,
     ].sorted(by: { $0.absoluteString < $1.absoluteString })
   )
 
